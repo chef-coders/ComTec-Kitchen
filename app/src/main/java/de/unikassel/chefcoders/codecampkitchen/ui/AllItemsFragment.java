@@ -39,13 +39,23 @@ public class AllItemsFragment extends Fragment
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 	    recyclerView.setLayoutManager(layoutManager);
 
-	    String[] test = {
+	    String[] softDrinks = {
 	    		"Fanta", "Cola", "Wasser", "Sprite", "Zitronensaft", "Zaubersaft",
-	            "Bier", "Kaffee", "Apfel-Schorle", "Energy-Drink", "Malzbier", "Weihwasser", "Dreckbrühe", "Kirschschorle"
+	            "Apfel-Schorle", "Energy-Drink", "Malzbier", "Weihwasser", "Dreckbrühe", "Kirschschorle"
+	    };
+
+	    String[] coffees = {
+	    		"Latte", "Expresso", "Yellow Tea"
+	    };
+
+	    String[] alcoholics = {
+	    		"Bier", "Champagner", "Schaps", "Cogniak"
 	    };
 
 	    SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
-	    sectionAdapter.addSection(new ItemSection(test));
+	    sectionAdapter.addSection(new ItemSection(softDrinks, "Soft Drinks"));
+	    sectionAdapter.addSection(new ItemSection(coffees, "Coffees"));
+	    sectionAdapter.addSection(new ItemSection(alcoholics, "Alcoholic drinks"));
 		recyclerView.setAdapter(sectionAdapter);
 
 	    return allItemsView;

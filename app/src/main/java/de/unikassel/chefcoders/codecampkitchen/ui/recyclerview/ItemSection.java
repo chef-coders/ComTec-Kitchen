@@ -13,14 +13,17 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class ItemSection extends StatelessSection
 {
 	private String[] dataset;
+	private String sectionName;
 
-	public ItemSection(String[] dataset)
+	public ItemSection(String[] dataset, String sectionName)
 	{
 		super(SectionParameters.builder()
 				.itemResourceId(R.layout.item_view)
 				.headerResourceId(R.layout.header_view)
 				.build());
+
 		this.dataset = dataset;
+		this.sectionName = sectionName;
 	}
 
 	@Override
@@ -40,5 +43,17 @@ public class ItemSection extends StatelessSection
 	{
 		ItemViewHolder itemViewHolder = (ItemViewHolder)holder;
 		itemViewHolder.showText(this.dataset[position]);
+	}
+
+	@Override
+	public RecyclerView.ViewHolder getHeaderViewHolder(View view)
+	{
+		return new HeaderHolder(view);
+	}
+
+	@Override
+	public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder)
+	{
+		((HeaderHolder)holder).setTitle(this.sectionName);
 	}
 }
