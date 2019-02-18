@@ -45,7 +45,7 @@ public class KitchenConnection {
     }
 
     public String deleteUser(String userToken) {
-        connection.delete(BASE_URL + "/users/" + userToken);
+        return connection.delete(BASE_URL + "/users/" + userToken);
     }
 
     public String updateUser(String userToken, String userJson) {
@@ -75,7 +75,7 @@ public class KitchenConnection {
     }
 
     public String deletePurchase(String purchaseToken) {
-        connection.delete(BASE_URL + "/purchases/" + purchaseToken);
+        return connection.delete(BASE_URL + "/purchases/" + purchaseToken);
     }
 
     public String updatePurchase(String purchaseToken, String purchaseJson) {
