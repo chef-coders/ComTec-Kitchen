@@ -3,7 +3,9 @@ package de.unikassel.chefcoders.codecampkitchen;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity
 	{
 		Toolbar toolbar = findViewById(R.id.main_toolbar);
 		setSupportActionBar(toolbar);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 	}
 
 	private void initNavDrawer()
@@ -53,5 +58,18 @@ public class MainActivity extends AppCompatActivity
 					}
 				}
 		);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				this.drawerLayout.openDrawer(GravityCompat.START);
+				return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 }
