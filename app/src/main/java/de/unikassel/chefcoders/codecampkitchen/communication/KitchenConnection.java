@@ -16,23 +16,23 @@ public class KitchenConnection
 	}
 
 	// Server info
-	public String getServerInfo()
+	public String getServerInfo() throws SyncHttpMethodException
 	{
 		return connection.get("");
 	}
 
 	// Users
-	public String getUser(String userToken)
+	public String getUser(String userToken) throws SyncHttpMethodException
 	{
 		return connection.get("/users/" + userToken);
 	}
 
-	public String getAllUsers()
+	public String getAllUsers() throws SyncHttpMethodException
 	{
 		return connection.get("/users");
 	}
 
-	public String createRegularUser(String userJson)
+	public String createRegularUser(String userJson) throws SyncHttpMethodException
 	{
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Content-Type", "application/json");
@@ -40,7 +40,7 @@ public class KitchenConnection
 		return connection.post("/users", userJson, headers);
 	}
 
-	public String createAdminUser(String userJson)
+	public String createAdminUser(String userJson) throws SyncHttpMethodException
 	{
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("key", ADMIN_KEY);
@@ -48,12 +48,12 @@ public class KitchenConnection
 		return connection.post("/users", userJson, headers);
 	}
 
-	public String deleteUser(String userToken)
+	public String deleteUser(String userToken) throws SyncHttpMethodException
 	{
 		return connection.delete("/users/" + userToken);
 	}
 
-	public String updateUser(String userToken, String userJson)
+	public String updateUser(String userToken, String userJson) throws SyncHttpMethodException
 	{
 
 		Map<String, String> headers = new HashMap<>();
@@ -62,34 +62,34 @@ public class KitchenConnection
 	}
 
 	// Purchases
-	public String getPurchase(String purchaseToken)
+	public String getPurchase(String purchaseToken) throws SyncHttpMethodException
 	{
 		return connection.get("/purchases/" + purchaseToken);
 	}
 
-	public String getAllPurchases()
+	public String getAllPurchases() throws SyncHttpMethodException
 	{
 		return connection.get("/purchases");
 	}
 
-	public String getPurchasesForUser(String userToken)
+	public String getPurchasesForUser(String userToken) throws SyncHttpMethodException
 	{
 		return connection.get("/purchases/" + userToken);
 	}
 
-	public String buyItem(String buyingDataJson)
+	public String buyItem(String buyingDataJson) throws SyncHttpMethodException
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 		return connection.post("/purchases", buyingDataJson, headers);
 	}
 
-	public String deletePurchase(String purchaseToken)
+	public String deletePurchase(String purchaseToken) throws SyncHttpMethodException
 	{
 		return connection.delete("/purchases/" + purchaseToken);
 	}
 
-	public String updatePurchase(String purchaseToken, String purchaseJson)
+	public String updatePurchase(String purchaseToken, String purchaseJson) throws SyncHttpMethodException
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
@@ -97,29 +97,29 @@ public class KitchenConnection
 	}
 
 	// Items
-	public String getItem(String itemToken)
+	public String getItem(String itemToken) throws SyncHttpMethodException
 	{
 		return connection.get("/items/" + itemToken);
 	}
 
-	public String getAllItems()
+	public String getAllItems() throws SyncHttpMethodException
 	{
 		return connection.get("/items");
 	}
 
-	public String createItem(String itemJson)
+	public String createItem(String itemJson) throws SyncHttpMethodException
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 		return connection.post("/items", itemJson, headers);
 	}
 
-	public String deleteItem(String itemToken)
+	public String deleteItem(String itemToken) throws SyncHttpMethodException
 	{
 		return connection.delete("/items/" + itemToken);
 	}
 
-	public String updateItem(String itemToken, String itemJson)
+	public String updateItem(String itemToken, String itemJson) throws SyncHttpMethodException
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
