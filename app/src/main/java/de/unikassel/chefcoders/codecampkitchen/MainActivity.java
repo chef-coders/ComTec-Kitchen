@@ -27,11 +27,16 @@ public class MainActivity extends AppCompatActivity
 
 	private void initToolbar()
 	{
-		Toolbar toolbar = findViewById(R.id.main_toolbar);
-		setSupportActionBar(toolbar);
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+	    Toolbar toolbar = findViewById(R.id.main_toolbar);
+        toolbar.setTitleTextColor(
+                getColor(android.R.color.white)
+        );
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        }
 	}
 
 	private void initNavDrawer()
