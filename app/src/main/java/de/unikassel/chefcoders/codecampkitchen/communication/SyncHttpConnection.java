@@ -5,15 +5,14 @@ import cz.msebera.android.httpclient.Header;
 import java.util.Map;
 import org.json.JSONObject;
 
-public class AsyncHttpConnection implements HttpConnection {
+public class SyncHttpConnection implements HttpConnection {
 		private static final String BASE_URL = "http://srv8.comtec.eecs.uni-kassel.de:10800/api";
 
-		private AsyncHttpClient client;
-
+		private SyncHttpClient client;
 		private String lastResult;
 
-		public AsyncHttpConnection() {
-			client = new AsyncHttpClient();
+		public SyncHttpConnection() {
+			client = new SyncHttpClient();
 		}
 
 		public String get(String url) {
@@ -23,7 +22,6 @@ public class AsyncHttpConnection implements HttpConnection {
 					lastResult = response.toString();
 				}
 			});
-
 			return lastResult;
 		}
 
