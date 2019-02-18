@@ -5,5 +5,13 @@
             android:id="@+id/nav_all_items"
             android:icon="@drawable/ic_home"
             android:title="@string/all_items_nav_title" />
+        <item
+            android:id="@+id/nav_my_purcheses"
+            android:title="@string/my_purchases"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            />
     </group>
 </menu>
