@@ -19,7 +19,6 @@ public class LoginActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.LoginTheme);
         setContentView(R.layout.activity_login);
 
         editTextName = findViewById(R.id.editTextName);
