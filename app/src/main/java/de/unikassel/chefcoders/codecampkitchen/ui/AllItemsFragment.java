@@ -31,7 +31,7 @@ public class AllItemsFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-
+				//TODO
 			}
 		});
 	    recyclerView.setHasFixedSize(true);
