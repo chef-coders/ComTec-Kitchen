@@ -1,0 +1,170 @@
+- c1: 	ClassModel
+  classes: 	user2 	item3 	purchase4 	
+  defaultPropertyStyle: 	POJO
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/main/java"
+  packageName: 	de.unikassel.chefcoders.codecampkitchen.model
+  packageSrcFolder: 	"src/main/java/de/unikassel/chefcoders/codecampkitchen/model"
+
+- user2: 	Clazz
+  attributes: 	_id5 	created6 	name7 	mail8 	role9 	credit10 	
+  model: 	c1
+  modified: 	false
+  name: 	User
+  propertyStyle: 	POJO
+  roles: 	purchases11 	
+
+- item3: 	Clazz
+  attributes: 	_id12 	name13 	price14 	amount15 	kind16 	
+  model: 	c1
+  modified: 	false
+  name: 	Item
+  propertyStyle: 	POJO
+
+- purchase4: 	Clazz
+  attributes: 	_id17 	created18 	user_id19 	item_id20 	amount21 	item22 	
+  model: 	c1
+  modified: 	false
+  name: 	Purchase
+  propertyStyle: 	POJO
+  roles: 	user23 	
+
+- _id5: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	_id
+  propertyStyle: 	POJO
+  type: 	String
+
+- created6: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	created
+  propertyStyle: 	POJO
+  type: 	String
+
+- name7: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	name
+  propertyStyle: 	POJO
+  type: 	String
+
+- mail8: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	mail
+  propertyStyle: 	POJO
+  type: 	String
+
+- role9: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	role
+  propertyStyle: 	POJO
+  type: 	String
+
+- credit10: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	credit
+  propertyStyle: 	POJO
+  type: 	long
+
+- purchases11: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	user2
+  modified: 	false
+  name: 	purchases
+  other: 	user23
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- _id12: 	Attribute
+  clazz: 	item3
+  modified: 	false
+  name: 	_id
+  propertyStyle: 	POJO
+  type: 	String
+
+- name13: 	Attribute
+  clazz: 	item3
+  modified: 	false
+  name: 	name
+  propertyStyle: 	POJO
+  type: 	String
+
+- price14: 	Attribute
+  clazz: 	item3
+  modified: 	false
+  name: 	price
+  propertyStyle: 	POJO
+  type: 	double
+
+- amount15: 	Attribute
+  clazz: 	item3
+  modified: 	false
+  name: 	amount
+  propertyStyle: 	POJO
+  type: 	int
+
+- kind16: 	Attribute
+  clazz: 	item3
+  modified: 	false
+  name: 	kind
+  propertyStyle: 	POJO
+  type: 	String
+
+- _id17: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	_id
+  propertyStyle: 	POJO
+  type: 	String
+
+- created18: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	created
+  propertyStyle: 	POJO
+  type: 	String
+
+- user_id19: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	user_id
+  propertyStyle: 	POJO
+  type: 	String
+
+- item_id20: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	item_id
+  propertyStyle: 	POJO
+  type: 	String
+
+- amount21: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	amount
+  propertyStyle: 	POJO
+  type: 	int
+
+- item22: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	item
+  propertyStyle: 	POJO
+  type: 	Item
+
+- user23: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	purchase4
+  modified: 	false
+  name: 	user
+  other: 	purchases11
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+

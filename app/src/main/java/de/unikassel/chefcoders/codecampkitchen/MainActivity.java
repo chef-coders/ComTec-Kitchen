@@ -2,6 +2,8 @@ package de.unikassel.chefcoders.codecampkitchen;
 
 import android.os.Bundle;
 
+import de.unikassel.chefcoders.codecampkitchen.ui.NavigationDrawerActivity;
+
 public class MainActivity extends NavigationDrawerActivity
 {
 	@Override
