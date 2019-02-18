@@ -30,29 +30,29 @@ public class KitchenConnection {
         return connection.get(BASE_URL + "/users");
     }
 
-    public void createRegularUser(String userJson) {
+    public String createRegularUser(String userJson) {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/json");
         headers.put("key", USER_KEY);
-        connection.post(BASE_URL + "/users", userJson, headers);
+        return connection.post(BASE_URL + "/users", userJson, headers);
     }
 
-    public void createAdminUser(String userJson) {
+    public String createAdminUser(String userJson) {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("key", ADMIN_KEY);
         headers.put("Content-Type", "application/json");
-        connection.post(BASE_URL + "/users", userJson, headers);
+        return connection.post(BASE_URL + "/users", userJson, headers);
     }
 
-    public void deleteUser(String userToken) {
+    public String deleteUser(String userToken) {
         connection.delete(BASE_URL + "/users/" + userToken);
     }
 
-    public void updateUser(String userToken, String userJson) {
+    public String updateUser(String userToken, String userJson) {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        connection.put(BASE_URL + "/users/" + userToken, userJson, headers);
+        return connection.put(BASE_URL + "/users/" + userToken, userJson, headers);
     }
 
     // Purchases
@@ -68,20 +68,20 @@ public class KitchenConnection {
         return connection.get(BASE_URL + "/purchases/" + userToken);
     }
 
-    public void buyItem(String buyingDataJson) {
+    public String buyItem(String buyingDataJson) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        connection.post(BASE_URL + "/purchases", buyingDataJson, headers);
+        return connection.post(BASE_URL + "/purchases", buyingDataJson, headers);
     }
 
-    public void deletePurchase(String purchaseToken) {
+    public String deletePurchase(String purchaseToken) {
         connection.delete(BASE_URL + "/purchases/" + purchaseToken);
     }
 
-    public void updatePurchase(String purchaseToken, String purchaseJson) {
+    public String updatePurchase(String purchaseToken, String purchaseJson) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        connection.put(BASE_URL + "/purchases/" + purchaseToken, purchaseJson, headers);
+        return connection.put(BASE_URL + "/purchases/" + purchaseToken, purchaseJson, headers);
     }
 
     // Items
@@ -93,19 +93,19 @@ public class KitchenConnection {
         return connection.get(BASE_URL + "/items");
     }
 
-    public void createItem(String itemJson) {
+    public String createItem(String itemJson) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        connection.post(BASE_URL + "/items", itemJson, headers);
+        return connection.post(BASE_URL + "/items", itemJson, headers);
     }
 
-    public void deleteItem(String itemToken) {
-        connection.delete(BASE_URL + "/items/" + itemToken);
+    public String deleteItem(String itemToken) {
+        return connection.delete(BASE_URL + "/items/" + itemToken);
     }
 
-    public void updateItem(String itemToken, String itemJson) {
+    public String updateItem(String itemToken, String itemJson) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
-        connection.put(BASE_URL + "/items/" + itemToken, itemJson, headers);
+        return connection.put(BASE_URL + "/items/" + itemToken, itemJson, headers);
     }
 }
