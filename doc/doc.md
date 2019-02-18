@@ -19,8 +19,9 @@
     -   UI
 -   Johan
     -   UI
+    -   Icons
 -   Michael
-    -   AsyncHttpConnection
+    -   SyncHttpConnection
 -   Sven
     -   KitchenConnection
     
