@@ -7,7 +7,7 @@
   packageSrcFolder: 	"src/main/java/de/unikassel/chefcoders/codecampkitchen/model"
 
 - user2: 	Clazz
-  attributes: 	_id5 	credit6 	role7 	created8 	name9 	mail10 	
+  attributes: 	_id5 	created6 	name7 	mail8 	role9 	credit10 	
   model: 	c1
   modified: 	false
   name: 	User
@@ -22,12 +22,12 @@
   propertyStyle: 	POJO
 
 - purchase4: 	Clazz
-  attributes: 	_id17 	created18 	amount19 	item20 	
+  attributes: 	_id17 	created18 	user_id19 	item_id20 	amount21 	item22 	
   model: 	c1
   modified: 	false
   name: 	Purchase
   propertyStyle: 	POJO
-  roles: 	user21 	
+  roles: 	user23 	
 
 - _id5: 	Attribute
   clazz: 	user2
@@ -36,40 +36,40 @@
   propertyStyle: 	POJO
   type: 	String
 
-- credit6: 	Attribute
-  clazz: 	user2
-  modified: 	false
-  name: 	credit
-  propertyStyle: 	POJO
-  type: 	long
-
-- role7: 	Attribute
-  clazz: 	user2
-  modified: 	false
-  name: 	role
-  propertyStyle: 	POJO
-  type: 	String
-
-- created8: 	Attribute
+- created6: 	Attribute
   clazz: 	user2
   modified: 	false
   name: 	created
   propertyStyle: 	POJO
   type: 	String
 
-- name9: 	Attribute
+- name7: 	Attribute
   clazz: 	user2
   modified: 	false
   name: 	name
   propertyStyle: 	POJO
   type: 	String
 
-- mail10: 	Attribute
+- mail8: 	Attribute
   clazz: 	user2
   modified: 	false
   name: 	mail
   propertyStyle: 	POJO
   type: 	String
+
+- role9: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	role
+  propertyStyle: 	POJO
+  type: 	String
+
+- credit10: 	Attribute
+  clazz: 	user2
+  modified: 	false
+  name: 	credit
+  propertyStyle: 	POJO
+  type: 	long
 
 - purchases11: 	AssocRole
   aggregation: 	false
@@ -77,7 +77,7 @@
   clazz: 	user2
   modified: 	false
   name: 	purchases
-  other: 	user21
+  other: 	user23
   propertyStyle: 	POJO
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -130,21 +130,35 @@
   propertyStyle: 	POJO
   type: 	String
 
-- amount19: 	Attribute
+- user_id19: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	user_id
+  propertyStyle: 	POJO
+  type: 	String
+
+- item_id20: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	item_id
+  propertyStyle: 	POJO
+  type: 	String
+
+- amount21: 	Attribute
   clazz: 	purchase4
   modified: 	false
   name: 	amount
   propertyStyle: 	POJO
   type: 	int
 
-- item20: 	Attribute
+- item22: 	Attribute
   clazz: 	purchase4
   modified: 	false
   name: 	item
   propertyStyle: 	POJO
   type: 	Item
 
-- user21: 	AssocRole
+- user23: 	AssocRole
   aggregation: 	false
   cardinality: 	1
   clazz: 	purchase4

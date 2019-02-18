@@ -267,10 +267,10 @@ public class User
       StringBuilder result = new StringBuilder();
 
       result.append(" ").append(this.get_id());
-      result.append(" ").append(this.getRole());
       result.append(" ").append(this.getCreated());
       result.append(" ").append(this.getName());
       result.append(" ").append(this.getMail());
+      result.append(" ").append(this.getRole());
 
 
       return result.substring(1);

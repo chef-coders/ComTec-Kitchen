@@ -18,11 +18,11 @@ public class GenDataModel
 
 		final ClassBuilder user = mb.buildClass("User");
 		user.buildAttribute("_id", "String");
-		user.buildAttribute("credit", "long");
-		user.buildAttribute("role", "String");
 		user.buildAttribute("created", "String");
 		user.buildAttribute("name", "String");
 		user.buildAttribute("mail", "String");
+		user.buildAttribute("role", "String");
+		user.buildAttribute("credit", "long");
 
 		final ClassBuilder item = mb.buildClass("Item");
 		item.buildAttribute("_id", "String");
@@ -34,6 +34,8 @@ public class GenDataModel
 		final ClassBuilder purchase = mb.buildClass("Purchase");
 		purchase.buildAttribute("_id", "String");
 		purchase.buildAttribute("created", "String");
+		purchase.buildAttribute("user_id", "String");
+		purchase.buildAttribute("item_id", "String");
 		purchase.buildAttribute("amount", "int");
 
 		// associations
