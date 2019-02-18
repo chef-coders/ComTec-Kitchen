@@ -1,40 +1,76 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
 import com.loopj.android.http.*;
+import cz.msebera.android.httpclient.Header;
+import java.util.Map;
+import org.json.JSONObject;
 
 public class AsyncHttpConnection implements HttpConnection {
-    private static final Sting BASE_URL = "http://srv8.comtec.eecs.uni-kassel.de:10800/api";
+		private static final String BASE_URL = "http://srv8.comtec.eecs.uni-kassel.de:10800/api";
 
-    private AsyncHttpClient client;
+		private AsyncHttpClient client;
 
-    public AsyncHttpConnection() {
-        client = new AsyncHttpClient();
-    }
+		private String lastResult;
 
-    public String get(String url) {
-        String result;
-        await(client.get(createUrl(url), null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                result = new String(bytes, StandardCharsets.UTF_8);
-            }
-        }));
-        return result;
-    }
+		public AsyncHttpConnection() {
+			client = new AsyncHttpClient();
+		}
 
-    public void post(String url, String jsonBody) {
-        client.post(createUrl(url), params, responseHandler);
-    }
+		public String get(String url) {
+			client.get(createUrl(url), null, new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+					lastResult = response.toString();
+				}
+			});
 
-    public void put(String url, String jsonBody) {
+			return lastResult;
+		}
 
-    }
+		public String post(String url, String jsonBody, Map<String, String> headers) {
+			RequestParams parameters = new RequestParams();
+			for (Map.Entry<String, String> entry : headers.entrySet()) {
+				parameters.add(entry.getKey(), entry.getValue());
+			}
 
-    public void delete(String url) {
+			client.post(createUrl(url), parameters, new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+					lastResult = response.toString();
+				}
+			});
 
-    }
+			return lastResult;
+		}
 
-    private String createUrl(String relativeUrl) {
-        return BASE_URL + relativeUrl;
-    }
+		public String put(String url, String jsonBody, Map<String, String> headers) {
+			RequestParams parameters = new RequestParams();
+			for (Map.Entry<String, String> entry : headers.entrySet()) {
+				parameters.add(entry.getKey(), entry.getValue());
+			}
+
+			client.put(createUrl(url), parameters, new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+					lastResult = response.toString();
+				}
+			});
+
+			return lastResult;
+		}
+
+		public String delete(String url) {
+			client.delete(createUrl(url), null, new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+					lastResult = response.toString();
+				}
+			});
+
+				return lastResult;
+		}
+
+		private String createUrl(String relativeUrl) {
+			return BASE_URL + relativeUrl;
+		}
 }
