@@ -1,6 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.model;
 
 import org.fulib.Fulib;
+import org.fulib.FulibTools;
 import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
@@ -48,5 +49,7 @@ public class GenDataModel
 		final ClassModel model = mb.getClassModel();
 
 		Fulib.generator().generate(model);
+
+		FulibTools.classDiagrams().dumpPng(model, "../doc/classModel.png");
 	}
 }

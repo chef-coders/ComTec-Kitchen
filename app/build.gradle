@@ -35,6 +35,7 @@ dependencies {
 
 	// https://github.com/fujaba/fulib
 	testImplementation 'org.fulib:fulib:1.0.+'
+    testImplementation 'org.fulib:fulibTools:1.0.+'
 
 	androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
