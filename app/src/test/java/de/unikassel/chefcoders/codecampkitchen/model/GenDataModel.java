@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen;
+package de.unikassel.chefcoders.codecampkitchen.model;
 
 import org.fulib.Fulib;
 import org.fulib.builder.ClassBuilder;
@@ -12,7 +12,7 @@ public class GenDataModel
 {
 	public static void main(String[] args)
 	{
-		final ClassModelBuilder mb = Fulib.classModelBuilder("de.unikassel.chefcoders.codecampkitchen.model");
+		final ClassModelBuilder mb = Fulib.classModelBuilder(GenDataModel.class.getPackage().getName());
 
 		// classes
 
