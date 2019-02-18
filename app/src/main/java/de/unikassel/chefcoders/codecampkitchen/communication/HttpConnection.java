@@ -1,11 +1,14 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-public interface HttpConnection {
-    public String get(String url);
+import java.util.Map;
 
-    public void post(String url, String jsonBody);
+public interface HttpConnection
+{
+	String get(String url);
 
-    public void put(String url, String jsonBody);
+	String post(String url, String jsonBody, Map<String, String> headers);
 
-    public void delete(String url);
+	String put(String url, String jsonBody, Map<String, String> headers);
+
+	String delete(String url);
 }
