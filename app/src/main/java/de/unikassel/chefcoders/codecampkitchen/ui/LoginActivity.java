@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 
 public class LoginActivity extends AppCompatActivity
@@ -36,5 +38,26 @@ public class LoginActivity extends AppCompatActivity
         String name = editTextName.getText().toString();
         String email = editTextEmail.getText().toString();
 
+    }
+
+
+    private void disableButton()
+    {
+        buttonLogin.setClickable(false);
+        buttonLogin.setActivated(false);
+        buttonLogin.setEnabled(false);
+    }
+
+    private void enableButton()
+    {
+        buttonLogin.setClickable(true);
+        buttonLogin.setActivated(true);
+        buttonLogin.setEnabled(true);
+    }
+
+    private void startMainActivity()
+    {
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
