@@ -23,6 +23,12 @@
 			app:layout_constraintTop_toTopOf="parent"
 			app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+		<fragment android:name="de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment"
+			android:id="@+id/headlines_fragment"
+			android:layout_weight="1"
+			android:layout_width="0dp"
+			android:layout_height="match_parent" />
+
 	</FrameLayout>
 
 	<!-- Container for contents of drawer - use NavigationView to make configuration easier -->
