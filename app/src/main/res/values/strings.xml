@@ -4,4 +4,6 @@
     <string name="email">Email</string>
     <string name="name">Name</string>
     <string name="all_items_nav_title">All items</string>
+    <string name="my_purchases">My purchases</string>
+    <string name="settings">Settings</string>
 </resources>
