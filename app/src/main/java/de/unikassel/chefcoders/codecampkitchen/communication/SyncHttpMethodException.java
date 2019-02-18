@@ -1,17 +1,18 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-public class SyncHttpMethodException extends Exception {
-	private Exception innerException;
+public class SyncHttpMethodException extends Exception
+{
 	private HttpMethod httpMethod;
 
-	public SyncHttpMethodException(Exception exception, HttpMethod httpMethod) {
-		this.innerException = exception;
+	public SyncHttpMethodException(Throwable cause, HttpMethod httpMethod)
+	{
+		super("", cause);
+
 		this.httpMethod = httpMethod;
 	}
 
-	public Exception getInnerException() {
-		return innerException;
+	public HttpMethod getHttpMethod()
+	{
+		return this.httpMethod;
 	}
-
-	public HttpMethod getHttpMethod() { return httpMethod; }
 }
