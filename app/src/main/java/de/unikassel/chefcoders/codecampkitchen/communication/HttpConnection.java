@@ -1,3 +1,5 @@
+package de.unikassel.chefcoders.codecampkitchen.communication;
+
 public interface HttpConnection {
     public String get(String url);
 
