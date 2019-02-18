@@ -15,57 +15,70 @@ public class SyncHttpConnection implements HttpConnection {
 			client = new SyncHttpClient();
 		}
 
-		public String get(String url) {
-			client.get(createUrl(url), null, new JsonHttpResponseHandler() {
-				@Override
-				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-					lastResult = response.toString();
-				}
-			});
-			return lastResult;
-		}
-
-		public String post(String url, String jsonBody, Map<String, String> headers) {
-			RequestParams parameters = new RequestParams();
-			for (Map.Entry<String, String> entry : headers.entrySet()) {
-				parameters.add(entry.getKey(), entry.getValue());
+		public String get(String url) throws SyncHttpMethodException {
+			try {
+				client.get(createUrl(url), null, new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+						lastResult = response.toString();
+					}
+				});
+			} catch (Exception ex) {
+				throw new SyncHttpMethodException(ex);
 			}
-
-			client.post(createUrl(url), parameters, new JsonHttpResponseHandler() {
-				@Override
-				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-					lastResult = response.toString();
-				}
-			});
-
 			return lastResult;
 		}
 
-		public String put(String url, String jsonBody, Map<String, String> headers) {
-			RequestParams parameters = new RequestParams();
-			for (Map.Entry<String, String> entry : headers.entrySet()) {
-				parameters.add(entry.getKey(), entry.getValue());
+		public String post(String url, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException {
+			try {
+				RequestParams parameters = new RequestParams();
+				for (Map.Entry<String, String> entry : headers.entrySet()) {
+					parameters.add(entry.getKey(), entry.getValue());
+				}
+
+				client.post(createUrl(url), parameters, new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+						lastResult = response.toString();
+					}
+				});
+			} catch (Exception ex) {
+				throw new SyncHttpMethodException(ex);
 			}
-
-			client.put(createUrl(url), parameters, new JsonHttpResponseHandler() {
-				@Override
-				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-					lastResult = response.toString();
-				}
-			});
-
 			return lastResult;
 		}
 
-		public String delete(String url) {
-			client.delete(createUrl(url), null, new JsonHttpResponseHandler() {
-				@Override
-				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-					lastResult = response.toString();
+		public String put(String url, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException {
+			try {
+				RequestParams parameters = new RequestParams();
+				for (Map.Entry<String, String> entry : headers.entrySet()) {
+					parameters.add(entry.getKey(), entry.getValue());
 				}
-			});
 
-				return lastResult;
+				client.put(createUrl(url), parameters, new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+						lastResult = response.toString();
+					}
+				});
+			} catch (Exception ex) {
+				throw new SyncHttpMethodException(ex);
+			}
+			return lastResult;
+		}
+
+		public String delete(String url) throws SyncHttpMethodException {
+			try {
+				client.delete(createUrl(url), null, new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+						lastResult = response.toString();
+					}
+				});
+			} catch (Exception ex) {
+				throw new SyncHttpMethodException(ex);
+			}
+			return lastResult;
 		}
 
 		private String createUrl(String relativeUrl) {
