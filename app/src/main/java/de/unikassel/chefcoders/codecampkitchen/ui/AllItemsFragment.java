@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemsAdapter;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class AllItemsFragment extends Fragment
 {
@@ -26,10 +27,14 @@ public class AllItemsFragment extends Fragment
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 	    recyclerView.setLayoutManager(layoutManager);
 
-	    String[] test = {"Kaffee", "Cola"};
+	    String[] test = {
+	    		"Fanta", "Cola", "Wasser", "Sprite", "Zitronensaft", "Zaubersaft",
+	            "Bier", "Kaffee", "Apfel-Schorle", "Energy-Drink", "Malzbier", "Weihwasser", "Dreckbrühe", "Kirschschorle"
+	    };
 
-	    RecyclerView.Adapter itemsAdapter = new ItemsAdapter(test);
-		recyclerView.setAdapter(itemsAdapter);
+	    SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
+	    sectionAdapter.addSection(new ItemSection(test));
+		recyclerView.setAdapter(sectionAdapter);
 
 	    return allItemsView;
     }
