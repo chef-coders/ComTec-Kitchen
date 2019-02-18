@@ -24,7 +24,7 @@ public class SyncHttpConnection implements HttpConnection {
 					}
 				});
 			} catch (Exception ex) {
-				throw new SyncHttpMethodException(ex);
+				throw new SyncHttpMethodException(ex, HttpMethod.Get);
 			}
 			return lastResult;
 		}
@@ -43,7 +43,7 @@ public class SyncHttpConnection implements HttpConnection {
 					}
 				});
 			} catch (Exception ex) {
-				throw new SyncHttpMethodException(ex);
+				throw new SyncHttpMethodException(ex, HttpMethod.Post);
 			}
 			return lastResult;
 		}
@@ -62,7 +62,7 @@ public class SyncHttpConnection implements HttpConnection {
 					}
 				});
 			} catch (Exception ex) {
-				throw new SyncHttpMethodException(ex);
+				throw new SyncHttpMethodException(ex, HttpMethod.Put);
 			}
 			return lastResult;
 		}
@@ -76,7 +76,7 @@ public class SyncHttpConnection implements HttpConnection {
 					}
 				});
 			} catch (Exception ex) {
-				throw new SyncHttpMethodException(ex);
+				throw new SyncHttpMethodException(ex, HttpMethod.Delete);
 			}
 			return lastResult;
 		}
