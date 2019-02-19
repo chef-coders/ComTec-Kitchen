@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity
         progressBar.setVisibility(View.VISIBLE);
         String name = editTextName.getText().toString();
         String email = editTextEmail.getText().toString();
-
+        disableButton();
     }
 
 
