@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.model.Database;
+import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
@@ -17,14 +17,14 @@ public class KitchenManager
 {
 	// =============== Fields ===============
 
-	private final Database          database;
+	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
 	// =============== Constructor ===============
 
-	public KitchenManager(Database database, KitchenConnection connection)
+	public KitchenManager(LocalDataStore localDataStore, KitchenConnection connection)
 	{
-		this.database = database;
+		this.localDataStore = localDataStore;
 		this.connection = connection;
 	}
 
@@ -32,7 +32,7 @@ public class KitchenManager
 
 	public static KitchenManager create()
 	{
-		return new KitchenManager(new Database(), new KitchenConnection(new SyncHttpConnection()));
+		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new SyncHttpConnection()));
 	}
 
 	// =============== Methods ===============
@@ -59,7 +59,7 @@ public class KitchenManager
 
 		// only possible after setting token!
 		final User user = JsonTranslator.toUser(this.connection.getUser(userId));
-		this.database.setLoginId(user.get_id());
+		this.localDataStore.setLoginId(user.get_id());
 
 		return true;
 	}
@@ -80,7 +80,7 @@ public class KitchenManager
 		}
 
 		final User createdUser = JsonTranslator.toUser(resultJson);
-		this.database.setLoginId(createdUser.get_id());
+		this.localDataStore.setLoginId(createdUser.get_id());
 		this.connection.setUserToken(createdUser.getToken());
 	}
 
@@ -88,21 +88,21 @@ public class KitchenManager
 
 	public User getLoggedInUser()
 	{
-		return this.database.getUser(this.database.getLoginId());
+		return this.localDataStore.getUser(this.localDataStore.getLoginId());
 	}
 
 	// --------------- Items ---------------
 
 	public List<Item> getItems()
 	{
-		return new ArrayList<>(this.database.getItems());
+		return new ArrayList<>(this.localDataStore.getItems());
 	}
 
 	public void refreshItems()
 	{
 		for (Item item : JsonTranslator.toItems(connection.getAllItems()))
 		{
-			this.database.addItem(item);
+			this.localDataStore.addItem(item);
 		}
 	}
 }
