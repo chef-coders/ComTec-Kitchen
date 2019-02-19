@@ -8,7 +8,7 @@
     android:maxHeight="999999dp"
     android:minWidth="0dp"
     android:minHeight="0dp"
-    tools:context=".ui.BarcodeScannerActivity">
+    tools:context=".ui.barcodes.BarcodeScannerActivity">
 
     <FrameLayout
         android:id="@+id/layout"

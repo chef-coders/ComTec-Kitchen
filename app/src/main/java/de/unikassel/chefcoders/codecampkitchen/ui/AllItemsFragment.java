@@ -65,23 +65,34 @@ public class AllItemsFragment extends Fragment
 
 	    Item fanta = new Item()
 			    .setName("Fanta")
-			    .setKind("Softdrink");
+			    .setKind("Softdrink")
+			    .setPrice(3.4)
+			    .setAmount(-1);
 	    Item cola = new Item()
 			    .setName("Cola")
-			    .setKind("Softdrink");
+			    .setKind("Softdrink")
+			    .setPrice(5.0)
+			    .setAmount(5);
 	    Item water = new Item()
 			    .setName("Wasser")
-			    .setKind("Softdrink");
+			    .setKind("Softdrink")
+			    .setPrice(1.435345);
 	    Item sprite = new Item()
 			    .setName("Sprite")
-			    .setKind("Softdrink");
+			    .setKind("Softdrink")
+			    .setPrice(Double.NaN)
+			    .setAmount(3);
 
 	    Item latte = new Item()
 			    .setName("Latte")
-			    .setKind("Kaffee");
+			    .setKind("Kaffee")
+			    .setPrice(Double.NEGATIVE_INFINITY)
+			    .setAmount(10);
 	    Item kaffee = new Item()
 			    .setName("Kaffee")
-			    .setKind("Kaffee");
+			    .setKind("Kaffee")
+			    .setPrice(0.0000)
+			    .setAmount(13);
 
 	    List<Item> items = new ArrayList<>();
 	    items.add(fanta);
