@@ -43,14 +43,14 @@ public class TestKitchenConnection
 	@Test
 	public void testGetUser()
 	{
-		final String userToken = "abc";
-		final String url = "/users/" + userToken;
+		final String userId = "abc";
+		final String url = "/users/" + userId;
 		this.context.checking(new Expectations()
 		{{
 			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
 		}});
 
-		this.kitchenConnection.getUser(userToken);
+		this.kitchenConnection.getUser(userId);
 
 		this.context.assertIsSatisfied();
 	}
@@ -126,16 +126,16 @@ public class TestKitchenConnection
 	{
 		final String url = "/users";
 		final String userJson = "json";
-		final String userToken = "userToken";
+		final String userId = "userId";
 		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + userToken, userJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + userId, userJson, headers);
 		}});
 
-		this.kitchenConnection.updateUser(userToken, userJson);
+		this.kitchenConnection.updateUser(userId, userJson);
 
 		this.context.assertIsSatisfied();
 	}
@@ -144,14 +144,14 @@ public class TestKitchenConnection
 	public void getPurchase()
 	{
 		final String url = "/purchases";
-		final String purchaseToken = "purchase";
+		final String purchaseId = "purchase";
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + purchaseToken, headers());
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + purchaseId, headers());
 		}});
 
-		this.kitchenConnection.getPurchase(purchaseToken);
+		this.kitchenConnection.getPurchase(purchaseId);
 
 		this.context.assertIsSatisfied();
 	}
@@ -175,14 +175,14 @@ public class TestKitchenConnection
 	public void testGetPurchasesForUser()
 	{
 		final String url = "/purchases";
-		final String userToken = "user";
+		final String userId = "user";
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + userToken, headers());
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + userId, headers());
 		}});
 
-		this.kitchenConnection.getPurchasesForUser(userToken);
+		this.kitchenConnection.getPurchasesForUser(userId);
 
 		this.context.assertIsSatisfied();
 	}
@@ -191,14 +191,14 @@ public class TestKitchenConnection
 	public void testDeletePurchase()
 	{
 		final String url = "/purchases";
-		final String purchaseToken = "purchase";
+		final String purchaseId = "purchase";
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + purchaseToken, headers());
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + purchaseId, headers());
 		}});
 
-		this.kitchenConnection.deletePurchase(purchaseToken);
+		this.kitchenConnection.deletePurchase(purchaseId);
 
 		this.context.assertIsSatisfied();
 	}
@@ -226,16 +226,16 @@ public class TestKitchenConnection
 	{
 		final String url = "/purchases";
 		final String purchaseJson = "json";
-		final String purchaseToken = "purchase";
+		final String purchaseId = "purchase";
 		final Map<String, String> headers = headers();
 		headers().put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + purchaseToken, purchaseJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + purchaseId, purchaseJson, headers);
 		}});
 
-		this.kitchenConnection.updatePurchase(purchaseToken, purchaseJson);
+		this.kitchenConnection.updatePurchase(purchaseId, purchaseJson);
 
 		this.context.assertIsSatisfied();
 	}
@@ -244,14 +244,14 @@ public class TestKitchenConnection
 	public void testGetItem()
 	{
 		final String url = "/items";
-		final String itemToken = "item";
+		final String itemId = "item";
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + itemToken, headers());
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + itemId, headers());
 		}});
 
-		this.kitchenConnection.getItem(itemToken);
+		this.kitchenConnection.getItem(itemId);
 
 		this.context.assertIsSatisfied();
 	}
@@ -293,14 +293,14 @@ public class TestKitchenConnection
 	public void testDeleteItem()
 	{
 		final String url = "/items";
-		final String itemToken = "item";
+		final String itemId = "item";
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + itemToken, headers());
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + itemId, headers());
 		}});
 
-		this.kitchenConnection.deleteItem(itemToken);
+		this.kitchenConnection.deleteItem(itemId);
 
 		this.context.assertIsSatisfied();
 	}
@@ -310,16 +310,16 @@ public class TestKitchenConnection
 	{
 		final String url = "/items";
 		final String itemJson = "json";
-		final String itemToken = "purchase";
+		final String itemId = "purchase";
 		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + itemToken, itemJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + itemId, itemJson, headers);
 		}});
 
-		this.kitchenConnection.updateItem(itemToken, itemJson);
+		this.kitchenConnection.updateItem(itemId, itemJson);
 
 		this.context.assertIsSatisfied();
 	}
