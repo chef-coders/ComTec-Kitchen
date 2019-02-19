@@ -2,6 +2,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -18,5 +19,9 @@ public class CreateItemActivity extends AppCompatActivity
 		setContentView(R.layout.activity_create_item);
 
 		barcode = (Barcode) getIntent().getSerializableExtra("barcode");
+	}
+
+	public void onCreate(View view) {
+
 	}
 }
