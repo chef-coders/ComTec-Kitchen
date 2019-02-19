@@ -94,6 +94,8 @@ public class KitchenManager
 		return this.localDataStore.getUser(this.localDataStore.getLoginId());
 	}
 
+	public boolean isAdmin() { return this.getLoggedInUser().getRole() == "admin"; }
+
 	// --------------- Items ---------------
 
 	public List<Item> getItems()

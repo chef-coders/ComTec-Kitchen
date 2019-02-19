@@ -10,6 +10,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 
 import java.util.List;
 
+import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import info.androidhive.barcode.BarcodeReader;
 
@@ -28,9 +29,15 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 
 	@Override
 	public void onScanned(Barcode barcode) {
-		Intent intent = new Intent(BarcodeScannerActivity.this, CreateOrPurchaseItem.class);
-		intent.putExtra("barcode", barcode);
-		startActivity(intent);
+		if (MainActivity.kitchenManager.isAdmin()) {
+			Intent intent = new Intent(BarcodeScannerActivity.this, CreateOrPurchaseAnItemActivity.class);
+			intent.putExtra("barcode", barcode);
+			startActivity(intent);
+		} else {
+			Intent intent = new Intent(BarcodeScannerActivity.this, PurchaseItemActivity.class);
+			intent.putExtra("barcode", barcode);
+			startActivity(intent);
+		}
 	}
 
 	@Override
