@@ -49,11 +49,11 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 
 		if(item.getAmount() != 0)
 		{
-			this.amountTextView.setText(item.getAmount() + " available");
+			this.amountTextView.setText(item.getAmount() + R.string.item_amount_available);
 		}
 		else
 		{
-			this.amountTextView.setText("Not available");
+			this.amountTextView.setText(R.string.item_amount_not_available);
 		}
 	}
 }
