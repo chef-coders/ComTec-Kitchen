@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:maxWidth="999999dp"
+    android:maxHeight="999999dp"
+    android:minWidth="0dp"
+    android:minHeight="0dp"
+    tools:context=".ui.BarcodeScannerActivity">
+
+    <FrameLayout
+        android:id="@+id/layout"
+        android:layout_width="395dp"
+        android:layout_height="715dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <fragment
+            android:id="@+id/barcodeScanner"
+            android:name="info.androidhive.barcode.BarcodeReader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:auto_focus="true"
+            app:use_flash="false" />
+
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>
