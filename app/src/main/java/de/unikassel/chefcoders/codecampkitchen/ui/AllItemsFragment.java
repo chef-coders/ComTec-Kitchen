@@ -12,7 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -39,8 +45,12 @@ public class AllItemsFragment extends Fragment
 		    @Override
 		    public void onClick(View v)
 		    {
-			    //TODO
-		    }
+		    	MainActivity mainActivity = (MainActivity) getActivity();
+				if (mainActivity != null) {
+					mainActivity.changeFragment(new ConfirmPurchasesFragment());
+					mainActivity.checkAllItemsMenuItem(false);
+				}
+			}
 	    });
     }
 
@@ -53,23 +63,36 @@ public class AllItemsFragment extends Fragment
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 	    recyclerView.setLayoutManager(layoutManager);
 
-	    String[] softDrinks = {
-			    "Fanta", "Cola", "Wasser", "Sprite", "Zitronensaft", "Zaubersaft",
-			    "Apfel-Schorle", "Energy-Drink", "Malzbier", "Weihwasser", "Dreckbrühe", "Kirschschorle"
-	    };
+	    Item fanta = new Item()
+			    .setName("Fanta")
+			    .setKind("Softdrink");
+	    Item cola = new Item()
+			    .setName("Cola")
+			    .setKind("Softdrink");
+	    Item water = new Item()
+			    .setName("Wasser")
+			    .setKind("Softdrink");
+	    Item sprite = new Item()
+			    .setName("Sprite")
+			    .setKind("Softdrink");
 
-	    String[] coffees = {
-			    "Latte", "Expresso", "Yellow Tea"
-	    };
+	    Item latte = new Item()
+			    .setName("Latte")
+			    .setKind("Kaffee");
+	    Item kaffee = new Item()
+			    .setName("Kaffee")
+			    .setKind("Kaffee");
 
-	    String[] alcoholics = {
-			    "Bier", "Champagner", "Schaps", "Cogniak"
-	    };
+	    List<Item> items = new ArrayList<>();
+	    items.add(fanta);
+	    items.add(cola);
+	    items.add(water);
+	    items.add(sprite);
+	    items.add(latte);
+	    items.add(kaffee);
 
-	    SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
-	    sectionAdapter.addSection(new ItemSection(softDrinks, "Soft Drinks"));
-	    sectionAdapter.addSection(new ItemSection(coffees, "Coffees"));
-	    sectionAdapter.addSection(new ItemSection(alcoholics, "Alcoholic drinks"));
-	    recyclerView.setAdapter(sectionAdapter);
+	    ItemAdapter itemAdapter = new ItemAdapter();
+	    itemAdapter.setItems(items);
+	    recyclerView.setAdapter(itemAdapter);
     }
 }

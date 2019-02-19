@@ -13,29 +13,28 @@ import java.util.Map;
 public class TestKitchenConnection
 {
 	KitchenConnection kitchenConnection;
-	Mockery context;
-	HttpConnection httpConnection;
+	Mockery           context;
+	HttpConnection    httpConnection;
 
 	@Before
 	public void setup()
 	{
-		context = new Mockery();
-		httpConnection = context.mock(HttpConnection.class);
-		kitchenConnection = new KitchenConnection(httpConnection);
+		this.context = new Mockery();
+		this.httpConnection = this.context.mock(HttpConnection.class);
+		this.kitchenConnection = new KitchenConnection(this.httpConnection);
 	}
 
 	@Test
 	public void testServerInfo()
 	{
-		final String url = "/api";
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get("");
+			this.oneOf(TestKitchenConnection.this.httpConnection).get("");
 		}});
 
-		kitchenConnection.getServerInfo();
+		this.kitchenConnection.getServerInfo();
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -43,28 +42,28 @@ public class TestKitchenConnection
 	{
 		final String userToken = "abc";
 		final String url = "/users/" + userToken;
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
 		}});
 
-		kitchenConnection.getUser(userToken);
+		this.kitchenConnection.getUser(userToken);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
 	public void testGetAllUsers()
 	{
 		final String url = "/users";
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
 		}});
 
-		kitchenConnection.getAllUsers();
+		this.kitchenConnection.getAllUsers();
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -76,14 +75,14 @@ public class TestKitchenConnection
 		headers.put("Content-Type", "application/json");
 		headers.put("key", KitchenConnection.USER_KEY);
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).post(url, userJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).post(url, userJson, headers);
 		}});
 
-		kitchenConnection.createRegularUser(userJson);
+		this.kitchenConnection.createRegularUser(userJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -95,14 +94,14 @@ public class TestKitchenConnection
 		headers.put("Content-Type", "application/json");
 		headers.put("key", KitchenConnection.ADMIN_KEY);
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).post(url, userJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).post(url, userJson, headers);
 		}});
 
-		kitchenConnection.createAdminUser(userJson);
+		this.kitchenConnection.createAdminUser(userJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -111,14 +110,14 @@ public class TestKitchenConnection
 		final String url = "/users";
 		final String userJson = "json";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).delete(url + "/" + userJson);
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + userJson);
 		}});
 
-		kitchenConnection.deleteUser(userJson);
+		this.kitchenConnection.deleteUser(userJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -130,14 +129,14 @@ public class TestKitchenConnection
 		final Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).put(url + "/" + userToken, userJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + userToken, userJson, headers);
 		}});
 
-		kitchenConnection.updateUser(userToken, userJson);
+		this.kitchenConnection.updateUser(userToken, userJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -146,14 +145,14 @@ public class TestKitchenConnection
 		final String url = "/purchases";
 		final String purchaseToken = "purchase";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get(url + "/" + purchaseToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + purchaseToken);
 		}});
 
-		kitchenConnection.getPurchase(purchaseToken);
+		this.kitchenConnection.getPurchase(purchaseToken);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -161,14 +160,14 @@ public class TestKitchenConnection
 	{
 		final String url = "/purchases";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
 		}});
 
-		kitchenConnection.getAllPurchases();
+		this.kitchenConnection.getAllPurchases();
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -177,14 +176,14 @@ public class TestKitchenConnection
 		final String url = "/purchases";
 		final String userToken = "user";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get(url + "/" + userToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + userToken);
 		}});
 
-		kitchenConnection.getPurchasesForUser(userToken);
+		this.kitchenConnection.getPurchasesForUser(userToken);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -193,14 +192,14 @@ public class TestKitchenConnection
 		final String url = "/purchases";
 		final String purchaseToken = "purchase";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).delete(url + "/" + purchaseToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + purchaseToken);
 		}});
 
-		kitchenConnection.deletePurchase(purchaseToken);
+		this.kitchenConnection.deletePurchase(purchaseToken);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -211,14 +210,14 @@ public class TestKitchenConnection
 		final Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).post(url, purchaseJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).post(url, purchaseJson, headers);
 		}});
 
-		kitchenConnection.buyItem(purchaseJson);
+		this.kitchenConnection.buyItem(purchaseJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -230,14 +229,14 @@ public class TestKitchenConnection
 		final Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).put(url + "/" + purchaseToken, purchaseJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + purchaseToken, purchaseJson, headers);
 		}});
 
-		kitchenConnection.updatePurchase(purchaseToken, purchaseJson);
+		this.kitchenConnection.updatePurchase(purchaseToken, purchaseJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -246,14 +245,14 @@ public class TestKitchenConnection
 		final String url = "/items";
 		final String itemToken = "item";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get(url + "/" + itemToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + itemToken);
 		}});
 
-		kitchenConnection.getItem(itemToken);
+		this.kitchenConnection.getItem(itemToken);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -261,14 +260,14 @@ public class TestKitchenConnection
 	{
 		final String url = "/items";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
 		}});
 
-		kitchenConnection.getAllItems();
+		this.kitchenConnection.getAllItems();
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -279,14 +278,14 @@ public class TestKitchenConnection
 		final Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).post(url, itemJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).post(url, itemJson, headers);
 		}});
 
-		kitchenConnection.createItem(itemJson);
+		this.kitchenConnection.createItem(itemJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -295,14 +294,14 @@ public class TestKitchenConnection
 		final String url = "/items";
 		final String itemToken = "item";
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).delete(url + "/" + itemToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + itemToken);
 		}});
 
-		kitchenConnection.deleteItem(itemToken);
+		this.kitchenConnection.deleteItem(itemToken);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
 
 	@Test
@@ -314,14 +313,13 @@ public class TestKitchenConnection
 		final Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 
-		context.checking(new Expectations()
+		this.context.checking(new Expectations()
 		{{
-			oneOf(httpConnection).put(url + "/" + itemToken, itemJson, headers);
+			this.oneOf(TestKitchenConnection.this.httpConnection).put(url + "/" + itemToken, itemJson, headers);
 		}});
 
-		kitchenConnection.updateItem(itemToken, itemJson);
+		this.kitchenConnection.updateItem(itemToken, itemJson);
 
-		context.assertIsSatisfied();
+		this.context.assertIsSatisfied();
 	}
-
 }

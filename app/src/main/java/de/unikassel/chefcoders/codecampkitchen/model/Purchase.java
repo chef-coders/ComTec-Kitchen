@@ -70,57 +70,6 @@ public class Purchase
    }
 
 
-   public static final String PROPERTY_item = "item";
-
-   private Item item;
-
-   public Item getItem()
-   {
-      return item;
-   }
-
-   public Purchase setItem(Item value)
-   {
-      if (value != this.item)
-      {
-         Item oldValue = this.item;
-         this.item = value;
-         firePropertyChange("item", oldValue, value);
-      }
-      return this;
-   }
-
-
-   public static final String PROPERTY_user = "user";
-
-   private User user = null;
-
-   public User getUser()
-   {
-      return this.user;
-   }
-
-   public Purchase setUser(User value)
-   {
-      if (this.user != value)
-      {
-         User oldValue = this.user;
-         if (this.user != null)
-         {
-            this.user = null;
-            oldValue.withoutPurchases(this);
-         }
-         this.user = value;
-         if (value != null)
-         {
-            value.withPurchases(this);
-         }
-         firePropertyChange("user", oldValue, value);
-      }
-      return this;
-   }
-
-
 
    protected PropertyChangeSupport listeners = null;
 
@@ -172,24 +121,8 @@ public class Purchase
       return true;
    }
 
-   @Override
-   public String toString()
-   {
-      StringBuilder result = new StringBuilder();
-
-      result.append(" ").append(this.get_id());
-      result.append(" ").append(this.getCreated());
-      result.append(" ").append(this.getUser_id());
-      result.append(" ").append(this.getItem_id());
-
-
-      return result.substring(1);
-   }
-
    public void removeYou()
    {
-      this.setUser(null);
-
    }
 
 
@@ -234,5 +167,19 @@ public class Purchase
       return this;
    }
 
+
+   @Override
+   public String toString()
+   {
+      StringBuilder result = new StringBuilder();
+
+      result.append(" ").append(this.get_id());
+      result.append(" ").append(this.getCreated());
+      result.append(" ").append(this.getUser_id());
+      result.append(" ").append(this.getItem_id());
+
+
+      return result.substring(1);
+   }
 
 }

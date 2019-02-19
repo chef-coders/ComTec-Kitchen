@@ -35,9 +35,8 @@
 			app:layout_constraintTop_toBottomOf="@+id/main_toolbar">
 
 
-			<fragment
+			<FrameLayout
 				android:id="@+id/headlines_fragment"
-				android:name="de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent" />
 

@@ -1,21 +1,21 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+
+import java.util.List;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class ItemSection extends StatelessSection
 {
-	private String[] dataset;
+	private List<Item> dataset;
 	private String sectionName;
 
-	public ItemSection(String[] dataset, String sectionName)
+	public ItemSection(List<Item> dataset, String sectionName)
 	{
 		super(SectionParameters.builder()
 				.itemResourceId(R.layout.item_view)
@@ -29,7 +29,7 @@ public class ItemSection extends StatelessSection
 	@Override
 	public int getContentItemsTotal()
 	{
-		return this.dataset.length;
+		return this.dataset.size();
 	}
 
 	@Override
@@ -42,18 +42,18 @@ public class ItemSection extends StatelessSection
 	public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position)
 	{
 		ItemViewHolder itemViewHolder = (ItemViewHolder)holder;
-		itemViewHolder.showText(this.dataset[position]);
+		itemViewHolder.show(this.dataset.get(position));
 	}
 
 	@Override
 	public RecyclerView.ViewHolder getHeaderViewHolder(View view)
 	{
-		return new HeaderHolder(view);
+		return new SectionHolder(view);
 	}
 
 	@Override
 	public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder)
 	{
-		((HeaderHolder)holder).setTitle(this.sectionName);
+		((SectionHolder)holder).setTitle(this.sectionName);
 	}
 }

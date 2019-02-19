@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder
 {
@@ -21,8 +22,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 		this.itemView.setBackgroundColor(Color.parseColor("#e5e5e5"));
 	}
 
-	public void showText(String s)
+	public void show(Item item)
 	{
-		this.textView.setText(s);
+		this.textView.setText(item.getName());
 	}
 }
