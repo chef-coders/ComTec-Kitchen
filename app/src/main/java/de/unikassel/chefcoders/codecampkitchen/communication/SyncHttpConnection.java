@@ -49,15 +49,15 @@ public class SyncHttpConnection implements HttpConnection
 	{
 		try
 		{
-			this.client.get(createUrl(relativeUrl), null, this.responseHandler);
+			this.client.get(createURL(relativeUrl), null, this.responseHandler);
 		}
 		catch (Exception ex)
 		{
-			throw new SyncHttpMethodException(ex, HttpMethod.Get);
+			throw new SyncHttpMethodException(ex, HttpMethod.GET);
 		}
 		if (this.lastResult == null)
 		{
-			throw new SyncHttpMethodException(null, HttpMethod.Get);
+			throw new SyncHttpMethodException(null, HttpMethod.GET);
 		}
 		return this.lastResult;
 	}
@@ -67,15 +67,15 @@ public class SyncHttpConnection implements HttpConnection
 	{
 		try
 		{
-			this.client.post(createUrl(relativeUrl), createParams(headers), this.responseHandler);
+			this.client.post(createURL(relativeUrl), createParams(headers), this.responseHandler);
 		}
 		catch (Exception ex)
 		{
-			throw new SyncHttpMethodException(ex, HttpMethod.Post);
+			throw new SyncHttpMethodException(ex, HttpMethod.POST);
 		}
 		if (this.lastResult == null)
 		{
-			throw new SyncHttpMethodException(null, HttpMethod.Get);
+			throw new SyncHttpMethodException(null, HttpMethod.POST);
 		}
 		return this.lastResult;
 	}
@@ -85,15 +85,15 @@ public class SyncHttpConnection implements HttpConnection
 	{
 		try
 		{
-			this.client.put(createUrl(relativeUrl), createParams(headers), this.responseHandler);
+			this.client.put(createURL(relativeUrl), createParams(headers), this.responseHandler);
 		}
 		catch (Exception ex)
 		{
-			throw new SyncHttpMethodException(ex, HttpMethod.Put);
+			throw new SyncHttpMethodException(ex, HttpMethod.PUT);
 		}
 		if (this.lastResult == null)
 		{
-			throw new SyncHttpMethodException(null, HttpMethod.Get);
+			throw new SyncHttpMethodException(null, HttpMethod.PUT);
 		}
 		return this.lastResult;
 	}
@@ -103,15 +103,15 @@ public class SyncHttpConnection implements HttpConnection
 	{
 		try
 		{
-			this.client.delete(createUrl(relativeUrl), this.responseHandler);
+			this.client.delete(createURL(relativeUrl), this.responseHandler);
 		}
 		catch (Exception ex)
 		{
-			throw new SyncHttpMethodException(ex, HttpMethod.Delete);
+			throw new SyncHttpMethodException(ex, HttpMethod.DELETE);
 		}
 		if (this.lastResult == null)
 		{
-			throw new SyncHttpMethodException(null, HttpMethod.Get);
+			throw new SyncHttpMethodException(null, HttpMethod.DELETE);
 		}
 		return this.lastResult;
 	}
@@ -120,7 +120,7 @@ public class SyncHttpConnection implements HttpConnection
 
 	// --------------- Helper Methods ---------------
 
-	private static String createUrl(String relativeUrl)
+	private static String createURL(String relativeUrl)
 	{
 		return BASE_URL + relativeUrl;
 	}
