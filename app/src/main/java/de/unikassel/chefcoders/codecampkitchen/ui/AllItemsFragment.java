@@ -31,12 +31,6 @@ public class AllItemsFragment extends Fragment
 	    return allItemsView;
     }
 
-    private void editToolbar()
-    {
-	    /*Toolbar toolbar = this.getActivity().findViewById(R.id.main_toolbar);
-	    toolbar.*/
-    }
-
     private void initFloatingActionButton(View allItemsView)
     {
 	    floatingActionButton = allItemsView.findViewById(R.id.buyItemButton);
