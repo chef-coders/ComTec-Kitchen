@@ -28,7 +28,8 @@ public class TestApiAccess
 		httpConnection = new SyncHttpConnection();
 		kitchenConnection = new KitchenConnection(httpConnection);
 
-		User user = JsonTranslator.toUser(kitchenConnection.createAdminUser(""));
+		User user = new User().setName("admin").setMail("admin@example.com").setCredit(100);
+		user = JsonTranslator.toUser(kitchenConnection.createAdminUser(JsonTranslator.toJson(user)));
 		USER_ID = user.get_id();
 		USER_TOKEN = user.getToken();
 
