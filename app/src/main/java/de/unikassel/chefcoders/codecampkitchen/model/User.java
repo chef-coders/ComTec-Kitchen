@@ -268,6 +268,7 @@ public class User
 
       result.append(" ").append(this.get_id());
       result.append(" ").append(this.getCreated());
+      result.append(" ").append(this.getToken());
       result.append(" ").append(this.getName());
       result.append(" ").append(this.getMail());
       result.append(" ").append(this.getRole());
@@ -281,6 +282,27 @@ public class User
       this.withoutPurchases(this.getPurchases().clone());
 
 
+   }
+
+
+   public static final String PROPERTY_token = "token";
+
+   private String token;
+
+   public String getToken()
+   {
+      return token;
+   }
+
+   public User setToken(String value)
+   {
+      if (value == null ? this.token != null : ! value.equals(this.token))
+      {
+         String oldValue = this.token;
+         this.token = value;
+         firePropertyChange("token", oldValue, value);
+      }
+      return this;
    }
 
 

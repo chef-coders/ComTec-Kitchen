@@ -19,6 +19,7 @@ public class GenDataModel
 		final ClassBuilder user = mb.buildClass("User");
 		user.buildAttribute("_id", "String");
 		user.buildAttribute("created", "String");
+		user.buildAttribute("token", "String");
 		user.buildAttribute("name", "String");
 		user.buildAttribute("mail", "String");
 		user.buildAttribute("role", "String");
