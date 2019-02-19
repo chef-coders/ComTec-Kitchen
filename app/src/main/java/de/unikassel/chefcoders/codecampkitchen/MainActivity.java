@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import de.unikassel.chefcoders.codecampkitchen.ui.BarcodeScannerActivity;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity
 				this.drawerLayout.openDrawer(GravityCompat.START);
 				return true;
 			case R.id.action_scan_code:
-				// TODO - Open fragment/activity to scan code
+				startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
 				return true;
 		}
 
