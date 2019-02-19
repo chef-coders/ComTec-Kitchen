@@ -1,120 +1,137 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-import com.loopj.android.http.*;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
 import cz.msebera.android.httpclient.Header;
-import java.util.Map;
 import org.json.JSONObject;
 
-public class SyncHttpConnection implements HttpConnection {
-		private static final String BASE_URL = "http://srv8.comtec.eecs.uni-kassel.de:10800/api";
+import java.util.Map;
 
-		private SyncHttpClient client;
-		private String lastResult;
+public class SyncHttpConnection implements HttpConnection
+{
+	// =============== Constants ===============
 
-		public SyncHttpConnection() {
-			client = new SyncHttpClient();
+	private static final String BASE_URL = "http://srv8.comtec.eecs.uni-kassel.de:10800/api";
+
+	// =============== Fields ===============
+
+	private final SyncHttpClient          client;
+	private       String                  lastResult;
+	private       JsonHttpResponseHandler responseHandler;
+
+	// =============== Constructors ===============
+
+	public SyncHttpConnection()
+	{
+		this.client = new SyncHttpClient();
+
+		this.responseHandler = new JsonHttpResponseHandler()
+		{
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, JSONObject response)
+			{
+				SyncHttpConnection.this.lastResult = response.toString();
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse)
+			{
+				SyncHttpConnection.this.lastResult = null;
+			}
+		};
+	}
+
+	// =============== Methods ===============
+
+	@Override
+	public String get(String relativeUrl) throws SyncHttpMethodException
+	{
+		try
+		{
+			this.client.get(createUrl(relativeUrl), null, this.responseHandler);
 		}
-
-		public String get(String relativeUrl) throws SyncHttpMethodException {
-			try {
-				String url = createUrl(relativeUrl);
-				client.get(url, null, new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-						lastResult = response.toString();
-					}
-					@Override
-					public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-						lastResult = null;
-					}
-				});
-			} catch (Exception ex) {
-				lastResult = null;
-				throw new SyncHttpMethodException(ex, HttpMethod.Get);
-			}
-			if (lastResult == null) {
-				throw new SyncHttpMethodException(null, HttpMethod.Get);
-			}
-			return lastResult;
+		catch (Exception ex)
+		{
+			throw new SyncHttpMethodException(ex, HttpMethod.Get);
 		}
-
-		public String post(String relativeUrl, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException {
-			try {
-				RequestParams parameters = new RequestParams();
-				for (Map.Entry<String, String> entry : headers.entrySet()) {
-					parameters.add(entry.getKey(), entry.getValue());
-				}
-
-				String url = createUrl(relativeUrl);
-				client.post(createUrl(url), parameters, new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-						lastResult = response.toString();
-					}
-					@Override
-					public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-						lastResult = null;
-					}
-				});
-			} catch (Exception ex) {
-				throw new SyncHttpMethodException(ex, HttpMethod.Post);
-			}
-			if (lastResult == null) {
-				throw new SyncHttpMethodException(null, HttpMethod.Get);
-			}
-			return lastResult;
+		if (this.lastResult == null)
+		{
+			throw new SyncHttpMethodException(null, HttpMethod.Get);
 		}
+		return this.lastResult;
+	}
 
-		public String put(String relativeUrl, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException {
-			try {
-				RequestParams parameters = new RequestParams();
-				for (Map.Entry<String, String> entry : headers.entrySet()) {
-					parameters.add(entry.getKey(), entry.getValue());
-				}
-
-				String url = createUrl(relativeUrl);
-				client.put(createUrl(url), parameters, new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-						lastResult = response.toString();
-					}
-					@Override
-					public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-						lastResult = null;
-					}
-				});
-			} catch (Exception ex) {
-				throw new SyncHttpMethodException(ex, HttpMethod.Put);
-			}
-			if (lastResult == null) {
-				throw new SyncHttpMethodException(null, HttpMethod.Get);
-			}
-			return lastResult;
+	@Override
+	public String post(String relativeUrl, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException
+	{
+		try
+		{
+			this.client.post(createUrl(relativeUrl), createParams(headers), this.responseHandler);
 		}
-
-		public String delete(String relativeUrl) throws SyncHttpMethodException {
-			try {
-				String url = createUrl(relativeUrl);
-				client.delete(createUrl(url), null, new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-						lastResult = response.toString();
-					}
-					@Override
-					public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-						lastResult = null;
-					}
-				});
-			} catch (Exception ex) {
-				throw new SyncHttpMethodException(ex, HttpMethod.Delete);
-			}
-			if (lastResult == null) {
-				throw new SyncHttpMethodException(null, HttpMethod.Get);
-			}
-			return lastResult;
+		catch (Exception ex)
+		{
+			throw new SyncHttpMethodException(ex, HttpMethod.Post);
 		}
-
-		private String createUrl(String relativeUrl) {
-			return BASE_URL + relativeUrl;
+		if (this.lastResult == null)
+		{
+			throw new SyncHttpMethodException(null, HttpMethod.Get);
 		}
+		return this.lastResult;
+	}
+
+	@Override
+	public String put(String relativeUrl, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException
+	{
+		try
+		{
+			this.client.put(createUrl(relativeUrl), createParams(headers), this.responseHandler);
+		}
+		catch (Exception ex)
+		{
+			throw new SyncHttpMethodException(ex, HttpMethod.Put);
+		}
+		if (this.lastResult == null)
+		{
+			throw new SyncHttpMethodException(null, HttpMethod.Get);
+		}
+		return this.lastResult;
+	}
+
+	@Override
+	public String delete(String relativeUrl) throws SyncHttpMethodException
+	{
+		try
+		{
+			this.client.delete(createUrl(relativeUrl), null, this.responseHandler);
+		}
+		catch (Exception ex)
+		{
+			throw new SyncHttpMethodException(ex, HttpMethod.Delete);
+		}
+		if (this.lastResult == null)
+		{
+			throw new SyncHttpMethodException(null, HttpMethod.Get);
+		}
+		return this.lastResult;
+	}
+
+	// =============== Static Methods ===============
+
+	// --------------- Helper Methods ---------------
+
+	private static String createUrl(String relativeUrl)
+	{
+		return BASE_URL + relativeUrl;
+	}
+
+	private static RequestParams createParams(Map<String, String> headers)
+	{
+		final RequestParams parameters = new RequestParams();
+		for (Map.Entry<String, String> entry : headers.entrySet())
+		{
+			parameters.add(entry.getKey(), entry.getValue());
+		}
+		return parameters;
+	}
 }
