@@ -7,7 +7,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
 
-public class CreateOrPurchaseItem extends AppCompatActivity
+public class CreateOrPurchaseAnItemActivity extends AppCompatActivity
 {
 	private Barcode barcode;
 
@@ -15,8 +15,8 @@ public class CreateOrPurchaseItem extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_create_or_purchase_item);
+		setContentView(R.layout.activity_create_or_purchase_an_item);
 
-		barcode = (Barcode) getIntent().getSerializableExtra("barcode");
+		barcode = barcode = (Barcode) getIntent().getSerializableExtra("barcode");
 	}
 }
