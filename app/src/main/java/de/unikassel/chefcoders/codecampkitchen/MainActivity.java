@@ -1,7 +1,9 @@
 package de.unikassel.chefcoders.codecampkitchen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -95,13 +97,20 @@ public class MainActivity extends AppCompatActivity
                         switch (menuItem.getItemId()) {
                             case R.id.nav_all_items:
                                 changeFragment(new AllItemsFragment());
+                                menuItem.setChecked(true);
+                                drawerLayout.closeDrawers();
+
                                 break;
                             case R.id.nav_my_purcheses:
                                 changeFragment(new MyPurchasesFragment());
+                                menuItem.setChecked(true);
+                                drawerLayout.closeDrawers();
+
+                                break;
+                            case R.id.nav_clear_user_data:
+                                kitchenManager.clearUserData(MainActivity.this);
                                 break;
                         }
-                        menuItem.setChecked(true);
-                        drawerLayout.closeDrawers();
 
                         return true;
                     }

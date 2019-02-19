@@ -13,5 +13,9 @@
             android:title="@string/settings"
             android:icon="@drawable/ic_settings_black_24dp"
             />
+        <item
+            android:title="Clear User Data"
+            android:id="@+id/nav_clear_user_data"
+            ></item>
     </group>
 </menu>

@@ -87,6 +87,14 @@ public class KitchenManager
 		preferences.edit().putString("userId", user.get_id()).putString("userToken", createdUser.getToken()).apply();
 	}
 
+	public void clearUserData(Context context)
+    {
+        this.localDataStore.setLoginId(null);
+        this.connection.setUserToken(null);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putString("userId", null).putString("userToken", null).apply();
+    }
+
 	// --------------- Users ---------------
 
 	public User getLoggedInUser()
