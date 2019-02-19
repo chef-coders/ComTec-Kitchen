@@ -3,16 +3,19 @@ package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.List;
+
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class ItemSection extends StatelessSection
 {
-	private String[] dataset;
+	private List<Item> dataset;
 	private String sectionName;
 
-	public ItemSection(String[] dataset, String sectionName)
+	public ItemSection(List<Item> dataset, String sectionName)
 	{
 		super(SectionParameters.builder()
 				.itemResourceId(R.layout.item_view)
@@ -26,7 +29,7 @@ public class ItemSection extends StatelessSection
 	@Override
 	public int getContentItemsTotal()
 	{
-		return this.dataset.length;
+		return this.dataset.size();
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class ItemSection extends StatelessSection
 	public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position)
 	{
 		ItemViewHolder itemViewHolder = (ItemViewHolder)holder;
-		itemViewHolder.showText(this.dataset[position]);
+		itemViewHolder.show(this.dataset.get(position));
 	}
 
 	@Override

@@ -12,7 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -53,23 +57,36 @@ public class AllItemsFragment extends Fragment
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 	    recyclerView.setLayoutManager(layoutManager);
 
-	    String[] softDrinks = {
-			    "Fanta", "Cola", "Wasser", "Sprite", "Zitronensaft", "Zaubersaft",
-			    "Apfel-Schorle", "Energy-Drink", "Malzbier", "Weihwasser", "Dreckbrühe", "Kirschschorle"
-	    };
+	    List<Item> softDrinks = new ArrayList<>();
+	    Item fanta = new Item()
+			    .setName("Fanta");
+	    softDrinks.add(fanta);
+	    Item cola = new Item()
+			    .setName("Cola");
+	    softDrinks.add(cola);
+	    Item water = new Item()
+			    .setName("Wasser");
+	    softDrinks.add(water);
+	    Item sprite = new Item()
+			    .setName("Sprite");
+	    softDrinks.add(sprite);
 
-	    String[] coffees = {
-			    "Latte", "Expresso", "Yellow Tea"
-	    };
+	    List<Item> coffees = new ArrayList<>();
+	    Item latte = new Item()
+			    .setName("Latte");
+	    coffees.add(latte);
+	    Item kaffee = new Item()
+			    .setName("Kaffee");
+	    coffees.add(kaffee);
 
-	    String[] alcoholics = {
-			    "Bier", "Champagner", "Schaps", "Cogniak"
-	    };
+	    for(Item coffee : coffees)
+	    {
+		    coffee.setKind("Kaffee");
+	    }
 
 	    SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
-	    sectionAdapter.addSection("Soft Drinks", new ItemSection(softDrinks, "Soft Drinks"));
-	    sectionAdapter.addSection("Coffees", new ItemSection(coffees, "Coffees"));
-	    sectionAdapter.addSection("Alcoholic drinks", new ItemSection(alcoholics, "Alcoholic drinks"));
+	    sectionAdapter.addSection("Softdrinks", new ItemSection(softDrinks, "Soft Drinks"));
+	    sectionAdapter.addSection("Kaffee", new ItemSection(coffees, "Coffees"));
 	    recyclerView.setAdapter(sectionAdapter);
     }
 }
