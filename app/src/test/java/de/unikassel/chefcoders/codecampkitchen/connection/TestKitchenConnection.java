@@ -12,9 +12,11 @@ import java.util.Map;
 
 public class TestKitchenConnection
 {
-	KitchenConnection kitchenConnection;
-	Mockery           context;
-	HttpConnection    httpConnection;
+	private KitchenConnection kitchenConnection;
+	private Mockery           context;
+	private HttpConnection    httpConnection;
+
+	private final String USER_TOKEN = "userToken";
 
 	@Before
 	public void setup()
@@ -22,6 +24,7 @@ public class TestKitchenConnection
 		this.context = new Mockery();
 		this.httpConnection = this.context.mock(HttpConnection.class);
 		this.kitchenConnection = new KitchenConnection(this.httpConnection);
+		kitchenConnection.setUserToken(USER_TOKEN);
 	}
 
 	@Test
@@ -29,7 +32,7 @@ public class TestKitchenConnection
 	{
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get("");
+			this.oneOf(TestKitchenConnection.this.httpConnection).get("", headers());
 		}});
 
 		this.kitchenConnection.getServerInfo();
@@ -44,7 +47,7 @@ public class TestKitchenConnection
 		final String url = "/users/" + userToken;
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
 		}});
 
 		this.kitchenConnection.getUser(userToken);
@@ -58,7 +61,7 @@ public class TestKitchenConnection
 		final String url = "/users";
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
 		}});
 
 		this.kitchenConnection.getAllUsers();
@@ -71,8 +74,7 @@ public class TestKitchenConnection
 	{
 		final String url = "/users";
 		final String userJson = "json";
-		final Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
+		final Map<String, String> headers = headers();
 		headers.put("key", KitchenConnection.USER_KEY);
 
 		this.context.checking(new Expectations()
@@ -90,8 +92,7 @@ public class TestKitchenConnection
 	{
 		final String url = "/users";
 		final String userJson = "json";
-		final Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
+		final Map<String, String> headers = headers();
 		headers.put("key", KitchenConnection.ADMIN_KEY);
 
 		this.context.checking(new Expectations()
@@ -112,7 +113,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + userJson);
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + userJson, headers());
 		}});
 
 		this.kitchenConnection.deleteUser(userJson);
@@ -126,7 +127,7 @@ public class TestKitchenConnection
 		final String url = "/users";
 		final String userJson = "json";
 		final String userToken = "userToken";
-		final Map<String, String> headers = new HashMap<>();
+		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
@@ -147,7 +148,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + purchaseToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + purchaseToken, headers());
 		}});
 
 		this.kitchenConnection.getPurchase(purchaseToken);
@@ -162,7 +163,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
 		}});
 
 		this.kitchenConnection.getAllPurchases();
@@ -178,7 +179,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + userToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + userToken, headers());
 		}});
 
 		this.kitchenConnection.getPurchasesForUser(userToken);
@@ -194,7 +195,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + purchaseToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + purchaseToken, headers());
 		}});
 
 		this.kitchenConnection.deletePurchase(purchaseToken);
@@ -207,7 +208,7 @@ public class TestKitchenConnection
 	{
 		final String url = "/purchases";
 		final String purchaseJson = "json";
-		final Map<String, String> headers = new HashMap<>();
+		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
@@ -226,8 +227,8 @@ public class TestKitchenConnection
 		final String url = "/purchases";
 		final String purchaseJson = "json";
 		final String purchaseToken = "purchase";
-		final Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
+		final Map<String, String> headers = headers();
+		headers().put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
 		{{
@@ -247,7 +248,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + itemToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + itemToken, headers());
 		}});
 
 		this.kitchenConnection.getItem(itemToken);
@@ -262,7 +263,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url);
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
 		}});
 
 		this.kitchenConnection.getAllItems();
@@ -275,7 +276,7 @@ public class TestKitchenConnection
 	{
 		final String url = "/items";
 		final String itemJson = "json";
-		final Map<String, String> headers = new HashMap<>();
+		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
@@ -296,7 +297,7 @@ public class TestKitchenConnection
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + itemToken);
+			this.oneOf(TestKitchenConnection.this.httpConnection).delete(url + "/" + itemToken, headers());
 		}});
 
 		this.kitchenConnection.deleteItem(itemToken);
@@ -310,7 +311,7 @@ public class TestKitchenConnection
 		final String url = "/items";
 		final String itemJson = "json";
 		final String itemToken = "purchase";
-		final Map<String, String> headers = new HashMap<>();
+		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
 
 		this.context.checking(new Expectations()
@@ -321,5 +322,13 @@ public class TestKitchenConnection
 		this.kitchenConnection.updateItem(itemToken, itemJson);
 
 		this.context.assertIsSatisfied();
+	}
+
+	private Map<String, String> headers()
+	{
+		final Map<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "application/json");
+		headers.put("Authorization", USER_TOKEN);
+		return headers;
 	}
 }
