@@ -33,7 +33,7 @@ public class KitchenManager
 
 	public static KitchenManager create()
 	{
-		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new SyncHttpConnection()));
+		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new OkHttpConnection()));
 	}
 
 	// =============== Methods ===============
