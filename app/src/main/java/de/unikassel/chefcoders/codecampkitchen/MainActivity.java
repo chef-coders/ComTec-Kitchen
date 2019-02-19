@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -93,10 +94,26 @@ public class MainActivity extends AppCompatActivity
 
     public void changeFragment(Fragment fragment)
     {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.headlines_fragment, fragment)
-                .commit();
+
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+
+        if(fragment instanceof AllItemsFragment){
+            transaction.setCustomAnimations(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+            );
+        } else {
+
+            transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+            );
+        }
+
+        transaction.replace(R.id.headlines_fragment, fragment);
+
+        transaction.commit();
     }
 
     public void checkAllItemsMenuItem(boolean check)
