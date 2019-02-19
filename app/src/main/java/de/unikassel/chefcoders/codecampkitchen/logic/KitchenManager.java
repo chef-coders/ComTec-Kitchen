@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
@@ -32,7 +32,7 @@ public class KitchenManager
 
 	public static KitchenManager create()
 	{
-		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new SyncHttpConnection()));
+		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new OkHttpConnection()));
 	}
 
 	// =============== Methods ===============
