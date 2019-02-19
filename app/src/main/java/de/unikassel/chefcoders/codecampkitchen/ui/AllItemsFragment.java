@@ -67,9 +67,9 @@ public class AllItemsFragment extends Fragment
 	    };
 
 	    SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
-	    sectionAdapter.addSection(new ItemSection(softDrinks, "Soft Drinks"));
-	    sectionAdapter.addSection(new ItemSection(coffees, "Coffees"));
-	    sectionAdapter.addSection(new ItemSection(alcoholics, "Alcoholic drinks"));
+	    sectionAdapter.addSection("Soft Drinks", new ItemSection(softDrinks, "Soft Drinks"));
+	    sectionAdapter.addSection("Coffees", new ItemSection(coffees, "Coffees"));
+	    sectionAdapter.addSection("Alcoholic drinks", new ItemSection(alcoholics, "Alcoholic drinks"));
 	    recyclerView.setAdapter(sectionAdapter);
     }
 }
