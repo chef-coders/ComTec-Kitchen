@@ -1,6 +1,9 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-import com.loopj.android.http.*;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 import cz.msebera.android.httpclient.Header;
 
 import java.util.Map;
@@ -14,8 +17,9 @@ public class SyncHttpConnection implements HttpConnection
 	// =============== Fields ===============
 
 	private final SyncHttpClient           client;
-	private       String                   lastResult;
-	private       ResponseHandlerInterface responseHandler;
+	private final AsyncHttpResponseHandler responseHandler;
+
+	private String lastResult;
 
 	// =============== Constructors ===============
 
@@ -34,7 +38,7 @@ public class SyncHttpConnection implements HttpConnection
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
 			{
-				SyncHttpConnection.this.lastResult = null;
+				throw new SyncHttpMethodException(statusCode, responseString, throwable);
 			}
 		};
 	}
@@ -44,72 +48,28 @@ public class SyncHttpConnection implements HttpConnection
 	@Override
 	public String get(String relativeUrl, Map<String, String> headers)
 	{
-		try
-		{
-			this.client.get(createURL(relativeUrl), createParams(headers), this.responseHandler);
-		}
-		catch (Exception ex)
-		{
-			throw new SyncHttpMethodException(ex, HttpMethod.GET);
-		}
-		if (this.lastResult == null)
-		{
-			throw new SyncHttpMethodException(null, HttpMethod.GET);
-		}
+		this.client.get(createURL(relativeUrl), createParams(headers), this.responseHandler);
 		return this.lastResult;
 	}
 
 	@Override
 	public String post(String relativeUrl, String jsonBody, Map<String, String> headers)
 	{
-		try
-		{
-			this.client.post(createURL(relativeUrl), createParams(headers), this.responseHandler);
-		}
-		catch (Exception ex)
-		{
-			throw new SyncHttpMethodException(ex, HttpMethod.POST);
-		}
-		if (this.lastResult == null)
-		{
-			throw new SyncHttpMethodException(null, HttpMethod.POST);
-		}
+		this.client.post(createURL(relativeUrl), createParams(headers), this.responseHandler);
 		return this.lastResult;
 	}
 
 	@Override
 	public String put(String relativeUrl, String jsonBody, Map<String, String> headers)
 	{
-		try
-		{
-			this.client.put(createURL(relativeUrl), createParams(headers), this.responseHandler);
-		}
-		catch (Exception ex)
-		{
-			throw new SyncHttpMethodException(ex, HttpMethod.PUT);
-		}
-		if (this.lastResult == null)
-		{
-			throw new SyncHttpMethodException(null, HttpMethod.PUT);
-		}
+		this.client.put(createURL(relativeUrl), createParams(headers), this.responseHandler);
 		return this.lastResult;
 	}
 
 	@Override
 	public String delete(String relativeUrl, Map<String, String> headers)
 	{
-		try
-		{
-			this.client.delete(createURL(relativeUrl), createParams(headers), (AsyncHttpResponseHandler) this.responseHandler);
-		}
-		catch (Exception ex)
-		{
-			throw new SyncHttpMethodException(ex, HttpMethod.DELETE);
-		}
-		if (this.lastResult == null)
-		{
-			throw new SyncHttpMethodException(null, HttpMethod.DELETE);
-		}
+		this.client.delete(createURL(relativeUrl), createParams(headers), this.responseHandler);
 		return this.lastResult;
 	}
 

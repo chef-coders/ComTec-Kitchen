@@ -9,4 +9,5 @@
     <string name="barcode_toolbar_item_name">Scan item</string>
     <string name="item_amount_available">available</string>
     <string name="item_amount_not_available">not available</string>
+    <string name="admin">Admin</string>
 </resources>

@@ -16,6 +16,8 @@ import android.view.MenuItem;
 
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.BarcodeScannerActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
 
@@ -32,10 +34,13 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        boolean isLoggedIn = kitchenManager.tryLogin(this);
+        if (!isLoggedIn) {
+            startLogin();
+        }
 
 
-
-        if(savedInstanceState==null){
+        if (savedInstanceState == null) {
             this.initFragment();
         }
 
@@ -43,7 +48,13 @@ public class MainActivity extends AppCompatActivity
         this.initNavDrawer();
     }
 
-    private void initFragment(){
+    private void startLogin()
+    {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    private void initFragment()
+    {
         changeFragment(new AllItemsFragment());
     }
 
@@ -106,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
 
-        if(fragment instanceof AllItemsFragment){
+        if (fragment instanceof AllItemsFragment) {
             transaction.setCustomAnimations(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
