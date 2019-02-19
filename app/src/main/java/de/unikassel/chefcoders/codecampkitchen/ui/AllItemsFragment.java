@@ -94,6 +94,17 @@ public class AllItemsFragment extends Fragment
 			    .setPrice(0.0000)
 			    .setAmount(13);
 
+	    Item beer = new Item()
+			    .setName("Beer")
+			    .setKind("Alcoholic")
+			    .setPrice(39)
+			    .setAmount(3);
+	    Item cognac = new Item()
+			    .setName("Cognac")
+			    .setKind("Alcoholic")
+			    .setPrice(1)
+			    .setAmount(-1);
+
 	    List<Item> items = new ArrayList<>();
 	    items.add(fanta);
 	    items.add(cola);
@@ -101,6 +112,8 @@ public class AllItemsFragment extends Fragment
 	    items.add(sprite);
 	    items.add(latte);
 	    items.add(kaffee);
+	    items.add(beer);
+	    items.add(cognac);
 
 	    ItemAdapter itemAdapter = new ItemAdapter();
 	    itemAdapter.setItems(items);
