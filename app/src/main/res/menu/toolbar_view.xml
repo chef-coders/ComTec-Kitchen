@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_favorite"
-        android:icon="@drawable/ic_linked_camera_black_24dp"
+        android:icon="@drawable/ic_linked_camera_white"
         android:title="@string/barcode_toolbar_item_name"
         app:showAsAction="ifRoom"/>
 </menu>
