@@ -25,6 +25,13 @@ public class MainActivity extends AppCompatActivity
 		this.initNavDrawer();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		this.getMenuInflater().inflate(R.menu.toolbar_view, menu);
+		return true;
+	}
+
 	private void initToolbar()
 	{
 	    Toolbar toolbar = findViewById(R.id.main_toolbar);
