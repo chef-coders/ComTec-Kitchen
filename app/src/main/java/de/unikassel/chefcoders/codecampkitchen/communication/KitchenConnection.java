@@ -21,15 +21,26 @@ public class KitchenConnection
 		this.connection = connection;
 	}
 
+	// =============== Static Methods ===============
+
+	private static Map<String, String> createHeaders()
+	{
+		final Map<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "application/json");
+		return headers;
+	}
+
 	// =============== Methods ===============
 
-	// Server info
+	// --------------- Server Info ---------------
+
 	public String getServerInfo()
 	{
 		return this.connection.get("");
 	}
 
-	// Users
+	// --------------- Users ---------------
+
 	public String getUser(String userToken)
 	{
 		return this.connection.get("/users/" + userToken);
@@ -42,17 +53,15 @@ public class KitchenConnection
 
 	public String createRegularUser(String userJson)
 	{
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("Content-Type", "application/json");
+		final Map<String, String> headers = createHeaders();
 		headers.put("key", USER_KEY);
 		return this.connection.post("/users", userJson, headers);
 	}
 
 	public String createAdminUser(String userJson)
 	{
-		Map<String, String> headers = new HashMap<String, String>();
+		final Map<String, String> headers = createHeaders();
 		headers.put("key", ADMIN_KEY);
-		headers.put("Content-Type", "application/json");
 		return this.connection.post("/users", userJson, headers);
 	}
 
@@ -63,13 +72,11 @@ public class KitchenConnection
 
 	public String updateUser(String userToken, String userJson)
 	{
-
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return this.connection.put("/users/" + userToken, userJson, headers);
+		return this.connection.put("/users/" + userToken, userJson, createHeaders());
 	}
 
-	// Purchases
+	// --------------- Users ---------------
+
 	public String getPurchase(String purchaseToken)
 	{
 		return this.connection.get("/purchases/" + purchaseToken);
@@ -87,9 +94,7 @@ public class KitchenConnection
 
 	public String buyItem(String buyingDataJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return this.connection.post("/purchases", buyingDataJson, headers);
+		return this.connection.post("/purchases", buyingDataJson, createHeaders());
 	}
 
 	public String deletePurchase(String purchaseToken)
@@ -99,12 +104,11 @@ public class KitchenConnection
 
 	public String updatePurchase(String purchaseToken, String purchaseJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return this.connection.put("/purchases/" + purchaseToken, purchaseJson, headers);
+		return this.connection.put("/purchases/" + purchaseToken, purchaseJson, createHeaders());
 	}
 
-	// Items
+	// --------------- Items ---------------
+
 	public String getItem(String itemToken)
 	{
 		return this.connection.get("/items/" + itemToken);
@@ -117,9 +121,7 @@ public class KitchenConnection
 
 	public String createItem(String itemJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return this.connection.post("/items", itemJson, headers);
+		return this.connection.post("/items", itemJson, createHeaders());
 	}
 
 	public String deleteItem(String itemToken)
@@ -129,8 +131,6 @@ public class KitchenConnection
 
 	public String updateItem(String itemToken, String itemJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return this.connection.put("/items/" + itemToken, itemJson, headers);
+		return this.connection.put("/items/" + itemToken, itemJson, createHeaders());
 	}
 }
