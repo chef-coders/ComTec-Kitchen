@@ -91,6 +91,8 @@ public class KitchenManager
 		return this.database.getUser(this.database.getLoginId());
 	}
 
+	public boolean isAdmin() { return this.getLoggedInUser().getRole() == "admin"; }
+
 	// --------------- Items ---------------
 
 	public List<Item> getItems()
