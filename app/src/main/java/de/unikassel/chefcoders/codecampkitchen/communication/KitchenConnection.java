@@ -41,9 +41,9 @@ public class KitchenConnection
 
 	// --------------- Users ---------------
 
-	public String getUser(String userToken)
+	public String getUser(String userId)
 	{
-		return this.connection.get("/users/" + userToken);
+		return this.connection.get("/users/" + userId);
 	}
 
 	public String getAllUsers()
@@ -65,9 +65,9 @@ public class KitchenConnection
 		return this.connection.post("/users", userJson, headers);
 	}
 
-	public String deleteUser(String userToken)
+	public String deleteUser(String userId)
 	{
-		return this.connection.delete("/users/" + userToken);
+		return this.connection.delete("/users/" + userId);
 	}
 
 	public String updateUser(String userToken, String userJson)
@@ -77,9 +77,9 @@ public class KitchenConnection
 
 	// --------------- Users ---------------
 
-	public String getPurchase(String purchaseToken)
+	public String getPurchase(String purchaseId)
 	{
-		return this.connection.get("/purchases/" + purchaseToken);
+		return this.connection.get("/purchases/" + purchaseId);
 	}
 
 	public String getAllPurchases()
@@ -87,9 +87,9 @@ public class KitchenConnection
 		return this.connection.get("/purchases");
 	}
 
-	public String getPurchasesForUser(String userToken)
+	public String getPurchasesForUser(String userId)
 	{
-		return this.connection.get("/purchases/" + userToken);
+		return this.connection.get("/purchases/" + userId);
 	}
 
 	public String buyItem(String buyingDataJson)
@@ -97,21 +97,21 @@ public class KitchenConnection
 		return this.connection.post("/purchases", buyingDataJson, createHeaders());
 	}
 
-	public String deletePurchase(String purchaseToken)
+	public String deletePurchase(String purchaseId)
 	{
-		return this.connection.delete("/purchases/" + purchaseToken);
+		return this.connection.delete("/purchases/" + purchaseId);
 	}
 
-	public String updatePurchase(String purchaseToken, String purchaseJson)
+	public String updatePurchase(String purchaseId, String purchaseJson)
 	{
-		return this.connection.put("/purchases/" + purchaseToken, purchaseJson, createHeaders());
+		return this.connection.put("/purchases/" + purchaseId, purchaseJson, createHeaders());
 	}
 
 	// --------------- Items ---------------
 
-	public String getItem(String itemToken)
+	public String getItem(String itemId)
 	{
-		return this.connection.get("/items/" + itemToken);
+		return this.connection.get("/items/" + itemId);
 	}
 
 	public String getAllItems()
@@ -124,13 +124,13 @@ public class KitchenConnection
 		return this.connection.post("/items", itemJson, createHeaders());
 	}
 
-	public String deleteItem(String itemToken)
+	public String deleteItem(String itemId)
 	{
-		return this.connection.delete("/items/" + itemToken);
+		return this.connection.delete("/items/" + itemId);
 	}
 
-	public String updateItem(String itemToken, String itemJson)
+	public String updateItem(String itemId, String itemJson)
 	{
-		return this.connection.put("/items/" + itemToken, itemJson, createHeaders());
+		return this.connection.put("/items/" + itemId, itemJson, createHeaders());
 	}
 }
