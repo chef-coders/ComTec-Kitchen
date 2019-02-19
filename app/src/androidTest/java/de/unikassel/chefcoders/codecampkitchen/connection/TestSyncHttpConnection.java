@@ -13,7 +13,7 @@ import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpMethodExcep
 @RunWith(AndroidJUnit4.class)
 public class TestSyncHttpConnection {
 	@Test
-	public void testGetMethod() throws SyncHttpMethodException {
+	public void testConnection() throws SyncHttpMethodException {
 		HttpConnection connection = new SyncHttpConnection();
 
 		String result = connection.get("");
