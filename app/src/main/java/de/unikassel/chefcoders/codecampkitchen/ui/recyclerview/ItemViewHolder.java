@@ -40,7 +40,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 
 		if(item.getPrice() > 0.0)
 		{
-			this.prizeTextView.setText(String.format("%.2f €", item.getPrice()));
+			this.prizeTextView.setText(this.itemView.getContext()
+					.getString(R.string.item_price, item.getPrice()));
 		}
 		else
 		{
@@ -49,7 +50,9 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 
 		if(item.getAmount() != 0)
 		{
-			this.amountTextView.setText(item.getAmount() + R.string.item_amount_available);
+			String amountAvailable = this.itemView.getContext()
+					.getString(R.string.item_amount_available, item.getAmount());
+			this.amountTextView.setText(amountAvailable);
 		}
 		else
 		{
