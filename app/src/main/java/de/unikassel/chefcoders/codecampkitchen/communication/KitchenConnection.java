@@ -5,124 +5,132 @@ import java.util.Map;
 
 public class KitchenConnection
 {
-	public static final String USER_KEY = "QXrnDvfLLy0RdS";
+	// =============== Constants ===============
+
+	public static final String USER_KEY  = "QXrnDvfLLy0RdS";
 	public static final String ADMIN_KEY = "UkQ4wtmOoWU9Ws";
 
+	// =============== Fields ===============
+
 	private HttpConnection connection;
+
+	// =============== Constructors ===============
 
 	public KitchenConnection(HttpConnection connection)
 	{
 		this.connection = connection;
 	}
 
-	// Server info
-	public String getServerInfo()
+	// =============== Static Methods ===============
+
+	private static Map<String, String> createHeaders()
 	{
-		return connection.get("");
+		final Map<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "application/json");
+		return headers;
 	}
 
-	// Users
+	// =============== Methods ===============
+
+	// --------------- Server Info ---------------
+
+	public String getServerInfo()
+	{
+		return this.connection.get("");
+	}
+
+	// --------------- Users ---------------
+
 	public String getUser(String userToken)
 	{
-		return connection.get("/users/" + userToken);
+		return this.connection.get("/users/" + userToken);
 	}
 
 	public String getAllUsers()
 	{
-		return connection.get("/users");
+		return this.connection.get("/users");
 	}
 
 	public String createRegularUser(String userJson)
 	{
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("Content-Type", "application/json");
+		final Map<String, String> headers = createHeaders();
 		headers.put("key", USER_KEY);
-		return connection.post("/users", userJson, headers);
+		return this.connection.post("/users", userJson, headers);
 	}
 
 	public String createAdminUser(String userJson)
 	{
-		Map<String, String> headers = new HashMap<String, String>();
+		final Map<String, String> headers = createHeaders();
 		headers.put("key", ADMIN_KEY);
-		headers.put("Content-Type", "application/json");
-		return connection.post("/users", userJson, headers);
+		return this.connection.post("/users", userJson, headers);
 	}
 
 	public String deleteUser(String userToken)
 	{
-		return connection.delete("/users/" + userToken);
+		return this.connection.delete("/users/" + userToken);
 	}
 
 	public String updateUser(String userToken, String userJson)
 	{
-
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return connection.put("/users/" + userToken, userJson, headers);
+		return this.connection.put("/users/" + userToken, userJson, createHeaders());
 	}
 
-	// Purchases
+	// --------------- Users ---------------
+
 	public String getPurchase(String purchaseToken)
 	{
-		return connection.get("/purchases/" + purchaseToken);
+		return this.connection.get("/purchases/" + purchaseToken);
 	}
 
 	public String getAllPurchases()
 	{
-		return connection.get("/purchases");
+		return this.connection.get("/purchases");
 	}
 
 	public String getPurchasesForUser(String userToken)
 	{
-		return connection.get("/purchases/" + userToken);
+		return this.connection.get("/purchases/" + userToken);
 	}
 
 	public String buyItem(String buyingDataJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return connection.post("/purchases", buyingDataJson, headers);
+		return this.connection.post("/purchases", buyingDataJson, createHeaders());
 	}
 
 	public String deletePurchase(String purchaseToken)
 	{
-		return connection.delete("/purchases/" + purchaseToken);
+		return this.connection.delete("/purchases/" + purchaseToken);
 	}
 
 	public String updatePurchase(String purchaseToken, String purchaseJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return connection.put("/purchases/" + purchaseToken, purchaseJson, headers);
+		return this.connection.put("/purchases/" + purchaseToken, purchaseJson, createHeaders());
 	}
 
-	// Items
+	// --------------- Items ---------------
+
 	public String getItem(String itemToken)
 	{
-		return connection.get("/items/" + itemToken);
+		return this.connection.get("/items/" + itemToken);
 	}
 
 	public String getAllItems()
 	{
-		return connection.get("/items");
+		return this.connection.get("/items");
 	}
 
 	public String createItem(String itemJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return connection.post("/items", itemJson, headers);
+		return this.connection.post("/items", itemJson, createHeaders());
 	}
 
 	public String deleteItem(String itemToken)
 	{
-		return connection.delete("/items/" + itemToken);
+		return this.connection.delete("/items/" + itemToken);
 	}
 
 	public String updateItem(String itemToken, String itemJson)
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		return connection.put("/items/" + itemToken, itemJson, headers);
+		return this.connection.put("/items/" + itemToken, itemJson, createHeaders());
 	}
 }

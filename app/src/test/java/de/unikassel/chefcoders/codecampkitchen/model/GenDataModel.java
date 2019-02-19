@@ -5,9 +5,6 @@ import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
 
-import static org.fulib.builder.ClassModelBuilder.MANY;
-import static org.fulib.builder.ClassModelBuilder.ONE;
-
 public class GenDataModel
 {
 	public static void main(String[] args)
@@ -19,6 +16,7 @@ public class GenDataModel
 		final ClassBuilder user = mb.buildClass("User");
 		user.buildAttribute("_id", "String");
 		user.buildAttribute("created", "String");
+		user.buildAttribute("token", "String");
 		user.buildAttribute("name", "String");
 		user.buildAttribute("mail", "String");
 		user.buildAttribute("role", "String");
@@ -37,11 +35,6 @@ public class GenDataModel
 		purchase.buildAttribute("user_id", "String");
 		purchase.buildAttribute("item_id", "String");
 		purchase.buildAttribute("amount", "int");
-
-		// associations
-
-		purchase.buildAssociation(user, "user", ONE, "purchases", MANY);
-		purchase.buildAttribute("item", "Item"); // should be uni-directional
 
 		// generate model
 
