@@ -92,32 +92,27 @@ public class MainActivity extends AppCompatActivity
         checkAllItemsMenuItem(true);
 
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener()
-                {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
-                    {
-                        switch (menuItem.getItemId()) {
-                            case R.id.nav_all_items:
-                                changeFragment(new AllItemsFragment());
-                                menuItem.setChecked(true);
-                                drawerLayout.closeDrawers();
+		        menuItem -> {
+		            switch (menuItem.getItemId()) {
+		                case R.id.nav_all_items:
+		                    changeFragment(new AllItemsFragment());
+		                    menuItem.setChecked(true);
+		                    drawerLayout.closeDrawers();
 
-                                break;
-                            case R.id.nav_my_purcheses:
-                                changeFragment(new MyPurchasesFragment());
-                                menuItem.setChecked(true);
-                                drawerLayout.closeDrawers();
+		                    break;
+		                case R.id.nav_my_purcheses:
+		                    changeFragment(new MyPurchasesFragment());
+		                    menuItem.setChecked(true);
+		                    drawerLayout.closeDrawers();
 
-                                break;
-                            case R.id.nav_clear_user_data:
-                                kitchenManager.clearUserData(MainActivity.this);
-                                break;
-                        }
+		                    break;
+		                case R.id.nav_clear_user_data:
+		                    kitchenManager.clearUserData(MainActivity.this);
+		                    break;
+		            }
 
-                        return true;
-                    }
-                }
+		            return true;
+		        }
         );
     }
 
