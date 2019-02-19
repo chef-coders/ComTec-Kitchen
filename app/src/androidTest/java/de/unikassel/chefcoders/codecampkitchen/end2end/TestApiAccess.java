@@ -16,8 +16,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class TestApiAccess
 {
-	private String USER_ID;
-	private String USER_TOKEN;
+	private String ADMIN_ID;
 
 	HttpConnection httpConnection;
 	KitchenConnection kitchenConnection;
@@ -28,22 +27,22 @@ public class TestApiAccess
 		httpConnection = new SyncHttpConnection();
 		kitchenConnection = new KitchenConnection(httpConnection);
 
-		User user = JsonTranslator.toUser(kitchenConnection.createAdminUser(""));
-		USER_ID = user.get_id();
-		USER_TOKEN = user.getToken();
+		User admin = new User().setName("admin").setMail("admin@example.com");
+		admin = JsonTranslator.toUser(kitchenConnection.createAdminUser(JsonTranslator.toJson(admin)));
+		ADMIN_ID = admin.get_id();
 
-		kitchenConnection.setUserToken(USER_TOKEN);
+		kitchenConnection.setUserToken(admin.getToken());
 	}
 
 	@After
 	public void teardown() {
-		kitchenConnection.deleteUser(USER_ID);
+		kitchenConnection.deleteUser(ADMIN_ID);
 	}
 
 	@Test
 	public void createAndDeleteUser()
 	{
-		User user = new User().setCredit(0).setMail("example@web.de").setName("Peter");
+		User user = new User().setMail("example@web.de").setName("Peter");
 		String userJson = kitchenConnection.createRegularUser(JsonTranslator.toJson(user));
 
 		user = JsonTranslator.toUser(userJson);
@@ -54,7 +53,7 @@ public class TestApiAccess
 	@Test
 	public void createAndDeleteItem()
 	{
-		Item item = new Item().setAmount(1).setName("itemName").setPrice(20);
+		Item item = new Item().setAmount(1).setName("itemName").setPrice(20).setKind("item");
 		String itemJson = kitchenConnection.createItem(JsonTranslator.toJson(item));
 
 		item = JsonTranslator.toItem(itemJson);
@@ -65,10 +64,13 @@ public class TestApiAccess
 	@Test
 	public void createAndDeletePurchase()
 	{
-		User user = JsonTranslator.toUser(kitchenConnection.createRegularUser(""));
-		Item item = JsonTranslator.toItem(kitchenConnection.createItem(""));
+		User user = new User().setMail("example@web.de").setName("Peter");
+		Item item = new Item().setAmount(1).setName("itemName").setPrice(20).setKind("item");
 
-		Purchase purchase = new Purchase().setItem_id(item.get_id()).setUser_id(user.get_id());
+		user = JsonTranslator.toUser(kitchenConnection.createRegularUser(JsonTranslator.toJson(user)));
+		item = JsonTranslator.toItem(kitchenConnection.createItem(JsonTranslator.toJson(item)));
+
+		Purchase purchase = new Purchase().setItem_id(item.get_id()).setUser_id(user.get_id()).setAmount(1);
 		String purchaseJson = kitchenConnection.buyItem(JsonTranslator.toJson(purchase));
 
 		purchase = JsonTranslator.toPurchase(purchaseJson);
