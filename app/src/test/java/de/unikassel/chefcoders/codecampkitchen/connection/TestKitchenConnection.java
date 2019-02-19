@@ -2,7 +2,6 @@ package de.unikassel.chefcoders.codecampkitchen.connection;
 
 import de.unikassel.chefcoders.codecampkitchen.communication.HttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpMethodException;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -26,7 +25,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testServerInfo() throws SyncHttpMethodException
+	public void testServerInfo()
 	{
 		this.context.checking(new Expectations()
 		{{
@@ -39,7 +38,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testGetUser() throws SyncHttpMethodException
+	public void testGetUser()
 	{
 		final String userToken = "abc";
 		final String url = "/users/" + userToken;
@@ -54,7 +53,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testGetAllUsers() throws SyncHttpMethodException
+	public void testGetAllUsers()
 	{
 		final String url = "/users";
 		this.context.checking(new Expectations()
@@ -68,7 +67,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testCreateRegularUser() throws SyncHttpMethodException
+	public void testCreateRegularUser()
 	{
 		final String url = "/users";
 		final String userJson = "json";
@@ -87,7 +86,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testCreateAdminUser() throws SyncHttpMethodException
+	public void testCreateAdminUser()
 	{
 		final String url = "/users";
 		final String userJson = "json";
@@ -106,7 +105,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void deleteUser() throws SyncHttpMethodException
+	public void deleteUser()
 	{
 		final String url = "/users";
 		final String userJson = "json";
@@ -122,7 +121,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void updateUser() throws SyncHttpMethodException
+	public void updateUser()
 	{
 		final String url = "/users";
 		final String userJson = "json";
@@ -141,7 +140,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void getPurchase() throws SyncHttpMethodException
+	public void getPurchase()
 	{
 		final String url = "/purchases";
 		final String purchaseToken = "purchase";
@@ -157,7 +156,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testGetAllPurchases() throws SyncHttpMethodException
+	public void testGetAllPurchases()
 	{
 		final String url = "/purchases";
 
@@ -172,7 +171,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testGetPurchasesForUser() throws SyncHttpMethodException
+	public void testGetPurchasesForUser()
 	{
 		final String url = "/purchases";
 		final String userToken = "user";
@@ -188,7 +187,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testDeletePurchase() throws SyncHttpMethodException
+	public void testDeletePurchase()
 	{
 		final String url = "/purchases";
 		final String purchaseToken = "purchase";
@@ -204,7 +203,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testBuyItem() throws SyncHttpMethodException
+	public void testBuyItem()
 	{
 		final String url = "/purchases";
 		final String purchaseJson = "json";
@@ -222,7 +221,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testUpdatePurchase() throws SyncHttpMethodException
+	public void testUpdatePurchase()
 	{
 		final String url = "/purchases";
 		final String purchaseJson = "json";
@@ -241,7 +240,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testGetItem() throws SyncHttpMethodException
+	public void testGetItem()
 	{
 		final String url = "/items";
 		final String itemToken = "item";
@@ -257,7 +256,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testGetAllItems() throws SyncHttpMethodException
+	public void testGetAllItems()
 	{
 		final String url = "/items";
 
@@ -272,7 +271,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testCreateItem() throws SyncHttpMethodException
+	public void testCreateItem()
 	{
 		final String url = "/items";
 		final String itemJson = "json";
@@ -290,7 +289,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testDeleteItem() throws SyncHttpMethodException
+	public void testDeleteItem()
 	{
 		final String url = "/items";
 		final String itemToken = "item";
@@ -306,7 +305,7 @@ public class TestKitchenConnection
 	}
 
 	@Test
-	public void testUpdateItem() throws SyncHttpMethodException
+	public void testUpdateItem()
 	{
 		final String url = "/items";
 		final String itemJson = "json";

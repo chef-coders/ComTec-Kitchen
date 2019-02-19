@@ -24,23 +24,23 @@ public class KitchenConnection
 	// =============== Methods ===============
 
 	// Server info
-	public String getServerInfo() throws SyncHttpMethodException
+	public String getServerInfo()
 	{
 		return this.connection.get("");
 	}
 
 	// Users
-	public String getUser(String userToken) throws SyncHttpMethodException
+	public String getUser(String userToken)
 	{
 		return this.connection.get("/users/" + userToken);
 	}
 
-	public String getAllUsers() throws SyncHttpMethodException
+	public String getAllUsers()
 	{
 		return this.connection.get("/users");
 	}
 
-	public String createRegularUser(String userJson) throws SyncHttpMethodException
+	public String createRegularUser(String userJson)
 	{
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Content-Type", "application/json");
@@ -48,7 +48,7 @@ public class KitchenConnection
 		return this.connection.post("/users", userJson, headers);
 	}
 
-	public String createAdminUser(String userJson) throws SyncHttpMethodException
+	public String createAdminUser(String userJson)
 	{
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("key", ADMIN_KEY);
@@ -56,12 +56,12 @@ public class KitchenConnection
 		return this.connection.post("/users", userJson, headers);
 	}
 
-	public String deleteUser(String userToken) throws SyncHttpMethodException
+	public String deleteUser(String userToken)
 	{
 		return this.connection.delete("/users/" + userToken);
 	}
 
-	public String updateUser(String userToken, String userJson) throws SyncHttpMethodException
+	public String updateUser(String userToken, String userJson)
 	{
 
 		Map<String, String> headers = new HashMap<>();
@@ -70,34 +70,34 @@ public class KitchenConnection
 	}
 
 	// Purchases
-	public String getPurchase(String purchaseToken) throws SyncHttpMethodException
+	public String getPurchase(String purchaseToken)
 	{
 		return this.connection.get("/purchases/" + purchaseToken);
 	}
 
-	public String getAllPurchases() throws SyncHttpMethodException
+	public String getAllPurchases()
 	{
 		return this.connection.get("/purchases");
 	}
 
-	public String getPurchasesForUser(String userToken) throws SyncHttpMethodException
+	public String getPurchasesForUser(String userToken)
 	{
 		return this.connection.get("/purchases/" + userToken);
 	}
 
-	public String buyItem(String buyingDataJson) throws SyncHttpMethodException
+	public String buyItem(String buyingDataJson)
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 		return this.connection.post("/purchases", buyingDataJson, headers);
 	}
 
-	public String deletePurchase(String purchaseToken) throws SyncHttpMethodException
+	public String deletePurchase(String purchaseToken)
 	{
 		return this.connection.delete("/purchases/" + purchaseToken);
 	}
 
-	public String updatePurchase(String purchaseToken, String purchaseJson) throws SyncHttpMethodException
+	public String updatePurchase(String purchaseToken, String purchaseJson)
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
@@ -105,29 +105,29 @@ public class KitchenConnection
 	}
 
 	// Items
-	public String getItem(String itemToken) throws SyncHttpMethodException
+	public String getItem(String itemToken)
 	{
 		return this.connection.get("/items/" + itemToken);
 	}
 
-	public String getAllItems() throws SyncHttpMethodException
+	public String getAllItems()
 	{
 		return this.connection.get("/items");
 	}
 
-	public String createItem(String itemJson) throws SyncHttpMethodException
+	public String createItem(String itemJson)
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
 		return this.connection.post("/items", itemJson, headers);
 	}
 
-	public String deleteItem(String itemToken) throws SyncHttpMethodException
+	public String deleteItem(String itemToken)
 	{
 		return this.connection.delete("/items/" + itemToken);
 	}
 
-	public String updateItem(String itemToken, String itemJson) throws SyncHttpMethodException
+	public String updateItem(String itemToken, String itemJson)
 	{
 		Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");

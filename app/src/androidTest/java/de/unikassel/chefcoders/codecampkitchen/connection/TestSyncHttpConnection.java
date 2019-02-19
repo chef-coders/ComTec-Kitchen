@@ -1,19 +1,16 @@
 package de.unikassel.chefcoders.codecampkitchen.connection;
 
 import android.support.test.runner.AndroidJUnit4;
-
+import de.unikassel.chefcoders.codecampkitchen.communication.HttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpConnection;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import de.unikassel.chefcoders.codecampkitchen.communication.HttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpMethodException;
-
 @RunWith(AndroidJUnit4.class)
 public class TestSyncHttpConnection {
 	@Test
-	public void testConnection() throws SyncHttpMethodException {
+	public void testConnection() {
 		HttpConnection connection = new SyncHttpConnection();
 
 		String result = connection.get("");

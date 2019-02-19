@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 public class TestApiAccess
 {
 	@Test
-	public void createUserAndVerify() throws SyncHttpMethodException
+	public void createUserAndVerify()
 	{
 		HttpConnection httpConnection = new SyncHttpConnection();
 		KitchenConnection kitchenConnection = new KitchenConnection(httpConnection);

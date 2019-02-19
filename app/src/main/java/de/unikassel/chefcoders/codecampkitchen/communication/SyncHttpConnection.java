@@ -45,7 +45,7 @@ public class SyncHttpConnection implements HttpConnection
 	// =============== Methods ===============
 
 	@Override
-	public String get(String relativeUrl) throws SyncHttpMethodException
+	public String get(String relativeUrl)
 	{
 		try
 		{
@@ -63,7 +63,7 @@ public class SyncHttpConnection implements HttpConnection
 	}
 
 	@Override
-	public String post(String relativeUrl, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException
+	public String post(String relativeUrl, String jsonBody, Map<String, String> headers)
 	{
 		try
 		{
@@ -81,7 +81,7 @@ public class SyncHttpConnection implements HttpConnection
 	}
 
 	@Override
-	public String put(String relativeUrl, String jsonBody, Map<String, String> headers) throws SyncHttpMethodException
+	public String put(String relativeUrl, String jsonBody, Map<String, String> headers)
 	{
 		try
 		{
@@ -99,7 +99,7 @@ public class SyncHttpConnection implements HttpConnection
 	}
 
 	@Override
-	public String delete(String relativeUrl) throws SyncHttpMethodException
+	public String delete(String relativeUrl)
 	{
 		try
 		{

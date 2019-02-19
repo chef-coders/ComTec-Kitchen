@@ -1,6 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-public class SyncHttpMethodException extends Exception
+public class SyncHttpMethodException extends RuntimeException
 {
 	private HttpMethod httpMethod;
 
