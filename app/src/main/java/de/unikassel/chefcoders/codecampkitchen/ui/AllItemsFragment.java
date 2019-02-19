@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,12 +19,13 @@ import java.util.List;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class AllItemsFragment extends Fragment
+public class AllItemsFragment extends KitchenFragment
 {
 	private FloatingActionButton floatingActionButton;
 	private SwipeRefreshLayout swipeRefreshLayout;
@@ -130,4 +132,10 @@ public class AllItemsFragment extends Fragment
 	    itemAdapter.setItems(items);
 	    recyclerView.setAdapter(itemAdapter);
     }
+
+	@Override
+	protected void showToolbarMenu(Menu menu)
+	{
+		menu.findItem(R.id.action_scan_code).setVisible(true);
+	}
 }
