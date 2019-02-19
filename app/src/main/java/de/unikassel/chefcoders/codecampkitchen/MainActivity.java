@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity
 			case android.R.id.home:
 				this.drawerLayout.openDrawer(GravityCompat.START);
 				return true;
+			case R.id.action_scan_code:
+				// TODO - Open fragment/activity to scan code
+				return true;
 		}
 
 		return super.onOptionsItemSelected(item);
