@@ -64,7 +64,7 @@ public class KitchenManager
 		return true;
 	}
 
-	public void register(String username, String email, boolean admin)
+	public void register(Context context, String username, String email, boolean admin)
 	{
 		final User user = new User().setName(username).setMail(email);
 		final String userJson = JsonTranslator.toJson(user);
@@ -82,6 +82,9 @@ public class KitchenManager
 		final User createdUser = JsonTranslator.toUser(resultJson);
 		this.localDataStore.setLoginId(createdUser.get_id());
 		this.connection.setUserToken(createdUser.getToken());
+
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		preferences.edit().putString("userId", user.get_id()).putString("userToken", createdUser.getToken()).apply();
 	}
 
 	// --------------- Users ---------------
