@@ -7,13 +7,19 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RunWith(AndroidJUnit4.class)
 public class TestSyncHttpConnection {
 	@Test
 	public void testConnection() {
 		HttpConnection connection = new SyncHttpConnection();
 
-		String result = connection.get("");
+		Map<String, String> headers = new HashMap<>();
+
+
+		String result = connection.get("", headers);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("{\"version\":\"1.0\",\"name\":\"Kitchen Management\"}", result);
