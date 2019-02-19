@@ -8,6 +8,7 @@ public class LocalDataStore
 {
 	// =============== Fields ===============
 
+	private String loginToken;
 	private String loginId;
 
 	private final Map<String, User>     users     = createMap();
@@ -23,6 +24,16 @@ public class LocalDataStore
 	}
 
 	// =============== Properties ===============
+
+	public String getLoginToken()
+	{
+		return this.loginToken;
+	}
+
+	public void setLoginToken(String loginToken)
+	{
+		this.loginToken = loginToken;
+	}
 
 	public String getLoginId()
 	{
