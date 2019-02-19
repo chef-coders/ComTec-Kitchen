@@ -17,6 +17,7 @@ import java.util.List;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -57,36 +58,36 @@ public class AllItemsFragment extends Fragment
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 	    recyclerView.setLayoutManager(layoutManager);
 
-	    List<Item> softDrinks = new ArrayList<>();
 	    Item fanta = new Item()
-			    .setName("Fanta");
-	    softDrinks.add(fanta);
+			    .setName("Fanta")
+			    .setKind("Softdrink");
 	    Item cola = new Item()
-			    .setName("Cola");
-	    softDrinks.add(cola);
+			    .setName("Cola")
+			    .setKind("Softdrink");
 	    Item water = new Item()
-			    .setName("Wasser");
-	    softDrinks.add(water);
+			    .setName("Wasser")
+			    .setKind("Softdrink");
 	    Item sprite = new Item()
-			    .setName("Sprite");
-	    softDrinks.add(sprite);
+			    .setName("Sprite")
+			    .setKind("Softdrink");
 
-	    List<Item> coffees = new ArrayList<>();
 	    Item latte = new Item()
-			    .setName("Latte");
-	    coffees.add(latte);
+			    .setName("Latte")
+			    .setKind("Kaffee");
 	    Item kaffee = new Item()
-			    .setName("Kaffee");
-	    coffees.add(kaffee);
+			    .setName("Kaffee")
+			    .setKind("Kaffee");
 
-	    for(Item coffee : coffees)
-	    {
-		    coffee.setKind("Kaffee");
-	    }
+	    List<Item> items = new ArrayList<>();
+	    items.add(fanta);
+	    items.add(cola);
+	    items.add(water);
+	    items.add(sprite);
+	    items.add(latte);
+	    items.add(kaffee);
 
-	    SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
-	    sectionAdapter.addSection("Softdrinks", new ItemSection(softDrinks, "Soft Drinks"));
-	    sectionAdapter.addSection("Kaffee", new ItemSection(coffees, "Coffees"));
-	    recyclerView.setAdapter(sectionAdapter);
+	    ItemAdapter itemAdapter = new ItemAdapter();
+	    itemAdapter.setItems(items);
+	    recyclerView.setAdapter(itemAdapter);
     }
 }
