@@ -1,10 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
@@ -48,12 +45,12 @@ public class ItemSection extends StatelessSection
 	@Override
 	public RecyclerView.ViewHolder getHeaderViewHolder(View view)
 	{
-		return new HeaderHolder(view);
+		return new SectionHolder(view);
 	}
 
 	@Override
 	public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder)
 	{
-		((HeaderHolder)holder).setTitle(this.sectionName);
+		((SectionHolder)holder).setTitle(this.sectionName);
 	}
 }
