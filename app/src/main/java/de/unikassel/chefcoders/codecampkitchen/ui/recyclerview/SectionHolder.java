@@ -6,11 +6,11 @@ import android.widget.TextView;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
 
-public class HeaderHolder extends RecyclerView.ViewHolder
+public class SectionHolder extends RecyclerView.ViewHolder
 {
 	private TextView textView;
 
-	public HeaderHolder(View itemView)
+	public SectionHolder(View itemView)
 	{
 		super(itemView);
 		this.textView = itemView.findViewById(R.id.section_title);
