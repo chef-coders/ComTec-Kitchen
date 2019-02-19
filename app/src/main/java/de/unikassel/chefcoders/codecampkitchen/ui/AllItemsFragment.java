@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
@@ -44,8 +45,12 @@ public class AllItemsFragment extends Fragment
 		    @Override
 		    public void onClick(View v)
 		    {
-			    //TODO
-		    }
+		    	MainActivity mainActivity = (MainActivity) getActivity();
+				if (mainActivity != null) {
+					mainActivity.changeFragment(new ConfirmPurchasesFragment());
+					mainActivity.checkAllItemsMenuItem(false);
+				}
+			}
 	    });
     }
 

@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.barcodes.CreateOrPurchaseItem"></activity>
+        <activity android:name=".ui.barcodes.PurchaseItemActivity" />
+        <activity android:name=".ui.barcodes.CreateItemActivity" />
+        <activity android:name=".ui.barcodes.BarcodeScannerActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
