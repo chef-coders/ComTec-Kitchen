@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 public class TestApiAccess
 {
 	@Test
-	public void createUserAndVerify()
+	public void createAndDeleteUser()
 	{
 		HttpConnection httpConnection = new SyncHttpConnection();
 		KitchenConnection kitchenConnection = new KitchenConnection(httpConnection);
@@ -20,6 +20,39 @@ public class TestApiAccess
 
 		user = JsonTranslator.toUser(userJson);
 
-		kitchenConnection.deleteUser(user.getToken());
+		kitchenConnection.deleteUser(user.get_id());
+	}
+
+	@Test
+	public void createAndDeleteItem()
+	{
+		HttpConnection httpConnection = new SyncHttpConnection();
+		KitchenConnection kitchenConnection = new KitchenConnection(httpConnection);
+
+		Item item = new Item().setAmount(1).setName("itemName").setPrice(20);
+		String itemJson = kitchenConnection.createItem(JsonTranslator.toJson(item));
+
+		item = JsonTranslator.toItem(itemJson);
+
+		kitchenConnection.deleteItem(item.get_id());
+	}
+
+	@Test
+	public void createAndDeletePurchase()
+	{
+		HttpConnection httpConnection = new SyncHttpConnection();
+		KitchenConnection kitchenConnection = new KitchenConnection(httpConnection);
+
+		User user = JsonTranslator.toUser(kitchenConnection.createRegularUser(""));
+		Item item = JsonTranslator.toItem(kitchenConnection.createItem(""));
+
+		Purchase purchase = new Purchase().setItem_id(item.get_id()).setUser_id(user.get_id());
+		String purchaseJson = kitchenConnection.buyItem(JsonTranslator.toJson(purchase));
+
+		purchase = JsonTranslator.toPurchase(purchaseJson);
+
+		kitchenConnection.deletePurchase(purchase.get_id());
+		kitchenConnection.deleteItem(item.get_id());
+		kitchenConnection.deleteUser(user.get_id());
 	}
 }
