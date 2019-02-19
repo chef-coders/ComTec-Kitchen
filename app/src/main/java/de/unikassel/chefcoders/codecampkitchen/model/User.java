@@ -133,84 +133,6 @@ public class User
    }
 
 
-   public static final java.util.ArrayList<Purchase> EMPTY_purchases = new java.util.ArrayList<Purchase>()
-   { @Override public boolean add(Purchase value){ throw new UnsupportedOperationException("No direct add! Use xy.withPurchases(obj)"); }};
-
-
-   public static final String PROPERTY_purchases = "purchases";
-
-   private java.util.ArrayList<Purchase> purchases = null;
-
-   public java.util.ArrayList<Purchase> getPurchases()
-   {
-      if (this.purchases == null)
-      {
-         return EMPTY_purchases;
-      }
-
-      return this.purchases;
-   }
-
-   public User withPurchases(Object... value)
-   {
-      if(value==null) return this;
-      for (Object item : value)
-      {
-         if (item == null) continue;
-         if (item instanceof java.util.Collection)
-         {
-            for (Object i : (java.util.Collection) item)
-            {
-               this.withPurchases(i);
-            }
-         }
-         else if (item instanceof Purchase)
-         {
-            if (this.purchases == null)
-            {
-               this.purchases = new java.util.ArrayList<Purchase>();
-            }
-            if ( ! this.purchases.contains(item))
-            {
-               this.purchases.add((Purchase)item);
-               ((Purchase)item).setUser(this);
-               firePropertyChange("purchases", null, item);
-            }
-         }
-         else throw new IllegalArgumentException();
-      }
-      return this;
-   }
-
-
-
-   public User withoutPurchases(Object... value)
-   {
-      if (this.purchases == null || value==null) return this;
-      for (Object item : value)
-      {
-         if (item == null) continue;
-         if (item instanceof java.util.Collection)
-         {
-            for (Object i : (java.util.Collection) item)
-            {
-               this.withoutPurchases(i);
-            }
-         }
-         else if (item instanceof Purchase)
-         {
-            if (this.purchases.contains(item))
-            {
-               this.purchases.remove((Purchase)item);
-               ((Purchase)item).setUser(null);
-               firePropertyChange("purchases", item, null);
-            }
-         }
-      }
-      return this;
-   }
-
-
    protected PropertyChangeSupport listeners = null;
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
@@ -279,9 +201,6 @@ public class User
 
    public void removeYou()
    {
-      this.withoutPurchases(this.getPurchases().clone());
-
-
    }
 
 

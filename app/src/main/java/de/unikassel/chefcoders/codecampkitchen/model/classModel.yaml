@@ -12,22 +12,20 @@
   modified: 	false
   name: 	User
   propertyStyle: 	POJO
-  roles: 	purchases12 	
 
 - item3: 	Clazz
-  attributes: 	_id13 	name14 	price15 	amount16 	kind17 	
+  attributes: 	_id12 	name13 	price14 	amount15 	kind16 	
   model: 	c1
   modified: 	false
   name: 	Item
   propertyStyle: 	POJO
 
 - purchase4: 	Clazz
-  attributes: 	_id18 	created19 	user_id20 	item_id21 	amount22 	item23 	
+  attributes: 	_id17 	created18 	user_id19 	item_id20 	amount21 	
   model: 	c1
   modified: 	false
   name: 	Purchase
   propertyStyle: 	POJO
-  roles: 	user24 	
 
 - _id5: 	Attribute
   clazz: 	user2
@@ -78,100 +76,73 @@
   propertyStyle: 	POJO
   type: 	long
 
-- purchases12: 	AssocRole
-  aggregation: 	false
-  cardinality: 	42
-  clazz: 	user2
-  modified: 	false
-  name: 	purchases
-  other: 	user24
-  propertyStyle: 	POJO
-  roleType: 	"java.util.ArrayList<%s>"
-
-- _id13: 	Attribute
+- _id12: 	Attribute
   clazz: 	item3
   modified: 	false
   name: 	_id
   propertyStyle: 	POJO
   type: 	String
 
-- name14: 	Attribute
+- name13: 	Attribute
   clazz: 	item3
   modified: 	false
   name: 	name
   propertyStyle: 	POJO
   type: 	String
 
-- price15: 	Attribute
+- price14: 	Attribute
   clazz: 	item3
   modified: 	false
   name: 	price
   propertyStyle: 	POJO
   type: 	double
 
-- amount16: 	Attribute
+- amount15: 	Attribute
   clazz: 	item3
   modified: 	false
   name: 	amount
   propertyStyle: 	POJO
   type: 	int
 
-- kind17: 	Attribute
+- kind16: 	Attribute
   clazz: 	item3
   modified: 	false
   name: 	kind
   propertyStyle: 	POJO
   type: 	String
 
-- _id18: 	Attribute
+- _id17: 	Attribute
   clazz: 	purchase4
   modified: 	false
   name: 	_id
   propertyStyle: 	POJO
   type: 	String
 
-- created19: 	Attribute
+- created18: 	Attribute
   clazz: 	purchase4
   modified: 	false
   name: 	created
   propertyStyle: 	POJO
   type: 	String
 
-- user_id20: 	Attribute
+- user_id19: 	Attribute
   clazz: 	purchase4
   modified: 	false
   name: 	user_id
   propertyStyle: 	POJO
   type: 	String
 
-- item_id21: 	Attribute
+- item_id20: 	Attribute
   clazz: 	purchase4
   modified: 	false
   name: 	item_id
   propertyStyle: 	POJO
   type: 	String
 
-- amount22: 	Attribute
+- amount21: 	Attribute
   clazz: 	purchase4
   modified: 	false
   name: 	amount
   propertyStyle: 	POJO
   type: 	int
-
-- item23: 	Attribute
-  clazz: 	purchase4
-  modified: 	false
-  name: 	item
-  propertyStyle: 	POJO
-  type: 	Item
-
-- user24: 	AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	purchase4
-  modified: 	false
-  name: 	user
-  other: 	purchases12
-  propertyStyle: 	POJO
-  roleType: 	"java.util.ArrayList<%s>"
 
