@@ -8,6 +8,7 @@ import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
+import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class KitchenManager
 
 	public static KitchenManager create()
 	{
-		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new OkHttpConnection()));
+		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new SyncHttpConnection()));
 	}
 
 	// =============== Methods ===============
