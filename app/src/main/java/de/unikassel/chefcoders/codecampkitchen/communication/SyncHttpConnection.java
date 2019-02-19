@@ -46,7 +46,7 @@ public class SyncHttpConnection implements HttpConnection {
 				}
 
 				String url = createUrl(relativeUrl);
-				client.post(createUrl(url), parameters, new JsonHttpResponseHandler() {
+				client.post(url, parameters, new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						lastResult = response.toString();
@@ -73,7 +73,7 @@ public class SyncHttpConnection implements HttpConnection {
 				}
 
 				String url = createUrl(relativeUrl);
-				client.put(createUrl(url), parameters, new JsonHttpResponseHandler() {
+				client.put(url, parameters, new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						lastResult = response.toString();
@@ -95,7 +95,7 @@ public class SyncHttpConnection implements HttpConnection {
 		public String delete(String relativeUrl) throws SyncHttpMethodException {
 			try {
 				String url = createUrl(relativeUrl);
-				client.delete(createUrl(url), null, new JsonHttpResponseHandler() {
+				client.delete(url, null, new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						lastResult = response.toString();
