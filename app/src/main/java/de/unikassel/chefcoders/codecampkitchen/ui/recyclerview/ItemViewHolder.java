@@ -14,6 +14,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 	private TextView titleTextView;
 	private TextView prizeTextView;
 	private TextView amountTextView;
+	private TextView numSelectedTextView;
 
 	public ItemViewHolder(View itemView)
 	{
@@ -22,6 +23,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 		this.titleTextView = itemView.findViewById(R.id.item_title);
 		this.prizeTextView = itemView.findViewById(R.id.item_prize);
 		this.amountTextView = itemView.findViewById(R.id.item_amount);
+		this.numSelectedTextView = itemView.findViewById(R.id.item_num_selected);
 
 		this.itemView.setBackgroundColor(Color.parseColor("#e5e5e5"));
 	}
@@ -58,5 +60,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 		{
 			this.amountTextView.setText(R.string.item_amount_not_available);
 		}
+
+		// TODO - Add numberSelected to data model
+		this.numSelectedTextView.setText("x3");
 	}
 }

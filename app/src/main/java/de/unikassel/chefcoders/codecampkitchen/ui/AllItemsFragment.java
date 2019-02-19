@@ -53,18 +53,13 @@ public class AllItemsFragment extends KitchenFragment
     private void initFloatingActionButton(View allItemsView)
     {
 	    floatingActionButton = allItemsView.findViewById(R.id.buyItemButton);
-	    floatingActionButton.setOnClickListener(new View.OnClickListener()
-	    {
-		    @Override
-		    public void onClick(View v)
-		    {
-		    	MainActivity mainActivity = (MainActivity) getActivity();
-				if (mainActivity != null) {
-					mainActivity.changeFragment(new ConfirmPurchasesFragment());
-					mainActivity.checkAllItemsMenuItem(false);
-				}
+	    floatingActionButton.setOnClickListener(v -> {
+		    MainActivity mainActivity = (MainActivity) getActivity();
+			if (mainActivity != null) {
+				mainActivity.changeFragment(new ConfirmPurchasesFragment());
+				mainActivity.checkAllItemsMenuItem(false);
 			}
-	    });
+		});
     }
 
     private void initRecyclerView(View allItemsView)
