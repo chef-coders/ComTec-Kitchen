@@ -8,6 +8,8 @@ public class Database
 {
 	// =============== Fields ===============
 
+	private String loginId;
+
 	private final Map<String, User>     users     = createMap();
 	private final Map<String, Item>     items     = createMap();
 	private final Map<String, Purchase> purchases = createMap();
@@ -18,6 +20,18 @@ public class Database
 	{
 		// TODO maybe WeakHashMap
 		return new HashMap<>();
+	}
+
+	// =============== Properties ===============
+
+	public String getLoginId()
+	{
+		return this.loginId;
+	}
+
+	public void setLoginId(String loginId)
+	{
+		this.loginId = loginId;
 	}
 
 	// =============== Methods ===============
