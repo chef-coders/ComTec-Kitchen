@@ -14,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.BarcodeScannerActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
 
 public class MainActivity extends AppCompatActivity

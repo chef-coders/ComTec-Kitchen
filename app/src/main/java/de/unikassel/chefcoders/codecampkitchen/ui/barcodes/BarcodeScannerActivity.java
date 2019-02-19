@@ -1,5 +1,6 @@
-package de.unikassel.chefcoders.codecampkitchen.ui;
+package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
@@ -27,7 +28,9 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 
 	@Override
 	public void onScanned(Barcode barcode) {
-		// TODO Do something
+		Intent intent = new Intent(BarcodeScannerActivity.this, CreateOrPurchaseItem.class);
+		intent.putExtra("barcode", barcode);
+		startActivity(intent);
 	}
 
 	@Override
