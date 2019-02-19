@@ -18,12 +18,14 @@ import android.view.MenuItem;
 
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
 
 public class MainActivity extends AppCompatActivity
 {
+    private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -39,14 +41,13 @@ public class MainActivity extends AppCompatActivity
         if (!isLoggedIn) {
             startLogin();
         }
-
+        this.initToolbar();
+        this.initNavDrawer();
 
         if (savedInstanceState == null) {
             this.initFragment();
         }
 
-        this.initToolbar();
-        this.initNavDrawer();
     }
 
     private void startLogin()
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity
 
     private void initToolbar()
     {
-        Toolbar toolbar = findViewById(R.id.main_toolbar);
+        this.toolbar = findViewById(R.id.main_toolbar);
+
         toolbar.setTitleTextColor(
                 getColor(android.R.color.white)
         );
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         }
+
     }
 
     private void initNavDrawer()
@@ -119,11 +122,13 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void changeFragment(Fragment fragment)
+    public void changeFragment(KitchenFragment fragment)
     {
 
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
+
+        fragment.changeToolbar(toolbar.getMenu());
 
         if (fragment instanceof AllItemsFragment) {
             transaction.setCustomAnimations(
@@ -131,7 +136,6 @@ public class MainActivity extends AppCompatActivity
                     R.anim.slide_out_right
             );
         } else {
-
             transaction.setCustomAnimations(
                     R.anim.slide_in_right,
                     R.anim.slide_out_left

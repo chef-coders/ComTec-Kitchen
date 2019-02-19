@@ -12,7 +12,7 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyPurchasesFragment extends Fragment
+public class MyPurchasesFragment extends KitchenFragment
 {
 
 
