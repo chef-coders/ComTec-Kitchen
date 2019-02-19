@@ -1,9 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
-import com.loopj.android.http.SyncHttpClient;
-import com.loopj.android.http.TextHttpResponseHandler;
+import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.Header;
 
 import java.util.Map;
@@ -45,11 +42,11 @@ public class SyncHttpConnection implements HttpConnection
 	// =============== Methods ===============
 
 	@Override
-	public String get(String relativeUrl)
+	public String get(String relativeUrl, Map<String, String> headers)
 	{
 		try
 		{
-			this.client.get(createURL(relativeUrl), null, this.responseHandler);
+			this.client.get(createURL(relativeUrl), createParams(headers), this.responseHandler);
 		}
 		catch (Exception ex)
 		{
@@ -99,11 +96,11 @@ public class SyncHttpConnection implements HttpConnection
 	}
 
 	@Override
-	public String delete(String relativeUrl)
+	public String delete(String relativeUrl, Map<String, String> headers)
 	{
 		try
 		{
-			this.client.delete(createURL(relativeUrl), this.responseHandler);
+			this.client.delete(createURL(relativeUrl), createParams(headers), (AsyncHttpResponseHandler) this.responseHandler);
 		}
 		catch (Exception ex)
 		{
