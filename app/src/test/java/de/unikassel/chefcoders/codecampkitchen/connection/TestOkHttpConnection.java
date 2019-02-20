@@ -23,36 +23,29 @@ public class TestOkHttpConnection
 	@Test
 	public void validGet()
 	{
-		String result = connection.get(KitchenConnection.BASE_URL, headers());
+		connection.get(KitchenConnection.BASE_URL, headers());
 	}
 
 	@Test(expected = HttpConnectionException.class)
 	public void invalidGet()
 	{
-		connection.get(KitchenConnection.BASE_URL + "/items", new HashMap<String, String>());
+		connection.get(KitchenConnection.BASE_URL + "/items", basicHeaders());
 	}
 
 	@Test
 	public void validPost()
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		headers.put("Authorization", ADMIN_TOKEN);
-		headers.put("key", KitchenConnection.USER_KEY);
-
 		User user = new User().setMail("user@example.com").setName("user");
 
-		String result = connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), headers());
+		connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), headers());
 	}
 
 	@Test(expected = HttpConnectionException.class)
 	public void invalidPost()
 	{
-		HashMap<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
 		User user = new User().setMail("user@example.com").setName("user");
 
-		String result = connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), headers);
+		String result = connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), basicHeaders());
 	}
 
 	@Test
@@ -70,9 +63,7 @@ public class TestOkHttpConnection
 	@Test(expected = HttpConnectionException.class)
 	public void invalidPut()
 	{
-		HashMap<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		String result = connection.put(KitchenConnection.BASE_URL + "/users/" + 123456789, "", headers);
+		String result = connection.put(KitchenConnection.BASE_URL + "/users/" + 123456789, "", basicHeaders());
 	}
 
 	@Test
@@ -88,16 +79,22 @@ public class TestOkHttpConnection
 	@Test(expected = HttpConnectionException.class)
 	public void invalidDelete()
 	{
-		connection.delete(KitchenConnection.BASE_URL + "/items/" + "invalid_id", headers());
+		connection.delete(KitchenConnection.BASE_URL + "/items/" + "invalid_id", basicHeaders());
 	}
 
 	private Map<String, String> headers()
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
+		Map<String, String> headers = basicHeaders();
 		headers.put("Authorization", ADMIN_TOKEN);
 		headers.put("key", KitchenConnection.USER_KEY);
 
+		return headers;
+	}
+
+	private HashMap<String, String> basicHeaders()
+	{
+		HashMap<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "application/json");
 		return headers;
 	}
 }
