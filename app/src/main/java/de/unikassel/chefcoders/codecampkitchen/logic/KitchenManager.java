@@ -41,7 +41,14 @@ public class KitchenManager
 
 	public boolean tryLogin(Context context)
 	{
-		return this.loadUserInfo(context);
+		if (!this.loadUserInfo(context))
+		{
+			return false;
+		}
+
+		final User userData = JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId()));
+		this.localDataStore.addUser(userData);
+		return true;
 	}
 
 	public void register(Context context, String username, String email, boolean admin)
@@ -63,6 +70,8 @@ public class KitchenManager
 
 		this.setUserInfo(createdUser.getToken(), createdUser.get_id());
 		this.saveUserInfo(context);
+
+		this.localDataStore.addUser(createdUser);
 	}
 
 	public void clearUserData(Context context)
