@@ -17,5 +17,5 @@
         android:icon="@drawable/ic_clear_all_white_24dp"
         android:title="@string/clear_all"
         android:visible="false"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>
