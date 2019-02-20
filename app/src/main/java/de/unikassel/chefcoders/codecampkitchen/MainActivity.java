@@ -42,13 +42,12 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-
         ResultAsyncTask.exeResultAsyncTask(() -> kitchenManager.tryLogin(this), (isLoggedIn) ->
         {
             if (!isLoggedIn) {
                 startLogin();
-            }else{
+            } else {
+                setContentView(R.layout.activity_main);
                 this.initToolbar();
                 this.initNavDrawer();
                 this.initShortCuts();
@@ -69,7 +68,13 @@ public class MainActivity extends AppCompatActivity
 
     private void initFragment()
     {
-        changeFragment(new AllItemsFragment());
+        AllItemsFragment fragment = new AllItemsFragment();
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragment.changeToolbar(toolbar.getMenu());
+        transaction.replace(R.id.headlines_fragment, fragment);
+        transaction.commit();
+
     }
 
     private void initShortCuts()
