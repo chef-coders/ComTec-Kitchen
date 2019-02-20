@@ -56,4 +56,11 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	{
 		return false;
 	}
+
+	@Override
+	public boolean onSwiped(int section, int item)
+	{
+		// TODO - Handle swipe
+		return false;
+	}
 }
