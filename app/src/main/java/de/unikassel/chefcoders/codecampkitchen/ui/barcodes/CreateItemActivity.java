@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class CreateItemActivity extends AppCompatActivity
 {
@@ -33,14 +34,20 @@ public class CreateItemActivity extends AppCompatActivity
 	}
 
 	public void onCreate(View view) {
-		try {
-			double price = Double.parseDouble(priceText.getText().toString());
-			int amount = Integer.parseInt(amountText.getText().toString());
-			MainActivity.kitchenManager.createItem(barcode, nameText.getText().toString(), price, amount, kindText.getText().toString());
-			startActivity(new Intent(CreateItemActivity.this, MainActivity.class));
-		} catch (Exception ex) {
-			priceText.setText("0.00");
-			amountText.setText("0");
-		}
+		new SimpleAsyncTask(() -> {
+			try {
+				double price = Double.parseDouble(priceText.getText().toString());
+				int amount = Integer.parseInt(amountText.getText().toString());
+				MainActivity.kitchenManager.createItem(barcode, nameText.getText().toString(), price, amount, kindText.getText().toString());
+			} catch (Exception ex) {
+				priceText.setText("0.00");
+				amountText.setText("0");
+			}
+		}, this::startMainActivity).execute();
+	}
+
+	private void startMainActivity() {
+		finish();
+		startActivity(new Intent(CreateItemActivity.this, MainActivity.class));
 	}
 }

@@ -1,8 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.model;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LocalDataStore
 {
@@ -10,6 +8,8 @@ public class LocalDataStore
 
 	private String loginToken;
 	private String loginId;
+
+	private final List<Purchase> shoppingCart = new ArrayList<>();
 
 	private final Map<String, User>     users     = createMap();
 	private final Map<String, Item>     items     = createMap();
@@ -43,6 +43,11 @@ public class LocalDataStore
 	public void setLoginId(String loginId)
 	{
 		this.loginId = loginId;
+	}
+
+	public List<Purchase> getShoppingCart()
+	{
+		return this.shoppingCart;
 	}
 
 	// =============== Methods ===============

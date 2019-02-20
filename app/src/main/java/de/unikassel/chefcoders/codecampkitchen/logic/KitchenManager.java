@@ -5,14 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
-import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
-import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
-import de.unikassel.chefcoders.codecampkitchen.model.User;
+import de.unikassel.chefcoders.codecampkitchen.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class KitchenManager
 {
@@ -124,7 +121,8 @@ public class KitchenManager
 		return this.localDataStore.getUser(this.localDataStore.getLoginId());
 	}
 
-	public boolean isAdmin() {
+	public boolean isAdmin()
+	{
 		User user = this.getLoggedInUser();
 		return "admin".equals(user.getRole());
 	}
@@ -144,8 +142,12 @@ public class KitchenManager
 		}
 	}
 
-	public void createItem(String id, String name, double price, int amount, String kind) {
-		if (!this.isAdmin()) { return; }
+	public void createItem(String id, String name, double price, int amount, String kind)
+	{
+		if (!this.isAdmin())
+		{
+			return;
+		}
 
 		final Item item = new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind);
 		final String itemJson = JsonTranslator.toJson(item);
@@ -158,8 +160,10 @@ public class KitchenManager
 		this.localDataStore.addItem(createdItem);
 	}
 
-	public void buyItem(Item item, int amount) {
-		final Purchase purchase = new Purchase().setUser_id(getLoggedInUser().get_id()).setItem_id(item.get_id()).setAmount(amount);
+	public void buyItem(Item item, int amount)
+	{
+		final Purchase purchase = new Purchase().setUser_id(getLoggedInUser().get_id()).setItem_id(item.get_id())
+		                                        .setAmount(amount);
 		final String purchaseJson = JsonTranslator.toJson(purchase);
 		final String resultJson;
 
@@ -170,11 +174,69 @@ public class KitchenManager
 		this.localDataStore.addPurchase(createdPurchase);
 	}
 
-	public boolean containsItem(String id) {
+	public boolean containsItem(String id)
+	{
 		return this.localDataStore.getItem(id) != null;
 	}
 
-	public Item getItemById(String id) {
+	public Item getItemById(String id)
+	{
 		return this.localDataStore.getItem(id);
+	}
+
+	// --------------- Cart ---------------
+
+	private static Predicate<Purchase> itemFilter(String itemId)
+	{
+		return p -> itemId.equals(p.getItem_id());
+	}
+
+	public void clearCart()
+	{
+		this.localDataStore.getShoppingCart().clear();
+	}
+
+	public void submitCart()
+	{
+		for (Purchase purchase : this.localDataStore.getShoppingCart())
+		{
+			this.connection.buyItem(JsonTranslator.toJson(purchase));
+		}
+
+		this.localDataStore.getShoppingCart().clear();
+	}
+
+	public int getCartAmount(Item item)
+	{
+		final String itemId = item.get_id();
+		return (int) this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).count();
+	}
+
+	public void addToCart(Item item)
+	{
+		this.addToCart(item, 1);
+	}
+
+	public void addToCart(Item item, int amount)
+	{
+		final String itemId = item.get_id();
+		for (Purchase purchase : this.localDataStore.getShoppingCart())
+		{
+			if (itemId.equals(purchase.getItem_id()))
+			{
+				purchase.setAmount(purchase.getAmount() + amount);
+				return;
+			}
+		}
+
+		final String loginId = this.localDataStore.getLoginId();
+		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(amount);
+		this.localDataStore.getShoppingCart().add(purchase);
+	}
+
+	public void removeFromCart(Item item)
+	{
+		final String itemId = item.get_id();
+		this.localDataStore.getShoppingCart().removeIf(itemFilter(itemId));
 	}
 }
