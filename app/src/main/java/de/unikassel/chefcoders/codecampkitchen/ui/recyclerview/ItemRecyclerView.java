@@ -21,7 +21,8 @@ public class ItemRecyclerView
 	public interface RecViewEventHandler
 	{
 		void handleRecViewLoadFinished();
-		void handleRecViewScrolled(@NonNull RecyclerView recyclerView, int dx, int dy);
+		void handleRecViewScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy);
+		void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy);
 		void handleRecViewItemTouched(View view, int position);
 	}
 
@@ -44,7 +45,7 @@ public class ItemRecyclerView
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
 			{
-				eventHandler.handleRecViewScrolled(recyclerView, dx, dy);
+				handleOnScrolled(recyclerView, dx, dy);
 			}
 		});
 
@@ -87,5 +88,19 @@ public class ItemRecyclerView
 					itemAdapter.setItems(items);
 					this.swipeRefreshLayout.setRefreshing(false);
 				});
+	}
+
+	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+	{
+		if(dy > 0)
+		{
+			// scrolls down
+			this.eventHandler.handleRecViewScrolledDown(recyclerView, dx, dy);
+		}
+		else
+		{
+			// scrolls up
+			this.eventHandler.handleRecViewScrolledUp(recyclerView, dx, dy);
+		}
 	}
 }
