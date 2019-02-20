@@ -109,6 +109,7 @@ public class KitchenManager
 	public void clearUserData(Context context)
     {
         this.localDataStore.setLoginId(null);
+        this.localDataStore.setLoginToken(null);
         this.connection.setUserToken(null);
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().putString("userId", null).putString("userToken", null).apply();
