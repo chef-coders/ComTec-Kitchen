@@ -131,9 +131,15 @@ public class MainActivity extends AppCompatActivity
         TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
 
         User user = kitchenManager.getLoggedInUser();
+
         if (user != null) {
-            textViewUsername.setText(user.getName());
+            if (user.getRole().equals("admin")) {
+                textViewUsername.setText(user.getName()+" (Admin)");
+            } else {
+                textViewUsername.setText(user.getName());
+            }
         }
+
         checkAllItemsMenuItem(true);
 
         navigationView.setNavigationItemSelectedListener(
