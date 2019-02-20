@@ -229,6 +229,11 @@ public class KitchenManager
 		return this.localDataStore.getPurchases().stream().filter(userFilter(userId)).collect(Collectors.toList());
 	}
 
+	public Map<String, List<Purchase>> getMyGroupedPurchases()
+	{
+		return Collections.singletonMap("All", this.getMyPurchases());
+	}
+
 	public void refreshMyPurchases()
 	{
 		final String userId = this.localDataStore.getLoginId();
