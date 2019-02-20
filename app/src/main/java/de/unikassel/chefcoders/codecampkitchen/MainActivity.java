@@ -17,17 +17,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.BoringLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.Arrays;
 
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
+import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -42,18 +48,22 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        boolean isLoggedIn = kitchenManager.tryLogin(this);
-        if (!isLoggedIn) {
-            startLogin();
-        }
-        this.initToolbar();
-        this.initNavDrawer();
-        this.initShortCuts();
 
-        if (savedInstanceState == null) {
-            this.initFragment();
-        }
+        setContentView(R.layout.activity_main);
+
+        ResultAsyncTask.exeResultAsyncTask(() -> kitchenManager.tryLogin(this), (isLoggedIn) ->
+        {
+            if (!isLoggedIn) {
+                startLogin();
+            }
+            this.initToolbar();
+            this.initNavDrawer();
+            this.initShortCuts();
+
+            if (savedInstanceState == null) {
+                this.initFragment();
+            }
+        });
 
     }
 
@@ -119,6 +129,10 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = this.findViewById(R.id.nav_view);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
+        User user = kitchenManager.getLoggedInUser();
+        textViewUsername.setText(user.getName());
         checkAllItemsMenuItem(true);
 
         navigationView.setNavigationItemSelectedListener(
