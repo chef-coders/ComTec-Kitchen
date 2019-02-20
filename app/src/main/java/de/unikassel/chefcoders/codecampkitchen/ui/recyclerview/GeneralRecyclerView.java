@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -53,34 +54,11 @@ public class GeneralRecyclerView
 			}
 		});
 
-		this.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(recyclerView.getContext(), this.recyclerView,
-                       (v, p) -> {
-	                        SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter)this.recyclerView.getAdapter();
-							if(sectionedAdapter == null)
-							{
-								return;
-							}
-
-							int sections = this.recyclerController.getSections();
-	                        int counter = 0;
-
-	                        for(int sectionId = 0; sectionId < sections; sectionId++)
-	                        {
-	                        	counter++;
-		                        Section section = sectionedAdapter.getSectionForPosition(sectionId);
-
-		                        for(int itemId = 0; itemId < section.getContentItemsTotal(); itemId++)
-		                        {
-		                        	if(counter + itemId == p)
-			                        {
-			                        	this.recyclerController.onClick(sectionId, itemId);
-			                        	return;
-			                        }
-		                        }
-
-		                        counter += section.getContentItemsTotal();
-	                        }
-                       }));
+		this.recyclerView.addOnItemTouchListener(
+				new RecyclerTouchListener(
+						recyclerView.getContext(),
+						this.recyclerView,
+						this::handleOnTouch));
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
 		this.recyclerView.setLayoutManager(layoutManager);
@@ -96,6 +74,46 @@ public class GeneralRecyclerView
 	{
 		this.swipeRefreshLayout = swipeRefreshLayout;
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
+	}
+
+	private void handleOnTouch(final View view, int pos)
+	{
+		SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter)this.recyclerView.getAdapter();
+		if(sectionedAdapter == null)
+		{
+			return;
+		}
+
+		int numOfSections = this.recyclerController.getSections();
+		int counter = 0;
+
+		for(int sectionId = 0; sectionId < numOfSections; sectionId++)
+		{
+			counter++;
+			Section section = sectionedAdapter.getSectionForPosition(sectionId);
+
+			for(int itemId = 0; itemId < section.getContentItemsTotal(); itemId++)
+			{
+				if(counter + itemId == pos)
+				{
+					final int finalSectionId = sectionId;
+					final int finalItemId = itemId;
+
+					ResultAsyncTask.exeResultAsyncTask(()->
+									this.recyclerController.onClick(finalSectionId, finalItemId),
+							(Boolean b) -> {
+								RecyclerView.ViewHolder viewHolder = section.getItemViewHolder(view);
+								if(viewHolder != null)
+								{
+									this.recyclerController.populate(viewHolder, finalSectionId, finalItemId);
+								}
+							});
+					return;
+				}
+			}
+
+			counter += section.getContentItemsTotal();
+		}
 	}
 
 	private void handleOnSwipeRefresh()

@@ -93,9 +93,10 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 	}
 
 	@Override
-	public void onClick(int section, int itemIndex)
+	public boolean onClick(int section, int itemIndex)
 	{
 		final Item item = this.items[section][itemIndex];
 		MainActivity.kitchenManager.addToCart(item);
+		return true;
 	}
 }
