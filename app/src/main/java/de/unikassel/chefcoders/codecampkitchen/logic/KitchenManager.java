@@ -276,7 +276,7 @@ public class KitchenManager
 	public int getCartAmount(Item item)
 	{
 		final String itemId = item.get_id();
-		return (int) this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).count();
+		return this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
 	}
 
 	public void addToCart(Item item)
