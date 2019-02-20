@@ -31,7 +31,7 @@
         <TextView
             android:id="@+id/barcodeValueView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:textSize="18sp" />
 
         <Space
@@ -51,7 +51,7 @@
         <EditText
             android:id="@+id/amountText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:ems="10"
             android:inputType="number"
             android:singleLine="true"
