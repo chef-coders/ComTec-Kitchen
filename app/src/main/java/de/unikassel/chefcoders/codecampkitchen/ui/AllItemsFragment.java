@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
 
 public class AllItemsFragment extends KitchenFragment implements GeneralRecyclerView.RecViewEventHandler
@@ -21,43 +22,47 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	private FloatingActionButton floatingActionButton;
 	private ProgressBar progressBar;
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
-	    View allItemsView = inflater.inflate(R.layout.fragment_all_items, container, false);
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	{
+		View allItemsView = inflater.inflate(R.layout.fragment_all_items, container, false);
 
-	    this.progressBar = allItemsView.findViewById(R.id.progressBar);
-	    this.initFloatingActionButton(allItemsView);
-	    this.initRecyclerView(allItemsView);
+		this.progressBar = allItemsView.findViewById(R.id.progressBar);
+		this.initFloatingActionButton(allItemsView);
+		this.initRecyclerView(allItemsView);
 
-	    return allItemsView;
-    }
+		return allItemsView;
+	}
 
-    private void initFloatingActionButton(View allItemsView)
-    {
-	    floatingActionButton = allItemsView.findViewById(R.id.buyItemButton);
-	    floatingActionButton.setOnClickListener(v -> {
-		    MainActivity mainActivity = (MainActivity) getActivity();
+	private void initFloatingActionButton(View allItemsView)
+	{
+		floatingActionButton = allItemsView.findViewById(R.id.buyItemButton);
+		floatingActionButton.setOnClickListener(v ->
+		{
+			MainActivity mainActivity = (MainActivity) getActivity();
 			if (mainActivity != null) {
 				mainActivity.changeFragment(new ConfirmPurchasesFragment());
 				mainActivity.checkAllItemsMenuItem(false);
 			}
 		});
-    }
+	}
 
-    private void initRecyclerView(View allItemsView)
-    {
-    	new GeneralRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
-			    new ItemRecyclerController(),
-			    allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
-			    this);
-    }
+	private void initRecyclerView(View allItemsView)
+	{
+		new GeneralRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
+				new ItemRecyclerController(),
+				allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
+				this);
+	}
 
 	@Override
 	protected void showToolbarMenu(Menu menu)
 	{
 		menu.findItem(R.id.action_scan_code).setVisible(true);
-		menu.findItem(R.id.action_create).setVisible(true);
+		menu.findItem(R.id.action_create).setVisible(false);
+		ResultAsyncTask.exeResultAsyncTask(() -> MainActivity.kitchenManager.isAdmin(), (value) ->
+				menu.findItem(R.id.action_create).setVisible(value)
+		);
 	}
 
 	// --- --- --- Handle user interactions --- --- ---
