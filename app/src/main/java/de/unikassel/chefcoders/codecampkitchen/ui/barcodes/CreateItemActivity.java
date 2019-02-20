@@ -1,19 +1,17 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.gms.vision.barcode.Barcode;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 
 public class CreateItemActivity extends AppCompatActivity
 {
-	private Barcode barcode;
+	private String barcode;
 
 	private EditText nameText;
 	private EditText priceText;
@@ -26,7 +24,7 @@ public class CreateItemActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_item);
 
-		barcode = (Barcode) getIntent().getSerializableExtra("barcode");
+		barcode = (String) getIntent().getExtras().get("barcode");
 
 		this.nameText = findViewById(R.id.nameText);
 		this.priceText = findViewById(R.id.priceText);
@@ -38,11 +36,11 @@ public class CreateItemActivity extends AppCompatActivity
 		try {
 			double price = Double.parseDouble(priceText.getText().toString());
 			int amount = Integer.parseInt(amountText.getText().toString());
-			MainActivity.kitchenManager.createItem(barcode.rawValue, nameText.getText().toString(), price, amount, kindText.getText().toString());
+			MainActivity.kitchenManager.createItem(barcode, nameText.getText().toString(), price, amount, kindText.getText().toString());
+			startActivity(new Intent(CreateItemActivity.this, MainActivity.class));
 		} catch (Exception ex) {
 			priceText.setText("0.00");
 			amountText.setText("0");
-			Toast.makeText(getApplicationContext(), "Price or amount is not a valid number", Toast.LENGTH_SHORT).show();
 		}
 	}
 }
