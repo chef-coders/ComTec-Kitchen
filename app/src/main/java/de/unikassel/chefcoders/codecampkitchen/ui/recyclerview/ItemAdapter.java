@@ -55,5 +55,7 @@ public class ItemAdapter extends SectionedRecyclerViewAdapter
 			String kind = sectionedItems.get(0).getKind();
 			this.addSection(new ItemSection(sectionedItems, kind));
 		}
+
+		this.notifyDataSetChanged();
 	}
 }
