@@ -65,6 +65,14 @@ public class KitchenManager
 		this.saveUserInfo(context);
 	}
 
+	public void clearUserData(Context context)
+	{
+		this.setUserInfo(null, null);
+		this.saveUserInfo(context);
+	}
+
+	// --------------- User Info ---------------
+
 	private void setUserInfo(String userToken, String userId)
 	{
 		this.localDataStore.setLoginToken(userToken);
