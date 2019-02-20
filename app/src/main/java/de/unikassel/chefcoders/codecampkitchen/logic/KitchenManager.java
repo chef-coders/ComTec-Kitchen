@@ -184,14 +184,11 @@ public class KitchenManager
 
 	public void buyItem(Item item, int amount)
 	{
-		final Purchase purchase = new Purchase().setUser_id(getLoggedInUser().get_id()).setItem_id(item.get_id())
+		final Purchase purchase = new Purchase().setUser_id(this.getLoggedInUser().get_id()).setItem_id(item.get_id())
 		                                        .setAmount(amount);
-		final String purchaseJson = JsonTranslator.toJson(purchase);
-		final String resultJson;
 
-		resultJson = this.connection.buyItem(purchaseJson);
-
-		final Purchase createdPurchase = JsonTranslator.toPurchase(resultJson);
+		final Purchase createdPurchase = JsonTranslator
+			                                 .toPurchase(this.connection.buyItem(JsonTranslator.toJson(purchase)));
 
 		this.localDataStore.addPurchase(createdPurchase);
 	}
@@ -227,6 +224,11 @@ public class KitchenManager
 	{
 		final String userId = this.localDataStore.getLoginId();
 		return this.localDataStore.getPurchases().stream().filter(userFilter(userId)).collect(Collectors.toList());
+	}
+
+	public Map<String, List<Purchase>> getMyGroupedPurchases()
+	{
+		return Collections.singletonMap("All", this.getMyPurchases());
 	}
 
 	public void refreshMyPurchases()
