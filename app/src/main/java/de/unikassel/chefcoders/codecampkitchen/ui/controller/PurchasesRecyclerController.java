@@ -103,4 +103,11 @@ public class PurchasesRecyclerController implements RecyclerController<RowViewHo
 	{
 		return false;
 	}
+
+	@Override
+	public boolean onSwiped(int section, int item)
+	{
+		// TODO - Handle swipe
+		return true;
+	}
 }

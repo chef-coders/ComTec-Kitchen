@@ -69,4 +69,11 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 		MainActivity.kitchenManager.addToCart(item);
 		return true;
 	}
+
+	@Override
+	public boolean onSwiped(int section, int item)
+	{
+		// TODO - Handle swipe
+		return true;
+	}
 }
