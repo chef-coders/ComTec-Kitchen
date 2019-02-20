@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-public enum HttpMethod
+public class HttpConnectionException extends RuntimeException
 {
-	GET, POST, PUT, DELETE
 }

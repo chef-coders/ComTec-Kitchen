@@ -15,14 +15,20 @@
         <activity android:name=".ui.barcodes.PurchaseItemActivity" />
         <activity android:name=".ui.barcodes.CreateItemActivity" />
         <activity android:name=".ui.barcodes.BarcodeScannerActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.LoginActivity" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation" />
     </application>
 
 </manifest>

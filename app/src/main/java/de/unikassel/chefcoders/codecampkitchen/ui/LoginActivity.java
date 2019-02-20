@@ -1,7 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.Switch;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -41,26 +41,12 @@ public class LoginActivity extends AppCompatActivity
         progressBar.setVisibility(View.VISIBLE);
         disableButton();
 
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()
-        {
-            @Override
-            protected Void doInBackground(Void... voids)
-            {
-                String name = editTextName.getText().toString();
-                String email = editTextEmail.getText().toString();
-                MainActivity.kitchenManager
-                        .register(LoginActivity.this, name, email, switchAdmin.isChecked());
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid)
-            {
-                super.onPostExecute(aVoid);
-                startMainActivity();
-            }
-        };
-        task.execute();
+        new SimpleAsyncTask(() -> {
+            String name = editTextName.getText().toString();
+            String email = editTextEmail.getText().toString();
+            MainActivity.kitchenManager
+                    .register(LoginActivity.this, name, email, switchAdmin.isChecked());
+        }, this::startMainActivity).execute();
     }
 
 

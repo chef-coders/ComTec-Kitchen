@@ -2,6 +2,10 @@ package de.unikassel.chefcoders.codecampkitchen;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -15,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.Arrays;
 
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         }
         this.initToolbar();
         this.initNavDrawer();
+        this.initShortCuts();
 
         if (savedInstanceState == null) {
             this.initFragment();
@@ -52,12 +59,35 @@ public class MainActivity extends AppCompatActivity
 
     private void startLogin()
     {
+        //TODO Remove in production comment
+        //finish();
         startActivity(new Intent(this, LoginActivity.class));
     }
 
     private void initFragment()
     {
         changeFragment(new AllItemsFragment());
+    }
+
+    private void initShortCuts()
+    {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+
+            ShortcutManager shortcutManager = getSystemService(ShortcutManager.class);
+
+            Intent intent = new Intent(this, BarcodeScannerActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            ShortcutInfo shortcut = new ShortcutInfo.Builder(this, "id1")
+                    .setShortLabel("Barcode Scanner")
+                    .setLongLabel("Barcode Scanner")
+                    .setIcon(Icon.createWithResource(this, android.R.drawable.ic_menu_camera))
+                    .setIntent(intent)
+                    .build();
+
+            shortcutManager.setDynamicShortcuts(Arrays.asList(shortcut));
+
+        }
+
     }
 
     @Override
@@ -92,27 +122,29 @@ public class MainActivity extends AppCompatActivity
         checkAllItemsMenuItem(true);
 
         navigationView.setNavigationItemSelectedListener(
-		        menuItem -> {
-		            switch (menuItem.getItemId()) {
-		                case R.id.nav_all_items:
-		                    changeFragment(new AllItemsFragment());
-		                    menuItem.setChecked(true);
-		                    drawerLayout.closeDrawers();
+                menuItem ->
+                {
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_all_items:
+                            changeFragment(new AllItemsFragment());
+                            menuItem.setChecked(true);
+                            drawerLayout.closeDrawers();
 
-		                    break;
-		                case R.id.nav_my_purcheses:
-		                    changeFragment(new MyPurchasesFragment());
-		                    menuItem.setChecked(true);
-		                    drawerLayout.closeDrawers();
+                            break;
+                        case R.id.nav_my_purcheses:
+                            changeFragment(new MyPurchasesFragment());
+                            menuItem.setChecked(true);
+                            drawerLayout.closeDrawers();
 
-		                    break;
-		                case R.id.nav_clear_user_data:
-		                    kitchenManager.clearUserData(MainActivity.this);
-		                    break;
-		            }
+                            break;
+                        case R.id.nav_clear_user_data:
+                            kitchenManager.clearUserData(MainActivity.this);
+                            startLogin();
+                            break;
+                    }
 
-		            return true;
-		        }
+                    return true;
+                }
         );
     }
 
