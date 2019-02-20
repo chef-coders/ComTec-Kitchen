@@ -10,15 +10,16 @@ import de.unikassel.chefcoders.codecampkitchen.model.Item;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder
 {
-	private View itemView;
-	private TextView titleTextView;
-	private TextView prizeTextView;
-	private TextView amountTextView;
-	private TextView numSelectedTextView;
+	public final View     itemView;
+	public final TextView titleTextView;
+	public final TextView prizeTextView;
+	public final TextView amountTextView;
+	public final TextView numSelectedTextView;
 
 	public ItemViewHolder(View itemView)
 	{
 		super(itemView);
+
 		this.itemView = itemView;
 		this.titleTextView = itemView.findViewById(R.id.item_title);
 		this.prizeTextView = itemView.findViewById(R.id.item_prize);
