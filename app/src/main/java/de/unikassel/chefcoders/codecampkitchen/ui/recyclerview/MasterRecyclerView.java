@@ -10,13 +10,15 @@ import java.util.List;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 
-public class ItemRecyclerView
+public class MasterRecyclerView
 {
 	private RecyclerView recyclerView;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private RecViewEventHandler eventHandler;
+	private RecyclerController recyclerController;
 
 	public interface RecViewEventHandler
 	{
@@ -26,9 +28,11 @@ public class ItemRecyclerView
 		void handleRecViewItemTouched(View view, int position);
 	}
 
-	public ItemRecyclerView(RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
+	public MasterRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
+	                          SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
+		this.recyclerController = recyclerController;
 
 		this.initRecyclerView(recyclerView);
 		this.initSwipeRefreshLayout(swipeRefreshLayout);
