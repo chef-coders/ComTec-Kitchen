@@ -25,32 +25,26 @@ import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemRecyclerView;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RecyclerTouchListener;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class AllItemsFragment extends KitchenFragment
+public class AllItemsFragment extends KitchenFragment implements ItemRecyclerView.RecViewEventHandler
 {
 	private FloatingActionButton floatingActionButton;
-	private SwipeRefreshLayout swipeRefreshLayout;
-	private RecyclerView recyclerView;
+	private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
 	    View allItemsView = inflater.inflate(R.layout.fragment_all_items, container, false);
 
-	    this.initSwipeRefreshLayout(allItemsView);
+	    this.progressBar = allItemsView.findViewById(R.id.progressBar);
 	    this.initFloatingActionButton(allItemsView);
 	    this.initRecyclerView(allItemsView);
 
 	    return allItemsView;
-    }
-
-    private void initSwipeRefreshLayout(View allItemsView)
-    {
-    	this.swipeRefreshLayout = allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout);
-    	this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
     }
 
     private void initFloatingActionButton(View allItemsView)
@@ -67,39 +61,9 @@ public class AllItemsFragment extends KitchenFragment
 
     private void initRecyclerView(View allItemsView)
     {
-	    this.recyclerView = allItemsView.findViewById(R.id.allItemsRecView);
-        ProgressBar progressBar = allItemsView.findViewById(R.id.progressBar);
-
-	    this.recyclerView.setHasFixedSize(true);
-
-	    this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
-	    {
-		    @Override
-		    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
-		    {
-			    handleOnScrolled(recyclerView, dx, dy);
-		    }
-	    });
-
-	    this.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
-	    		this.getContext(), this.recyclerView, this::handleOnItemTouched));
-
-	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-	    this.recyclerView.setLayoutManager(layoutManager);
-
-	    ItemAdapter itemAdapter = new ItemAdapter();
-
-	    ResultAsyncTask.<List<Item>>exeResultAsyncTask(
-			    ()                 -> {
-				    MainActivity.kitchenManager.refreshItems();
-				    return MainActivity.kitchenManager.getItems();
-			    }, (items) ->
-                {
-                    progressBar.setVisibility(View.GONE);
-                    itemAdapter.setItems(items);
-                });
-
-	    this.recyclerView.setAdapter(itemAdapter);
+    	new ItemRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
+			    allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
+			    this);
     }
 
 	@Override
@@ -109,22 +73,14 @@ public class AllItemsFragment extends KitchenFragment
 	}
 
 	// --- --- --- Handle user interactions --- --- ---
-	private void handleOnSwipeRefresh()
+	@Override
+	public void handleRecViewLoadFinished()
 	{
-		ResultAsyncTask.<List<Item>>exeResultAsyncTask(
-				()                 -> {
-					MainActivity.kitchenManager.refreshItems();
-					return MainActivity.kitchenManager.getItems();
-				},
-				(List<Item> items) -> {
-					ItemAdapter itemAdapter = (ItemAdapter)this.recyclerView.getAdapter();
-					itemAdapter.setItems(items);
-				});
-
-		swipeRefreshLayout.setRefreshing(false);
+		this.progressBar.setVisibility(View.GONE);
 	}
 
-	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+	@Override
+	public void handleRecViewScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
 		if(dy > 0)
 		{
@@ -138,7 +94,8 @@ public class AllItemsFragment extends KitchenFragment
 		}
 	}
 
-	private void handleOnItemTouched(View view, int position)
+	@Override
+	public void handleRecViewItemTouched(View view, int position)
 	{
 		// TODO - Handle touch
 	}
