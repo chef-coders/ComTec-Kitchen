@@ -21,6 +21,7 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
@@ -29,6 +30,7 @@ public class AllItemsFragment extends KitchenFragment
 {
 	private FloatingActionButton floatingActionButton;
 	private SwipeRefreshLayout swipeRefreshLayout;
+	private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -62,68 +64,22 @@ public class AllItemsFragment extends KitchenFragment
 
     private void initRecyclerView(View allItemsView)
     {
-	    RecyclerView recyclerView = allItemsView.findViewById(R.id.allItemsRecView);
+	    this.recyclerView = allItemsView.findViewById(R.id.allItemsRecView);
 
-	    recyclerView.setHasFixedSize(true);
+	    this.recyclerView.setHasFixedSize(true);
 
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-	    recyclerView.setLayoutManager(layoutManager);
-
-	    Item fanta = new Item()
-			    .setName("Fanta")
-			    .setKind("Softdrink")
-			    .setPrice(3.4)
-			    .setAmount(-1);
-	    Item cola = new Item()
-			    .setName("Cola")
-			    .setKind("Softdrink")
-			    .setPrice(5.0)
-			    .setAmount(5);
-	    Item water = new Item()
-			    .setName("Wasser")
-			    .setKind("Softdrink")
-			    .setPrice(1.435345);
-	    Item sprite = new Item()
-			    .setName("Sprite")
-			    .setKind("Softdrink")
-			    .setPrice(Double.NaN)
-			    .setAmount(3);
-
-	    Item latte = new Item()
-			    .setName("Latte")
-			    .setKind("Kaffee")
-			    .setPrice(Double.NEGATIVE_INFINITY)
-			    .setAmount(10);
-	    Item kaffee = new Item()
-			    .setName("Kaffee")
-			    .setKind("Kaffee")
-			    .setPrice(0.0000)
-			    .setAmount(13);
-
-	    Item beer = new Item()
-			    .setName("Beer")
-			    .setKind("Alcoholic")
-			    .setPrice(39)
-			    .setAmount(3);
-	    Item cognac = new Item()
-			    .setName("Cognac")
-			    .setKind("Alcoholic")
-			    .setPrice(1)
-			    .setAmount(-1);
-
-	    List<Item> items = new ArrayList<>();
-	    items.add(fanta);
-	    items.add(cola);
-	    items.add(water);
-	    items.add(sprite);
-	    items.add(latte);
-	    items.add(kaffee);
-	    items.add(beer);
-	    items.add(cognac);
+	    this.recyclerView.setLayoutManager(layoutManager);
 
 	    ItemAdapter itemAdapter = new ItemAdapter();
-	    itemAdapter.setItems(items);
-	    recyclerView.setAdapter(itemAdapter);
+
+	    ResultAsyncTask.<List<Item>>exeResultAsyncTask(
+			    ()                 -> {
+				    MainActivity.kitchenManager.refreshItems();
+				    return MainActivity.kitchenManager.getItems();
+			    }, itemAdapter::setItems);
+
+	    this.recyclerView.setAdapter(itemAdapter);
     }
 
 	@Override
@@ -135,7 +91,16 @@ public class AllItemsFragment extends KitchenFragment
 	// --- --- --- Handle user interactions --- --- ---
 	private void handleOnSwipeRefresh()
 	{
-		// TODO - Handle swipe
+		ResultAsyncTask.<List<Item>>exeResultAsyncTask(
+				()                 -> {
+					MainActivity.kitchenManager.refreshItems();
+					return MainActivity.kitchenManager.getItems();
+				},
+				(List<Item> items) -> {
+					ItemAdapter itemAdapter = (ItemAdapter)this.recyclerView.getAdapter();
+					itemAdapter.setItems(items);
+				});
+
 		swipeRefreshLayout.setRefreshing(false);
 	}
 }
