@@ -5,7 +5,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.*;
 import org.junit.*;
 
 
-public class TestApiAccess
+public class TestApiAccessFromKitchenConnection
 {
 	private String ITEM_ID = "12345656785";
 	private String ADMIN_ID;
