@@ -24,7 +24,7 @@
             android:id="@+id/barcodeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Barcode"
+            android:text="@string/barcode"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/amountTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Amount"
+            android:text="@string/amount"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
             android:ems="10"
             android:inputType="number"
             android:singleLine="true"
-            android:text="1"
+            android:text="@string/one"
             android:textAlignment="center" />
 
         <LinearLayout
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onAdd"
-                android:text="+" />
+                android:text="@string/add" />
 
             <Button
                 android:id="@+id/minusButton"
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onSub"
-                android:text="-" />
+                android:text="@string/sub" />
 
         </LinearLayout>
 
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onPurchase"
-            android:text="Purchase" />
+            android:text="@string/purchase" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
