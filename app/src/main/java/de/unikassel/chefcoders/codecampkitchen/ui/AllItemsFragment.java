@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class AllItemsFragment extends KitchenFragment
     private void initRecyclerView(View allItemsView)
     {
 	    this.recyclerView = allItemsView.findViewById(R.id.allItemsRecView);
+        ProgressBar progressBar = allItemsView.findViewById(R.id.progressBar);
 
 	    this.recyclerView.setHasFixedSize(true);
 
@@ -91,7 +93,11 @@ public class AllItemsFragment extends KitchenFragment
 			    ()                 -> {
 				    MainActivity.kitchenManager.refreshItems();
 				    return MainActivity.kitchenManager.getItems();
-			    }, itemAdapter::setItems);
+			    }, (items) ->
+                {
+                    progressBar.setVisibility(View.GONE);
+                    itemAdapter.setItems(items);
+                });
 
 	    this.recyclerView.setAdapter(itemAdapter);
     }

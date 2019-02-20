@@ -33,11 +33,11 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 		boolean itemExists = MainActivity.kitchenManager.containsItem(barcode.rawValue);
 		if (isAdmin && !itemExists) {
 			Intent intent = new Intent(BarcodeScannerActivity.this, CreateItemActivity.class);
-			intent.putExtra("barcode", barcode);
+			intent.putExtra("barcode", barcode.rawValue);
 			startActivity(intent);
 		} else if (itemExists) {
 			Intent intent = new Intent(BarcodeScannerActivity.this, PurchaseItemActivity.class);
-			intent.putExtra("barcode", barcode);
+			intent.putExtra("barcode", barcode.rawValue);
 			startActivity(intent);
 		}
 	}

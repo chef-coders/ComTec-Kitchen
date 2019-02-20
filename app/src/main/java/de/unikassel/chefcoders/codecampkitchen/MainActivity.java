@@ -55,13 +55,14 @@ public class MainActivity extends AppCompatActivity
         {
             if (!isLoggedIn) {
                 startLogin();
-            }
-            this.initToolbar();
-            this.initNavDrawer();
-            this.initShortCuts();
+            }else{
+                this.initToolbar();
+                this.initNavDrawer();
+                this.initShortCuts();
 
-            if (savedInstanceState == null) {
-                this.initFragment();
+                if (savedInstanceState == null) {
+                    this.initFragment();
+                }
             }
         });
 
