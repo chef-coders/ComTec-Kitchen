@@ -65,6 +65,7 @@ public class TestOkHttpConnection
 		String itemJson = connection.post(KitchenConnection.BASE_URL + "/items", JsonTranslator.toJson(item), headers());
 		item = JsonTranslator.toItem(itemJson);
 
+		System.out.println(itemJson);
 		itemJson = connection.delete(KitchenConnection.BASE_URL + "/items/" + item.get_id(), headers());
 
 		System.out.println(itemJson);
