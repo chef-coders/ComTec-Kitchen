@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,6 +25,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RecyclerTouchListener;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class AllItemsFragment extends KitchenFragment
@@ -77,6 +79,9 @@ public class AllItemsFragment extends KitchenFragment
 		    }
 	    });
 
+	    this.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
+	    		this.getContext(), this.recyclerView, this::handleOnItemTouched));
+
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 	    this.recyclerView.setLayoutManager(layoutManager);
 
@@ -125,5 +130,10 @@ public class AllItemsFragment extends KitchenFragment
 			// scrolls up
 			floatingActionButton.show();
 		}
+	}
+
+	private void handleOnItemTouched(View view, int position)
+	{
+		// TODO - Handle touch
 	}
 }
