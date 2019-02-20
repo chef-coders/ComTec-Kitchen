@@ -4,12 +4,12 @@ import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemViewHolder;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
 import java.util.List;
 import java.util.Map;
 
-public class ItemRecyclerController implements RecyclerController<ItemViewHolder>
+public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 {
 	private Item[][] items;
 	private String[] headers;
@@ -52,13 +52,13 @@ public class ItemRecyclerController implements RecyclerController<ItemViewHolder
 	}
 
 	@Override
-	public ItemViewHolder create(View view)
+	public RowViewHolder create(View view)
 	{
-		return new ItemViewHolder(view);
+		return new RowViewHolder(view);
 	}
 
 	@Override
-	public void populate(ItemViewHolder v, int section, int itemIndex)
+	public void populate(RowViewHolder v, int section, int itemIndex)
 	{
 		final Item item = this.items[section][itemIndex];
 

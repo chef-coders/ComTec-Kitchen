@@ -14,10 +14,9 @@ import android.widget.ProgressBar;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
-import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.MasterRecyclerView;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
 
-public class AllItemsFragment extends KitchenFragment implements MasterRecyclerView.RecViewEventHandler
+public class AllItemsFragment extends KitchenFragment implements GeneralRecyclerView.RecViewEventHandler
 {
 	private FloatingActionButton floatingActionButton;
 	private ProgressBar progressBar;
@@ -48,7 +47,7 @@ public class AllItemsFragment extends KitchenFragment implements MasterRecyclerV
 
     private void initRecyclerView(View allItemsView)
     {
-    	new MasterRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
+    	new GeneralRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
 			    new ItemRecyclerController(),
 			    allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
 			    this);

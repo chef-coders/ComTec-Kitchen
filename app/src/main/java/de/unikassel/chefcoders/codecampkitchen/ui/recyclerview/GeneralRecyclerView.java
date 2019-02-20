@@ -9,7 +9,7 @@ import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class MasterRecyclerView
+public class GeneralRecyclerView
 {
 	private RecyclerView        recyclerView;
 	private SwipeRefreshLayout  swipeRefreshLayout;
@@ -27,8 +27,8 @@ public class MasterRecyclerView
 		void handleRecViewItemTouched(View view, int position);
 	}
 
-	public MasterRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
-		SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
+	public GeneralRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
+	                           SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
 		this.recyclerController = recyclerController;
@@ -105,7 +105,7 @@ public class MasterRecyclerView
 		final int sections = this.recyclerController.getSections();
 		for (int section = 0; section < sections; section++)
 		{
-			adapter.addSection(new ItemSection(this.recyclerController, section));
+			adapter.addSection(new GeneralSection(this.recyclerController, section));
 		}
 
 		adapter.notifyDataSetChanged();

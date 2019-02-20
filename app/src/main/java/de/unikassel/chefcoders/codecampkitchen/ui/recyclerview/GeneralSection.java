@@ -7,12 +7,12 @@ import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
-public class ItemSection extends StatelessSection
+public class GeneralSection extends StatelessSection
 {
 	private final RecyclerController recyclerController;
 	private final int                section;
 
-	public ItemSection(RecyclerController recyclerController, int section)
+	public GeneralSection(RecyclerController recyclerController, int section)
 	{
 		super(SectionParameters.builder().itemResourceId(R.layout.item_view).headerResourceId(R.layout.header_view)
 		                       .build());

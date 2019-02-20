@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import de.unikassel.chefcoders.codecampkitchen.R;
 
-public class ItemViewHolder extends RecyclerView.ViewHolder
+public class RowViewHolder extends RecyclerView.ViewHolder
 {
 	public final View     itemView;
 	public final TextView titleTextView;
@@ -14,7 +14,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder
 	public final TextView amountTextView;
 	public final TextView numSelectedTextView;
 
-	public ItemViewHolder(View itemView)
+	public RowViewHolder(View itemView)
 	{
 		super(itemView);
 
