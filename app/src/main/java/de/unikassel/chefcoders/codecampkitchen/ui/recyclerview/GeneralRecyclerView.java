@@ -103,7 +103,7 @@ public class GeneralRecyclerView
 									this.recyclerController.onClick(finalSectionId, finalItemId),
 							(Boolean b) -> {
 								RecyclerView.ViewHolder viewHolder = section.getItemViewHolder(view);
-								if(viewHolder != null)
+								if(b && viewHolder != null)
 								{
 									this.recyclerController.populate(viewHolder, finalSectionId, finalItemId);
 								}
