@@ -15,7 +15,7 @@ public class KitchenManager
 {
 	// =============== Fields ===============
 
-	private final LocalDataStore    localDataStore;
+	private final LocalDataStore localDataStore;
 	private final KitchenConnection connection;
 
 	// =============== Constructor ===============
@@ -58,8 +58,7 @@ public class KitchenManager
 		if (admin)
 		{
 			resultJson = this.connection.createAdminUser(userJson);
-		}
-		else
+		} else
 		{
 			resultJson = this.connection.createRegularUser(userJson);
 		}
@@ -111,7 +110,7 @@ public class KitchenManager
 	{
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		preferences.edit().putString("userId", this.localDataStore.getLoginId())
-		           .putString("userToken", this.localDataStore.getLoginToken()).apply();
+			.putString("userToken", this.localDataStore.getLoginToken()).apply();
 	}
 
 	// --------------- Users ---------------

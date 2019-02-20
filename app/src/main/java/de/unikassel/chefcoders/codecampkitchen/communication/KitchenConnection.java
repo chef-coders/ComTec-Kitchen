@@ -80,9 +80,9 @@ public class KitchenConnection
 		return this.connection.get(BASE_URL + "/purchases", headers());
 	}
 
-	public String getPurchasesForUser(String userId)
+	public String getPurchasesForUser()
 	{
-		return this.connection.get(BASE_URL + "/purchases/" + userId, headers());
+		return this.connection.get(BASE_URL + "/purchases/u", headers());
 	}
 
 	public String buyItem(String buyingDataJson)

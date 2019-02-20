@@ -1,12 +1,17 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
 import okhttp3.*;
+import okio.Buffer;
 
 import java.io.IOException;
 import java.util.Map;
 
 public class OkHttpConnection implements HttpConnection
 {
+	private String CURRENT_REQUEST_BODY = "NONE";
+	private String CURRENT_REQUEST_TYPE = "NONE";
+	private String CURRENT_REQUEST_URL = "NONE";
+
 	private OkHttpClient client;
 
 	public OkHttpConnection()
@@ -29,13 +34,38 @@ public class OkHttpConnection implements HttpConnection
 		}
 		catch (IOException e)
 		{
-			throw new HttpConnectionException();
+			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::get");
 		}
 	}
 
 	private Call createCallFromRequest(Request request)
 	{
+		CURRENT_REQUEST_TYPE = request.method();
+		CURRENT_REQUEST_URL = request.url().toString();
+		CURRENT_REQUEST_BODY = readBodyFromRequest(request);
+
 		return client.newCall(request);
+	}
+
+	private String readBodyFromRequest(Request request)
+	{
+		try
+		{
+			Request copy = request.newBuilder().build();
+			Buffer buffer = new Buffer();
+
+			RequestBody body = copy.body();
+			if (body != null)
+			{
+				body.writeTo(buffer);
+			}
+
+			return buffer.readUtf8();
+		}
+		catch (IOException e)
+		{
+			throw new HttpConnectionException("Error reading response Body");
+		}
 	}
 
 	private Request createRequest(String url, Map<String, String> headers)
@@ -59,9 +89,22 @@ public class OkHttpConnection implements HttpConnection
 		}
 		catch (IOException e)
 		{
-			throw new HttpConnectionException();
+			throw new HttpConnectionException("Error: invalid ULR or Timeout");
 		}
+
+		if (!isValid(response.code()))
+		{
+			throw new HttpConnectionException("Error: Responsecode was " + response.code() + ", trying to execute Request" +
+					" of Type " + CURRENT_REQUEST_TYPE + "\non URL " + CURRENT_REQUEST_URL + "\nwith Body " + CURRENT_REQUEST_BODY);
+		}
+
 		return response;
+	}
+
+	private boolean isValid(int code)
+	{
+		int firstDigit = code / 100;
+		return firstDigit == 2;
 	}
 
 	@Override
@@ -79,7 +122,7 @@ public class OkHttpConnection implements HttpConnection
 		}
 		catch (IOException e)
 		{
-			throw new HttpConnectionException();
+			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::post");
 		}
 	}
 
@@ -110,7 +153,7 @@ public class OkHttpConnection implements HttpConnection
 		}
 		catch (IOException e)
 		{
-			throw new HttpConnectionException();
+			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::put");
 		}
 	}
 
@@ -141,7 +184,7 @@ public class OkHttpConnection implements HttpConnection
 		}
 		catch (IOException e)
 		{
-			throw new HttpConnectionException();
+			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::delete");
 		}
 	}
 
