@@ -28,6 +28,7 @@ import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -110,11 +111,6 @@ public class MainActivity extends AppCompatActivity
     {
         this.toolbar = findViewById(R.id.main_toolbar);
 
-
-        ResultAsyncTask.exeResultAsyncTask(() -> MainActivity.kitchenManager.isAdmin(), (value) ->
-                toolbar.getMenu().findItem(R.id.action_create).setVisible(value)
-        );
-        
         toolbar.setTitleTextColor(
                 getColor(android.R.color.white)
         );
@@ -125,6 +121,17 @@ public class MainActivity extends AppCompatActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         }
+
+
+
+        Menu menu = toolbar.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            menu.getItem(i)
+                    .setVisible(false);
+        }
+        ResultAsyncTask.exeResultAsyncTask(() -> MainActivity.kitchenManager.isAdmin(), (value) ->
+                menu.findItem(R.id.action_create).setVisible(value)
+        );
 
     }
 
@@ -233,6 +240,10 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.action_create:
                 startActivity(new Intent(MainActivity.this, CreateItemActivity.class));
+                return true;
+            case R.id.action_clear_all:
+                new SimpleAsyncTask(()->kitchenManager.clearCart(),()->{})
+                        .execute();
                 return true;
         }
 

@@ -11,4 +11,11 @@
         android:icon="@drawable/ic_linked_camera_white"
         android:title="@string/barcode_toolbar_item_name"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_clear_all"
+        android:icon="@drawable/ic_clear_all_white_24dp"
+        android:title="@string/clear_all"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
 </menu>
