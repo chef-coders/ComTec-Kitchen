@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
@@ -32,7 +33,7 @@ public class KitchenManager
 
 	public static KitchenManager create()
 	{
-		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new SyncHttpConnection()));
+		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new OkHttpConnection()));
 	}
 
 	// =============== Methods ===============
@@ -41,12 +42,26 @@ public class KitchenManager
 
 	public boolean tryLogin(Context context)
 	{
-		if (!this.loadUserInfo(context))
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+		final String userToken = preferences.getString("userToken", null);
+		if (userToken == null)
 		{
 			return false;
 		}
 
-		this.connection.setUserToken(this.localDataStore.getLoginToken());
+		final String userId = preferences.getString("userId", null);
+		if (userId == null)
+		{
+			return false;
+		}
+
+		this.connection.setUserToken(userToken);
+
+		// only possible after setting token!
+		final User user = JsonTranslator.toUser(this.connection.getUser(userId));
+		this.localDataStore.setLoginId(user.get_id());
+
 		return true;
 	}
 
@@ -66,44 +81,11 @@ public class KitchenManager
 		}
 
 		final User createdUser = JsonTranslator.toUser(resultJson);
+		this.localDataStore.setLoginId(createdUser.get_id());
+		this.connection.setUserToken(createdUser.getToken());
 
-		final String userToken = createdUser.getToken();
-		final String userId = createdUser.get_id();
-
-		this.localDataStore.setLoginToken(userToken);
-		this.localDataStore.setLoginId(userId);
-
-		this.saveUserInfo(context);
-
-		this.connection.setUserToken(userToken);
-	}
-
-	private boolean loadUserInfo(Context context)
-	{
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-		final String userToken = preferences.getString("userToken", null);
-		if (userToken == null)
-		{
-			return false;
-		}
-
-		final String userId = preferences.getString("userId", null);
-		if (userId == null)
-		{
-			return false;
-		}
-
-		this.localDataStore.setLoginToken(userToken);
-		this.localDataStore.setLoginId(userId);
-		return true;
-	}
-
-	private void saveUserInfo(Context context)
-	{
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().putString("userId", this.localDataStore.getLoginId())
-		           .putString("userToken", this.localDataStore.getLoginToken()).apply();
+		preferences.edit().putString("userId", user.get_id()).putString("userToken", createdUser.getToken()).apply();
 	}
 
 	public void clearUserData(Context context)

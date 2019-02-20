@@ -32,7 +32,7 @@ public class TestKitchenConnection
 	{
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get("", headers());
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(KitchenConnection.BASE_URL, headers());
 		}});
 
 		this.kitchenConnection.getServerInfo();
@@ -44,7 +44,7 @@ public class TestKitchenConnection
 	public void testGetUser()
 	{
 		final String userId = "abc";
-		final String url = "/users/" + userId;
+		final String url = KitchenConnection.BASE_URL + "/users/" + userId;
 		this.context.checking(new Expectations()
 		{{
 			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
@@ -58,7 +58,7 @@ public class TestKitchenConnection
 	@Test
 	public void testGetAllUsers()
 	{
-		final String url = "/users";
+		final String url = KitchenConnection.BASE_URL + "/users";
 		this.context.checking(new Expectations()
 		{{
 			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
@@ -72,7 +72,7 @@ public class TestKitchenConnection
 	@Test
 	public void testCreateRegularUser()
 	{
-		final String url = "/users";
+		final String url = KitchenConnection.BASE_URL + "/users";
 		final String userJson = "json";
 		final Map<String, String> headers = headers();
 		headers.put("key", KitchenConnection.USER_KEY);
@@ -90,7 +90,7 @@ public class TestKitchenConnection
 	@Test
 	public void testCreateAdminUser()
 	{
-		final String url = "/users";
+		final String url = KitchenConnection.BASE_URL + "/users";
 		final String userJson = "json";
 		final Map<String, String> headers = headers();
 		headers.put("key", KitchenConnection.ADMIN_KEY);
@@ -108,7 +108,7 @@ public class TestKitchenConnection
 	@Test
 	public void deleteUser()
 	{
-		final String url = "/users";
+		final String url = KitchenConnection.BASE_URL + "/users";
 		final String userJson = "json";
 
 		this.context.checking(new Expectations()
@@ -124,7 +124,7 @@ public class TestKitchenConnection
 	@Test
 	public void updateUser()
 	{
-		final String url = "/users";
+		final String url = KitchenConnection.BASE_URL + "/users";
 		final String userJson = "json";
 		final String userId = "userId";
 		final Map<String, String> headers = headers();
@@ -143,7 +143,7 @@ public class TestKitchenConnection
 	@Test
 	public void getPurchase()
 	{
-		final String url = "/purchases";
+		final String url = KitchenConnection.BASE_URL + "/purchases";
 		final String purchaseId = "purchase";
 
 		this.context.checking(new Expectations()
@@ -159,7 +159,7 @@ public class TestKitchenConnection
 	@Test
 	public void testGetAllPurchases()
 	{
-		final String url = "/purchases";
+		final String url = KitchenConnection.BASE_URL + "/purchases";
 
 		this.context.checking(new Expectations()
 		{{
@@ -174,7 +174,7 @@ public class TestKitchenConnection
 	@Test
 	public void testGetPurchasesForUser()
 	{
-		final String url = "/purchases";
+		final String url = KitchenConnection.BASE_URL + "/purchases";
 		final String userId = "user";
 
 		this.context.checking(new Expectations()
@@ -190,7 +190,7 @@ public class TestKitchenConnection
 	@Test
 	public void testDeletePurchase()
 	{
-		final String url = "/purchases";
+		final String url = KitchenConnection.BASE_URL + "/purchases";
 		final String purchaseId = "purchase";
 
 		this.context.checking(new Expectations()
@@ -206,7 +206,7 @@ public class TestKitchenConnection
 	@Test
 	public void testBuyItem()
 	{
-		final String url = "/purchases";
+		final String url = KitchenConnection.BASE_URL + "/purchases";
 		final String purchaseJson = "json";
 		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
@@ -224,7 +224,7 @@ public class TestKitchenConnection
 	@Test
 	public void testUpdatePurchase()
 	{
-		final String url = "/purchases";
+		final String url = KitchenConnection.BASE_URL + "/purchases";
 		final String purchaseJson = "json";
 		final String purchaseId = "purchase";
 		final Map<String, String> headers = headers();
@@ -243,7 +243,7 @@ public class TestKitchenConnection
 	@Test
 	public void testGetItem()
 	{
-		final String url = "/items";
+		final String url = KitchenConnection.BASE_URL + "/items";
 		final String itemId = "item";
 
 		this.context.checking(new Expectations()
@@ -259,7 +259,7 @@ public class TestKitchenConnection
 	@Test
 	public void testGetAllItems()
 	{
-		final String url = "/items";
+		final String url = KitchenConnection.BASE_URL + "/items";
 
 		this.context.checking(new Expectations()
 		{{
@@ -274,7 +274,7 @@ public class TestKitchenConnection
 	@Test
 	public void testCreateItem()
 	{
-		final String url = "/items";
+		final String url = KitchenConnection.BASE_URL + "/items";
 		final String itemJson = "json";
 		final Map<String, String> headers = headers();
 		headers.put("Content-Type", "application/json");
@@ -292,7 +292,7 @@ public class TestKitchenConnection
 	@Test
 	public void testDeleteItem()
 	{
-		final String url = "/items";
+		final String url = KitchenConnection.BASE_URL + "/items";
 		final String itemId = "item";
 
 		this.context.checking(new Expectations()
@@ -308,7 +308,7 @@ public class TestKitchenConnection
 	@Test
 	public void testUpdateItem()
 	{
-		final String url = "/items";
+		final String url = KitchenConnection.BASE_URL + "/items";
 		final String itemJson = "json";
 		final String itemId = "purchase";
 		final Map<String, String> headers = headers();

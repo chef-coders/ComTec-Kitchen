@@ -1,19 +1,10 @@
 package de.unikassel.chefcoders.codecampkitchen.end2end;
 
-import android.support.test.runner.AndroidJUnit4;
-import de.unikassel.chefcoders.codecampkitchen.communication.HttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
-import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
-import de.unikassel.chefcoders.codecampkitchen.model.User;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import de.unikassel.chefcoders.codecampkitchen.communication.*;
+import de.unikassel.chefcoders.codecampkitchen.model.*;
+import org.junit.*;
 
-@RunWith(AndroidJUnit4.class)
+
 public class TestApiAccess
 {
 	private String ADMIN_ID;
@@ -24,7 +15,7 @@ public class TestApiAccess
 	@Before
 	public void setup()
 	{
-		httpConnection = new SyncHttpConnection();
+		httpConnection = new OkHttpConnection();
 		kitchenConnection = new KitchenConnection(httpConnection);
 
 		User admin = new User().setName("admin").setMail("admin@example.com");
