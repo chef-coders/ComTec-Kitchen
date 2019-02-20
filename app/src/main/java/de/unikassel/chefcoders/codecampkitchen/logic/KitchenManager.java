@@ -115,7 +115,10 @@ public class KitchenManager
 		return this.localDataStore.getUser(this.localDataStore.getLoginId());
 	}
 
-	public boolean isAdmin() { return this.getLoggedInUser().getRole() == "admin"; }
+	public boolean isAdmin() {
+		User user = this.getLoggedInUser();
+		return user.getRole() == "admin";
+	}
 
 	// --------------- Items ---------------
 
@@ -159,20 +162,10 @@ public class KitchenManager
 	}
 
 	public boolean containsItem(String id) {
-		for (Item item : getItems()) {
-			if (id.equals(item.get_id())) {
-				return true;
-			}
-		}
-		return false;
+		return this.localDataStore.getItem(id) != null;
 	}
 
-	public Item getItemById(String id) throws Exception {
-		for (Item item : getItems()) {
-			if (id.equals(item.get_id())) {
-				return item;
-			}
-		}
-		throw new Exception("Item with id " + id + " was not found.");
+	public Item getItemById(String id) {
+		return this.localDataStore.getItem(id);
 	}
 }
