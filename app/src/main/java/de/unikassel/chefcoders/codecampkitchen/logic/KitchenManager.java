@@ -228,14 +228,22 @@ public class KitchenManager
 
 	public Map<String, List<Purchase>> getMyGroupedPurchases()
 	{
-		return Collections.singletonMap("All", this.getMyPurchases());
+		final List<Purchase> purchases = this.getMyPurchases();
+		return Collections.singletonMap(purchases.isEmpty() ? "Nothing here" : "All", purchases);
 	}
 
 	public void refreshMyPurchases()
 	{
 		final String userId = this.localDataStore.getLoginId();
-		JsonTranslator.toPurchases(this.connection.getPurchasesForUser(userId))
-		              .forEach(this.localDataStore::addPurchase);
+		final String response = this.connection.getPurchasesForUser(userId);
+
+		if (response.startsWith("{") && response.contains("error"))
+		{
+			// user never made any purchases, so not a real error - just ignore.
+			return;
+		}
+
+		JsonTranslator.toPurchases(response).forEach(this.localDataStore::addPurchase);
 	}
 
 	// --------------- Cart ---------------
@@ -243,6 +251,11 @@ public class KitchenManager
 	private static Predicate<Purchase> itemFilter(String itemId)
 	{
 		return p -> itemId.equals(p.getItem_id());
+	}
+
+	public List<Purchase> getCart()
+	{
+		return Collections.unmodifiableList(this.localDataStore.getShoppingCart());
 	}
 
 	public void clearCart()
