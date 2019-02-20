@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class GeneralRecyclerView
@@ -53,9 +54,33 @@ public class GeneralRecyclerView
 		});
 
 		this.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(recyclerView.getContext(), this.recyclerView,
-		                                                                   (v, p) -> this.eventHandler
-			                                                                             .handleRecViewItemTouched(v,
-			                                                                                                       p)));
+                       (v, p) -> {
+	                        SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter)this.recyclerView.getAdapter();
+							if(sectionedAdapter == null)
+							{
+								return;
+							}
+
+							int sections = this.recyclerController.getSections();
+	                        int counter = 0;
+
+	                        for(int sectionId = 0; sectionId < sections; sectionId++)
+	                        {
+	                        	counter++;
+		                        Section section = sectionedAdapter.getSectionForPosition(sectionId);
+
+		                        for(int itemId = 0; itemId < section.getContentItemsTotal(); itemId++)
+		                        {
+		                        	if(counter + itemId == p)
+			                        {
+			                        	this.recyclerController.onClick(sectionId, itemId);
+			                        	return;
+			                        }
+		                        }
+
+		                        counter += section.getContentItemsTotal();
+	                        }
+                       }));
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
 		this.recyclerView.setLayoutManager(layoutManager);
