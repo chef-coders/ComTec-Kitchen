@@ -15,7 +15,6 @@
     <string name="admin">Admin</string>
     <string name="create_add_button_menu">Produkt anlegen</string>
     <string name="barcode">Barcode</string>
-    <string name="name">Name</string>
     <string name="price">Preis</string>
     <string name="amount">Stückzahl</string>
     <string name="kind">Sorte</string>

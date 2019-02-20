@@ -13,4 +13,14 @@
     <string name="item_amount_not_available">not available</string>
     <string name="admin">Admin</string>
     <string name="create_add_button_menu">Create Item</string>
+    <string name="barcode">Barcode</string>
+    <string name="price">Price</string>
+    <string name="amount">Amount</string>
+    <string name="kind">Sort</string>
+    <string name="create">Create</string>
+    <string name="one">1</string>
+    <string name="add">+</string>
+    <string name="sub">-</string>
+    <string name="purchase">Purchase</string>
+
 </resources>
