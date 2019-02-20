@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class PurchaseItemActivity extends AppCompatActivity
 {
@@ -45,12 +46,18 @@ public class PurchaseItemActivity extends AppCompatActivity
 	}
 
 	public void onPurchase(View view) {
-		try {
-			int amount = Integer.parseInt(this.amountText.getText().toString());
-			MainActivity.kitchenManager.buyItem(MainActivity.kitchenManager.getItemById(barcode), amount);
-			startActivity(new Intent(PurchaseItemActivity.this, MainActivity.class));
-		} catch (Exception ex) {
-			this.amountText.setText("1");
-		}
+		new SimpleAsyncTask(() -> {
+			try {
+				int amount = Integer.parseInt(this.amountText.getText().toString());
+				MainActivity.kitchenManager.buyItem(MainActivity.kitchenManager.getItemById(barcode), amount);
+			} catch (Exception ex) {
+				this.amountText.setText("1");
+			}
+		}, this::startMainActivity).execute();
+	}
+
+	private void startMainActivity() {
+		finish();
+		startActivity(new Intent(PurchaseItemActivity.this, MainActivity.class));
 	}
 }
