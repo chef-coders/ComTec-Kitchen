@@ -35,6 +35,8 @@ public class ItemRecyclerController implements RecyclerController<ItemViewHolder
 	@Override
 	public void refresh()
 	{
+		MainActivity.kitchenManager.refreshItems();
+
 		final Map<String, List<Item>> grouped = MainActivity.kitchenManager.getGroupedItems();
 		final int numSections = grouped.size();
 
