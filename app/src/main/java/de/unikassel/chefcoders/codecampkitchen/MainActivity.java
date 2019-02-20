@@ -28,6 +28,7 @@ import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -241,7 +242,8 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, CreateItemActivity.class));
                 return true;
             case R.id.action_clear_all:
-                kitchenManager.clearCart();
+                new SimpleAsyncTask(()->kitchenManager.clearCart(),()->{})
+                        .execute();
                 return true;
         }
 

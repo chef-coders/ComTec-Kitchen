@@ -15,6 +15,7 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ShoppingCartRecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
 
 /**
@@ -44,12 +45,15 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
     private void initFloatingActionButton(View allItemsView)
     {
         floatingActionButton = allItemsView.findViewById(R.id.buyItemButton);
-        floatingActionButton.setOnClickListener(v -> {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity != null) {
-
-            }
-        });
+	    floatingActionButton.setOnClickListener(v ->
+			    new SimpleAsyncTask(() -> MainActivity.kitchenManager.submitCart(),
+					    () ->
+					    {
+						    MainActivity mainActivity = (MainActivity) getActivity();
+						    if (mainActivity != null) {
+							    mainActivity.changeFragment(new AllItemsFragment());
+						    }
+					    }).execute());
     }
 
     private void initRecyclerView(View allItemsView)
