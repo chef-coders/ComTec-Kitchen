@@ -34,9 +34,9 @@ public class CreateItemActivity extends AppCompatActivity
 		if (bundle != null) {
 			barcode = (String) bundle.get("barcode");
 		} else {
-			Double doubleValue = Math.floor(Math.random() * (9999999999L - 1000000000L + 1L)) + 1000000000L;
+			Double doubleValue = Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L;
 			Long longValue = doubleValue.longValue();
-			barcode = longValue.toString();
+			barcode = "Generated:" + longValue.toString();
 		}
 
 		this.barcodeValue = findViewById(R.id.barcodeValueView);
