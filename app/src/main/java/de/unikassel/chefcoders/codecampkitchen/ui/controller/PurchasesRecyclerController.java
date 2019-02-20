@@ -36,7 +36,8 @@ public class PurchasesRecyclerController implements RecyclerController<RowViewHo
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.refreshItems();
+
+		MainActivity.kitchenManager.refreshMyPurchases();
 
 		final Map<String, List<Purchase>> grouped = MainActivity.kitchenManager.getMyGroupedPurchases();
 		final int numSections = grouped.size();
