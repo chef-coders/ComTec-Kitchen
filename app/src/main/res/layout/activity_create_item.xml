@@ -24,7 +24,7 @@
             android:id="@+id/barcodeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Barcode"
+            android:text="@string/barcode"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
+            android:text="@string/name"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
             android:id="@+id/priceTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Price"
+            android:text="@string/price"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -74,7 +74,7 @@
             android:id="@+id/amountTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Amount"
+            android:text="@string/amount"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -89,7 +89,7 @@
             android:id="@+id/kindTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kind"
+            android:text="@string/kind"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -110,7 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCreate"
-            android:text="Create" />
+            android:text="@string/create" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -174,15 +174,15 @@ public class TestKitchenConnection
 	@Test
 	public void testGetPurchasesForUser()
 	{
-		final String url = KitchenConnection.BASE_URL + "/purchases";
+		final String url = KitchenConnection.BASE_URL + "/purchases/u";
 		final String userId = "user";
 
 		this.context.checking(new Expectations()
 		{{
-			this.oneOf(TestKitchenConnection.this.httpConnection).get(url + "/" + userId, headers());
+			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
 		}});
 
-		this.kitchenConnection.getPurchasesForUser(userId);
+		this.kitchenConnection.getPurchasesForUser();
 
 		this.context.assertIsSatisfied();
 	}

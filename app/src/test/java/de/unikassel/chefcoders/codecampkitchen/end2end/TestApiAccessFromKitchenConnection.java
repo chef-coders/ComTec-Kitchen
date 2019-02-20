@@ -5,8 +5,9 @@ import de.unikassel.chefcoders.codecampkitchen.model.*;
 import org.junit.*;
 
 
-public class TestApiAccess
+public class TestApiAccessFromKitchenConnection
 {
+	private String ITEM_ID = "12345656785";
 	private String ADMIN_ID;
 
 	HttpConnection httpConnection;
@@ -21,12 +22,16 @@ public class TestApiAccess
 		User admin = new User().setName("admin").setMail("admin@example.com");
 		admin = JsonTranslator.toUser(kitchenConnection.createAdminUser(JsonTranslator.toJson(admin)));
 		ADMIN_ID = admin.get_id();
-
 		kitchenConnection.setUserToken(admin.getToken());
+
+		Item item = new Item().setAmount(1).setName("Kokosmilch").setPrice(0.5).setKind("Saft").set_id(ITEM_ID);
+
+		JsonTranslator.toItem(kitchenConnection.createItem(JsonTranslator.toJson(item)));
 	}
 
 	@After
 	public void teardown() {
+		kitchenConnection.deleteItem(ITEM_ID);
 		kitchenConnection.deleteUser(ADMIN_ID);
 	}
 
@@ -44,7 +49,7 @@ public class TestApiAccess
 	@Test
 	public void createAndDeleteItem()
 	{
-		Item item = new Item().setAmount(1).setName("itemName").setPrice(20).setKind("item");
+		Item item = new Item().setAmount(1).setName("Apfelsaft").setPrice(20).setKind("Saft").set_id("12345698");
 		String itemJson = kitchenConnection.createItem(JsonTranslator.toJson(item));
 
 		item = JsonTranslator.toItem(itemJson);
@@ -55,19 +60,11 @@ public class TestApiAccess
 	@Test
 	public void createAndDeletePurchase()
 	{
-		User user = new User().setMail("example@web.de").setName("Peter");
-		Item item = new Item().setAmount(1).setName("itemName").setPrice(20).setKind("item");
-
-		user = JsonTranslator.toUser(kitchenConnection.createRegularUser(JsonTranslator.toJson(user)));
-		item = JsonTranslator.toItem(kitchenConnection.createItem(JsonTranslator.toJson(item)));
-
-		Purchase purchase = new Purchase().setItem_id(item.get_id()).setUser_id(user.get_id()).setAmount(1);
+		Purchase purchase = new Purchase().setItem_id(ITEM_ID).setUser_id(ADMIN_ID).setAmount(1);
 		String purchaseJson = kitchenConnection.buyItem(JsonTranslator.toJson(purchase));
 
 		purchase = JsonTranslator.toPurchase(purchaseJson);
 
 		kitchenConnection.deletePurchase(purchase.get_id());
-		kitchenConnection.deleteItem(item.get_id());
-		kitchenConnection.deleteUser(user.get_id());
 	}
 }
