@@ -9,6 +9,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -152,10 +153,12 @@ public class KitchenManager
 
 	public void refreshItems()
 	{
-		for (Item item : JsonTranslator.toItems(connection.getAllItems()))
-		{
-			this.localDataStore.addItem(item);
-		}
+		JsonTranslator.toItems(this.connection.getAllItems()).forEach(this.localDataStore::addItem);
+	}
+
+	public Map<String, List<Item>> getGroupedItems()
+	{
+		return this.localDataStore.getItems().stream().collect(Collectors.groupingBy(Item::getKind));
 	}
 
 	public void createItem(String id, String name, double price, int amount, String kind)

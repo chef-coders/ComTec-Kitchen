@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.MasterRecyclerView;
 
@@ -48,44 +49,7 @@ public class AllItemsFragment extends KitchenFragment implements MasterRecyclerV
     private void initRecyclerView(View allItemsView)
     {
     	new MasterRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
-			    new RecyclerController()
-			    {
-				    @Override
-				    public int getSections()
-				    {
-					    return 0;
-				    }
-
-				    @Override
-				    public int getItems(int sections)
-				    {
-					    return 0;
-				    }
-
-				    @Override
-				    public String getHeader(int section)
-				    {
-					    return null;
-				    }
-
-				    @Override
-				    public void refresh()
-				    {
-
-				    }
-
-				    @Override
-				    public void populate(Object v, int section, int item)
-				    {
-
-				    }
-
-				    @Override
-				    public void onClick(int section, int item)
-				    {
-
-				    }
-			    },
+			    new ItemRecyclerController(),
 			    allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
 			    this);
     }
