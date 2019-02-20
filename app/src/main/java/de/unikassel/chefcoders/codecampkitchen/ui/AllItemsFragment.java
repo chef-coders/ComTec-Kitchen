@@ -45,9 +45,7 @@ public class AllItemsFragment extends KitchenFragment
     private void initSwipeRefreshLayout(View allItemsView)
     {
     	this.swipeRefreshLayout = allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout);
-    	this.swipeRefreshLayout.setOnRefreshListener(() -> {
-			// TODO - Handle swipe
-	    });
+    	this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
     }
 
     private void initFloatingActionButton(View allItemsView)
@@ -132,5 +130,12 @@ public class AllItemsFragment extends KitchenFragment
 	protected void showToolbarMenu(Menu menu)
 	{
 		menu.findItem(R.id.action_scan_code).setVisible(true);
+	}
+
+	// --- --- --- Handle user interactions --- --- ---
+	private void handleOnSwipeRefresh()
+	{
+		// TODO - Handle swipe
+		swipeRefreshLayout.setRefreshing(false);
 	}
 }
