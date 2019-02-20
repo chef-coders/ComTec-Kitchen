@@ -131,7 +131,10 @@ public class KitchenConnection
 	{
 		final Map<String, String> headers = new HashMap<>();
 		headers.put("Content-Type", "application/json");
-		headers.put("Authorization", this.userToken);
+		if(userToken != null)
+		{
+			headers.put("Authorization", this.userToken);
+		}
 		return headers;
 	}
 
