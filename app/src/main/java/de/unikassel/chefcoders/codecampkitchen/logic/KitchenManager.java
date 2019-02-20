@@ -196,6 +196,16 @@ public class KitchenManager
 		this.localDataStore.getShoppingCart().clear();
 	}
 
+	public void submitCart()
+	{
+		for (Purchase purchase : this.localDataStore.getShoppingCart())
+		{
+			this.connection.buyItem(JsonTranslator.toJson(purchase));
+		}
+
+		this.localDataStore.getShoppingCart().clear();
+	}
+
 	public int getCartAmount(Item item)
 	{
 		final String itemId = item.get_id();
