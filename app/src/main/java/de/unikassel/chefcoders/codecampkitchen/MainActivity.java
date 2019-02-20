@@ -110,9 +110,15 @@ public class MainActivity extends AppCompatActivity
     {
         this.toolbar = findViewById(R.id.main_toolbar);
 
+
+        ResultAsyncTask.exeResultAsyncTask(() -> MainActivity.kitchenManager.isAdmin(), (value) ->
+                toolbar.getMenu().findItem(R.id.action_create).setVisible(value)
+        );
+        
         toolbar.setTitleTextColor(
                 getColor(android.R.color.white)
         );
+
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
