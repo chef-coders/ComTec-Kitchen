@@ -10,6 +10,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class KitchenManager
 {
@@ -116,9 +117,24 @@ public class KitchenManager
 
 	// --------------- Users ---------------
 
+	public List<User> getAllUsers()
+	{
+		return new ArrayList<>(this.localDataStore.getUsers());
+	}
+
+	public void refreshAllUsers()
+	{
+		JsonTranslator.toUsers(this.connection.getAllUsers()).forEach(this.localDataStore::addUser);
+	}
+
 	public User getLoggedInUser()
 	{
 		return this.localDataStore.getUser(this.localDataStore.getLoginId());
+	}
+
+	public void refreshLoggedInUser()
+	{
+		this.localDataStore.addUser(JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId())));
 	}
 
 	public boolean isAdmin()
@@ -182,6 +198,36 @@ public class KitchenManager
 	public Item getItemById(String id)
 	{
 		return this.localDataStore.getItem(id);
+	}
+
+	// --------------- Purchases ---------------
+
+	private static Predicate<Purchase> userFilter(String userId)
+	{
+		return p -> userId.equals(p.getUser_id());
+	}
+
+	public List<Purchase> getAllPurchases()
+	{
+		return new ArrayList<>(this.localDataStore.getPurchases());
+	}
+
+	public void refreshAllPurchases()
+	{
+		JsonTranslator.toPurchases(this.connection.getAllPurchases()).forEach(this.localDataStore::addPurchase);
+	}
+
+	public List<Purchase> getMyPurchases()
+	{
+		final String userId = this.localDataStore.getLoginId();
+		return this.localDataStore.getPurchases().stream().filter(userFilter(userId)).collect(Collectors.toList());
+	}
+
+	public void refreshMyPurchases()
+	{
+		final String userId = this.localDataStore.getLoginId();
+		JsonTranslator.toPurchases(this.connection.getPurchasesForUser(userId))
+		              .forEach(this.localDataStore::addPurchase);
 	}
 
 	// --------------- Cart ---------------
