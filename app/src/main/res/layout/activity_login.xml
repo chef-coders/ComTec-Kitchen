@@ -19,7 +19,9 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:imeOptions="actionNext"
+        android:nextFocusDown="@+id/editTextEmail"/>
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -30,6 +32,7 @@
         android:layout_marginEnd="8dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextName" />
