@@ -233,16 +233,7 @@ public class KitchenManager
 
 	public void refreshMyPurchases()
 	{
-		final String userId = this.localDataStore.getLoginId();
-		final String response = this.connection.getPurchasesForUser(userId);
-
-		if (response.startsWith("{") && response.contains("error"))
-		{
-			// user never made any purchases, so not a real error - just ignore.
-			return;
-		}
-
-		JsonTranslator.toPurchases(response).forEach(this.localDataStore::addPurchase);
+		JsonTranslator.toPurchases(this.connection.getPurchasesForUser()).forEach(this.localDataStore::addPurchase);
 	}
 
 	// --------------- Cart ---------------
