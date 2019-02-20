@@ -8,6 +8,7 @@ import de.unikassel.chefcoders.codecampkitchen.communication.SyncHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
+import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 
 import java.util.ArrayList;
@@ -136,5 +137,49 @@ public class KitchenManager
 		{
 			this.localDataStore.addItem(item);
 		}
+	}
+
+	public void createItem(String id, String name, double price, int amount, String kind) {
+		if (!this.isAdmin()) { return; }
+
+		final Item item = new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind);
+		final String itemJson = JsonTranslator.toJson(item);
+		final String resultJson;
+
+		resultJson = this.connection.createItem(itemJson);
+
+		final Item createdItem = JsonTranslator.toItem(resultJson);
+
+		this.localDataStore.addItem(createdItem);
+	}
+
+	public void buyItem(Item item, int amount) {
+		final Purchase purchase = new Purchase().setUser_id(getLoggedInUser().get_id()).setItem_id(item.get_id()).setAmount(amount);
+		final String purchaseJson = JsonTranslator.toJson(purchase);
+		final String resultJson;
+
+		resultJson = this.connection.buyItem(purchaseJson);
+
+		final Purchase createdPurchase = JsonTranslator.toPurchase(resultJson);
+
+		this.localDataStore.addPurchase(createdPurchase);
+	}
+
+	public boolean containsItem(String id) {
+		for (Item item : getItems()) {
+			if (id.equals(item.get_id())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Item getItemById(String id) throws Exception {
+		for (Item item : getItems()) {
+			if (id.equals(item.get_id())) {
+				return item;
+			}
+		}
+		throw new Exception("Item with id " + id + " was not found.");
 	}
 }

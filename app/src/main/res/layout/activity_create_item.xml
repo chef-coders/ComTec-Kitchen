@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal"
-            android:text="Price" />
+            android:text="Price (0.00)" />
 
         <EditText
             android:id="@+id/amountText"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:text="Amount" />
+            android:text="Amount (0)" />
 
         <EditText
             android:id="@+id/kindText"
