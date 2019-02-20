@@ -80,18 +80,15 @@ public class AllItemsFragment extends KitchenFragment implements ItemRecyclerVie
 	}
 
 	@Override
-	public void handleRecViewScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+	public void handleRecViewScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
-		if(dy > 0)
-		{
-			// scrolls down
-			floatingActionButton.hide();
-		}
-		else
-		{
-			// scrolls up
-			floatingActionButton.show();
-		}
+		this.floatingActionButton.hide();
+	}
+
+	@Override
+	public void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
+	{
+		this.floatingActionButton.show();
 	}
 
 	@Override

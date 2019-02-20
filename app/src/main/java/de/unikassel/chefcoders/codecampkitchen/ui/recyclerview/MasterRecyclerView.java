@@ -10,24 +10,29 @@ import java.util.List;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 
-public class ItemRecyclerView
+public class MasterRecyclerView
 {
 	private RecyclerView recyclerView;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private RecViewEventHandler eventHandler;
+	private RecyclerController recyclerController;
 
 	public interface RecViewEventHandler
 	{
 		void handleRecViewLoadFinished();
-		void handleRecViewScrolled(@NonNull RecyclerView recyclerView, int dx, int dy);
+		void handleRecViewScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy);
+		void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy);
 		void handleRecViewItemTouched(View view, int position);
 	}
 
-	public ItemRecyclerView(RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
+	public MasterRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
+	                          SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
+		this.recyclerController = recyclerController;
 
 		this.initRecyclerView(recyclerView);
 		this.initSwipeRefreshLayout(swipeRefreshLayout);
@@ -44,7 +49,7 @@ public class ItemRecyclerView
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
 			{
-				eventHandler.handleRecViewScrolled(recyclerView, dx, dy);
+				handleOnScrolled(recyclerView, dx, dy);
 			}
 		});
 
@@ -87,5 +92,19 @@ public class ItemRecyclerView
 					itemAdapter.setItems(items);
 					this.swipeRefreshLayout.setRefreshing(false);
 				});
+	}
+
+	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+	{
+		if(dy > 0)
+		{
+			// scrolls down
+			this.eventHandler.handleRecViewScrolledDown(recyclerView, dx, dy);
+		}
+		else
+		{
+			// scrolls up
+			this.eventHandler.handleRecViewScrolledUp(recyclerView, dx, dy);
+		}
 	}
 }
