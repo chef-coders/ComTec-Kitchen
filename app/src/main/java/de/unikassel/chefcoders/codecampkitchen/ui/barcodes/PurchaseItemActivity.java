@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
@@ -14,6 +15,7 @@ public class PurchaseItemActivity extends AppCompatActivity
 {
 	private String barcode;
 
+	private TextView barcodeValue;
 	private EditText amountText;
 
 	@Override
@@ -24,7 +26,10 @@ public class PurchaseItemActivity extends AppCompatActivity
 
 		barcode = (String) getIntent().getExtras().get("barcode");
 
+		this.barcodeValue = findViewById(R.id.barcodeValueView);
 		this.amountText = findViewById(R.id.amountText);
+
+		this.barcodeValue.setText(barcode);
 	}
 
 	public void onAdd(View view) {
