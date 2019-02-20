@@ -30,7 +30,14 @@ public class CreateItemActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_item);
 
-		barcode = (String) getIntent().getExtras().get("barcode");
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			barcode = (String) bundle.get("barcode");
+		} else {
+			Double doubleValue = Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L;
+			Long longValue = doubleValue.longValue();
+			barcode = "Generated:" + longValue.toString();
+		}
 
 		this.barcodeValue = findViewById(R.id.barcodeValueView);
 		this.nameText = findViewById(R.id.nameText);
@@ -39,20 +46,22 @@ public class CreateItemActivity extends AppCompatActivity
 		this.kindSpinner = findViewById(R.id.kindSpinner);
 
 		this.barcodeValue.setText(barcode);
-		this.kindSpinner.setAdapter(new ArrayAdapter<ItemKind>(this, android.R.layout.simple_spinner_dropdown_item, ItemKind.values()));
+		this.kindSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ItemKind.values()));
 	}
 
 	public void onCreate(View view) {
-		new SimpleAsyncTask(() -> {
-			try {
-				double price = Double.parseDouble(priceText.getText().toString());
-				int amount = Integer.parseInt(amountText.getText().toString());
-				MainActivity.kitchenManager.createItem(barcode, nameText.getText().toString(), price, amount, kindSpinner.getSelectedItem().toString());
-			} catch (Exception ex) {
-				priceText.setText("0.00");
-				amountText.setText("0");
-			}
-		}, this::startMainActivity).execute();
+		try {
+			String name = nameText.getText().toString();
+			double price = Double.parseDouble(priceText.getText().toString());
+			int amount = Integer.parseInt(amountText.getText().toString());
+			String kind = kindSpinner.getSelectedItem().toString();
+			new SimpleAsyncTask(() -> {
+				MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind);
+			}, this::startMainActivity).execute();
+		} catch (Exception ex) {
+			priceText.setText("0.00");
+			amountText.setText("0");
+		}
 	}
 
 	private void startMainActivity() {

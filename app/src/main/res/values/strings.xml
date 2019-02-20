@@ -12,4 +12,5 @@
     <string name="item_amount_available">%1$d available</string>
     <string name="item_amount_not_available">not available</string>
     <string name="admin">Admin</string>
+    <string name="create_add_button_menu">Create Item</string>
 </resources>
