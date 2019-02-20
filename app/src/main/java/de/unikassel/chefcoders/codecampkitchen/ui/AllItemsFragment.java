@@ -57,6 +57,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	protected void showToolbarMenu(Menu menu)
 	{
 		menu.findItem(R.id.action_scan_code).setVisible(true);
+		menu.findItem(R.id.action_create).setVisible(true);
 	}
 
 	// --- --- --- Handle user interactions --- --- ---
