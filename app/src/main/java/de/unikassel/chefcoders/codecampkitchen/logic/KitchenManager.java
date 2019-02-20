@@ -7,9 +7,7 @@ import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -158,7 +156,12 @@ public class KitchenManager
 
 	public Map<String, List<Item>> getGroupedItems()
 	{
-		return this.localDataStore.getItems().stream().collect(Collectors.groupingBy(Item::getKind));
+		// group by kind (entries sorted case-sensitive)
+		final TreeMap<String, List<Item>> grouped = this.localDataStore.getItems().stream().collect(
+			Collectors.groupingBy(Item::getKind, TreeMap::new, Collectors.toList()));
+		// sort by name (case-insensitive)
+		grouped.values().forEach(l -> l.sort(Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER)));
+		return grouped;
 	}
 
 	public void createItem(String id, String name, double price, int amount, String kind)
