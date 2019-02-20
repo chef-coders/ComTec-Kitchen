@@ -23,4 +23,6 @@
     <string name="add">+</string>
     <string name="sub">-</string>
     <string name="purchase">Kaufen</string>
+    <string name="clear_all">Alle löschen</string>
+
 </resources>

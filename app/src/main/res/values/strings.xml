@@ -22,5 +22,6 @@
     <string name="add">+</string>
     <string name="sub">-</string>
     <string name="purchase">Purchase</string>
+    <string name="clear_all">Clear all</string>
 
 </resources>
