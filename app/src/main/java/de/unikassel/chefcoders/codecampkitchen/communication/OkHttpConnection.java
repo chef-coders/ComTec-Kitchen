@@ -7,6 +7,13 @@ import java.util.Map;
 
 public class OkHttpConnection implements HttpConnection
 {
+	private OkHttpClient client;
+
+	public OkHttpConnection()
+	{
+		client = new OkHttpClient();
+	}
+
 	@Override
 	public String get(String url, Map<String, String> headers)
 	{
@@ -19,7 +26,8 @@ public class OkHttpConnection implements HttpConnection
 			Response response = tryExecuteCall(call);
 
 			return response.body().string();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new HttpConnectionException();
 		}
@@ -27,8 +35,6 @@ public class OkHttpConnection implements HttpConnection
 
 	private Call createCallFromRequest(Request request)
 	{
-		OkHttpClient client = new OkHttpClient();
-
 		return client.newCall(request);
 	}
 
@@ -50,7 +56,8 @@ public class OkHttpConnection implements HttpConnection
 		try
 		{
 			response = call.execute();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new HttpConnectionException();
 		}
@@ -69,7 +76,8 @@ public class OkHttpConnection implements HttpConnection
 			Response response = tryExecuteCall(call);
 
 			return response.body().string();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new HttpConnectionException();
 		}
@@ -99,7 +107,8 @@ public class OkHttpConnection implements HttpConnection
 			Response response = tryExecuteCall(call);
 
 			return response.body().string();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new HttpConnectionException();
 		}
@@ -129,7 +138,8 @@ public class OkHttpConnection implements HttpConnection
 			Response response = tryExecuteCall(call);
 
 			return response.body().string();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new HttpConnectionException();
 		}
@@ -142,7 +152,7 @@ public class OkHttpConnection implements HttpConnection
 
 		setHeadersOnBuilder(headers, builder);
 
-		builder.delete();
+		builder.delete(RequestBody.create(MediaType.parse(headers.get("Content-Type")), "{}"));
 
 		return builder.build();
 	}

@@ -61,7 +61,7 @@ public class TestOkHttpConnection
 	@Test
 	public void testDelete()
 	{
-		Item item = new Item().setKind("item").setPrice(20).setName("item").setAmount(1);
+		Item item = new Item().setKind("Saft").setPrice(0.5).setName("Maracujasaft").setAmount(1).set_id("12345");
 		String itemJson = connection.post(KitchenConnection.BASE_URL + "/items", JsonTranslator.toJson(item), headers());
 		item = JsonTranslator.toItem(itemJson);
 
