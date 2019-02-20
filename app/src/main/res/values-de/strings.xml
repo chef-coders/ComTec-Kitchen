@@ -3,7 +3,6 @@
     <string name="app_name">CodeCampKitchen</string>
     <string name="login">Anmelden</string>
     <string name="email">Email</string>
-    <string name="name">Name</string>
     <string name="all_items_nav_title">Alle Produkte</string>
     <string name="my_purchases">Meine Einkäufe</string>
     <string name="settings">Einstellungen</string>
@@ -15,7 +14,6 @@
     <string name="admin">Admin</string>
     <string name="create_add_button_menu">Produkt anlegen</string>
     <string name="barcode">Barcode</string>
-    <string name="name">Name</string>
     <string name="price">Preis</string>
     <string name="amount">Stückzahl</string>
     <string name="kind">Sorte</string>
@@ -24,4 +22,5 @@
     <string name="add">+</string>
     <string name="sub">-</string>
     <string name="purchase">Kaufen</string>
+    <string name="theNameText">Name</string>
 </resources>
