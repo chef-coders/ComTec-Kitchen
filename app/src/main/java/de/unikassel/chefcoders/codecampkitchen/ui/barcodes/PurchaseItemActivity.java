@@ -39,7 +39,7 @@ public class PurchaseItemActivity extends AppCompatActivity
 		try {
 			int amount = Integer.parseInt(this.amountText.getText().toString());
 			amount = amount + value;
-			this.amountText.setText(amount);
+			this.amountText.setText("" + amount);
 		} catch (Exception ex) {
 			this.amountText.setText("1");
 		}
