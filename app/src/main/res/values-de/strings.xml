@@ -9,6 +9,7 @@
     <string name="settings">Einstellungen</string>
     <string name="barcode_toolbar_item_name">Scanne Produkt</string>
     <string name="item_price">%1$.2f €</string>
+    <string name="item_amount">x %d</string>
     <string name="item_amount_available">%1$d verfügbar</string>
     <string name="item_amount_not_available">nicht verfügbar</string>
     <string name="admin">Admin</string>

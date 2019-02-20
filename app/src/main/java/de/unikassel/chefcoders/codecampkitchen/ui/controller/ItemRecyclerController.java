@@ -87,12 +87,15 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 			v.amountTextView.setText(R.string.item_amount_not_available);
 		}
 
-		// TODO - Add numberSelected to data model
-		v.numSelectedTextView.setText("x3");
+		final int numInCart = MainActivity.kitchenManager.getCartAmount(item);
+		final String numInCartText = v.itemView.getContext().getString(R.string.item_amount, numInCart);
+		v.numSelectedTextView.setText(numInCartText);
 	}
 
 	@Override
-	public void onClick(int section, int item)
+	public void onClick(int section, int itemIndex)
 	{
+		final Item item = this.items[section][itemIndex];
+		MainActivity.kitchenManager.addToCart(item);
 	}
 }
