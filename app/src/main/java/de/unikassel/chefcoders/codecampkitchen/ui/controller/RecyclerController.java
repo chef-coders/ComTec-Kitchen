@@ -18,4 +18,6 @@ public interface RecyclerController<T extends RecyclerView.ViewHolder>
 	void populate(T v, int section, int item);
 
 	boolean onClick(int section, int item);
+
+	boolean onSwiped(int section, int item);
 }
