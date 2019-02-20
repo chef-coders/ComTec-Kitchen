@@ -39,20 +39,27 @@ public class CreateItemActivity extends AppCompatActivity
 		this.kindSpinner = findViewById(R.id.kindSpinner);
 
 		this.barcodeValue.setText(barcode);
-		this.kindSpinner.setAdapter(new ArrayAdapter<ItemKind>(this, android.R.layout.simple_spinner_dropdown_item, ItemKind.values()));
+		this.kindSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ItemKind.values()));
 	}
 
 	public void onCreate(View view) {
-		new SimpleAsyncTask(() -> {
-			try {
-				double price = Double.parseDouble(priceText.getText().toString());
-				int amount = Integer.parseInt(amountText.getText().toString());
-				MainActivity.kitchenManager.createItem(barcode, nameText.getText().toString(), price, amount, kindSpinner.getSelectedItem().toString());
-			} catch (Exception ex) {
-				priceText.setText("0.00");
-				amountText.setText("0");
+		try {
+			if (barcode == null) {
+				barcode = "" + (Math.floor(Math.random() * (9999999999L - 1000000000L + 1L)) + 1000000000L);
 			}
-		}, this::startMainActivity).execute();
+
+			String name = nameText.getText().toString();
+			double price = Double.parseDouble(priceText.getText().toString());
+			int amount = Integer.parseInt(amountText.getText().toString());
+			String kind = kindSpinner.getSelectedItem().toString();
+
+			new SimpleAsyncTask(() -> {
+				MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind);
+			}, this::startMainActivity).execute();
+		} catch (Exception ex) {
+			priceText.setText("0.00");
+			amountText.setText("0");
+		}
 	}
 
 	private void startMainActivity() {

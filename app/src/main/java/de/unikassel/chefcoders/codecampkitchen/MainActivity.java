@@ -26,6 +26,7 @@ import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 
 public class MainActivity extends AppCompatActivity
@@ -223,6 +224,9 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.action_scan_code:
                 startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
+                return true;
+            case R.id.action_create:
+                startActivity(new Intent(MainActivity.this, CreateItemActivity.class));
                 return true;
         }
 
