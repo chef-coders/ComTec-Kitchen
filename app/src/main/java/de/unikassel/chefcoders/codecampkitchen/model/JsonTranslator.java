@@ -47,15 +47,6 @@ public class JsonTranslator
 
 	public static String toJson(Purchase purchase) { return toJson(purchase, Purchase.class); }
 
-	public static Purchase extractPurchaseFromOrder(String json) {
-		JsonParser parser = new JsonParser();
-		JsonObject obj = (JsonObject) parser.parse(json);
-
-		JsonObject purchase = obj.get("purchase").getAsJsonObject();
-
-		return toPurchase(purchase.toString());
-	}
-
 	// public static void toPurchase(String json, Purchase target) { fromJson(json, target); }
 	public static Purchase toPurchase(String json) { return fromJson(json, Purchase.class); }
 

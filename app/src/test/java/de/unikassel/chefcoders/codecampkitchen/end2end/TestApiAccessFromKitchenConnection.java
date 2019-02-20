@@ -63,7 +63,7 @@ public class TestApiAccessFromKitchenConnection
 		Purchase purchase = new Purchase().setItem_id(ITEM_ID).setUser_id(ADMIN_ID).setAmount(1);
 		String purchaseJson = kitchenConnection.buyItem(JsonTranslator.toJson(purchase));
 
-		purchase = JsonTranslator.extractPurchaseFromOrder(purchaseJson);
+		purchase = JsonTranslator.toPurchase(purchaseJson);
 
 		kitchenConnection.deletePurchase(purchase.get_id());
 	}

@@ -93,7 +93,7 @@ public class TestApiAccessFromKitchenManager
 	}
 
 	@Test
-	public void test()
+	public void assureUserIsLoggedIn()
 	{
 		User loggedInUser = kitchenManager.getLoggedInUser();
 		Assert.assertThat(loggedInUser, not(equalTo(null)));
