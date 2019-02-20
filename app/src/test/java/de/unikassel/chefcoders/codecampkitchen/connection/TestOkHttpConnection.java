@@ -5,7 +5,6 @@ import de.unikassel.chefcoders.codecampkitchen.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.text.BreakIterator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,30 +21,35 @@ public class TestOkHttpConnection
 	}
 
 	@Test
-	public void testGetSimple()
+	public void validGet()
 	{
-		String result = connection.get(KitchenConnection.BASE_URL, headers());
+		connection.get(KitchenConnection.BASE_URL, headers());
+	}
 
-		System.out.println(result);
+	@Test(expected = HttpConnectionException.class)
+	public void invalidGet()
+	{
+		connection.get(KitchenConnection.BASE_URL + "/items", basicHeaders());
 	}
 
 	@Test
-	public void testPost()
+	public void validPost()
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
-		headers.put("Authorization", ADMIN_TOKEN);
-		headers.put("key", KitchenConnection.USER_KEY);
-
 		User user = new User().setMail("user@example.com").setName("user");
 
-		String result = connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), headers());
+		connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), headers());
+	}
 
-		System.out.println(result);
+	@Test(expected = HttpConnectionException.class)
+	public void invalidPost()
+	{
+		User user = new User().setMail("user@example.com").setName("user");
+
+		String result = connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), basicHeaders());
 	}
 
 	@Test
-	public void testPut()
+	public void validPut()
 	{
 		User user = new User().setMail("user@web.com").setName("altUser");
 		String userJson = connection.post(KitchenConnection.BASE_URL + "/users", JsonTranslator.toJson(user), headers());
@@ -53,30 +57,44 @@ public class TestOkHttpConnection
 
 		String result = connection.put(KitchenConnection.BASE_URL + "/users/" + user.get_id(), JsonTranslator.toJson(user), headers());
 
-		System.out.println(result);
-
 		connection.delete(KitchenConnection.BASE_URL + "/users/" + user.get_id(), headers());
 	}
 
+	@Test(expected = HttpConnectionException.class)
+	public void invalidPut()
+	{
+		String result = connection.put(KitchenConnection.BASE_URL + "/users/" + 123456789, "", basicHeaders());
+	}
+
 	@Test
-	public void testDelete()
+	public void validDelete()
 	{
 		Item item = new Item().setKind("Saft").setPrice(0.5).setName("Maracujasaft").setAmount(1).set_id("12345");
 		String itemJson = connection.post(KitchenConnection.BASE_URL + "/items", JsonTranslator.toJson(item), headers());
 		item = JsonTranslator.toItem(itemJson);
 
 		itemJson = connection.delete(KitchenConnection.BASE_URL + "/items/" + item.get_id(), headers());
+	}
 
-		System.out.println(itemJson);
+	@Test(expected = HttpConnectionException.class)
+	public void invalidDelete()
+	{
+		connection.delete(KitchenConnection.BASE_URL + "/items/" + "invalid_id", basicHeaders());
 	}
 
 	private Map<String, String> headers()
 	{
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "application/json");
+		Map<String, String> headers = basicHeaders();
 		headers.put("Authorization", ADMIN_TOKEN);
 		headers.put("key", KitchenConnection.USER_KEY);
 
+		return headers;
+	}
+
+	private HashMap<String, String> basicHeaders()
+	{
+		HashMap<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "application/json");
 		return headers;
 	}
 }

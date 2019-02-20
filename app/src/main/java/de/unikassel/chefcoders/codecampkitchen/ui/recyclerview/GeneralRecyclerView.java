@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
@@ -60,6 +61,20 @@ public class GeneralRecyclerView
 						this.recyclerView,
 						this::handleOnTouch));
 
+		ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
+		{
+			@Override
+			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
+			{ return false; }
+
+			@Override
+			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
+			{
+				handleOnSwiped(viewHolder, direction);
+			}
+		};
+		new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this.recyclerView);
+
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
 		this.recyclerView.setLayoutManager(layoutManager);
 		this.recyclerView.setAdapter(new SectionedRecyclerViewAdapter());
@@ -76,12 +91,12 @@ public class GeneralRecyclerView
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
 	}
 
-	private void handleOnTouch(final View view, int pos)
+	private ItemPos calcSectionedPos(int pos)
 	{
 		SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter)this.recyclerView.getAdapter();
 		if(sectionedAdapter == null)
 		{
-			return;
+			return null;
 		}
 
 		int numOfSections = this.recyclerController.getSections();
@@ -96,24 +111,50 @@ public class GeneralRecyclerView
 			{
 				if(counter + itemId == pos)
 				{
-					final int finalSectionId = sectionId;
-					final int finalItemId = itemId;
-
-					ResultAsyncTask.exeResultAsyncTask(()->
-									this.recyclerController.onClick(finalSectionId, finalItemId),
-							(Boolean b) -> {
-								RecyclerView.ViewHolder viewHolder = section.getItemViewHolder(view);
-								if(b && viewHolder != null)
-								{
-									this.recyclerController.populate(viewHolder, finalSectionId, finalItemId);
-								}
-							});
-					return;
+					return new ItemPos(section, sectionId, itemId);
 				}
 			}
 
 			counter += section.getContentItemsTotal();
 		}
+
+		return null;
+	}
+
+	private void handleOnTouch(final View view, int pos)
+	{
+		final ItemPos itemPos = this.calcSectionedPos(pos);
+		if (itemPos == null || itemPos.getSection() == null)
+		{
+			return;
+		}
+
+		ResultAsyncTask.exeResultAsyncTask(()->
+						this.recyclerController.onClick(itemPos.getSectionId(), itemPos.getItemId()),
+				(Boolean b) -> {
+					RecyclerView.ViewHolder viewHolder = itemPos.getSection().getItemViewHolder(view);
+					if(b && viewHolder != null)
+					{
+						this.recyclerController.populate(viewHolder, itemPos.getSectionId(), itemPos.getItemId());
+					}
+				});
+	}
+
+	private void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+	{
+		final ItemPos itemPos = this.calcSectionedPos(viewHolder.getPosition());
+		if(itemPos == null || itemPos.getSection() == null)
+		{
+			return;
+		}
+
+		new SimpleAsyncTask(() -> {
+				boolean refresh = this.recyclerController.onSwiped(itemPos.getSectionId(), itemPos.getItemId());
+				if(refresh)
+				{
+					this.recyclerController.refresh();
+				}
+			}, () -> {}).execute();
 	}
 
 	private void handleOnSwipeRefresh()

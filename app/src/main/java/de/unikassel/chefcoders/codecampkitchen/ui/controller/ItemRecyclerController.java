@@ -71,9 +71,10 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 	}
 
 	@Override
-	public boolean onSwiped(int section, int item)
+	public boolean onSwiped(int section, int itemIndex)
 	{
-		// TODO - Handle swipe
+		final Item item = this.items[section][itemIndex];
+		MainActivity.kitchenManager.removeFromCart(item);
 		return true;
 	}
 }

@@ -15,7 +15,7 @@ public class KitchenManager
 {
 	// =============== Fields ===============
 
-	private final LocalDataStore    localDataStore;
+	private final LocalDataStore localDataStore;
 	private final KitchenConnection connection;
 
 	// =============== Constructor ===============
@@ -58,8 +58,7 @@ public class KitchenManager
 		if (admin)
 		{
 			resultJson = this.connection.createAdminUser(userJson);
-		}
-		else
+		} else
 		{
 			resultJson = this.connection.createRegularUser(userJson);
 		}
@@ -111,7 +110,7 @@ public class KitchenManager
 	{
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		preferences.edit().putString("userId", this.localDataStore.getLoginId())
-		           .putString("userToken", this.localDataStore.getLoginToken()).apply();
+			.putString("userToken", this.localDataStore.getLoginToken()).apply();
 	}
 
 	// --------------- Users ---------------
@@ -234,16 +233,7 @@ public class KitchenManager
 
 	public void refreshMyPurchases()
 	{
-		final String userId = this.localDataStore.getLoginId();
-		final String response = this.connection.getPurchasesForUser(userId);
-
-		if (response.startsWith("{") && response.contains("error"))
-		{
-			// user never made any purchases, so not a real error - just ignore.
-			return;
-		}
-
-		JsonTranslator.toPurchases(response).forEach(this.localDataStore::addPurchase);
+		JsonTranslator.toPurchases(this.connection.getPurchasesForUser()).forEach(this.localDataStore::addPurchase);
 	}
 
 	// --------------- Cart ---------------
@@ -276,7 +266,7 @@ public class KitchenManager
 	public int getCartAmount(Item item)
 	{
 		final String itemId = item.get_id();
-		return (int) this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).count();
+		return this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
 	}
 
 	public void addToCart(Item item)
