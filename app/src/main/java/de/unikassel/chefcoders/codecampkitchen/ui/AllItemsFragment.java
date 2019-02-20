@@ -68,6 +68,15 @@ public class AllItemsFragment extends KitchenFragment
 
 	    this.recyclerView.setHasFixedSize(true);
 
+	    this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+	    {
+		    @Override
+		    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+		    {
+			    handleOnScrolled(recyclerView, dx, dy);
+		    }
+	    });
+
 	    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 	    this.recyclerView.setLayoutManager(layoutManager);
 
@@ -102,5 +111,19 @@ public class AllItemsFragment extends KitchenFragment
 				});
 
 		swipeRefreshLayout.setRefreshing(false);
+	}
+
+	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+	{
+		if(dy > 0)
+		{
+			// scrolls down
+			floatingActionButton.hide();
+		}
+		else
+		{
+			// scrolls up
+			floatingActionButton.show();
+		}
 	}
 }

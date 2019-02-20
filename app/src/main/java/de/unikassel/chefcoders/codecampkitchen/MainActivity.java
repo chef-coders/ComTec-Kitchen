@@ -55,13 +55,14 @@ public class MainActivity extends AppCompatActivity
         {
             if (!isLoggedIn) {
                 startLogin();
-            }
-            this.initToolbar();
-            this.initNavDrawer();
-            this.initShortCuts();
+            }else{
+                this.initToolbar();
+                this.initNavDrawer();
+                this.initShortCuts();
 
-            if (savedInstanceState == null) {
-                this.initFragment();
+                if (savedInstanceState == null) {
+                    this.initFragment();
+                }
             }
         });
 
@@ -69,8 +70,7 @@ public class MainActivity extends AppCompatActivity
 
     private void startLogin()
     {
-        //TODO Remove in production comment
-        //finish();
+        finish();
         startActivity(new Intent(this, LoginActivity.class));
     }
 
@@ -131,8 +131,11 @@ public class MainActivity extends AppCompatActivity
 
         View headerView = navigationView.getHeaderView(0);
         TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
+
         User user = kitchenManager.getLoggedInUser();
-        textViewUsername.setText(user.getName());
+        if (user != null) {
+            textViewUsername.setText(user.getName());
+        }
         checkAllItemsMenuItem(true);
 
         navigationView.setNavigationItemSelectedListener(
