@@ -30,7 +30,14 @@ public class CreateItemActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_item);
 
-		barcode = (String) getIntent().getExtras().get("barcode");
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			barcode = (String) bundle.get("barcode");
+		} else {
+			Double doubleValue = Math.floor(Math.random() * (9999999999L - 1000000000L + 1L)) + 1000000000L;
+			Long longValue = doubleValue.longValue();
+			barcode = longValue.toString();
+		}
 
 		this.barcodeValue = findViewById(R.id.barcodeValueView);
 		this.nameText = findViewById(R.id.nameText);
@@ -44,15 +51,10 @@ public class CreateItemActivity extends AppCompatActivity
 
 	public void onCreate(View view) {
 		try {
-			if (barcode == null) {
-				barcode = "" + (Math.floor(Math.random() * (9999999999L - 1000000000L + 1L)) + 1000000000L);
-			}
-
 			String name = nameText.getText().toString();
 			double price = Double.parseDouble(priceText.getText().toString());
 			int amount = Integer.parseInt(amountText.getText().toString());
 			String kind = kindSpinner.getSelectedItem().toString();
-
 			new SimpleAsyncTask(() -> {
 				MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind);
 			}, this::startMainActivity).execute();

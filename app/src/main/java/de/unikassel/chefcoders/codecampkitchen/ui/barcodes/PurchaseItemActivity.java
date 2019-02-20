@@ -51,14 +51,14 @@ public class PurchaseItemActivity extends AppCompatActivity
 	}
 
 	public void onPurchase(View view) {
-		new SimpleAsyncTask(() -> {
-			try {
-				int amount = Integer.parseInt(this.amountText.getText().toString());
+		try {
+			int amount = Integer.parseInt(this.amountText.getText().toString());
+			new SimpleAsyncTask(() -> {
 				MainActivity.kitchenManager.buyItem(MainActivity.kitchenManager.getItemById(barcode), amount);
-			} catch (Exception ex) {
-				this.amountText.setText("1");
-			}
-		}, this::startMainActivity).execute();
+			}, this::startMainActivity).execute();
+		} catch (Exception ex) {
+			this.amountText.setText("1");
+		}
 	}
 
 	private void startMainActivity() {
