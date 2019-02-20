@@ -4,33 +4,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemAdapter;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemRecyclerView;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.ItemSection;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RecyclerTouchListener;
-import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.MasterRecyclerView;
 
-public class AllItemsFragment extends KitchenFragment implements ItemRecyclerView.RecViewEventHandler
+public class AllItemsFragment extends KitchenFragment implements MasterRecyclerView.RecViewEventHandler
 {
 	private FloatingActionButton floatingActionButton;
 	private ProgressBar progressBar;
@@ -61,7 +47,45 @@ public class AllItemsFragment extends KitchenFragment implements ItemRecyclerVie
 
     private void initRecyclerView(View allItemsView)
     {
-    	new ItemRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
+    	new MasterRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
+			    new RecyclerController()
+			    {
+				    @Override
+				    public int getSections()
+				    {
+					    return 0;
+				    }
+
+				    @Override
+				    public int getItems(int sections)
+				    {
+					    return 0;
+				    }
+
+				    @Override
+				    public String getHeader(int section)
+				    {
+					    return null;
+				    }
+
+				    @Override
+				    public void refresh()
+				    {
+
+				    }
+
+				    @Override
+				    public void populate(Object v, int section, int item)
+				    {
+
+				    }
+
+				    @Override
+				    public void onClick(int section, int item)
+				    {
+
+				    }
+			    },
 			    allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
 			    this);
     }
