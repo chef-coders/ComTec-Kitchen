@@ -116,9 +116,24 @@ public class KitchenManager
 
 	// --------------- Users ---------------
 
+	public List<User> getAllUsers()
+	{
+		return new ArrayList<>(this.localDataStore.getUsers());
+	}
+
+	public void refreshAllUsers()
+	{
+		JsonTranslator.toUsers(this.connection.getAllUsers()).forEach(this.localDataStore::addUser);
+	}
+
 	public User getLoggedInUser()
 	{
 		return this.localDataStore.getUser(this.localDataStore.getLoginId());
+	}
+
+	public void refreshLoggedInUser()
+	{
+		this.localDataStore.addUser(JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId())));
 	}
 
 	public boolean isAdmin()
