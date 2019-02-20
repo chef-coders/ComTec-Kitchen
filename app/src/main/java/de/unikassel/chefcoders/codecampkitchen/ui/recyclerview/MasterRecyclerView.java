@@ -5,31 +5,30 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import java.util.List;
-
-import de.unikassel.chefcoders.codecampkitchen.MainActivity;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class MasterRecyclerView
 {
-	private RecyclerView recyclerView;
-	private SwipeRefreshLayout swipeRefreshLayout;
+	private RecyclerView        recyclerView;
+	private SwipeRefreshLayout  swipeRefreshLayout;
 	private RecViewEventHandler eventHandler;
-	private RecyclerController recyclerController;
+	private RecyclerController  recyclerController;
 
 	public interface RecViewEventHandler
 	{
 		void handleRecViewLoadFinished();
+
 		void handleRecViewScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy);
+
 		void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy);
+
 		void handleRecViewItemTouched(View view, int position);
 	}
 
 	public MasterRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
-	                          SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
+		SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
 		this.recyclerController = recyclerController;
@@ -53,25 +52,19 @@ public class MasterRecyclerView
 			}
 		});
 
-		this.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
-				recyclerView.getContext(), this.recyclerView, (v, p) -> this.eventHandler.handleRecViewItemTouched(v, p)));
+		this.recyclerView.addOnItemTouchListener(new RecyclerTouchListener(recyclerView.getContext(), this.recyclerView,
+		                                                                   (v, p) -> this.eventHandler
+			                                                                             .handleRecViewItemTouched(v,
+			                                                                                                       p)));
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
 		this.recyclerView.setLayoutManager(layoutManager);
+		this.recyclerView.setAdapter(new SectionedRecyclerViewAdapter());
 
-		ItemAdapter itemAdapter = new ItemAdapter();
-
-		ResultAsyncTask.<List<Item>>exeResultAsyncTask(
-				()                 -> {
-					MainActivity.kitchenManager.refreshItems();
-					return MainActivity.kitchenManager.getItems();
-				}, (items) ->
-				{
-					itemAdapter.setItems(items);
-					this.eventHandler.handleRecViewLoadFinished();
-				});
-
-		this.recyclerView.setAdapter(itemAdapter);
+		new SimpleAsyncTask(() -> this.recyclerController.refresh(), () -> {
+			this.reloadSections();
+			this.eventHandler.handleRecViewLoadFinished();
+		}).execute();
 	}
 
 	private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout)
@@ -82,21 +75,15 @@ public class MasterRecyclerView
 
 	private void handleOnSwipeRefresh()
 	{
-		ResultAsyncTask.<List<Item>>exeResultAsyncTask(
-				()                 -> {
-					MainActivity.kitchenManager.refreshItems();
-					return MainActivity.kitchenManager.getItems();
-				},
-				(List<Item> items) -> {
-					ItemAdapter itemAdapter = (ItemAdapter)this.recyclerView.getAdapter();
-					itemAdapter.setItems(items);
-					this.swipeRefreshLayout.setRefreshing(false);
-				});
+		new SimpleAsyncTask(() -> this.recyclerController.refresh(), () -> {
+			this.reloadSections();
+			this.swipeRefreshLayout.setRefreshing(false);
+		}).execute();
 	}
 
 	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
-		if(dy > 0)
+		if (dy > 0)
 		{
 			// scrolls down
 			this.eventHandler.handleRecViewScrolledDown(recyclerView, dx, dy);
@@ -106,5 +93,21 @@ public class MasterRecyclerView
 			// scrolls up
 			this.eventHandler.handleRecViewScrolledUp(recyclerView, dx, dy);
 		}
+	}
+
+	private void reloadSections()
+	{
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
+		assert adapter != null;
+
+		adapter.removeAllSections();
+
+		final int sections = this.recyclerController.getSections();
+		for (int section = 0; section < sections; section++)
+		{
+			adapter.addSection(new ItemSection(this.recyclerController, section));
+		}
+
+		adapter.notifyDataSetChanged();
 	}
 }
