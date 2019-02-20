@@ -2,12 +2,12 @@ package de.unikassel.chefcoders.codecampkitchen.ui.multithreading;
 
 import android.os.AsyncTask;
 
-public class SimpleAsynTask extends AsyncTask<Void, Void, Void>
+public class SimpleAsyncTask extends AsyncTask<Void, Void, Void>
 {
 	private Runnable backgroundRunnable;
 	private Runnable postExecuteRunnable;
 
-	public SimpleAsynTask(Runnable backgroundRunnable, Runnable postExecuteRunnable)
+	public SimpleAsyncTask(Runnable backgroundRunnable, Runnable postExecuteRunnable)
 	{
 		this.backgroundRunnable = backgroundRunnable;
 		this.postExecuteRunnable = postExecuteRunnable;
@@ -21,7 +21,7 @@ public class SimpleAsynTask extends AsyncTask<Void, Void, Void>
 	}
 
 	@Override
-	protected void onPostExecute(Void aVoid)
+	protected void onPostExecute(Void v)
 	{
 		this.postExecuteRunnable.run();
 	}
