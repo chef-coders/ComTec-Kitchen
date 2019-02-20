@@ -126,7 +126,7 @@ public class KitchenManager
 
 	public boolean isAdmin() {
 		User user = this.getLoggedInUser();
-		return user.getRole() == "admin";
+		return "admin".equals(user.getRole());
 	}
 
 	// --------------- Items ---------------

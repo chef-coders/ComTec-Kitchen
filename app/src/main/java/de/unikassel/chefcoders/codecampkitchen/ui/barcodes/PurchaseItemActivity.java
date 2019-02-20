@@ -1,19 +1,17 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.gms.vision.barcode.Barcode;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 
 public class PurchaseItemActivity extends AppCompatActivity
 {
-	private Barcode barcode;
+	private String barcode;
 
 	private EditText amountText;
 
@@ -23,7 +21,7 @@ public class PurchaseItemActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_purchase_item);
 
-		barcode = barcode = (Barcode) getIntent().getSerializableExtra("barcode");
+		barcode = (String) getIntent().getExtras().get("barcode");
 
 		this.amountText = findViewById(R.id.amountText);
 	}
@@ -49,10 +47,10 @@ public class PurchaseItemActivity extends AppCompatActivity
 	public void onPurchase(View view) {
 		try {
 			int amount = Integer.parseInt(this.amountText.getText().toString());
-			MainActivity.kitchenManager.buyItem(MainActivity.kitchenManager.getItemById(barcode.rawValue), amount);
+			MainActivity.kitchenManager.buyItem(MainActivity.kitchenManager.getItemById(barcode), amount);
+			startActivity(new Intent(PurchaseItemActivity.this, MainActivity.class));
 		} catch (Exception ex) {
 			this.amountText.setText("1");
-			Toast.makeText(getApplicationContext(), "Amount is not a valid number", Toast.LENGTH_SHORT).show();
 		}
 	}
 }
