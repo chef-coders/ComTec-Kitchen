@@ -15,7 +15,7 @@ public class KitchenManager
 {
 	// =============== Fields ===============
 
-	private final LocalDataStore localDataStore;
+	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
 	// =============== Constructor ===============
@@ -58,7 +58,8 @@ public class KitchenManager
 		if (admin)
 		{
 			resultJson = this.connection.createAdminUser(userJson);
-		} else
+		}
+		else
 		{
 			resultJson = this.connection.createRegularUser(userJson);
 		}
@@ -110,7 +111,7 @@ public class KitchenManager
 	{
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		preferences.edit().putString("userId", this.localDataStore.getLoginId())
-			.putString("userToken", this.localDataStore.getLoginToken()).apply();
+		           .putString("userToken", this.localDataStore.getLoginToken()).apply();
 	}
 
 	// --------------- Users ---------------
@@ -294,34 +295,67 @@ public class KitchenManager
 	public int getCartAmount(Item item)
 	{
 		final String itemId = item.get_id();
-		return this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
+		return this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).mapToInt(Purchase::getAmount)
+		                          .sum();
 	}
 
-	public void addToCart(Item item)
+	/**
+	 * Adds the given item to the cart or increments its cart amount.
+	 *
+	 * @param item
+	 * 	the item to add
+	 *
+	 * @return 1 if the item was added successfully, 0 if not because not enough items are in stock.
+	 *
+	 * @see KitchenManager#addToCart(Item, int)
+	 */
+	public int addToCart(Item item)
 	{
-		this.addToCart(item, 1);
+		return this.addToCart(item, 1);
 	}
 
-	public void addToCart(Item item, int amount)
+	/**
+	 * Adds the given item to the cart or adds its cart amount.
+	 *
+	 * @param item
+	 * 	the item to add
+	 * @param amount
+	 * 	the amount to add
+	 *
+	 * @return the amount that was actually added, may be less than {@code amount} if there are not enough items in stock.
+	 */
+	public int addToCart(Item item, int amount)
 	{
 		final String itemId = item.get_id();
 		for (Purchase purchase : this.localDataStore.getShoppingCart())
 		{
 			if (itemId.equals(purchase.getItem_id()))
 			{
-				purchase.setAmount(purchase.getAmount() + amount);
-				return;
+				final int oldAmount = purchase.getAmount();
+				final int newAmount = Math.min(oldAmount + amount, item.getAmount());
+				purchase.setAmount(newAmount);
+				return newAmount - oldAmount; // difference is how many have actually been added
 			}
 		}
 
+		final int actualAmount = Math.min(amount, item.getAmount());
 		final String loginId = this.localDataStore.getLoginId();
-		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(amount);
+		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount);
 		this.localDataStore.getShoppingCart().add(purchase);
+		return actualAmount;
 	}
 
-	public void removeFromCart(Item item)
+	/**
+	 * Removes the item from the cart completely.
+	 *
+	 * @param item
+	 * 	the item to remove
+	 *
+	 * @return true iff the item was in the cart
+	 */
+	public boolean removeFromCart(Item item)
 	{
 		final String itemId = item.get_id();
-		this.localDataStore.getShoppingCart().removeIf(itemFilter(itemId));
+		return this.localDataStore.getShoppingCart().removeIf(itemFilter(itemId));
 	}
 }

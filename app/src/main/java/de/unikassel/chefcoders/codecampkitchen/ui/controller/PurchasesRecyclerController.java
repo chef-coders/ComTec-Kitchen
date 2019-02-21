@@ -5,50 +5,13 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
-import java.util.List;
-import java.util.Map;
-
-public class PurchasesRecyclerController implements RecyclerController<RowViewHolder>
+public class PurchasesRecyclerController extends GroupedRecyclerController<Purchase, RowViewHolder>
 {
-	private Purchase[][] purchases;
-	private String[]     headers;
-
-	@Override
-	public int getSections()
-	{
-		return this.purchases.length;
-	}
-
-	@Override
-	public int getItems(int section)
-	{
-		return this.purchases[section].length;
-	}
-
-	@Override
-	public String getHeader(int section)
-	{
-		return this.headers[section];
-	}
-
 	@Override
 	public void refresh()
 	{
-
 		MainActivity.kitchenManager.refreshMyPurchases();
-
-		final Map<String, List<Purchase>> grouped = MainActivity.kitchenManager.getMyGroupedPurchases();
-		final int numSections = grouped.size();
-
-		this.purchases = new Purchase[numSections][];
-		this.headers = new String[numSections];
-
-		int section = 0;
-		for (Map.Entry<String, List<Purchase>> entry : grouped.entrySet())
-		{
-			this.headers[section] = entry.getKey();
-			this.purchases[section++] = entry.getValue().toArray(new Purchase[0]);
-		}
+		this.fill(MainActivity.kitchenManager.getMyGroupedPurchases());
 	}
 
 	@Override
@@ -60,7 +23,7 @@ public class PurchasesRecyclerController implements RecyclerController<RowViewHo
 	@Override
 	public void populate(RowViewHolder v, int section, int itemIndex)
 	{
-		Populator.populate(v, this.purchases[section][itemIndex]);
+		Populator.populate(v, this.get(section, itemIndex));
 	}
 
 	@Override
