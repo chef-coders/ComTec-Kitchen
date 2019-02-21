@@ -236,6 +236,11 @@ public class KitchenManager
 		JsonTranslator.toPurchases(this.connection.getPurchasesForUser()).forEach(this.localDataStore::addPurchase);
 	}
 
+	private double getTotal(Purchase purchase)
+	{
+		return purchase.getAmount() * this.getItemById(purchase.getItem_id()).getPrice();
+	}
+
 	// --------------- Cart ---------------
 
 	private static Predicate<Purchase> itemFilter(String itemId)
@@ -261,6 +266,11 @@ public class KitchenManager
 		}
 
 		this.localDataStore.getShoppingCart().clear();
+	}
+
+	public double getCartTotal()
+	{
+		return this.localDataStore.getShoppingCart().stream().mapToDouble(this::getTotal).sum();
 	}
 
 	public int getCartAmount(Item item)
