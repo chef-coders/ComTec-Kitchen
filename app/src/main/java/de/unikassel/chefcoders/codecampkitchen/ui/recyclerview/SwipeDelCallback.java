@@ -7,36 +7,89 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
 import android.view.View;
 
-public class SwipeDelCallback extends ItemTouchHelper.SimpleCallback
+import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
+
+import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
+import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
+
+public class SwipeDelCallback extends ItemTouchHelper.Callback
 {
 	private Drawable icon;
 	private ColorDrawable background;
 
+	private RecyclerController recyclerController;
+
+	private boolean swipeBack;
+
 	public interface SwipeEvent
 	{
-		void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction);
+		void handleOnSwiped(RecyclerView.ViewHolder viewHolder);
 	}
 
 	private SwipeEvent swipeEvent;
 
-	public SwipeDelCallback(SwipeEvent swipeEvent, Drawable icon, ColorDrawable background)
+	// --- --- --- Initialization --- --- ---
+	public SwipeDelCallback(SwipeEvent swipeEvent, Drawable icon, ColorDrawable background, RecyclerController recyclerController)
 	{
-		super(0, ItemTouchHelper.LEFT);
 		this.swipeEvent = swipeEvent;
 		this.icon = icon;
 		this.background = background;
+		this.recyclerController = recyclerController;
 	}
 
 	@Override
-	public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-	{ return false; }
+	public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder)
+	{
+		return makeMovementFlags(0, LEFT);
+	}
 
+	// --- --- --- Handle swipe action --- --- ---
 	@Override
-	public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)
+	public int convertToAbsoluteDirection(int flags, int layoutDirection)
+	{
+		if(swipeBack)
+		{
+			swipeBack = false;
+			return 0;
+		}
+
+		return super.convertToAbsoluteDirection(flags, layoutDirection);
+	}
+
+	// --- --- --- Handle draw action --- --- ---
+	@Override
+	public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+	                        float dX, float dY, int actionState, boolean isCurrentlyActive)
 	{
 		super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+		this.blockSwipe(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+		if(GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView) != null)
+		{
+			this.drawBackgroundFrame(c, viewHolder, dX);
+		}
+	}
+
+	private void blockSwipe(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+	                        float dX, float dY, int actionState, boolean isCurrentlyActive)
+	{
+		if(actionState == ACTION_STATE_SWIPE)
+		{
+			recyclerView.setOnTouchListener((v, event) ->
+			{
+				RowPos rowPos = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
+				this.swipeBack = rowPos == null;
+
+				return false;
+			});
+		}
+	}
+
+	private void drawBackgroundFrame(Canvas c, RecyclerView.ViewHolder viewHolder, float dX)
+	{
 		View itemView = viewHolder.itemView;
 		int backgroundCornerOffset = 20;
 
@@ -62,9 +115,14 @@ public class SwipeDelCallback extends ItemTouchHelper.SimpleCallback
 		this.icon.draw(c);
 	}
 
+	// --- --- --- Not used --- --- ---
+	@Override
+	public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
+	{ return false; }
+
 	@Override
 	public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
 	{
-		this.swipeEvent.handleOnSwiped(viewHolder, direction);
+		this.swipeEvent.handleOnSwiped(viewHolder);
 	}
 }

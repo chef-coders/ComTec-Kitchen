@@ -68,8 +68,8 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 		if (this.recyclerController.swipeIsSupported())
 		{
-			ItemTouchHelper.SimpleCallback itemSwipeCallback = new SwipeDelCallback(this, ContextCompat.getDrawable(
-				this.recyclerView.getContext(), R.drawable.ic_delete_white_36dp), new ColorDrawable(Color.RED));
+			ItemTouchHelper.Callback itemSwipeCallback = new SwipeDelCallback(this, ContextCompat.getDrawable(
+				this.recyclerView.getContext(), R.drawable.ic_delete_white_36dp), new ColorDrawable(Color.RED), recyclerController);
 			new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
 		}
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
@@ -88,22 +88,26 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
 	}
 
-	private RowPos calcRowPos(int pos)
+	public static RowPos calcRowPos(int pos, RecyclerController recyclerController, RecyclerView recyclerView)
 	{
-		SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
+		SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
 		if (sectionedAdapter == null)
 		{
 			return null;
 		}
 
-		int numOfSections = this.recyclerController.getSections();
+		int numOfSections = recyclerController.getSections();
 		int counter = 0;
 
 		for (int sectionId = 0; sectionId < numOfSections; sectionId++)
 		{
+			if(pos == counter)
+			{
+				return null;
+			}
 			counter++;
 			Section section = sectionedAdapter.getSectionForPosition(sectionId);
-			int sectionSize = this.recyclerController.getItems(sectionId);
+			int sectionSize = recyclerController.getItems(sectionId);
 
 			for (int itemId = 0; itemId < sectionSize; itemId++)
 			{
@@ -121,7 +125,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 	private void handleOnTouch(final View view, int pos)
 	{
-		final RowPos rowPos = this.calcRowPos(pos);
+		final RowPos rowPos = calcRowPos(pos, recyclerController, recyclerView);
 		if (rowPos == null || rowPos.getSection() == null)
 		{
 			return;
@@ -140,7 +144,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 	}
 
 	@Override
-	public void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+	public void handleOnSwiped(RecyclerView.ViewHolder viewHolder)
 	{
 		final int position = viewHolder.getLayoutPosition();
 		if (position == NO_POSITION)
@@ -148,7 +152,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
-		final RowPos rowPos = this.calcRowPos(position);
+		final RowPos rowPos = calcRowPos(position, recyclerController, recyclerView);
 		if (rowPos == null || rowPos.getSection() == null)
 		{
 			return;
