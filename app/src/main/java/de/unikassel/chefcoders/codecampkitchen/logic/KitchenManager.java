@@ -57,7 +57,7 @@ public class KitchenManager
 		}
 
 		final User userData = JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId()));
-		this.localDataStore.addUser(userData);
+		this.localDataStore.getUsers().put(userData.get_id(), userData);
 		return true;
 	}
 
@@ -81,7 +81,7 @@ public class KitchenManager
 		this.setUserInfo(createdUser.getToken(), createdUser.get_id());
 		this.saveUserInfo(context);
 
-		this.localDataStore.addUser(createdUser);
+		this.localDataStore.getUsers().put(createdUser.get_id(), createdUser);
 	}
 
 	public void clearUserData(Context context)
@@ -130,28 +130,31 @@ public class KitchenManager
 
 	public List<User> getAllUsers()
 	{
-		return new ArrayList<>(this.localDataStore.getUsers());
+		return new ArrayList<>(this.localDataStore.getUsers().values());
 	}
 
 	public Map<String, List<User>> getGroupedUsers()
 	{
-		return group(this.localDataStore.getUsers(), u -> u.getName().substring(0, 1).toUpperCase(),
+		return group(this.localDataStore.getUsers().values(), u -> u.getName().substring(0, 1).toUpperCase(),
 		             Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
 	public void refreshAllUsers()
 	{
-		JsonTranslator.toUsers(this.connection.getAllUsers()).forEach(this.localDataStore::addUser);
+		final Map<String, User> users = this.localDataStore.getUsers();
+		users.clear();
+		JsonTranslator.toUsers(this.connection.getAllUsers()).forEach(user -> users.put(user.get_id(), user));
 	}
 
 	public User getLoggedInUser()
 	{
-		return this.localDataStore.getUser(this.localDataStore.getLoginId());
+		return this.localDataStore.getUsers().get(this.localDataStore.getLoginId());
 	}
 
 	public void refreshLoggedInUser()
 	{
-		this.localDataStore.addUser(JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId())));
+		User user = JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId()));
+		this.localDataStore.getUsers().put(user.get_id(), user);
 	}
 
 	public boolean isAdmin()
@@ -160,24 +163,33 @@ public class KitchenManager
 		return "admin".equals(user.getRole());
 	}
 
+	public boolean deleteUser(User user)
+	{
+		this.connection.deleteUser(user.get_id());
+		return true;
+	}
+
 	// --------------- Items ---------------
 
 	public List<Item> getItems()
 	{
-		return new ArrayList<>(this.localDataStore.getItems());
+		return new ArrayList<>(this.localDataStore.getItems().values());
 	}
 
 	public void refreshItems()
 	{
-		JsonTranslator.toItems(this.connection.getAllItems()).forEach(this.localDataStore::addItem);
+		final Map<String, Item> items = this.localDataStore.getItems();
+		JsonTranslator.toItems(this.connection.getAllItems()).forEach(item -> items.put(item.get_id(), item));
 	}
 
 	public Map<String, List<Item>> getGroupedItems()
 	{
-		return group(this.localDataStore.getItems(), Item::getKind, Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
+		return group(this.localDataStore.getItems().values(), Item::getKind,
+		             Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
-	private static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor, Comparator<? super V> comparator)
+	private static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
+		Comparator<? super V> comparator)
 	{
 		final Map<K, List<V>> grouped = items.stream().collect(
 			Collectors.groupingBy(keyExtractor, TreeMap::new, Collectors.toList()));
@@ -200,7 +212,7 @@ public class KitchenManager
 
 		final Item createdItem = JsonTranslator.toItem(resultJson);
 
-		this.localDataStore.addItem(createdItem);
+		this.localDataStore.getItems().put(createdItem.get_id(), createdItem);
 	}
 
 	public void updateItem(String id, String name, double price, int amount, String kind)
@@ -244,17 +256,17 @@ public class KitchenManager
 		final Purchase createdPurchase = JsonTranslator
 			                                 .toPurchase(this.connection.buyItem(JsonTranslator.toJson(purchase)));
 
-		this.localDataStore.addPurchase(createdPurchase);
+		this.localDataStore.getPurchases().put(createdPurchase.get_id(), createdPurchase);
 	}
 
 	public boolean containsItem(String id)
 	{
-		return this.localDataStore.getItem(id) != null;
+		return this.localDataStore.getItems().get(id) != null;
 	}
 
 	public Item getItemById(String id)
 	{
-		return this.localDataStore.getItem(id);
+		return this.localDataStore.getItems().get(id);
 	}
 
 	public Item getItem(int section, int item) {
@@ -281,23 +293,25 @@ public class KitchenManager
 
 	public List<Purchase> getAllPurchases()
 	{
-		return new ArrayList<>(this.localDataStore.getPurchases());
+		return new ArrayList<>(this.localDataStore.getPurchases().values());
 	}
 
 	public void refreshAllPurchases()
 	{
-		JsonTranslator.toPurchases(this.connection.getAllPurchases()).forEach(this.localDataStore::addPurchase);
+		JsonTranslator.toPurchases(this.connection.getAllPurchases())
+		              .forEach(purchase -> this.localDataStore.getPurchases().put(purchase.get_id(), purchase));
 	}
 
 	public List<Purchase> getMyPurchases()
 	{
 		final String userId = this.localDataStore.getLoginId();
-		return this.localDataStore.getPurchases().stream().filter(userFilter(userId)).collect(Collectors.toList());
+		return this.localDataStore.getPurchases().values().stream().filter(userFilter(userId))
+		                          .collect(Collectors.toList());
 	}
 
 	public Map<String, List<Purchase>> getMyGroupedPurchases()
 	{
-		final Collection<Purchase> purchases = this.localDataStore.getPurchases();
+		final Collection<Purchase> purchases = this.localDataStore.getPurchases().values();
 		if (purchases.isEmpty())
 		{
 			return Collections.singletonMap("Nothing here", Collections.emptyList());
@@ -308,7 +322,9 @@ public class KitchenManager
 
 	public void refreshMyPurchases()
 	{
-		JsonTranslator.toPurchases(this.connection.getPurchasesForUser()).forEach(this.localDataStore::addPurchase);
+		final Map<String, Purchase> purchases = this.localDataStore.getPurchases();
+		JsonTranslator.toPurchases(this.connection.getPurchasesForUser())
+		              .forEach(purchase -> purchases.put(purchase.get_id(), purchase));
 	}
 
 	private double getTotal(Purchase purchase)
@@ -339,8 +355,8 @@ public class KitchenManager
 		{
 			this.connection.buyItem(JsonTranslator.toJson(purchase));
 		}
-		
-		refreshLoggedInUser();
+
+		this.refreshLoggedInUser();
 
 		this.localDataStore.getShoppingCart().clear();
 	}

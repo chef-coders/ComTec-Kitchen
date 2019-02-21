@@ -43,5 +43,7 @@
     <string name="users">Nutzer</string>
     <string name="open">Öffnen</string>
     <string name="close">Schließen</string>
+    <string name="shop">Shop</string>
+    <string name="purchase_history">Einkaufs Historie</string>
 
 </resources>

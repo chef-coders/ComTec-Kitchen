@@ -43,5 +43,8 @@
     <string name="users">Users</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="shop">Shop</string>
+    <string name="purchase_history">Purchase History</string>
+    <string name="logout">Logout</string>
 
 </resources>

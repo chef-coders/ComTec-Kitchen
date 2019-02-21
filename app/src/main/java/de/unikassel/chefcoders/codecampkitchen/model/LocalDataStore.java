@@ -1,6 +1,9 @@
 package de.unikassel.chefcoders.codecampkitchen.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LocalDataStore
 {
@@ -52,17 +55,18 @@ public class LocalDataStore
 
 	// =============== Methods ===============
 
-	// @formatter:off
-	public void addUser(User user) { this.users.put(user.get_id(), user); }
-	public User getUser(String id) { return this.users.get(id); }
-	public Collection<User> getUsers() { return this.users.values(); }
+	public Map<String, User> getUsers()
+	{
+		return this.users;
+	}
 
-	public void addItem(Item item) { this.items.put(item.get_id(), item); }
-	public Item getItem(String id) { return this.items.get(id); }
-	public Collection<Item> getItems() { return this.items.values(); }
+	public Map<String, Item> getItems()
+	{
+		return this.items;
+	}
 
-	public void addPurchase(Purchase purchase) { this.purchases.put(purchase.get_id(), purchase); }
-	public Purchase getPurchase(String id) { return this.purchases.get(id); }
-	public Collection<Purchase> getPurchases() { return this.purchases.values(); }
-	// @formatter:on
+	public Map<String, Purchase> getPurchases()
+	{
+		return this.purchases;
+	}
 }

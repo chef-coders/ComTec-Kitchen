@@ -35,7 +35,16 @@ public class Populator
 
 		v.subTitleTextView.setText(purchase.getCreated().substring(11));
 
-		populate(v, item, amount);
+		if (item != null)
+		{
+			populate(v, item, amount);
+		}
+		else
+		{
+			v.titleTextView.setText(itemId);
+			v.topRightView.setText("");
+			v.bottomRightTextView.setText("");
+		}
 	}
 
 	static void populate(RowViewHolder v, Item item, int amount)

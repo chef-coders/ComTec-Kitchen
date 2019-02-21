@@ -35,13 +35,12 @@ public class PurchasesRecyclerController extends GroupedRecyclerController<Purch
 	@Override
 	public boolean onSwiped(int section, int item)
 	{
-		// TODO - Handle swipe
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean swipeIsSupported()
 	{
-		return true;
+		return false;
 	}
 }
