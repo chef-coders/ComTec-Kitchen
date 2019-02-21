@@ -25,7 +25,7 @@ public enum ItemKind
 	}
 
 	public static Entry[] createEntries(Context context) {
-		return Arrays.stream(ItemKind.values()).map(item -> item.new Entry(context)).toArray(ItemKind.Entry[]::new);
+		return Arrays.stream(ItemKind.values()).map(item -> item.new Entry(context, item)).toArray(ItemKind.Entry[]::new);
 	}
 
 	public static ItemKind getValue(String value) {
@@ -55,16 +55,20 @@ public enum ItemKind
 		return -1;
 	}
 
-	class Entry {
+	public class Entry {
 		private Context context;
+		private ItemKind itemKind;
 
-		Entry(Context context) {
+		Entry(Context context, ItemKind itemKind) {
 			this.context = context;
+			this.itemKind = itemKind;
 		}
 
 		@Override
 		public String toString() {
 			return context.getString(resourceId);
 		}
+
+		public String getValue() { return itemKind.value; }
 	}
 }

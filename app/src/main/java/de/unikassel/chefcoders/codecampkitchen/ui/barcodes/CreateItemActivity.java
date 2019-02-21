@@ -61,7 +61,8 @@ public class CreateItemActivity extends AppCompatActivity
 			String name = nameText.getText().toString();
 			double price = Double.parseDouble(priceText.getText().toString());
 			int amount = Integer.parseInt(amountText.getText().toString());
-			String kind = kindSpinner.getSelectedItem().toString();
+			ItemKind.Entry selectedEntry = (ItemKind.Entry) kindSpinner.getSelectedItem();
+			String kind = selectedEntry.getValue();
 			new SimpleAsyncTask(() -> {
 				MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind);
 			}, this::startMainActivity).execute();
