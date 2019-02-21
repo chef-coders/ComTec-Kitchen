@@ -3,25 +3,14 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
+import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.model.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
-import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
-import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
-import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
-import de.unikassel.chefcoders.codecampkitchen.model.User;
 
 public class KitchenManager
 {
@@ -179,6 +168,7 @@ public class KitchenManager
 	public void refreshItems()
 	{
 		final Map<String, Item> items = this.localDataStore.getItems();
+		items.clear();
 		JsonTranslator.toItems(this.connection.getAllItems()).forEach(item -> items.put(item.get_id(), item));
 	}
 
@@ -232,10 +222,12 @@ public class KitchenManager
 
 		final Item updatedItem = JsonTranslator.toItem(resultJson);
 
-		currentItem.setName(updatedItem.getName()).setPrice(updatedItem.getPrice()).setAmount(updatedItem.getAmount()).setKind(updatedItem.getKind());
+		currentItem.setName(updatedItem.getName()).setPrice(updatedItem.getPrice()).setAmount(updatedItem.getAmount())
+		           .setKind(updatedItem.getKind());
 	}
 
-	public void deleteItem(String id) {
+	public void deleteItem(String id)
+	{
 		if (!this.isAdmin())
 		{
 			return;
@@ -269,7 +261,8 @@ public class KitchenManager
 		return this.localDataStore.getItems().get(id);
 	}
 
-	public Item getItem(int section, int item) {
+	public Item getItem(int section, int item)
+	{
 		final Map<String, List<Item>> grouped = getGroupedItems();
 		final int numSections = grouped.size();
 
