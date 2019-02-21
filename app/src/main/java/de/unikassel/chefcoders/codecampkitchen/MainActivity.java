@@ -22,6 +22,7 @@ import java.util.Arrays;
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.AllUserFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
@@ -143,6 +144,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        MenuItem item = navigationView.getMenu().findItem(R.id.nav_all_users);
+        item.setVisible(kitchenManager.isAdmin());
+
         checkAllItemsMenuItem(true);
 
         navigationView.setNavigationItemSelectedListener(
@@ -153,13 +157,16 @@ public class MainActivity extends AppCompatActivity
                             changeFragment(new AllItemsFragment());
                             menuItem.setChecked(true);
                             drawerLayout.closeDrawers();
-
                             break;
                         case R.id.nav_my_purcheses:
                             changeFragment(new MyPurchasesFragment());
                             menuItem.setChecked(true);
                             drawerLayout.closeDrawers();
-
+                            break;
+                        case R.id.nav_all_users:
+                            changeFragment(new AllUserFragment());
+                            menuItem.setChecked(true);
+                            drawerLayout.closeDrawers();
                             break;
                         case R.id.nav_clear_user_data:
                             kitchenManager.clearUserData(MainActivity.this);
