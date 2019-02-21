@@ -56,18 +56,25 @@ public class CreateItemActivity extends AppCompatActivity
 	}
 
 	public void onCreate(View view) {
+		final String name = nameText.getText().toString();
+		final double price;
+		final int amount;
+		final ItemKind.Entry selectedEntry = (ItemKind.Entry) kindSpinner.getSelectedItem();
+		final String kind = selectedEntry.getValue();
+
 		try {
-			String name = nameText.getText().toString();
-			double price = Double.parseDouble(priceText.getText().toString());
-			int amount = Integer.parseInt(amountText.getText().toString());
-			ItemKind.Entry selectedEntry = (ItemKind.Entry) kindSpinner.getSelectedItem();
-			String kind = selectedEntry.getValue();
-			SimpleAsyncTask.execute(() -> MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind),
-			                        this::startMainActivity);
+			price = Double.parseDouble(priceText.getText().toString());
+			amount = Integer.parseInt(amountText.getText().toString());
 		} catch (Exception ex) {
 			priceText.setText("0.00");
 			amountText.setText("0");
+			return;
 		}
+
+		SimpleAsyncTask.execute(
+			() -> MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind),
+			this::startMainActivity
+		);
 	}
 
 	private void startMainActivity() {

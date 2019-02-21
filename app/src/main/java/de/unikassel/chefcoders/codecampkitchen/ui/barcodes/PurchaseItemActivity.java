@@ -50,14 +50,19 @@ public class PurchaseItemActivity extends AppCompatActivity
 	}
 
 	public void onPurchase(View view) {
+		final int amount;
+
 		try {
-			int amount = Integer.parseInt(this.amountText.getText().toString());
-			SimpleAsyncTask.execute(
-				() -> MainActivity.kitchenManager.addToCart(MainActivity.kitchenManager.getItemById(barcode), amount),
-				this::startMainActivity);
+			amount = Integer.parseInt(this.amountText.getText().toString());
 		} catch (Exception ex) {
 			this.amountText.setText("1");
+			return;
 		}
+
+		SimpleAsyncTask.execute(
+			() -> MainActivity.kitchenManager.addToCart(MainActivity.kitchenManager.getItemById(barcode), amount),
+			this::startMainActivity
+		);
 	}
 
 	private void startMainActivity() {
