@@ -41,4 +41,7 @@
     <string name="itemNotFound">Item not found</string>
     <string name="user">User</string>
     <string name="users">Users</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 </resources>

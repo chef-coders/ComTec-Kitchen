@@ -41,4 +41,7 @@
     <string name="itemNotFound">Artikel nicht vorhanden</string>
     <string name="user">Nutzer</string>
     <string name="users">Nutzer</string>
+    <string name="open">Öffnen</string>
+    <string name="close">Schließen</string>
+
 </resources>
