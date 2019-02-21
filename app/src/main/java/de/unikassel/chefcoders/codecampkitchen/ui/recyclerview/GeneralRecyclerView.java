@@ -12,6 +12,8 @@ import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
+import static android.support.v7.widget.RecyclerView.NO_POSITION;
+
 public class GeneralRecyclerView
 {
 	private RecyclerView        recyclerView;
@@ -107,11 +109,11 @@ public class GeneralRecyclerView
 			counter++;
 			Section section = sectionedAdapter.getSectionForPosition(sectionId);
 
-			for(int itemId = 0; itemId < section.getContentItemsTotal(); itemId++)
+			for(int rowId = 0; rowId < section.getContentItemsTotal(); rowId++)
 			{
-				if(counter + itemId == pos)
+				if(counter + rowId == pos)
 				{
-					return new RowPos(section, sectionId, itemId);
+					return new RowPos(section, sectionId, rowId);
 				}
 			}
 
@@ -142,7 +144,15 @@ public class GeneralRecyclerView
 
 	private void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
 	{
-		final RowPos rowPos = this.calcRowPos(viewHolder.getPosition());
+		final int position = viewHolder.getAdapterPosition();
+		if(position == NO_POSITION)
+		{
+			return;
+		}
+
+		this.recyclerView.getAdapter().notifyItemChanged(position);
+
+		final RowPos rowPos = this.calcRowPos(position);
 		if(rowPos == null || rowPos.getSection() == null)
 		{
 			return;

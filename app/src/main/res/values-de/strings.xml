@@ -30,4 +30,7 @@
     <string name="coffee">Kaffee</string>
     <string name="latte">Milchkaffee</string>
     <string name="espresso">Espresso</string>
+    <string name="purchase_success">Einkauf erfolgreich</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 </resources>
