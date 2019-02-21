@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -128,21 +129,17 @@ public class MainActivity extends AppCompatActivity
     private void initNavDrawer()
     {
         this.drawerLayout = this.findViewById(R.id.main_drawer_layout);
-
         navigationView = this.findViewById(R.id.nav_view);
 
-        View headerView = navigationView.getHeaderView(0);
-        TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
-
-        User user = kitchenManager.getLoggedInUser();
-
-        if (user != null) {
-            if (user.getRole().equals("admin")) {
-                textViewUsername.setText(user.getName()+" (Admin)");
-            } else {
-                textViewUsername.setText(user.getName());
+        drawerLayout.addDrawerListener(new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close){
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+                updatedDrawerHeader();
             }
-        }
+        });
+        updatedDrawerHeader();
 
         MenuItem item = navigationView.getMenu().findItem(R.id.nav_all_users);
         item.setVisible(kitchenManager.isAdmin());
@@ -177,6 +174,23 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 }
         );
+    }
+
+    private void updatedDrawerHeader(){
+        View headerView = navigationView.getHeaderView(0);
+        TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
+        TextView textViewCredit = headerView.findViewById(R.id.textViewCredit);
+
+        User user = kitchenManager.getLoggedInUser();
+
+        if (user != null) {
+            if (user.getRole().equals("admin")) {
+                textViewUsername.setText(user.getName()+" (Admin)");
+            } else {
+                textViewUsername.setText(user.getName());
+            }
+            textViewCredit.setText(getString(R.string.item_price,user.getCredit()));
+        }
     }
 
 
