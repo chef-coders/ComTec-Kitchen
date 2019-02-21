@@ -54,7 +54,7 @@ public class PurchaseItemActivity extends AppCompatActivity
 		try {
 			int amount = Integer.parseInt(this.amountText.getText().toString());
 			new SimpleAsyncTask(() -> {
-				MainActivity.kitchenManager.buyItem(MainActivity.kitchenManager.getItemById(barcode), amount);
+				MainActivity.kitchenManager.addToCart(MainActivity.kitchenManager.getItemById(barcode), amount);
 			}, this::startMainActivity).execute();
 		} catch (Exception ex) {
 			this.amountText.setText("1");
