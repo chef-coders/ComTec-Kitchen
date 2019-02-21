@@ -65,12 +65,6 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 
 	}
 
-	//@Override
-	public void handleRecViewItemTouched(View view, int position)
-	{
-
-	}
-
 	@Override
 	public void onClick(int section, int item)
 	{
