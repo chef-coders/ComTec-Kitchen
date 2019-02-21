@@ -91,7 +91,7 @@ public class GeneralRecyclerView
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
 	}
 
-	private ItemPos calcSectionedPos(int pos)
+	private RowPos calcRowPos(int pos)
 	{
 		SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter)this.recyclerView.getAdapter();
 		if(sectionedAdapter == null)
@@ -111,7 +111,7 @@ public class GeneralRecyclerView
 			{
 				if(counter + itemId == pos)
 				{
-					return new ItemPos(section, sectionId, itemId);
+					return new RowPos(section, sectionId, itemId);
 				}
 			}
 
@@ -123,33 +123,33 @@ public class GeneralRecyclerView
 
 	private void handleOnTouch(final View view, int pos)
 	{
-		final ItemPos itemPos = this.calcSectionedPos(pos);
-		if (itemPos == null || itemPos.getSection() == null)
+		final RowPos rowPos = this.calcRowPos(pos);
+		if (rowPos == null || rowPos.getSection() == null)
 		{
 			return;
 		}
 
 		ResultAsyncTask.exeResultAsyncTask(()->
-						this.recyclerController.onClick(itemPos.getSectionId(), itemPos.getItemId()),
+						this.recyclerController.onClick(rowPos.getSectionId(), rowPos.getRowId()),
 				(Boolean b) -> {
-					RecyclerView.ViewHolder viewHolder = itemPos.getSection().getItemViewHolder(view);
+					RecyclerView.ViewHolder viewHolder = rowPos.getSection().getItemViewHolder(view);
 					if(b && viewHolder != null)
 					{
-						this.recyclerController.populate(viewHolder, itemPos.getSectionId(), itemPos.getItemId());
+						this.recyclerController.populate(viewHolder, rowPos.getSectionId(), rowPos.getRowId());
 					}
 				});
 	}
 
 	private void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
 	{
-		final ItemPos itemPos = this.calcSectionedPos(viewHolder.getPosition());
-		if(itemPos == null || itemPos.getSection() == null)
+		final RowPos rowPos = this.calcRowPos(viewHolder.getPosition());
+		if(rowPos == null || rowPos.getSection() == null)
 		{
 			return;
 		}
 
 		new SimpleAsyncTask(() -> {
-				boolean refresh = this.recyclerController.onSwiped(itemPos.getSectionId(), itemPos.getItemId());
+				boolean refresh = this.recyclerController.onSwiped(rowPos.getSectionId(), rowPos.getRowId());
 				if(refresh)
 				{
 					this.recyclerController.refresh();

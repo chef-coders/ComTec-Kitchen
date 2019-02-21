@@ -2,17 +2,17 @@ package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 
-public class ItemPos
+public class RowPos
 {
 	private Section section;
 	private int sectionId;
-	private int itemId;
+	private int rowId;
 
-	public ItemPos(Section section, int sectionId, int itemId)
+	public RowPos(Section section, int sectionId, int rowId)
 	{
 		this.section = section;
 		this.sectionId = sectionId;
-		this.itemId = itemId;
+		this.rowId = rowId;
 	}
 
 	public Section getSection()
@@ -35,19 +35,19 @@ public class ItemPos
 		this.sectionId = sectionId;
 	}
 
-	public int getItemId()
+	public int getRowId()
 	{
-		return itemId;
+		return rowId;
 	}
 
-	public void setItemId(int itemId)
+	public void setRowId(int itemId)
 	{
-		this.itemId = itemId;
+		this.rowId = itemId;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "itemId: " + this.itemId + " sectionId: " + sectionId;
+		return "rowId: " + this.rowId + " sectionId: " + sectionId;
 	}
 }
