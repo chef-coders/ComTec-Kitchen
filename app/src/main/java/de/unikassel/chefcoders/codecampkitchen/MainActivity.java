@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         AllItemsFragment fragment = new AllItemsFragment();
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
-        fragment.changeToolbar(toolbar.getMenu());
         transaction.replace(R.id.headlines_fragment, fragment);
         transaction.commit();
 
@@ -203,7 +202,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
 
-        fragment.changeToolbar(toolbar.getMenu());
+        //fragment.changeToolbar(toolbar);
 
         if (fragment instanceof AllItemsFragment) {
             transaction.setCustomAnimations(

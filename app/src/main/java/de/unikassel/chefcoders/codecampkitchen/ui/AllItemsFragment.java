@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toolbar;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
@@ -59,16 +60,18 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	}
 
 	@Override
-	protected void showToolbarMenu(Menu menu)
+	protected void updateToolbar(android.support.v7.widget.Toolbar toolbar)
 	{
+		toolbar.setTitle(R.string.shop);
+		Menu menu = toolbar.getMenu();
 		menu.findItem(R.id.action_scan_code).setVisible(true);
 		menu.findItem(R.id.action_create).setVisible(false);
 		menu.findItem(R.id.action_edit).setVisible(false);
 		ResultAsyncTask.exeResultAsyncTask(() -> MainActivity.kitchenManager.isAdmin(), (value) ->
-			{
-				menu.findItem(R.id.action_create).setVisible(value);
-				menu.findItem(R.id.action_edit).setVisible(value);
-			}
+				{
+					menu.findItem(R.id.action_create).setVisible(value);
+					menu.findItem(R.id.action_edit).setVisible(value);
+				}
 		);
 	}
 

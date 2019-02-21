@@ -99,8 +99,11 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	}
 
 	@Override
-	protected void showToolbarMenu(Menu menu)
+	protected void updateToolbar(android.support.v7.widget.Toolbar toolbar)
 	{
+
+		toolbar.setTitle(R.string.purchase);
+		Menu menu = toolbar.getMenu();
 		menu.findItem(R.id.action_clear_all)
 				.setVisible(true);
 	}
