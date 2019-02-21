@@ -65,10 +65,15 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
     {
     }
 
-    @Override
-    public void handleRecViewItemTouched(View view, int position)
-    {
-        // TODO - Handle touch
-    }
+	@Override
+	public void onClick(int section, int item)
+	{
 
+	}
+
+	@Override
+	public void onSwiped(int section, int item)
+	{
+
+	}
 }
