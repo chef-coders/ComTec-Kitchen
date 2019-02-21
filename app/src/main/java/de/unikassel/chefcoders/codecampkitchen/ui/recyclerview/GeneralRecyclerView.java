@@ -103,8 +103,9 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		{
 			counter++;
 			Section section = sectionedAdapter.getSectionForPosition(sectionId);
+			int sectionSize = this.recyclerController.getItems(sectionId);
 
-			for (int itemId = 0; itemId < section.getContentItemsTotal(); itemId++)
+			for (int itemId = 0; itemId < sectionSize; itemId++)
 			{
 				if (counter + itemId == pos)
 				{
@@ -112,7 +113,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 				}
 			}
 
-			counter += section.getContentItemsTotal();
+			counter += sectionSize;
 		}
 
 		return null;
@@ -141,7 +142,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 	@Override
 	public void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
 	{
-		final int position = viewHolder.getAdapterPosition();
+		final int position = viewHolder.getLayoutPosition();
 		if (position == NO_POSITION)
 		{
 			return;
