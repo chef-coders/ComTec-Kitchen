@@ -1,6 +1,11 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +19,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
-public class GeneralRecyclerView
+public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 {
 	private RecyclerView        recyclerView;
 	private SwipeRefreshLayout  swipeRefreshLayout;
@@ -63,19 +68,11 @@ public class GeneralRecyclerView
 						this.recyclerView,
 						this::handleOnTouch));
 
-		ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
-		{
-			@Override
-			public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-			{ return false; }
-
-			@Override
-			public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
-			{
-				handleOnSwiped(viewHolder, direction);
-			}
-		};
-		new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this.recyclerView);
+		ItemTouchHelper.SimpleCallback itemSwipeCallback =
+				new SwipeDelCallback(this,
+						new ColorDrawable(Color.RED),
+						new ColorDrawable(Color.RED));
+		new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
 		this.recyclerView.setLayoutManager(layoutManager);
@@ -142,7 +139,8 @@ public class GeneralRecyclerView
 				});
 	}
 
-	private void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+	@Override
+	public void handleOnSwiped(RecyclerView.ViewHolder viewHolder, int direction)
 	{
 		final int position = viewHolder.getAdapterPosition();
 		if(position == NO_POSITION)
