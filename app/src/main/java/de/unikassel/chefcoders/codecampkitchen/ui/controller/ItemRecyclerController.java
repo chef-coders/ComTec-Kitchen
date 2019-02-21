@@ -42,7 +42,6 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		if (MainActivity.editMode) {
 			final Item clickedItem = MainActivity.kitchenManager.getItem(section, itemIndex);
 			MainActivity.kitchenManager.deleteItem(clickedItem.get_id());
-			refresh();
 			return true;
 		} else {
 			return MainActivity.kitchenManager.removeFromCart(this.get(section, itemIndex));
