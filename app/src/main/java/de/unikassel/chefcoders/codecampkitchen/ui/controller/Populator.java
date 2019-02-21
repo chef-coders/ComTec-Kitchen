@@ -5,6 +5,7 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
+import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
 public class Populator
@@ -60,5 +61,13 @@ public class Populator
 			v.bottomRightTextView.setText(context.getString(R.string.item_price, total));
 			break;
 		}
+	}
+
+	static void populate(RowViewHolder v, User user)
+	{
+		v.titleTextView.setText(user.getName() + " (" + user.getRole() + ")");
+		v.subTitleTextView.setText(user.getMail());
+		v.topRightView.setText(v.itemView.getContext().getString(R.string.item_price, user.getCredit()));
+		v.bottomRightTextView.setText(user.getCreated());
 	}
 }
