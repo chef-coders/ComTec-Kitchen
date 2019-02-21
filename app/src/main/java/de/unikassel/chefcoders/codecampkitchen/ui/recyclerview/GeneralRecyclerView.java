@@ -67,11 +67,14 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 						this.recyclerView,
 						this::handleOnTouch));
 
-		ItemTouchHelper.SimpleCallback itemSwipeCallback =
-				new SwipeDelCallback(this,
-						new ColorDrawable(Color.RED),
-						new ColorDrawable(Color.RED));
-		new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
+		if(this.recyclerController.swipeIsSupported())
+		{
+			ItemTouchHelper.SimpleCallback itemSwipeCallback =
+					new SwipeDelCallback(this,
+							new ColorDrawable(Color.RED),
+							new ColorDrawable(Color.RED));
+			new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
+		}
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
 		this.recyclerView.setLayoutManager(layoutManager);

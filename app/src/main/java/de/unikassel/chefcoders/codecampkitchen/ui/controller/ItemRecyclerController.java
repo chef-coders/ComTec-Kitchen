@@ -77,4 +77,10 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 		MainActivity.kitchenManager.removeFromCart(item);
 		return true;
 	}
+
+	@Override
+	public boolean swipeIsSupported()
+	{
+		return true;
+	}
 }

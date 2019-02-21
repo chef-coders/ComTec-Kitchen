@@ -75,4 +75,10 @@ public class PurchasesRecyclerController implements RecyclerController<RowViewHo
 		// TODO - Handle swipe
 		return true;
 	}
+
+	@Override
+	public boolean swipeIsSupported()
+	{
+		return true;
+	}
 }

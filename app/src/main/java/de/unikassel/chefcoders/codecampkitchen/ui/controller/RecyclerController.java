@@ -20,4 +20,6 @@ public interface RecyclerController<T extends RecyclerView.ViewHolder>
 	boolean onClick(int section, int item);
 
 	boolean onSwiped(int section, int item);
+
+	boolean swipeIsSupported();
 }

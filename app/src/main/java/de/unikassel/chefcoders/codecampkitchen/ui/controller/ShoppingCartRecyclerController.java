@@ -69,4 +69,10 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 		MainActivity.kitchenManager.removeFromCart(item);
 		return false;
 	}
+
+	@Override
+	public boolean swipeIsSupported()
+	{
+		return true;
+	}
 }

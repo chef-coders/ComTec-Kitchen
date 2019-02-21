@@ -59,4 +59,10 @@ public class UserRecyclerController implements RecyclerController<RowViewHolder>
 	{
 		return false;
 	}
+
+	@Override
+	public boolean swipeIsSupported()
+	{
+		return false;
+	}
 }
