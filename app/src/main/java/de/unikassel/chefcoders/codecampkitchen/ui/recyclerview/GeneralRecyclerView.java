@@ -149,6 +149,9 @@ public class GeneralRecyclerView
 		{
 			return;
 		}
+
+		this.recyclerView.getAdapter().notifyItemChanged(position);
+
 		final RowPos rowPos = this.calcRowPos(position);
 		if(rowPos == null || rowPos.getSection() == null)
 		{
