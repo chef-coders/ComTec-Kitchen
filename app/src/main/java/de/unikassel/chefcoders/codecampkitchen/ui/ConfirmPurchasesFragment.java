@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -8,13 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ShoppingCartRecyclerController;
@@ -82,17 +78,15 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	private void purchaseItems()
 	{
 		progressBar.setVisibility(View.VISIBLE);
-		new SimpleAsyncTask(() -> MainActivity.kitchenManager.submitCart(),
-				() ->
-				{
-					progressBar.setVisibility(View.GONE);
-					MainActivity mainActivity = (MainActivity) getActivity();
-					if (mainActivity != null) {
-						mainActivity.changeFragment(new AllItemsFragment());
-						Toast.makeText(getActivity(), R.string.purchase_success, Toast.LENGTH_LONG)
-								.show();
-					}
-				}).execute();
+		SimpleAsyncTask.execute(() -> MainActivity.kitchenManager.submitCart(), () -> {
+			progressBar.setVisibility(View.GONE);
+			MainActivity mainActivity = (MainActivity) getActivity();
+			if (mainActivity != null)
+			{
+				mainActivity.changeFragment(new AllItemsFragment());
+				Toast.makeText(getActivity(), R.string.purchase_success, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	private void initRecyclerView(View view)
