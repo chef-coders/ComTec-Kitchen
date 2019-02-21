@@ -28,27 +28,6 @@ public class User
    }
 
 
-   public static final String PROPERTY_credit = "credit";
-
-   private long credit;
-
-   public long getCredit()
-   {
-      return credit;
-   }
-
-   public User setCredit(long value)
-   {
-      if (value != this.credit)
-      {
-         long oldValue = this.credit;
-         this.credit = value;
-         firePropertyChange("credit", oldValue, value);
-      }
-      return this;
-   }
-
-
    public static final String PROPERTY_role = "role";
 
    private String role;
@@ -183,22 +162,6 @@ public class User
       return true;
    }
 
-   @Override
-   public String toString()
-   {
-      StringBuilder result = new StringBuilder();
-
-      result.append(" ").append(this.get_id());
-      result.append(" ").append(this.getCreated());
-      result.append(" ").append(this.getToken());
-      result.append(" ").append(this.getName());
-      result.append(" ").append(this.getMail());
-      result.append(" ").append(this.getRole());
-
-
-      return result.substring(1);
-   }
-
    public void removeYou()
    {
    }
@@ -224,5 +187,42 @@ public class User
       return this;
    }
 
+
+   public static final String PROPERTY_credit = "credit";
+
+   private double credit;
+
+   public double getCredit()
+   {
+      return credit;
+   }
+
+   public User setCredit(double value)
+   {
+      if (value != this.credit)
+      {
+         double oldValue = this.credit;
+         this.credit = value;
+         firePropertyChange("credit", oldValue, value);
+      }
+      return this;
+   }
+
+
+   @Override
+   public String toString()
+   {
+      StringBuilder result = new StringBuilder();
+
+      result.append(" ").append(this.get_id());
+      result.append(" ").append(this.getCreated());
+      result.append(" ").append(this.getToken());
+      result.append(" ").append(this.getName());
+      result.append(" ").append(this.getMail());
+      result.append(" ").append(this.getRole());
+
+
+      return result.substring(1);
+   }
 
 }

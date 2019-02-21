@@ -21,6 +21,7 @@
     <string name="add">+</string>
     <string name="sub">-</string>
     <string name="purchase">Purchase</string>
-    <string name="theNameText">Name</string>
+    <string name="theNameText" translatable="false">Name</string>
     <string name="clear_all">Clear All</string>
+    <string name="purchase_success">Purchase successful</string>
 </resources>

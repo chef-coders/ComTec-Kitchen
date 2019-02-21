@@ -24,4 +24,5 @@
     <string name="purchase">Kaufen</string>
     <string name="theNameText">Name</string>
     <string name="clear_all">Alle löschen</string>
+    <string name="purchase_success">Einkauf erfolgreich</string>
 </resources>
