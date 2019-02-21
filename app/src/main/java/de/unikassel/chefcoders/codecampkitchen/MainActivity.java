@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity
     public static KitchenManager kitchenManager
             = KitchenManager.create();
 
+    public static boolean editMode = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -229,6 +231,9 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.action_create:
                 startActivity(new Intent(MainActivity.this, CreateItemActivity.class));
+                return true;
+            case R.id.action_edit:
+                editMode = !editMode;
                 return true;
             case R.id.action_clear_all:
                 new SimpleAsyncTask(()->kitchenManager.clearCart(),()->{})

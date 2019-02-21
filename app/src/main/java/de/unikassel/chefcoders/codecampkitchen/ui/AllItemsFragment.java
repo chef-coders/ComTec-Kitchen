@@ -60,8 +60,12 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	{
 		menu.findItem(R.id.action_scan_code).setVisible(true);
 		menu.findItem(R.id.action_create).setVisible(false);
+		menu.findItem(R.id.action_edit).setVisible(false);
 		ResultAsyncTask.exeResultAsyncTask(() -> MainActivity.kitchenManager.isAdmin(), (value) ->
-				menu.findItem(R.id.action_create).setVisible(value)
+			{
+				menu.findItem(R.id.action_create).setVisible(value);
+				menu.findItem(R.id.action_edit).setVisible(value);
+			}
 		);
 	}
 

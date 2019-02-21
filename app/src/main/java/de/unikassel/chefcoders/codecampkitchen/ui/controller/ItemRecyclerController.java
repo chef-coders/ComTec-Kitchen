@@ -1,8 +1,10 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
+import android.content.Intent;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
 import java.util.List;
@@ -65,9 +67,17 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 	@Override
 	public boolean onClick(int section, int itemIndex)
 	{
-		final Item item = this.items[section][itemIndex];
-		MainActivity.kitchenManager.addToCart(item);
-		return true;
+		if (!MainActivity.editMode) {
+			final Item item = this.items[section][itemIndex];
+			MainActivity.kitchenManager.addToCart(item);
+			return true;
+		} else {
+			final Item item = this.items[section][itemIndex];
+			Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
+			intent.putExtra("itemId", item.get_id());
+			startActivity(intent);
+			return true;
+		}
 	}
 
 	@Override
