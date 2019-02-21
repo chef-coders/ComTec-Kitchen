@@ -65,9 +65,11 @@ public class Populator
 
 	static void populate(RowViewHolder v, User user)
 	{
-		v.titleTextView.setText(user.getName() + " (" + user.getRole() + ")");
+		v.titleTextView.setText(user.getName());
+		v.titleTextView.setTextColor(v.itemView.getContext().getResources().getColor(
+			"admin".equals(user.getRole()) ? android.R.color.holo_red_dark : android.R.color.black));
 		v.subTitleTextView.setText(user.getMail());
 		v.topRightView.setText(v.itemView.getContext().getString(R.string.item_price, user.getCredit()));
-		v.bottomRightTextView.setText(user.getCreated());
+		v.bottomRightTextView.setText(user.getRole());
 	}
 }

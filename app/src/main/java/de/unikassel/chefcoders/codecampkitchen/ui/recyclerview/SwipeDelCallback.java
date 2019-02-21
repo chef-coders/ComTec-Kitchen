@@ -41,7 +41,7 @@ public class SwipeDelCallback extends ItemTouchHelper.SimpleCallback
 		int backgroundCornerOffset = 20;
 
 		int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-		int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight() / 2);
+		int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
 		int iconBottom = iconTop + icon.getIntrinsicHeight();
 
 		if(dX < 0)
@@ -51,7 +51,7 @@ public class SwipeDelCallback extends ItemTouchHelper.SimpleCallback
 			int iconRight = itemView.getRight() - iconMargin;
 			icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
-			this.background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
+			background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
 					itemView.getTop(), itemView.getRight(), itemView.getBottom());
 		}
 		else

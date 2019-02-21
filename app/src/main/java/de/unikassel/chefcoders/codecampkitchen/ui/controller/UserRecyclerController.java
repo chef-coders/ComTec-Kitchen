@@ -5,35 +5,13 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
-import java.util.List;
-
-public class UserRecyclerController implements RecyclerController<RowViewHolder>
+public class UserRecyclerController extends GroupedRecyclerController<User, RowViewHolder>
 {
-	private List<User> users;
-
-	@Override
-	public int getSections()
-	{
-		return 1;
-	}
-
-	@Override
-	public int getItems(int sections)
-	{
-		return this.users.size();
-	}
-
-	@Override
-	public String getHeader(int section)
-	{
-		return "Users";
-	}
-
 	@Override
 	public void refresh()
 	{
 		MainActivity.kitchenManager.refreshAllUsers();
-		this.users = MainActivity.kitchenManager.getAllUsers();
+		this.fill(MainActivity.kitchenManager.getGroupedUsers());
 	}
 
 	@Override
@@ -45,7 +23,7 @@ public class UserRecyclerController implements RecyclerController<RowViewHolder>
 	@Override
 	public void populate(RowViewHolder v, int section, int item)
 	{
-		Populator.populate(v, this.users.get(item));
+		Populator.populate(v, this.get(section, item));
 	}
 
 	@Override
