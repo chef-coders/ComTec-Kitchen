@@ -1,11 +1,8 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +31,9 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 		void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy);
 
-		void handleRecViewItemTouched(View view, int position);
+		void onClick(int section, int item);
+
+		void onSwiped(int section, int item);
 	}
 
 	public GeneralRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
@@ -128,6 +127,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
+		this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getRowId());
 		ResultAsyncTask.exeResultAsyncTask(()->
 						this.recyclerController.onClick(rowPos.getSectionId(), rowPos.getRowId()),
 				(Boolean b) -> {
@@ -156,6 +156,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
+		this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getRowId());
 		new SimpleAsyncTask(() -> {
 				boolean refresh = this.recyclerController.onSwiped(rowPos.getSectionId(), rowPos.getRowId());
 				if(refresh)
