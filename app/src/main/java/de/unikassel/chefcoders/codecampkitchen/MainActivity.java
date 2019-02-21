@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
@@ -176,11 +177,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updatedDrawerHeader(){
-        View headerView = navigationView.getHeaderView(0);
+	    User user = kitchenManager.getLoggedInUser();
+
+	    View headerView = navigationView.getHeaderView(0);
         TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
         TextView textViewCredit = headerView.findViewById(R.id.textViewCredit);
+	    ImageButton editButton = headerView.findViewById(R.id.buttonEditUser);
 
-        User user = kitchenManager.getLoggedInUser();
+	    editButton.setOnClickListener((v)->{
+		    drawerLayout.closeDrawers();
+	    	changeFragment(EditUserFragment.newInstance(user.get_id()));
+	    });
 
         if (user != null) {
             if (user.getRole().equals("admin")) {

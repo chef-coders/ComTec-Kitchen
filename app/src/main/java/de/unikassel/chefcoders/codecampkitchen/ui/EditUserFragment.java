@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +29,15 @@ public class EditUserFragment extends KitchenFragment
 		// Required empty public constructor
 	}
 
+	public static EditUserFragment newInstance(String userId)
+	{
+		EditUserFragment fragment = new EditUserFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("userId", userId);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,20 +51,29 @@ public class EditUserFragment extends KitchenFragment
 
 	private void init(View view)
 	{
-		editTextEmail = view.findViewById(R.id.editTextEmail);
-		editTextName = view.findViewById(R.id.editTextName);
-		floatingActionButton = view.findViewById(R.id.buttonSave);
-		floatingActionButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				String name = editTextName.getText().toString();
-				String email = editTextEmail.getText().toString();
+		String id = getArguments().getString("userId");
+
+		ResultAsyncTask.execute(getActivity(), () -> MainActivity.kitchenManager.getUserById(id),
+				user ->
+				{
+					editTextEmail = view.findViewById(R.id.editTextEmail);
+					editTextName = view.findViewById(R.id.editTextName);
+
+					floatingActionButton = view.findViewById(R.id.buttonSave);
+					floatingActionButton.setOnClickListener(new View.OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+							String name = editTextName.getText().toString();
+							String email = editTextEmail.getText().toString();
 
 
-			}
-		});
+						}
+					});
+				});
+
+
 	}
 
 	@Override

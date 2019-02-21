@@ -47,4 +47,5 @@
     <string name="purchase_history">Purchase History</string>
     <string name="logout">Logout</string>
     <string name="edit_user">Edit User</string>
+    <string name="credit">Credit</string>
 </resources>

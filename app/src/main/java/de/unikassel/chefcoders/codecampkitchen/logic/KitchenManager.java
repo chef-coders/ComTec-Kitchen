@@ -158,6 +158,17 @@ public class KitchenManager
 		return true;
 	}
 
+	public User getUserById(String userId)
+	{
+		//TODO
+		return null;
+	}
+
+	public void updateUser(String userId, String name, String mail, double credit)
+	{
+		//TODO
+	}
+
 	// --------------- Items ---------------
 
 	public List<Item> getItems()
