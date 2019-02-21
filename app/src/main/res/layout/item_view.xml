@@ -23,9 +23,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-
+            android:layout_alignParentStart="true"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_toStartOf="@+id/item_price" />
 
         <TextView
             android:id="@+id/item_price"
