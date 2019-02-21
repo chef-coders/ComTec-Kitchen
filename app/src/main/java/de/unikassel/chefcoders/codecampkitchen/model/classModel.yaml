@@ -74,7 +74,7 @@
   modified: 	false
   name: 	credit
   propertyStyle: 	POJO
-  type: 	long
+  type: 	double
 
 - _id12: 	Attribute
   clazz: 	item3
