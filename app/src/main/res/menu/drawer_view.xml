@@ -7,7 +7,8 @@
             android:title="@string/all_items_nav_title" />
         <item
             android:id="@+id/nav_my_purcheses"
-            android:title="@string/my_purchases"/>
+            android:title="@string/my_purchases"
+            android:icon="@drawable/ic_shopping_cart_black_24dp" />
         <item
             android:id="@+id/nav_all_users"
             android:title="@string/users"
