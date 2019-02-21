@@ -87,7 +87,10 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
-		this.floatingActionButton.show();
+		if(MainActivity.kitchenManager.getCart().size() > 0)
+		{
+			this.floatingActionButton.show();
+		}
 	}
 
 	@Override
@@ -99,10 +102,18 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 			intent.putExtra("itemId", clickedItem.get_id());
 			startActivity(intent);
 		}
+		else
+		{
+			this.floatingActionButton.show();
+		}
 	}
 
 	@Override
 	public void onSwiped(int section, int item)
 	{
+		if(MainActivity.kitchenManager.getCart().size() == 1)
+		{
+			this.floatingActionButton.hide();
+		}
 	}
 }
