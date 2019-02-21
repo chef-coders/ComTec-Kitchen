@@ -75,10 +75,21 @@ public class Populator
 	static void populate(RowViewHolder v, User user)
 	{
 		v.titleTextView.setText(user.getName());
-		v.titleTextView.setTextColor(v.itemView.getContext().getResources().getColor(
-			"admin".equals(user.getRole()) ? android.R.color.holo_red_dark : android.R.color.black));
 		v.subTitleTextView.setText(user.getMail());
 		v.topRightView.setText(v.itemView.getContext().getString(R.string.item_price, user.getCredit()));
 		v.bottomRightTextView.setText(user.getRole());
+
+		final int color = v.itemView.getContext().getResources().getColor(getColor(user));
+		v.titleTextView.setTextColor(color);
+	}
+
+	private static int getColor(User user)
+	{
+		final boolean isLoggedIn = user.get_id().equals(MainActivity.kitchenManager.getLoggedInUser().get_id());
+		final boolean isAdmin = "admin".equals(user.getRole());
+
+		return isLoggedIn ?
+			       isAdmin ? android.R.color.holo_orange_dark : android.R.color.holo_green_dark :
+			       isAdmin ? android.R.color.holo_red_dark : android.R.color.black;
 	}
 }

@@ -1,14 +1,13 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
@@ -67,9 +66,8 @@ public class EditItemActivity extends AppCompatActivity
 			double price = Double.parseDouble(priceText.getText().toString());
 			int amount = Integer.parseInt(amountText.getText().toString());
 			String kind = kindSpinner.getSelectedItem().toString();
-			new SimpleAsyncTask(() -> {
-				MainActivity.kitchenManager.updateItem(itemId, name, price, amount, kind);
-			}, this::startMainActivity).execute();
+			SimpleAsyncTask.execute(() -> MainActivity.kitchenManager.updateItem(itemId, name, price, amount, kind),
+			                        this::startMainActivity);
 		} catch (Exception ex) {
 			priceText.setText("0.00");
 			amountText.setText("0");

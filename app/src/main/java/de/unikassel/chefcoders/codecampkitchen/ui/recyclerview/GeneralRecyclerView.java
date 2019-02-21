@@ -76,10 +76,10 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		this.recyclerView.setLayoutManager(layoutManager);
 		this.recyclerView.setAdapter(new SectionedRecyclerViewAdapter());
 
-		new SimpleAsyncTask(() -> this.recyclerController.refresh(), () -> {
+		SimpleAsyncTask.execute(() -> this.recyclerController.refresh(), () -> {
 			this.reloadSections();
 			this.eventHandler.handleRecViewLoadFinished();
-		}).execute();
+		});
 	}
 
 	private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout)
@@ -179,10 +179,10 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 	private void handleOnSwipeRefresh()
 	{
-		new SimpleAsyncTask(() -> this.recyclerController.refresh(), () -> {
+		SimpleAsyncTask.execute(() -> this.recyclerController.refresh(), () -> {
 			this.reloadSections();
 			this.swipeRefreshLayout.setRefreshing(false);
-		}).execute();
+		});
 	}
 
 	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)

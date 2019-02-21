@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
@@ -53,9 +52,9 @@ public class PurchaseItemActivity extends AppCompatActivity
 	public void onPurchase(View view) {
 		try {
 			int amount = Integer.parseInt(this.amountText.getText().toString());
-			new SimpleAsyncTask(() -> {
-				MainActivity.kitchenManager.addToCart(MainActivity.kitchenManager.getItemById(barcode), amount);
-			}, this::startMainActivity).execute();
+			SimpleAsyncTask.execute(
+				() -> MainActivity.kitchenManager.addToCart(MainActivity.kitchenManager.getItemById(barcode), amount),
+				this::startMainActivity);
 		} catch (Exception ex) {
 			this.amountText.setText("1");
 		}

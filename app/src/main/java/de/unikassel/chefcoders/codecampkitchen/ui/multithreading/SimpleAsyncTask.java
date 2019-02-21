@@ -7,7 +7,12 @@ public class SimpleAsyncTask extends AsyncTask<Void, Void, Void>
 	private Runnable backgroundRunnable;
 	private Runnable postExecuteRunnable;
 
-	public SimpleAsyncTask(Runnable backgroundRunnable, Runnable postExecuteRunnable)
+	public static void execute(Runnable backgroundRunnable, Runnable postExecuteRunnable)
+	{
+		new SimpleAsyncTask(backgroundRunnable, postExecuteRunnable).execute();
+	}
+
+	private SimpleAsyncTask(Runnable backgroundRunnable, Runnable postExecuteRunnable)
 	{
 		this.backgroundRunnable = backgroundRunnable;
 		this.postExecuteRunnable = postExecuteRunnable;

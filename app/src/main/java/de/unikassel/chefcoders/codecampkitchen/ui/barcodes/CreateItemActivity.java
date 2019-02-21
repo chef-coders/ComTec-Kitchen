@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
@@ -63,9 +62,8 @@ public class CreateItemActivity extends AppCompatActivity
 			int amount = Integer.parseInt(amountText.getText().toString());
 			ItemKind.Entry selectedEntry = (ItemKind.Entry) kindSpinner.getSelectedItem();
 			String kind = selectedEntry.getValue();
-			new SimpleAsyncTask(() -> {
-				MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind);
-			}, this::startMainActivity).execute();
+			SimpleAsyncTask.execute(() -> MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind),
+			                        this::startMainActivity);
 		} catch (Exception ex) {
 			priceText.setText("0.00");
 			amountText.setText("0");
