@@ -182,9 +182,9 @@ public class MainActivity extends AppCompatActivity
 	    View headerView = navigationView.getHeaderView(0);
         TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
         TextView textViewCredit = headerView.findViewById(R.id.textViewCredit);
-	    ImageButton editButton = headerView.findViewById(R.id.buttonEditUser);
+	    ImageButton buttonEditUser = headerView.findViewById(R.id.buttonEditUser);
 
-	    editButton.setOnClickListener((v)->{
+        buttonEditUser.setOnClickListener((v)->{
 		    drawerLayout.closeDrawers();
 	    	changeFragment(EditUserFragment.newInstance(user.get_id()));
 	    });
