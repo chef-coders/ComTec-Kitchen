@@ -8,6 +8,7 @@ import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.*;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -121,6 +122,12 @@ public class KitchenManager
 		return new ArrayList<>(this.localDataStore.getUsers());
 	}
 
+	public Map<String, List<User>> getGroupedUsers()
+	{
+		return group(this.localDataStore.getUsers(), u -> u.getName().substring(0, 1).toUpperCase(),
+		             Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER));
+	}
+
 	public void refreshAllUsers()
 	{
 		JsonTranslator.toUsers(this.connection.getAllUsers()).forEach(this.localDataStore::addUser);
@@ -156,11 +163,14 @@ public class KitchenManager
 
 	public Map<String, List<Item>> getGroupedItems()
 	{
-		// group by kind (entries sorted case-sensitive)
-		final TreeMap<String, List<Item>> grouped = this.localDataStore.getItems().stream().collect(
-			Collectors.groupingBy(Item::getKind, TreeMap::new, Collectors.toList()));
-		// sort by name (case-insensitive)
-		grouped.values().forEach(l -> l.sort(Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER)));
+		return group(this.localDataStore.getItems(), Item::getKind, Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
+	}
+
+	private static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor, Comparator<? super V> comparator)
+	{
+		final Map<K, List<V>> grouped = items.stream().collect(
+			Collectors.groupingBy(keyExtractor, TreeMap::new, Collectors.toList()));
+		grouped.values().forEach(l -> l.sort(comparator));
 		return grouped;
 	}
 
