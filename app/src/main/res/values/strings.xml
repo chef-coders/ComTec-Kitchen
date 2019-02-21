@@ -39,4 +39,6 @@
     <string name="total_price">Total price: %1$.2f €</string>
     <string name="cancel">Cancel</string>
     <string name="itemNotFound">Item not found</string>
+    <string name="user">User</string>
+    <string name="users">Users</string>
 </resources>
