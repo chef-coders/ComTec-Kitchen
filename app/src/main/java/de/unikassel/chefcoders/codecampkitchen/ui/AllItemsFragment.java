@@ -85,8 +85,14 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	}
 
 	@Override
-	public void handleRecViewItemTouched(View view, int position)
+	public void onClick(int section, int item)
 	{
-		// TODO - Handle touch
+
+	}
+
+	@Override
+	public void onSwiped(int section, int item)
+	{
+
 	}
 }
