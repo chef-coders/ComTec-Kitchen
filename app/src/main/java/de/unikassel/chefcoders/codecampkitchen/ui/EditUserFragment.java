@@ -22,6 +22,7 @@ public class EditUserFragment extends KitchenFragment
 
 	private EditText editTextEmail;
 	private EditText editTextName;
+	private EditText editTextCredit;
 	private FloatingActionButton floatingActionButton;
 
 	public EditUserFragment()
@@ -53,24 +54,33 @@ public class EditUserFragment extends KitchenFragment
 	{
 		String id = getArguments().getString("userId");
 
+		editTextEmail = view.findViewById(R.id.editTextEmail);
+		editTextName = view.findViewById(R.id.editTextName);
+		editTextCredit = view.findViewById(R.id.editTextCredit);
+		floatingActionButton = view.findViewById(R.id.buttonSave);
+
 		ResultAsyncTask.execute(getActivity(), () -> MainActivity.kitchenManager.getUserById(id),
 				user ->
 				{
-					editTextEmail = view.findViewById(R.id.editTextEmail);
-					editTextName = view.findViewById(R.id.editTextName);
 
-					floatingActionButton = view.findViewById(R.id.buttonSave);
-					floatingActionButton.setOnClickListener(new View.OnClickListener()
+					if (user == null)
 					{
-						@Override
-						public void onClick(View v)
-						{
-							String name = editTextName.getText().toString();
-							String email = editTextEmail.getText().toString();
+						return;
+					}
 
+					editTextName.setText(user.getName());
+					editTextEmail.setText(user.getMail());
+					editTextCredit.setText(String.valueOf(user.getCredit()));
 
-						}
+					floatingActionButton.setOnClickListener(v ->
+					{
+						String name = editTextName.getText().toString();
+						String email = editTextEmail.getText().toString();
+						double credit = Double.valueOf(editTextCredit.getText().toString());
+						MainActivity.kitchenManager.updateUser(user.get_id(),
+								name, email, credit);
 					});
+
 				});
 
 
@@ -79,6 +89,6 @@ public class EditUserFragment extends KitchenFragment
 	@Override
 	protected void updateToolbar(Toolbar toolbar)
 	{
-		toolbar.setTitle(R.string.edit);
+		toolbar.setTitle(R.string.edit_user);
 	}
 }
