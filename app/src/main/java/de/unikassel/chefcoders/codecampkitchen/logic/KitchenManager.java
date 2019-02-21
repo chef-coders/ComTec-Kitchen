@@ -199,10 +199,17 @@ public class KitchenManager
 			return;
 		}
 
-		final Item item = getItemById(id).setName(name).setPrice(price).setAmount(amount).setKind(kind);
-		final String itemJson = JsonTranslator.toJson(item);
+		final Item currentItem = getItemById(id);
 
-		this.connection.updateItem(id, itemJson);
+		final Item item = new Item().setName(name).setPrice(price).setAmount(amount).setKind(kind);
+		final String itemJson = JsonTranslator.toJson(item);
+		final String resultJson;
+
+		resultJson = this.connection.updateItem(id, itemJson);
+
+		final Item updatedItem = JsonTranslator.toItem(resultJson);
+
+		currentItem.setName(updatedItem.getName()).setPrice(updatedItem.getPrice()).setAmount(updatedItem.getAmount()).setKind(updatedItem.getKind());
 	}
 
 	public void buyItem(Item item, int amount)
