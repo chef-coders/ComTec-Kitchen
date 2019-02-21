@@ -218,6 +218,8 @@ public class MainActivity extends AppCompatActivity
                     R.anim.slide_in_right,
                     R.anim.slide_out_left
             );
+            editMode = false;
+            updateLayout();
         }
 
         transaction.replace(R.id.headlines_fragment, fragment);
