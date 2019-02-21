@@ -26,4 +26,6 @@
     <string name="purchase_success">Purchase successful</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="confirm_purchase">Do you want to purchase these Items?</string>
+
 </resources>
