@@ -76,11 +76,11 @@ public class PurchasesRecyclerController implements RecyclerController<RowViewHo
 
 		if (item.getPrice() > 0.0)
 		{
-			v.prizeTextView.setText(v.itemView.getContext().getString(R.string.item_price, item.getPrice() * amount));
+			v.priceTextView.setText(v.itemView.getContext().getString(R.string.item_price, item.getPrice() * amount));
 		}
 		else
 		{
-			v.prizeTextView.setText("-");
+			v.priceTextView.setText("-");
 		}
 
 		if (item.getAmount() != 0)
