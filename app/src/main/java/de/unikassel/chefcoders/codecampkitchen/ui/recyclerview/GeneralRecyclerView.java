@@ -76,7 +76,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		{
 			ItemTouchHelper.SimpleCallback itemSwipeCallback =
 					new SwipeDelCallback(this,
-							ContextCompat.getDrawable(this.recyclerView.getContext(), R.drawable.ic_delete_white_24dp),
+							ContextCompat.getDrawable(this.recyclerView.getContext(), R.drawable.ic_delete_white_36dp),
 							new ColorDrawable(Color.RED));
 			new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
 		}
