@@ -240,13 +240,23 @@ public class KitchenManager
 
 	public Map<String, List<Purchase>> getMyGroupedPurchases()
 	{
-		final List<Purchase> purchases = this.getMyPurchases();
-		return Collections.singletonMap(purchases.isEmpty() ? "Nothing here" : "All", purchases);
+		final Collection<Purchase> purchases = this.localDataStore.getPurchases();
+		if (purchases.isEmpty())
+		{
+			return Collections.singletonMap("Nothing here", Collections.emptyList());
+		}
+
+		return purchases.stream().collect(Collectors.groupingBy(p -> p.getCreated().substring(0, 10)));
 	}
 
 	public void refreshMyPurchases()
 	{
 		JsonTranslator.toPurchases(this.connection.getPurchasesForUser()).forEach(this.localDataStore::addPurchase);
+	}
+
+	private double getTotal(Purchase purchase)
+	{
+		return purchase.getAmount() * this.getItemById(purchase.getItem_id()).getPrice();
 	}
 
 	// --------------- Cart ---------------
@@ -274,6 +284,11 @@ public class KitchenManager
 		}
 
 		this.localDataStore.getShoppingCart().clear();
+	}
+
+	public double getCartTotal()
+	{
+		return this.localDataStore.getShoppingCart().stream().mapToDouble(this::getTotal).sum();
 	}
 
 	public int getCartAmount(Item item)

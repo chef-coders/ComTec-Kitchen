@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ShoppingCartRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
@@ -49,16 +48,42 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	{
 		floatingActionButton = view.findViewById(R.id.buyItemButton);
 		floatingActionButton.setOnClickListener(v ->
-				new SimpleAsyncTask(() -> MainActivity.kitchenManager.submitCart(),
-						() ->
+				confirmPurchaseDialog());
+	}
+
+	private void confirmPurchaseDialog()
+	{
+		SimpleDialog
+				.createDialog(R.string.confirm_purchase,
+						new SimpleDialog.ConfirmClick()
 						{
-							MainActivity mainActivity = (MainActivity) getActivity();
-							if (mainActivity != null) {
-								mainActivity.changeFragment(new AllItemsFragment());
-								Toast.makeText(getActivity(), R.string.purchase_success, Toast.LENGTH_LONG)
-										.show();
+							@Override
+							public void confirmPositive()
+							{
+								purchaseItems();
 							}
-						}).execute());
+
+							@Override
+							public void confirmNegative()
+							{
+
+							}
+						}).show(getFragmentManager(), "dialog");
+	}
+
+	private void purchaseItems(){
+		progressBar.setVisibility(View.VISIBLE);
+		new SimpleAsyncTask(() -> MainActivity.kitchenManager.submitCart(),
+				() ->
+				{
+					progressBar.setVisibility(View.GONE);
+					MainActivity mainActivity = (MainActivity) getActivity();
+					if (mainActivity != null) {
+						mainActivity.changeFragment(new AllItemsFragment());
+						Toast.makeText(getActivity(), R.string.purchase_success, Toast.LENGTH_LONG)
+								.show();
+					}
+				}).execute();
 	}
 
 	private void initRecyclerView(View view)

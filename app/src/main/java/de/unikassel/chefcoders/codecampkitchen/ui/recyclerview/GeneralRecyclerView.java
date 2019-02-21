@@ -150,7 +150,7 @@ public class GeneralRecyclerView
 			return;
 		}
 
-		this.recyclerView.getAdapter().notifyItemChanged(position);
+		this.recyclerView.getAdapter().notifyDataSetChanged();
 
 		final RowPos rowPos = this.calcRowPos(position);
 		if(rowPos == null || rowPos.getSection() == null)
