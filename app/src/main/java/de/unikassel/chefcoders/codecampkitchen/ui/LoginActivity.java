@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity
         progressBar.setVisibility(View.VISIBLE);
         disableButton();
 
-        SimpleAsyncTask.execute(() -> {
+        SimpleAsyncTask.execute(this.getApplicationContext(), () -> {
             String name = editTextName.getText().toString();
             String email = editTextEmail.getText().toString();
             MainActivity.kitchenManager

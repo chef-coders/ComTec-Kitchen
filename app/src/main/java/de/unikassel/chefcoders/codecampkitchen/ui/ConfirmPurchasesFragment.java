@@ -78,7 +78,7 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	private void purchaseItems()
 	{
 		progressBar.setVisibility(View.VISIBLE);
-		SimpleAsyncTask.execute(() -> MainActivity.kitchenManager.submitCart(), () -> {
+		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.submitCart(), () -> {
 			progressBar.setVisibility(View.GONE);
 			MainActivity mainActivity = (MainActivity) getActivity();
 			if (mainActivity != null)
