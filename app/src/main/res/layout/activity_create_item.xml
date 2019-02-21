@@ -44,7 +44,7 @@
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name"
+            android:text="@string/theNameText"
             android:textSize="18sp"
             android:textStyle="bold" />
 
