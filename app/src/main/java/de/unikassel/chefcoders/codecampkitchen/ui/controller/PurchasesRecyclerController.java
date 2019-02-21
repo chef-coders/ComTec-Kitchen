@@ -2,8 +2,6 @@ package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
-import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
@@ -62,40 +60,7 @@ public class PurchasesRecyclerController implements RecyclerController<RowViewHo
 	@Override
 	public void populate(RowViewHolder v, int section, int itemIndex)
 	{
-		final Purchase purchase = this.purchases[section][itemIndex];
-		String id = purchase.get_id();
-		int amount = purchase.getAmount();
-		String created = purchase.getCreated();
-		String itemId = purchase.getItem_id();
-		Item item = MainActivity.kitchenManager.getItemById(itemId);
-
-		if (item != null)
-		{
-			v.titleTextView.setText(item.getName());
-		}
-
-		if (item.getPrice() > 0.0)
-		{
-			v.priceTextView.setText(v.itemView.getContext().getString(R.string.item_price, item.getPrice() * amount));
-		}
-		else
-		{
-			v.priceTextView.setText("-");
-		}
-
-		if (item.getAmount() != 0)
-		{
-			String amountAvailable = v.itemView.getContext()
-			                                   .getString(R.string.item_amount_available, item.getAmount());
-			v.amountTextView.setText(amountAvailable);
-		}
-		else
-		{
-			v.amountTextView.setText(R.string.item_amount_not_available);
-		}
-
-		// TODO - Add numberSelected to data model
-		//v.numSelectedTextView.setText("x3");
+		Populator.populate(v, this.purchases[section][itemIndex]);
 	}
 
 	@Override

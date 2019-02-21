@@ -3,16 +3,17 @@
     <string name="app_name">CodeCampKitchen</string>
     <string name="login">Anmelden</string>
     <string name="email">Email</string>
-    <string name="all_items_nav_title">Alle Produkte</string>
+    <string name="all_items_nav_title">Alle Artikel</string>
     <string name="my_purchases">Meine Einkäufe</string>
     <string name="settings">Einstellungen</string>
-    <string name="barcode_toolbar_item_name">Scanne Produkt</string>
+    <string name="barcode_toolbar_item_name">Artikel scannen</string>
     <string name="item_price">%1$.2f €</string>
     <string name="item_amount">x %d</string>
+    <string name="item_amount_price">%d x %.2f €</string>
     <string name="item_amount_available">%1$d verfügbar</string>
     <string name="item_amount_not_available">nicht verfügbar</string>
     <string name="admin">Admin</string>
-    <string name="create_add_button_menu">Produkt anlegen</string>
+    <string name="create_add_button_menu">Artikel anlegen</string>
     <string name="barcode">Barcode</string>
     <string name="price">Preis</string>
     <string name="amount">Stückzahl</string>
@@ -22,7 +23,6 @@
     <string name="add">+</string>
     <string name="sub">-</string>
     <string name="purchase">Kaufen</string>
-    <string name="theNameText">Name</string>
     <string name="clear_all">Alle löschen</string>
     <string name="water">Wasser</string>
     <string name="juice">Saft</string>
@@ -33,5 +33,10 @@
     <string name="purchase_success">Einkauf erfolgreich</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="edit">Bearbeiten</string>
     <string name="confirm_purchase">Möchtest du diese Sachen Kaufen?</string>
+    <string name="editItem">Artikel bearbeiten</string>
+    <string name="total_price">Gesamtpreis: %1$.2f €</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="itemNotFound">Artikel nicht vorhanden</string>
 </resources>

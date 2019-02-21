@@ -1,8 +1,8 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
-public class CreateItemActivity extends AppCompatActivity
+public class EditItemActivity extends AppCompatActivity
 {
-	private String barcode;
+	private String itemId;
+	private Item item;
 
 	private TextView barcodeValue;
 	private EditText nameText;
@@ -28,15 +30,14 @@ public class CreateItemActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_create_item);
+		setContentView(R.layout.activity_edit_item);
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			barcode = (String) bundle.get("barcode");
+			itemId = (String) bundle.get("itemId");
+			item = MainActivity.kitchenManager.getItemById(itemId);
 		} else {
-			Double doubleValue = Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L;
-			Long longValue = doubleValue.longValue();
-			barcode = "Generated:" + longValue.toString();
+			return;
 		}
 
 		this.barcodeValue = findViewById(R.id.barcodeValueView);
@@ -49,21 +50,25 @@ public class CreateItemActivity extends AppCompatActivity
 			new ArrayAdapter<>(
 				this,
 				android.R.layout.simple_spinner_dropdown_item,
-				ItemKind.createEntries(CreateItemActivity.this)
+				ItemKind.createEntries(EditItemActivity.this)
 			)
 		);
 
-		this.barcodeValue.setText(barcode);
+		this.barcodeValue.setText(item.get_id());
+		this.nameText.setText(item.getName());
+		this.priceText.setText("" + item.getPrice());
+		this.amountText.setText("" + item.getAmount());
+		this.kindSpinner.setSelection(ItemKind.getIndex(item.getKind()));
 	}
 
-	public void onCreate(View view) {
+	public void onEdit(View view) {
 		try {
 			String name = nameText.getText().toString();
 			double price = Double.parseDouble(priceText.getText().toString());
 			int amount = Integer.parseInt(amountText.getText().toString());
 			String kind = kindSpinner.getSelectedItem().toString();
 			new SimpleAsyncTask(() -> {
-				MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind);
+				MainActivity.kitchenManager.updateItem(itemId, name, price, amount, kind);
 			}, this::startMainActivity).execute();
 		} catch (Exception ex) {
 			priceText.setText("0.00");
@@ -73,6 +78,6 @@ public class CreateItemActivity extends AppCompatActivity
 
 	private void startMainActivity() {
 		finish();
-		startActivity(new Intent(CreateItemActivity.this, MainActivity.class));
+		startActivity(new Intent(EditItemActivity.this, MainActivity.class));
 	}
 }

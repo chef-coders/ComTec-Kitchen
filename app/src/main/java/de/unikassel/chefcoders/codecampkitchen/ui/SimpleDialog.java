@@ -1,6 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,37 +29,41 @@ public class SimpleDialog extends DialogFragment
 	}
 
 	public static SimpleDialog createDialog(
-			@StringRes int title,
+			Context context,
+			String title,
 			ConfirmClick confirmClick)
 	{
-		return createDialog(title, 0,
+		return createDialog(context, title, "",
 				confirmClick);
 	}
 
 
 	public static SimpleDialog createDialog(
-			@StringRes int title,
-			@StringRes int message,
+			Context context,
+			String title,
+			String message,
 			ConfirmClick confirmClick)
 	{
-		return createDialog(title, message, R.string.yes, R.string.no,
+		return createDialog(title, message,
+				context.getString(R.string.yes),
+				context.getString(R.string.no),
 				confirmClick);
 	}
 
 	public static SimpleDialog createDialog(
-			@StringRes int title,
-			@StringRes int message,
-			@StringRes int positive,
-			@StringRes int negative,
+			String title,
+			String message,
+			String positive,
+			String negative,
 			ConfirmClick confirmClick)
 	{
 		SimpleDialog simpleDialog = new SimpleDialog();
 		simpleDialog.setConfirmClick(confirmClick);
 		Bundle bundle = new Bundle();
-		bundle.putInt("title", title);
-		bundle.putInt("message", message);
-		bundle.putInt("positive", positive);
-		bundle.putInt("negative", negative);
+		bundle.putString("title", title);
+		bundle.putString("message", message);
+		bundle.putString("positive", positive);
+		bundle.putString("negative", negative);
 		simpleDialog.setArguments(bundle);
 		return simpleDialog;
 	}
@@ -67,14 +72,14 @@ public class SimpleDialog extends DialogFragment
 	@Override
 	public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
 	{
-		int title = getArguments().getInt("title");
-		int message = getArguments().getInt("message");
-		int positive = getArguments().getInt("positive");
-		int negative = getArguments().getInt("negative");
+		String title = getArguments().getString("title");
+		String message = getArguments().getString("message");
+		String positive = getArguments().getString("positive");
+		String negative = getArguments().getString("negative");
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(title);
-		if (message != 0) {
+		if (!message.isEmpty()) {
 			builder.setMessage(message);
 		}
 		builder

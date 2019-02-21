@@ -53,8 +53,14 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 
 	private void confirmPurchaseDialog()
 	{
+
 		SimpleDialog
-				.createDialog(R.string.confirm_purchase,
+				.createDialog(
+						getActivity().getString(R.string.total_price,
+								MainActivity.kitchenManager.getCartTotal()),
+						getActivity().getString(R.string.confirm_purchase),
+						getActivity().getString(R.string.purchase),
+						getActivity().getString(R.string.cancel),
 						new SimpleDialog.ConfirmClick()
 						{
 							@Override
@@ -71,7 +77,8 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 						}).show(getFragmentManager(), "dialog");
 	}
 
-	private void purchaseItems(){
+	private void purchaseItems()
+	{
 		progressBar.setVisibility(View.VISIBLE);
 		new SimpleAsyncTask(() -> MainActivity.kitchenManager.submitCart(),
 				() ->
