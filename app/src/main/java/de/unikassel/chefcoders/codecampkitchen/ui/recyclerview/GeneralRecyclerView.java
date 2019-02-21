@@ -108,11 +108,11 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			counter++;
 			Section section = sectionedAdapter.getSectionForPosition(sectionId);
 
-			for(int rowId = 0; rowId < section.getContentItemsTotal(); rowId++)
+			for(int itemId = 0; itemId < section.getContentItemsTotal(); itemId++)
 			{
-				if(counter + rowId == pos)
+				if(counter + itemId == pos)
 				{
-					return new RowPos(section, sectionId, rowId);
+					return new RowPos(section, sectionId, itemId);
 				}
 			}
 
@@ -130,14 +130,14 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
-		this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getRowId());
+		this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getItemId());
 		ResultAsyncTask.exeResultAsyncTask(()->
-						this.recyclerController.onClick(rowPos.getSectionId(), rowPos.getRowId()),
+						this.recyclerController.onClick(rowPos.getSectionId(), rowPos.getItemId()),
 				(Boolean b) -> {
 					RecyclerView.ViewHolder viewHolder = rowPos.getSection().getItemViewHolder(view);
 					if(b && viewHolder != null)
 					{
-						this.recyclerController.populate(viewHolder, rowPos.getSectionId(), rowPos.getRowId());
+						this.recyclerController.populate(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 					}
 				});
 	}
@@ -159,9 +159,9 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
-		this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getRowId());
+		this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
 		new SimpleAsyncTask(() -> {
-				boolean refresh = this.recyclerController.onSwiped(rowPos.getSectionId(), rowPos.getRowId());
+				boolean refresh = this.recyclerController.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
 				if(refresh)
 				{
 					this.recyclerController.refresh();

@@ -6,13 +6,13 @@ public class RowPos
 {
 	private Section section;
 	private int sectionId;
-	private int rowId;
+	private int itemId;
 
-	public RowPos(Section section, int sectionId, int rowId)
+	public RowPos(Section section, int sectionId, int itemId)
 	{
 		this.section = section;
 		this.sectionId = sectionId;
-		this.rowId = rowId;
+		this.itemId = itemId;
 	}
 
 	public Section getSection()
@@ -35,19 +35,19 @@ public class RowPos
 		this.sectionId = sectionId;
 	}
 
-	public int getRowId()
+	public int getItemId()
 	{
-		return rowId;
+		return itemId;
 	}
 
-	public void setRowId(int itemId)
+	public void setItemId(int itemId)
 	{
-		this.rowId = itemId;
+		this.itemId = itemId;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "rowId: " + this.rowId + " sectionId: " + sectionId;
+		return "itemId: " + this.itemId + " sectionId: " + sectionId;
 	}
 }
