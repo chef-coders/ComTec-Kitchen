@@ -1,42 +1,64 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
+import android.content.Context;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
 public class Populator
 {
-
 	static void populate(RowViewHolder v, Item item)
 	{
-		if (item.getName() != null)
-		{
-			v.titleTextView.setText(item.getName());
-		}
-
-		if (item.getPrice() > 0.0)
-		{
-			v.priceTextView.setText(v.itemView.getContext().getString(R.string.item_price, item.getPrice()));
-		}
-		else
-		{
-			v.priceTextView.setText("-");
-		}
+		final int numInCart = MainActivity.kitchenManager.getCartAmount(item);
+		populate(v, item, numInCart);
 
 		if (item.getAmount() != 0)
 		{
 			String amountAvailable = v.itemView.getContext()
 			                                   .getString(R.string.item_amount_available, item.getAmount());
-			v.amountTextView.setText(amountAvailable);
+			v.subTitleTextView.setText(amountAvailable);
 		}
 		else
 		{
-			v.amountTextView.setText(R.string.item_amount_not_available);
+			v.subTitleTextView.setText(R.string.item_amount_not_available);
 		}
+	}
 
-		final int numInCart = MainActivity.kitchenManager.getCartAmount(item);
-		final String numInCartText = v.itemView.getContext().getString(R.string.item_amount, numInCart);
-		v.numSelectedTextView.setText(numInCartText);
+	static void populate(RowViewHolder v, Purchase purchase)
+	{
+		String itemId = purchase.getItem_id();
+		Item item = MainActivity.kitchenManager.getItemById(itemId);
+		final int amount = purchase.getAmount();
+
+		v.subTitleTextView.setText(purchase.getCreated().substring(11));
+
+		populate(v, item, amount);
+	}
+
+	static void populate(RowViewHolder v, Item item, int amount)
+	{
+		v.titleTextView.setText(item.getName());
+
+		final double price = item.getPrice();
+		final double total = amount * price;
+		final Context context = v.itemView.getContext();
+
+		switch (amount)
+		{
+		case 0:
+			v.topRightView.setText(context.getString(R.string.item_price, price));
+			v.bottomRightTextView.setText("");
+			break;
+		case 1:
+			v.topRightView.setText(context.getString(R.string.item_amount_price, amount, price));
+			v.bottomRightTextView.setText("");
+			break;
+		default:
+			v.topRightView.setText(context.getString(R.string.item_amount_price, amount, price));
+			v.bottomRightTextView.setText(context.getString(R.string.item_price, total));
+			break;
+		}
 	}
 }
