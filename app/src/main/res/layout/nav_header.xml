@@ -5,15 +5,23 @@
     android:background="?attr/colorPrimaryDark"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:gravity="bottom">
 
     <TextView
+        android:layout_weight="1"
         android:id="@+id/textViewUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My header title"
+        android:text="Username"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/textViewCredit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Credit"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 </LinearLayout>

@@ -283,6 +283,8 @@ public class KitchenManager
 		{
 			this.connection.buyItem(JsonTranslator.toJson(purchase));
 		}
+		
+		refreshLoggedInUser();
 
 		this.localDataStore.getShoppingCart().clear();
 	}
