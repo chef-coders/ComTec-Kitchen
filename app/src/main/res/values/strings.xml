@@ -35,4 +35,6 @@
     <string name="edit">Edit</string>
     <string name="confirm_purchase">Do you want to purchase these Items?</string>
     <string name="editItem">Edit Item</string>
+    <string name="total_price">Total price: %1$.2f €</string>
+    <string name="cancel">Cancel</string>
 </resources>
