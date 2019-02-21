@@ -59,7 +59,7 @@ public class PurchaseItemActivity extends AppCompatActivity
 			return;
 		}
 
-		SimpleAsyncTask.execute(
+		SimpleAsyncTask.execute(this.getApplicationContext(),
 			() -> MainActivity.kitchenManager.addToCart(MainActivity.kitchenManager.getItemById(barcode), amount),
 			this::startMainActivity
 		);

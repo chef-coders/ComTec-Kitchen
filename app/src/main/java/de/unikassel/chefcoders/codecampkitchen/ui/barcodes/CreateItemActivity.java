@@ -72,6 +72,7 @@ public class CreateItemActivity extends AppCompatActivity
 		}
 
 		SimpleAsyncTask.execute(
+			this.getApplicationContext(),
 			() -> MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind),
 			this::startMainActivity
 		);

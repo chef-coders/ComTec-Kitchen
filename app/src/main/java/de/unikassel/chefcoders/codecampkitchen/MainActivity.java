@@ -18,20 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import java.util.Arrays;
-
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
-import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.AllUserFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
-import de.unikassel.chefcoders.codecampkitchen.ui.MyPurchasesFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.*;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -49,21 +44,24 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        ResultAsyncTask.exeResultAsyncTask(() -> kitchenManager.tryLogin(this), (isLoggedIn) ->
-        {
-            if (!isLoggedIn) {
-                startLogin();
-            } else {
-                setContentView(R.layout.activity_main);
-                this.initToolbar();
-                this.initNavDrawer();
-                this.initShortCuts();
+	    ResultAsyncTask.execute(this.getApplicationContext(), () -> kitchenManager.tryLogin(this), (isLoggedIn) -> {
+		    if (!isLoggedIn)
+		    {
+			    startLogin();
+		    }
+		    else
+		    {
+			    setContentView(R.layout.activity_main);
+			    this.initToolbar();
+			    this.initNavDrawer();
+			    this.initShortCuts();
 
-                if (savedInstanceState == null) {
-                    this.initFragment();
-                }
-            }
-        });
+			    if (savedInstanceState == null)
+			    {
+				    this.initFragment();
+			    }
+		    }
+	    });
     }
 
     private void startLogin()
@@ -257,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                 updateLayout();
                 return true;
             case R.id.action_clear_all:
-                SimpleAsyncTask.execute(()->kitchenManager.clearCart(), ()->{});
+                SimpleAsyncTask.execute(this.getApplicationContext(), ()->kitchenManager.clearCart(), ()->{});
                 changeFragment(new AllItemsFragment());
                 return true;
         }

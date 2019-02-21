@@ -76,7 +76,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		this.recyclerView.setLayoutManager(layoutManager);
 		this.recyclerView.setAdapter(new SectionedRecyclerViewAdapter());
 
-		SimpleAsyncTask.execute(() -> this.recyclerController.refresh(), () -> {
+		SimpleAsyncTask.execute(this.recyclerView.getContext(), () -> this.recyclerController.refresh(), () -> {
 			this.reloadSections();
 			this.eventHandler.handleRecViewLoadFinished();
 		});
@@ -127,7 +127,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		}
 
 		this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getItemId());
-		ResultAsyncTask.exeResultAsyncTask(() -> {
+		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
 			return this.recyclerController.onClick(rowPos.getSectionId(), rowPos.getItemId());
 		}, (Boolean b) -> {
 			RecyclerView.ViewHolder viewHolder = rowPos.getSection().getItemViewHolder(view);
@@ -154,7 +154,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		}
 
 		this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
-		ResultAsyncTask.exeResultAsyncTask(() -> {
+		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
 			boolean refreshAll = this.recyclerController.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
 			if (refreshAll)
 			{
@@ -169,7 +169,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			else
 			{
 				RecyclerView.Adapter adapter = this.recyclerView.getAdapter();
-				if(adapter != null)
+				if (adapter != null)
 				{
 					adapter.notifyDataSetChanged();
 				}
@@ -179,7 +179,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 	private void handleOnSwipeRefresh()
 	{
-		SimpleAsyncTask.execute(() -> this.recyclerController.refresh(), () -> {
+		SimpleAsyncTask.execute(this.recyclerView.getContext(), () -> this.recyclerController.refresh(), () -> {
 			this.reloadSections();
 			this.swipeRefreshLayout.setRefreshing(false);
 		});

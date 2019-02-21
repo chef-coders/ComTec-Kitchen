@@ -76,7 +76,7 @@ public class EditItemActivity extends AppCompatActivity
 			return;
 		}
 
-		SimpleAsyncTask.execute(
+		SimpleAsyncTask.execute(this.getApplicationContext(),
 			() -> MainActivity.kitchenManager.updateItem(itemId, name, price, amount, kind),
 			this::startMainActivity
 		);
