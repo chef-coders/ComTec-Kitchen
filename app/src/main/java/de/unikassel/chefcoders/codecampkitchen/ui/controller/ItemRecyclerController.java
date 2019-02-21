@@ -29,7 +29,10 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 	@Override
 	public boolean onClick(int section, int itemIndex)
 	{
-		return MainActivity.kitchenManager.addToCart(this.get(section, itemIndex)) > 0;
+		if (!MainActivity.editMode) {
+			return MainActivity.kitchenManager.addToCart(this.get(section, itemIndex)) > 0;
+		}
+		return false;
 	}
 
 	@Override
