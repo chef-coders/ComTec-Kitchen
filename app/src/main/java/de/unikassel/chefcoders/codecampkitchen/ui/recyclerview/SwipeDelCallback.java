@@ -1,13 +1,11 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MotionEvent;
 import android.view.View;
 
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
@@ -23,6 +21,8 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	private RecyclerController recyclerController;
 
 	private boolean swipeBack;
+	private boolean drawChildFirstTime = true;
+	private boolean showBgr;
 
 	public interface SwipeEvent
 	{
@@ -67,7 +67,13 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 		this.blockSwipe(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-		if(GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView) != null)
+		if(drawChildFirstTime)
+		{
+			drawChildFirstTime = false;
+			showBgr = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView) != null;
+		}
+
+		if(showBgr)
 		{
 			this.drawBackgroundFrame(c, viewHolder, dX);
 		}
@@ -124,5 +130,6 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
 	{
 		this.swipeEvent.handleOnSwiped(viewHolder);
+		drawChildFirstTime = true;
 	}
 }
