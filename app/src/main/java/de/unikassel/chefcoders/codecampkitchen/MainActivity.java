@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_clear_all:
                 new SimpleAsyncTask(()->kitchenManager.clearCart(),()->{})
                         .execute();
+                changeFragment(new AllItemsFragment());
                 return true;
         }
 
