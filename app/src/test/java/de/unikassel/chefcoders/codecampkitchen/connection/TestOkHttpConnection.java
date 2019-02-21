@@ -1,6 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.connection;
 
 import de.unikassel.chefcoders.codecampkitchen.communication.*;
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpConnectionException;
 import de.unikassel.chefcoders.codecampkitchen.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,7 @@ public class TestOkHttpConnection
 {
 	private HttpConnection connection;
 
-	private String ADMIN_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzZjMGE0YzBiZTNkOTAwMWM4MjQ3ODMiLCJyb2xlIjoiYWRtaW4iLCJuYW1lIjoiYWRtaW4iLCJtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE1NTA1ODQzOTZ9.PnElrI0KvPPoNaMrEaFGHdsW2bhI43ryGuQVbAAo6dA";
+	private String ADMIN_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzZlOTk5MzJmYzA0ODAwMjYyYTczNmYiLCJyb2xlIjoiYWRtaW4iLCJuYW1lIjoiYWRtaW4iLCJtYWlsIjoiYWRtaW4iLCJpYXQiOjE1NTA3NTIxNDd9.rqdysDdly4megsjYnfqyWpyiI6WMMvWkaL3Kz_HD2JQ";
 
 	@Before
 	public void setup()

@@ -1,5 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.ErrorMessageBuilder;
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpConnectionException;
 import okhttp3.*;
 import okio.Buffer;
 
@@ -8,43 +10,52 @@ import java.util.Map;
 
 public class OkHttpConnection implements HttpConnection
 {
-	private String CURRENT_REQUEST_BODY = "NONE";
-	private String CURRENT_REQUEST_TYPE = "NONE";
-	private String CURRENT_REQUEST_URL = "NONE";
-
 	private OkHttpClient client;
+	private ErrorMessageBuilder errorMessageBuilder;
 
 	public OkHttpConnection()
 	{
+		errorMessageBuilder = new ErrorMessageBuilder();
 		client = new OkHttpClient();
 	}
 
 	@Override
 	public String get(String url, Map<String, String> headers)
 	{
-		try
-		{
-			Request request = createRequest(url, headers);
+		Request request = HttpRequestBuilder.createGetRequestFor(url, headers);
 
-			Call call = createCallFromRequest(request);
-
-			Response response = tryExecuteCall(call);
-
-			return response.body().string();
-		}
-		catch (IOException e)
-		{
-			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::get");
-		}
+		return executeRequestAndReturnResponseString(request);
 	}
 
-	private Call createCallFromRequest(Request request)
+	@Override
+	public String post(String url, String jsonBody, Map<String, String> headers)
 	{
-		CURRENT_REQUEST_TYPE = request.method();
-		CURRENT_REQUEST_URL = request.url().toString();
-		CURRENT_REQUEST_BODY = readBodyFromRequest(request);
+		Request request = HttpRequestBuilder.createPostRequestFor(url, jsonBody, headers);
 
-		return client.newCall(request);
+		return executeRequestAndReturnResponseString(request);
+	}
+
+	@Override
+	public String put(String url, String jsonBody, Map<String, String> headers)
+	{
+		Request request = HttpRequestBuilder.createPutRequestFor(url, jsonBody, headers);
+
+		return executeRequestAndReturnResponseString(request);
+	}
+
+	@Override
+	public String delete(String url, Map<String, String> headers)
+	{
+		Request request = HttpRequestBuilder.createDeleteRequestFor(url, headers);
+
+		return executeRequestAndReturnResponseString(request);
+	}
+
+	private String executeRequestAndReturnResponseString(Request request)
+	{
+		Call call = createCallFromRequest(request);
+
+		return tryExecuteCall(call);
 	}
 
 	private String readBodyFromRequest(Request request)
@@ -68,19 +79,7 @@ public class OkHttpConnection implements HttpConnection
 		}
 	}
 
-	private Request createRequest(String url, Map<String, String> headers)
-	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
-
-		setHeadersOnBuilder(headers, builder);
-
-		builder.get();
-
-		return builder.build();
-	}
-
-	private Response tryExecuteCall(Call call)
+	private String tryExecuteCall(Call call)
 	{
 		Response response;
 		try
@@ -92,13 +91,32 @@ public class OkHttpConnection implements HttpConnection
 			throw new HttpConnectionException("Error: invalid ULR or Timeout");
 		}
 
-		if (!isValid(response.code()))
+		String responseString = tryGetResponseString(response);
+		int responseCode = response.code();
+
+		errorMessageBuilder.requestResponse = responseString;
+		errorMessageBuilder.responseCode = responseCode;
+
+		if (!isValid(responseCode))
 		{
-			throw new HttpConnectionException("Error: Responsecode was " + response.code() + ", trying to execute Request" +
-					" of Type " + CURRENT_REQUEST_TYPE + "\non URL " + CURRENT_REQUEST_URL + "\nwith Body " + CURRENT_REQUEST_BODY);
+			String errorMessage = errorMessageBuilder.buildErrorMessage();
+
+			throw new HttpConnectionException(errorMessage);
 		}
 
-		return response;
+		return responseString;
+	}
+
+	private String tryGetResponseString(Response response)
+	{
+		try
+		{
+			return response.body().string();
+		}
+		catch (IOException e)
+		{
+			return "";
+		}
 	}
 
 	private boolean isValid(int code)
@@ -107,108 +125,12 @@ public class OkHttpConnection implements HttpConnection
 		return firstDigit == 2;
 	}
 
-	@Override
-	public String post(String url, String jsonBody, Map<String, String> headers)
+	private Call createCallFromRequest(Request request)
 	{
-		try
-		{
-			Request request = createRequestPost(url, jsonBody, headers);
+		errorMessageBuilder.requestType = request.method();
+		errorMessageBuilder.requestUrl = request.url().toString();
+		errorMessageBuilder.requestBody = readBodyFromRequest(request);
 
-			Call call = createCallFromRequest(request);
-
-			Response response = tryExecuteCall(call);
-
-			return response.body().string();
-		}
-		catch (IOException e)
-		{
-			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::post");
-		}
+		return client.newCall(request);
 	}
-
-	private Request createRequestPost(String url, String body, Map<String, String> headers)
-	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
-
-		setHeadersOnBuilder(headers, builder);
-
-		builder.post(RequestBody.create(MediaType.parse(headers.get("Content-Type")), body));
-
-		return builder.build();
-	}
-
-	@Override
-	public String put(String url, String jsonBody, Map<String, String> headers)
-	{
-		try
-		{
-			Request request = createRequestPut(url, jsonBody, headers);
-
-			Call call = createCallFromRequest(request);
-
-			Response response = tryExecuteCall(call);
-
-			return response.body().string();
-		}
-		catch (IOException e)
-		{
-			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::put");
-		}
-	}
-
-	private Request createRequestPut(String url, String body, Map<String, String> headers)
-	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
-
-		setHeadersOnBuilder(headers, builder);
-
-		builder.put(RequestBody.create(MediaType.parse(headers.get("Content-Type")), body));
-
-		return builder.build();
-	}
-
-	@Override
-	public String delete(String url, Map<String, String> headers)
-	{
-		try
-		{
-			Request request = createRequestDelete(url, headers);
-
-			Call call = createCallFromRequest(request);
-
-			Response response = tryExecuteCall(call);
-
-			return response.body().string();
-		}
-		catch (IOException e)
-		{
-			throw new HttpConnectionException("Error extracting String from Response in OkHttpConnection::delete");
-		}
-	}
-
-	private Request createRequestDelete(String url, Map<String, String> headers)
-	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
-
-		setHeadersOnBuilder(headers, builder);
-
-		builder.delete(RequestBody.create(MediaType.parse(headers.get("Content-Type")), "{}"));
-
-		return builder.build();
-	}
-
-	private void setHeadersOnBuilder(Map<String, String> headers, Request.Builder builder)
-	{
-		for (Map.Entry<String, String> entry : headers.entrySet())
-		{
-			if (entry.getValue() != null)
-			{
-				builder.addHeader(entry.getKey(), entry.getValue());
-			}
-		}
-	}
-
 }

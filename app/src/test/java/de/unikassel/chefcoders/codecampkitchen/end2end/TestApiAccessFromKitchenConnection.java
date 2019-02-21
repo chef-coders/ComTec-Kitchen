@@ -1,17 +1,23 @@
 package de.unikassel.chefcoders.codecampkitchen.end2end;
 
-import de.unikassel.chefcoders.codecampkitchen.communication.*;
-import de.unikassel.chefcoders.codecampkitchen.model.*;
-import org.junit.*;
+import de.unikassel.chefcoders.codecampkitchen.communication.HttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
+import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
+import de.unikassel.chefcoders.codecampkitchen.model.User;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.hamcrest.Matchers.equalTo;
 
 
 public class TestApiAccessFromKitchenConnection
 {
-	private String ITEM_ID = "12345656785";
-	private String ADMIN_ID;
-
 	HttpConnection httpConnection;
 	KitchenConnection kitchenConnection;
+	private String ADMIN_ID;
 
 	@Before
 	public void setup()
@@ -19,52 +25,28 @@ public class TestApiAccessFromKitchenConnection
 		httpConnection = new OkHttpConnection();
 		kitchenConnection = new KitchenConnection(httpConnection);
 
+		createAdminAndRegisterOnKitchenConnection();
+	}
+
+	@After
+	public void teardown()
+	{
+
+	}
+
+	@Test
+	public void test()
+	{
+		Assert.assertThat(true, equalTo(true));
+	}
+
+	private void createAdminAndRegisterOnKitchenConnection()
+	{
 		User admin = new User().setName("admin").setMail("admin@example.com");
 		admin = JsonTranslator.toUser(kitchenConnection.createAdminUser(JsonTranslator.toJson(admin)));
 		ADMIN_ID = admin.get_id();
 		kitchenConnection.setUserToken(admin.getToken());
-
-		Item item = new Item().setAmount(1).setName("Kokosmilch").setPrice(0.5).setKind("Saft").set_id(ITEM_ID);
-
-		JsonTranslator.toItem(kitchenConnection.createItem(JsonTranslator.toJson(item)));
 	}
 
-	@After
-	public void teardown() {
-		kitchenConnection.deleteItem(ITEM_ID);
-		kitchenConnection.deleteUser(ADMIN_ID);
-	}
 
-	@Test
-	public void createAndDeleteUser()
-	{
-		User user = new User().setMail("example@web.de").setName("Peter");
-		String userJson = kitchenConnection.createRegularUser(JsonTranslator.toJson(user));
-
-		user = JsonTranslator.toUser(userJson);
-
-		kitchenConnection.deleteUser(user.get_id());
-	}
-
-	@Test
-	public void createAndDeleteItem()
-	{
-		Item item = new Item().setAmount(1).setName("Apfelsaft").setPrice(20).setKind("Saft").set_id("12345698");
-		String itemJson = kitchenConnection.createItem(JsonTranslator.toJson(item));
-
-		item = JsonTranslator.toItem(itemJson);
-
-		kitchenConnection.deleteItem(item.get_id());
-	}
-
-	@Test
-	public void createAndDeletePurchase()
-	{
-		Purchase purchase = new Purchase().setItem_id(ITEM_ID).setUser_id(ADMIN_ID).setAmount(1);
-		String purchaseJson = kitchenConnection.buyItem(JsonTranslator.toJson(purchase));
-
-		purchase = JsonTranslator.toPurchase(purchaseJson);
-
-		kitchenConnection.deletePurchase(purchase.get_id());
-	}
 }
