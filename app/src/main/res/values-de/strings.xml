@@ -33,4 +33,5 @@
     <string name="purchase_success">Einkauf erfolgreich</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="edit">Bearbeiten</string>
 </resources>

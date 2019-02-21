@@ -181,6 +181,19 @@ public class KitchenManager
 		this.localDataStore.addItem(createdItem);
 	}
 
+	public void updateItem(String id, String name, double price, int amount, String kind)
+	{
+		if (!this.isAdmin())
+		{
+			return;
+		}
+
+		final Item item = getItemById(id).setName(name).setPrice(price).setAmount(amount).setKind(kind);
+		final String itemJson = JsonTranslator.toJson(item);
+
+		this.connection.updateItem(id, itemJson);
+	}
+
 	public void buyItem(Item item, int amount)
 	{
 		final Purchase purchase = new Purchase().setUser_id(this.getLoggedInUser().get_id()).setItem_id(item.get_id())

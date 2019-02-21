@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.model;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.annotation.StringRes;
 
@@ -25,6 +24,19 @@ public enum ItemKind
 
 	public static Entry[] createEntries(Context context) {
 		return Arrays.stream(ItemKind.values()).map(item -> item.new Entry(context)).toArray(ItemKind.Entry[]::new);
+	}
+
+	public static int getIndex(String value) {
+		int index = 0;
+		ItemKind actualValue = ItemKind.valueOf(value);
+		for (ItemKind itemKind : ItemKind.values()) {
+			if (itemKind.equals(actualValue)) {
+				return index;
+			} else {
+				index++;
+			}
+		}
+		return -1;
 	}
 
 	class Entry {
