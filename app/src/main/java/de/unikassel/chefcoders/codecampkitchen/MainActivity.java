@@ -122,17 +122,6 @@ public class MainActivity extends AppCompatActivity
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         }
 
-
-
-        Menu menu = toolbar.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            menu.getItem(i)
-                    .setVisible(false);
-        }
-        ResultAsyncTask.exeResultAsyncTask(() -> MainActivity.kitchenManager.isAdmin(), (value) ->
-                menu.findItem(R.id.action_create).setVisible(value)
-        );
-
     }
 
     private void initNavDrawer()
@@ -248,5 +237,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public Toolbar getToolbar()
+    {
+        return toolbar;
     }
 }

@@ -64,6 +64,12 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
                 this);
     }
 
+    @Override
+    protected void showToolbarMenu(Menu menu)
+    {
+        menu.findItem(R.id.action_clear_all)
+                .setVisible(true);
+    }
 
     @Override
     public void handleRecViewLoadFinished()
