@@ -7,6 +7,7 @@ import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -218,8 +219,6 @@ public class MainActivity extends AppCompatActivity
                     R.anim.slide_in_right,
                     R.anim.slide_out_left
             );
-            editMode = false;
-            updateLayout();
         }
 
         transaction.replace(R.id.headlines_fragment, fragment);
@@ -261,7 +260,14 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.action_edit:
                 editMode = !editMode;
-                updateLayout();
+	            if (editMode) {
+		            getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
+		            getToolbar().setTitle(R.string.edit_items);
+	            } else {
+		            getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+		            getToolbar().setTitle(R.string.shop);
+	            }
+                //updateLayout();
                 return true;
             case R.id.action_clear_all:
                 SimpleAsyncTask.execute(this.getApplicationContext(), ()->kitchenManager.clearCart(), ()->{});

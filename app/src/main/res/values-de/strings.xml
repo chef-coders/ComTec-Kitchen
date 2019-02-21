@@ -47,5 +47,6 @@
     <string name="purchase_history">Einkaufs Historie</string>
     <string name="logout">Logout</string>
     <string name="edit_user">Nutzer bearbeiten</string>
+    <string name="edit_items">Produkte bearbeiten</string>
 
 </resources>
