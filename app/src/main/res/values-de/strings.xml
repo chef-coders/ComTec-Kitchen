@@ -45,5 +45,7 @@
     <string name="close">Schließen</string>
     <string name="shop">Shop</string>
     <string name="purchase_history">Einkaufs Historie</string>
+    <string name="logout">Logout</string>
+    <string name="edit_user">Nuter bearbeiten</string>
 
 </resources>

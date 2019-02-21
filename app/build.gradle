@@ -53,6 +53,7 @@ dependencies {
     implementation 'com.squareup.okhttp:okhttp:3.+'
 
     // General Tests
+    implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.12'
     testImplementation group: 'org.jmock', name: 'jmock', version: '2.10.+'
 

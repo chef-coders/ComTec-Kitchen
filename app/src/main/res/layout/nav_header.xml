@@ -2,26 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="?attr/colorPrimaryDark"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:orientation="horizontal"
-    android:gravity="bottom">
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical">
 
-    <TextView
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/textViewUsername"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:background="?attr/colorPrimary"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <TextView
-        android:layout_weight="1"
-        android:id="@+id/textViewCredit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Credit"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        <TextView
+            android:id="@+id/textViewUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Username"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/textViewCredit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Credit"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <ImageButton
+            android:id="@+id/buttonEditUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_mode_edit_white_24dp" />
+
+    </LinearLayout>
 
 </LinearLayout>
+
