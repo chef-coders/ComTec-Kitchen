@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
@@ -103,8 +105,11 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	}
 
 	@Override
-	protected void showToolbarMenu(Menu menu)
+	protected void updateToolbar(android.support.v7.widget.Toolbar toolbar)
 	{
+
+		toolbar.setTitle(R.string.purchase);
+		Menu menu = toolbar.getMenu();
 		menu.findItem(R.id.action_clear_all)
 				.setVisible(true);
 	}

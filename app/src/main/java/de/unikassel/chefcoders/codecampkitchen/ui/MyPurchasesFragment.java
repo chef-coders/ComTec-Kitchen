@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,13 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
                 this);
     }
 
-    // --- --- --- Handle user interactions --- --- ---
+	@Override
+	protected void updateToolbar(Toolbar toolbar)
+	{
+		toolbar.setTitle(R.string.purchase_history);
+	}
+
+	// --- --- --- Handle user interactions --- --- ---
     @Override
     public void handleRecViewLoadFinished()
     {

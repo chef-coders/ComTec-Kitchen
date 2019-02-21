@@ -3,6 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
@@ -16,12 +17,13 @@ public class KitchenFragment extends Fragment
 		super.onActivityCreated(savedInstanceState);
 		MainActivity mainActivity = (MainActivity) getActivity();
 		if (mainActivity != null) {
-			changeToolbar(mainActivity.getToolbar().getMenu());
+			changeToolbar(mainActivity.getToolbar());
 		}
 	}
 
-	public void changeToolbar(Menu menu)
+	public void changeToolbar(Toolbar toolbar)
 	{
+		Menu menu = toolbar.getMenu();
 		if (menu.size() <= 0) {
 			return;
 		}
@@ -30,10 +32,10 @@ public class KitchenFragment extends Fragment
 					.setVisible(false);
 		}
 
-		showToolbarMenu(menu);
+		updateToolbar(toolbar);
 	}
 
-	protected void showToolbarMenu(Menu menu)
+	protected void updateToolbar(Toolbar toolbar)
 	{
 
 	}
