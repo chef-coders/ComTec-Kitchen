@@ -63,12 +63,12 @@ public class KitchenConnection
 		return this.connection.delete(BASE_URL + "/users/" + userId, headers());
 	}
 
-	public String updateUser(String userToken, String userJson)
+	public String updateUser(String userId, String userJson)
 	{
-		return this.connection.put(BASE_URL + "/users/" + userToken, userJson, headers());
+		return this.connection.put(BASE_URL + "/users/" + userId, userJson, headers());
 	}
 
-	// --------------- Users ---------------
+	// --------------- Purchases ---------------
 
 	public String getPurchase(String purchaseId)
 	{

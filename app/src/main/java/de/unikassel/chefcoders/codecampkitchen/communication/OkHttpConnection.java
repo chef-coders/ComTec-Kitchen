@@ -88,7 +88,7 @@ public class OkHttpConnection implements HttpConnection
 		}
 		catch (IOException e)
 		{
-			throw new HttpConnectionException("Error: invalid ULR or Timeout");
+			throw new HttpConnectionException("Error: invalid URL or Timeout");
 		}
 
 		String responseString = tryGetResponseString(response);
