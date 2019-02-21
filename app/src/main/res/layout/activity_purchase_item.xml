@@ -64,6 +64,8 @@
             android:orientation="horizontal">
 
             <Button
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/white"
                 android:id="@+id/addButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,6 +74,8 @@
                 android:text="@string/add" />
 
             <Button
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/white"
                 android:id="@+id/minusButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
