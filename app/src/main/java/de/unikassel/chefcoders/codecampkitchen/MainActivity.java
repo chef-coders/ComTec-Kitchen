@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -255,6 +256,12 @@ public class MainActivity extends AppCompatActivity
                 return true;
             case R.id.action_edit:
                 editMode = !editMode;
+                FrameLayout layout = findViewById(R.id.fragment_layout);
+                if (editMode) {
+                    layout.setBackgroundResource(R.color.colorAccent);
+                } else {
+                    layout.setBackgroundResource(R.color.cast_expanded_controller_ad_container_white_stripe_color);
+                }
                 return true;
             case R.id.action_clear_all:
                 new SimpleAsyncTask(()->kitchenManager.clearCart(),()->{})
