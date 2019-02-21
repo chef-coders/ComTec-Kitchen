@@ -5,49 +5,13 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
-import java.util.List;
-import java.util.Map;
-
-public class ItemRecyclerController implements RecyclerController<RowViewHolder>
+public class ItemRecyclerController extends GroupedRecyclerController<Item, RowViewHolder>
 {
-	private Item[][] items;
-	private String[] headers;
-
-	@Override
-	public int getSections()
-	{
-		return this.items.length;
-	}
-
-	@Override
-	public int getItems(int section)
-	{
-		return this.items[section].length;
-	}
-
-	@Override
-	public String getHeader(int section)
-	{
-		return this.headers[section];
-	}
-
 	@Override
 	public void refresh()
 	{
 		MainActivity.kitchenManager.refreshItems();
-
-		final Map<String, List<Item>> grouped = MainActivity.kitchenManager.getGroupedItems();
-		final int numSections = grouped.size();
-
-		this.items = new Item[numSections][];
-		this.headers = new String[numSections];
-
-		int section = 0;
-		for (Map.Entry<String, List<Item>> entry : grouped.entrySet())
-		{
-			this.headers[section] = entry.getKey();
-			this.items[section++] = entry.getValue().toArray(new Item[0]);
-		}
+		this.fill(MainActivity.kitchenManager.getGroupedItems());
 	}
 
 	@Override
@@ -59,20 +23,18 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 	@Override
 	public void populate(RowViewHolder v, int section, int itemIndex)
 	{
-		Populator.populate(v, this.items[section][itemIndex]);
+		Populator.populate(v, this.get(section, itemIndex));
 	}
 
 	@Override
 	public boolean onClick(int section, int itemIndex)
 	{
-		final Item item = this.items[section][itemIndex];
-		return MainActivity.kitchenManager.addToCart(item) > 0;
+		return MainActivity.kitchenManager.addToCart(this.get(section, itemIndex)) > 0;
 	}
 
 	@Override
 	public boolean onSwiped(int section, int itemIndex)
 	{
-		final Item item = this.items[section][itemIndex];
-		return MainActivity.kitchenManager.removeFromCart(item);
+		return MainActivity.kitchenManager.removeFromCart(this.get(section, itemIndex));
 	}
 }
