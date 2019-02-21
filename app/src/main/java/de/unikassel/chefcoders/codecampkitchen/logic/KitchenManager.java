@@ -131,6 +131,7 @@ public class KitchenManager
 	public void refreshAllUsers()
 	{
 		final Map<String, User> users = this.localDataStore.getUsers();
+		users.clear();
 		JsonTranslator.toUsers(this.connection.getAllUsers()).forEach(user -> users.put(user.get_id(), user));
 	}
 
@@ -149,6 +150,12 @@ public class KitchenManager
 	{
 		User user = this.getLoggedInUser();
 		return "admin".equals(user.getRole());
+	}
+
+	public boolean deleteUser(User user)
+	{
+		this.connection.deleteUser(user.get_id());
+		return true;
 	}
 
 	// --------------- Items ---------------
