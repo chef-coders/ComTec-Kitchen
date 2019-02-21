@@ -23,6 +23,12 @@
     <string name="purchase">Purchase</string>
     <string name="theNameText" translatable="false">Name</string>
     <string name="clear_all">Clear All</string>
+    <string name="water">Water</string>
+    <string name="juice">Juice</string>
+    <string name="ice">Ice</string>
+    <string name="coffee">Coffee</string>
+    <string name="latte">Latte</string>
+    <string name="espresso">Espresso</string>
     <string name="purchase_success">Purchase successful</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

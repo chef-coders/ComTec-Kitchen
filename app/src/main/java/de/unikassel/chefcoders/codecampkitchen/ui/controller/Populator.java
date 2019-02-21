@@ -17,11 +17,11 @@ public class Populator
 
 		if (item.getPrice() > 0.0)
 		{
-			v.prizeTextView.setText(v.itemView.getContext().getString(R.string.item_price, item.getPrice()));
+			v.priceTextView.setText(v.itemView.getContext().getString(R.string.item_price, item.getPrice()));
 		}
 		else
 		{
-			v.prizeTextView.setText("-");
+			v.priceTextView.setText("-");
 		}
 
 		if (item.getAmount() != 0)
