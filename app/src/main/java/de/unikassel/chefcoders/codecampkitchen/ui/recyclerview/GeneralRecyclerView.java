@@ -166,6 +166,14 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			{
 				this.reloadSections();
 			}
+			else
+			{
+				RecyclerView.Adapter adapter = this.recyclerView.getAdapter();
+				if(adapter != null)
+				{
+					adapter.notifyDataSetChanged();
+				}
+			}
 		});
 	}
 
