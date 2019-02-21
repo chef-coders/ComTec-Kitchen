@@ -227,8 +227,13 @@ public class KitchenManager
 
 	public Map<String, List<Purchase>> getMyGroupedPurchases()
 	{
-		final List<Purchase> purchases = this.getMyPurchases();
-		return Collections.singletonMap(purchases.isEmpty() ? "Nothing here" : "All", purchases);
+		final Collection<Purchase> purchases = this.localDataStore.getPurchases();
+		if (purchases.isEmpty())
+		{
+			return Collections.singletonMap("Nothing here", Collections.emptyList());
+		}
+
+		return purchases.stream().collect(Collectors.groupingBy(p -> p.getCreated().substring(0, 10)));
 	}
 
 	public void refreshMyPurchases()
