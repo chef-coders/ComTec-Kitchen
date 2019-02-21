@@ -20,7 +20,7 @@ public class GenDataModel
 		user.buildAttribute("name", "String");
 		user.buildAttribute("mail", "String");
 		user.buildAttribute("role", "String");
-		user.buildAttribute("credit", "long");
+		user.buildAttribute("credit", "double");
 
 		final ClassBuilder item = mb.buildClass("Item");
 		item.buildAttribute("_id", "String");
