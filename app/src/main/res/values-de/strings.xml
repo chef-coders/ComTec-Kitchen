@@ -24,4 +24,10 @@
     <string name="purchase">Kaufen</string>
     <string name="theNameText">Name</string>
     <string name="clear_all">Alle löschen</string>
+    <string name="water">Wasser</string>
+    <string name="juice">Saft</string>
+    <string name="ice">Eis</string>
+    <string name="coffee">Kaffee</string>
+    <string name="latte">Milchkaffee</string>
+    <string name="espresso">Espresso</string>
 </resources>

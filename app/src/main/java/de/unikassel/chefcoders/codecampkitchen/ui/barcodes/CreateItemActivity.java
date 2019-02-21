@@ -46,7 +46,13 @@ public class CreateItemActivity extends AppCompatActivity
 		this.kindSpinner = findViewById(R.id.kindSpinner);
 
 		this.barcodeValue.setText(barcode);
-		this.kindSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ItemKind.values()));
+		this.kindSpinner.setAdapter(
+			new ArrayAdapter<>(
+				this,
+				android.R.layout.simple_spinner_dropdown_item,
+				ItemKind.createEntries(CreateItemActivity.this)
+			)
+		);
 	}
 
 	public void onCreate(View view) {
