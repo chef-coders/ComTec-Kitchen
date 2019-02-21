@@ -16,7 +16,7 @@ import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 public class SwipeDelCallback extends ItemTouchHelper.Callback
 {
 	private Drawable icon;
-	private ColorDrawable background;
+	private Drawable background;
 
 	private RecyclerController recyclerController;
 
@@ -32,7 +32,7 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	private SwipeEvent swipeEvent;
 
 	// --- --- --- Initialization --- --- ---
-	public SwipeDelCallback(SwipeEvent swipeEvent, Drawable icon, ColorDrawable background, RecyclerController recyclerController)
+	public SwipeDelCallback(SwipeEvent swipeEvent, Drawable icon, Drawable background, RecyclerController recyclerController)
 	{
 		this.swipeEvent = swipeEvent;
 		this.icon = icon;
