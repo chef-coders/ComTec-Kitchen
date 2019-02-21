@@ -39,6 +39,8 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 			Intent intent = new Intent(BarcodeScannerActivity.this, PurchaseItemActivity.class);
 			intent.putExtra("barcode", barcode.rawValue);
 			startActivity(intent);
+		} else {
+			Toast.makeText(getApplicationContext(), this.getString(R.string.itemNotFound), Toast.LENGTH_SHORT).show();
 		}
 	}
 
