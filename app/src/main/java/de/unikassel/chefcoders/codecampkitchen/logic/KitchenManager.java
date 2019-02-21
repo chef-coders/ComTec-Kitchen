@@ -160,8 +160,7 @@ public class KitchenManager
 
 	public User getUserById(String userId)
 	{
-		//TODO
-		return null;
+		return this.localDataStore.getUsers().get(userId);
 	}
 
 	public void updateUser(String userId, String name, String mail, double credit)
