@@ -24,4 +24,6 @@
     <string name="theNameText" translatable="false">Name</string>
     <string name="clear_all">Clear All</string>
     <string name="purchase_success">Purchase successful</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
