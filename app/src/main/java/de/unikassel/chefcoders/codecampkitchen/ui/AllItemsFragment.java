@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import java.util.List;
+import java.util.Map;
+
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
@@ -91,7 +97,24 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void onClick(int section, int item)
 	{
+		if (MainActivity.editMode) {
+			final Map<String, List<Item>> grouped = MainActivity.kitchenManager.getGroupedItems();
+			final int numSections = grouped.size();
 
+			Item[][] items = new Item[numSections][];
+
+			int sectionIndex = 0;
+			for (Map.Entry<String, List<Item>> entry : grouped.entrySet())
+			{
+				items[sectionIndex++] = entry.getValue().toArray(new Item[0]);
+			}
+
+			final Item clickedItem = items[section][item];
+
+			Intent intent = new Intent(getActivity(), EditItemActivity.class);
+			intent.putExtra("itemId", clickedItem.get_id());
+			startActivity(intent);
+		}
 	}
 
 	@Override

@@ -70,14 +70,8 @@ public class ItemRecyclerController implements RecyclerController<RowViewHolder>
 		if (!MainActivity.editMode) {
 			final Item item = this.items[section][itemIndex];
 			MainActivity.kitchenManager.addToCart(item);
-			return true;
-		} else {
-			final Item item = this.items[section][itemIndex];
-			Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
-			intent.putExtra("itemId", item.get_id());
-			startActivity(intent);
-			return true;
 		}
+		return true;
 	}
 
 	@Override
