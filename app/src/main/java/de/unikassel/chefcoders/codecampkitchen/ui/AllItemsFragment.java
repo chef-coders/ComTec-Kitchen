@@ -12,9 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import java.util.List;
-import java.util.Map;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
@@ -98,19 +95,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	public void onClick(int section, int item)
 	{
 		if (MainActivity.editMode) {
-			final Map<String, List<Item>> grouped = MainActivity.kitchenManager.getGroupedItems();
-			final int numSections = grouped.size();
-
-			Item[][] items = new Item[numSections][];
-
-			int sectionIndex = 0;
-			for (Map.Entry<String, List<Item>> entry : grouped.entrySet())
-			{
-				items[sectionIndex++] = entry.getValue().toArray(new Item[0]);
-			}
-
-			final Item clickedItem = items[section][item];
-
+			final Item clickedItem = MainActivity.kitchenManager.getItem(section, item);
 			Intent intent = new Intent(getActivity(), EditItemActivity.class);
 			intent.putExtra("itemId", clickedItem.get_id());
 			startActivity(intent);
@@ -120,6 +105,5 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void onSwiped(int section, int item)
 	{
-
 	}
 }
