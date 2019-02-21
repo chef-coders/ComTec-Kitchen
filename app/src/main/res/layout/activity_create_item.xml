@@ -106,6 +106,8 @@
             android:layout_weight="1" />
 
         <Button
+            android:background="@color/colorAccent"
+            android:textColor="@android:color/white"
             android:id="@+id/createButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
