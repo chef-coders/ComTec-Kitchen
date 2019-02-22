@@ -110,19 +110,20 @@ public class StatisticsFragment extends KitchenFragment
 		}
 
 		int index = 0;
-		ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+		ArrayList<IBarDataSet> records = new ArrayList<>();
 		ArrayList<String> names = new ArrayList<>();
 		for (Map.Entry<Item, Integer> entry : boughtItems.entrySet()) {
 			String name = entry.getKey().getName();
 			names.add(name);
 
-			BarEntry value = new BarEntry(index++, entry.getValue());
+			BarEntry barEntry = new BarEntry(index++, entry.getValue());
 
-			ArrayList<BarEntry> record = new ArrayList<>();
-			record.add(value);
+			ArrayList<BarEntry> barEntries = new ArrayList<>();
+			barEntries.add(barEntry);
 
-			BarDataSet x = new BarDataSet(record, name);
-			dataSets.add(x);
+			BarDataSet record = new BarDataSet(barEntries, name);
+			record.setValueTextSize(10f);
+			records.add(record);
 		}
 
 		XAxis xAxis = horizontalBarChart.getXAxis();
@@ -146,7 +147,7 @@ public class StatisticsFragment extends KitchenFragment
 		horizontalBarChart.setFitBars(true);
 		horizontalBarChart.animateXY(2500, 2500);
 
-		BarData data = new BarData(dataSets);
+		BarData data = new BarData(records);
 
 		horizontalBarChart.setData(data);
 		horizontalBarChart.getDescription().setEnabled(false);
