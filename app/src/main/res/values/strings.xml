@@ -2,12 +2,12 @@
     <string name="app_name">CodeCampKitchen</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
-    <string name="all_items_nav_title">All items</string>
-    <string name="create_item_fragment_title">Create item</string>
-    <string name="edit_item_fragment_title">Edit item</string>
-    <string name="my_purchases">My purchases</string>
+    <string name="all_items_nav_title">All Items</string>
+    <string name="create_item_fragment_title">Create Item</string>
+    <string name="edit_item_fragment_title">Edit Item</string>
+    <string name="my_purchases">My Purchases</string>
     <string name="settings">Settings</string>
-    <string name="barcode_toolbar_item_name">Scan item</string>
+    <string name="barcode_toolbar_item_name">Scan Item</string>
     <string name="item_price">%1$.2f €</string>
     <string name="item_amount">x %d</string>
     <string name="item_amount_price">%d x %.2f €</string>
