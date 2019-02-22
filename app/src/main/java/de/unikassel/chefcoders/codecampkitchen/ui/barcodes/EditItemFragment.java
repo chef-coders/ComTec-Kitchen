@@ -86,6 +86,5 @@ public class EditItemFragment extends ItemDetailFragment
 	protected void updateToolbar(Toolbar toolbar)
 	{
 		toolbar.setTitle(R.string.edit_item_fragment_title);
-		toolbar.setBackgroundColor(ContextCompat.getColor(toolbar.getContext(), R.color.colorAccent));
 	}
 }
