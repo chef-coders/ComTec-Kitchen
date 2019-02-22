@@ -346,11 +346,6 @@ public class KitchenManager
 		              .forEach(purchase -> purchases.put(purchase.get_id(), purchase));
 	}
 
-	private double getTotal(Purchase purchase)
-	{
-		return purchase.getAmount() * this.getItemById(purchase.getItem_id()).getPrice();
-	}
-
 	// --------------- Cart ---------------
 
 	private static Predicate<Purchase> itemFilter(String itemId)
@@ -382,7 +377,7 @@ public class KitchenManager
 
 	public double getCartTotal()
 	{
-		return this.localDataStore.getShoppingCart().stream().mapToDouble(this::getTotal).sum();
+		return this.localDataStore.getShoppingCart().stream().mapToDouble(Purchase::getPrice).sum();
 	}
 
 	public int getCartAmount(Item item)
@@ -427,13 +422,15 @@ public class KitchenManager
 				final int oldAmount = purchase.getAmount();
 				final int newAmount = Math.min(oldAmount + amount, item.getAmount());
 				purchase.setAmount(newAmount);
+				purchase.setPrice(newAmount * item.getPrice());
 				return newAmount - oldAmount; // difference is how many have actually been added
 			}
 		}
 
 		final int actualAmount = Math.min(amount, item.getAmount());
 		final String loginId = this.localDataStore.getLoginId();
-		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount);
+		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount)
+		                                        .setPrice(actualAmount * item.getPrice());
 		this.localDataStore.getShoppingCart().add(purchase);
 		return actualAmount;
 	}

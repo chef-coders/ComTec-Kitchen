@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,8 +80,22 @@ public class EditUserFragment extends KitchenFragment
 						String name = editTextName.getText().toString();
 						String email = editTextEmail.getText().toString();
 						double credit = Double.valueOf(editTextCredit.getText().toString());
-						MainActivity.kitchenManager.updateUser(user.get_id(),
-								name, email, credit);
+
+						SimpleAsyncTask.execute(getActivity(),
+								() ->
+								{
+									MainActivity.kitchenManager.updateUser(user.get_id(),
+											name, email, credit);
+								},
+								() ->
+								{
+									Toast.makeText(getActivity(), R.string.edit_user_successful, Toast.LENGTH_SHORT)
+											.show();
+									MainActivity mainActivity = (MainActivity) getActivity();
+									if (mainActivity != null) {
+										mainActivity.changeFragmentBack(new AllUserFragment());
+									}
+								});
 					});
 
 				});

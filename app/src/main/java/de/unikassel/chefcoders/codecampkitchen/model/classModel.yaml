@@ -21,7 +21,7 @@
   propertyStyle: 	POJO
 
 - purchase4: 	Clazz
-  attributes: 	_id17 	created18 	user_id19 	item_id20 	amount21 	
+  attributes: 	_id17 	created18 	user_id19 	item_id20 	amount21 	price22 	
   model: 	c1
   modified: 	false
   name: 	Purchase
@@ -145,4 +145,11 @@
   name: 	amount
   propertyStyle: 	POJO
   type: 	int
+
+- price22: 	Attribute
+  clazz: 	purchase4
+  modified: 	false
+  name: 	price
+  propertyStyle: 	POJO
+  type: 	double
 
