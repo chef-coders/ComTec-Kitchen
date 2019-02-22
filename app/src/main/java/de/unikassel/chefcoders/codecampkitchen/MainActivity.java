@@ -29,6 +29,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.*;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.PurchaseItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
@@ -86,11 +87,20 @@ public class MainActivity extends AppCompatActivity
 
 	private void initFragment()
 	{
-		AllItemsFragment fragment = new AllItemsFragment();
-		FragmentTransaction transaction = getSupportFragmentManager()
-				.beginTransaction();
-		transaction.replace(R.id.headlines_fragment, fragment);
-		transaction.commitAllowingStateLoss();
+		if (getIntent().hasExtra("barcode")) {
+			PurchaseItemFragment fragment = PurchaseItemFragment.newInstance(getIntent().getStringExtra("barcode"));
+			fragment.changeToolbar(toolbar);
+			FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
+			transaction.replace(R.id.headlines_fragment, fragment);
+			transaction.commit();
+		} else {
+			AllItemsFragment fragment = new AllItemsFragment();
+			FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
+			transaction.replace(R.id.headlines_fragment, fragment);
+			transaction.commit();
+		}
 	}
 
 	private void initShortCuts()
@@ -306,6 +316,7 @@ public class MainActivity extends AppCompatActivity
 				this.drawerLayout.openDrawer(GravityCompat.START);
 				return true;
 			case R.id.action_scan_code:
+				finish();
 				startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
 				return true;
 			case R.id.action_create:
