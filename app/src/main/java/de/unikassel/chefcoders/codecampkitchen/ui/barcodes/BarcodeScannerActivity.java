@@ -30,7 +30,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	@Override
 	public void onScanned(Barcode barcode)
 	{
-		boolean isAdmin = MainActivity.kitchenManager.isAdmin();
+		boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
 		boolean itemExists = MainActivity.kitchenManager.containsItem(barcode.rawValue);
 		if (isAdmin && !itemExists) {
 			Intent intent = new Intent(BarcodeScannerActivity.this, CreateItemActivity.class);

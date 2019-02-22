@@ -1,11 +1,11 @@
 package de.unikassel.chefcoders.codecampkitchen.logic;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.model.*;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
+import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
+import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.*;
 import java.util.function.Function;
@@ -19,8 +19,9 @@ public class KitchenManager
 	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
-	private final CartManager  cartManager  = new CartManager(this);
-	private final UsersManager usersManager = new UsersManager(this);
+	private final CartManager    cartManager    = new CartManager(this);
+	private final UsersManager   usersManager   = new UsersManager(this);
+	private final SessionManager sessionManager = new SessionManager(this);
 
 	// =============== Constructor ===============
 
@@ -59,103 +60,12 @@ public class KitchenManager
 		return this.usersManager;
 	}
 
+	public SessionManager session()
+	{
+		return this.sessionManager;
+	}
+
 	// =============== Methods ===============
-
-	// --------------- Login and Signup ---------------
-
-	public boolean tryLogin(Context context)
-	{
-		if (!this.loadUserInfo(context))
-		{
-			return false;
-		}
-
-		final User userData = JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId()));
-		this.usersManager.updateLocal(userData);
-		return true;
-	}
-
-	public void register(Context context, String username, String email, boolean admin)
-	{
-		final User user = new User().setName(username).setMail(email);
-		final String userJson = JsonTranslator.toJson(user);
-		final String resultJson;
-
-		if (admin)
-		{
-			resultJson = this.connection.createAdminUser(userJson);
-		}
-		else
-		{
-			resultJson = this.connection.createRegularUser(userJson);
-		}
-
-		final User createdUser = JsonTranslator.toUser(resultJson);
-
-		this.setUserInfo(createdUser.getToken(), createdUser.get_id());
-		this.saveUserInfo(context);
-
-		this.usersManager.updateLocal(createdUser);
-	}
-
-	public void clearUserData(Context context)
-	{
-		this.setUserInfo(null, null);
-		this.saveUserInfo(context);
-	}
-
-	// --------------- User Info ---------------
-
-	private void setUserInfo(String userToken, String userId)
-	{
-		this.localDataStore.setLoginToken(userToken);
-		this.localDataStore.setLoginId(userId);
-		this.connection.setUserToken(userToken);
-	}
-
-	private boolean loadUserInfo(Context context)
-	{
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-		final String userToken = preferences.getString("userToken", null);
-		if (userToken == null)
-		{
-			return false;
-		}
-
-		final String userId = preferences.getString("userId", null);
-		if (userId == null)
-		{
-			return false;
-		}
-
-		this.setUserInfo(userToken, userId);
-		return true;
-	}
-
-	private void saveUserInfo(Context context)
-	{
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().putString("userId", this.localDataStore.getLoginId())
-		           .putString("userToken", this.localDataStore.getLoginToken()).apply();
-	}
-
-	// --------------- Users ---------------
-
-	public User getLoggedInUser()
-	{
-		return this.usersManager.get(this.localDataStore.getLoginId());
-	}
-
-	public void refreshLoggedInUser()
-	{
-		this.usersManager.update(this.getLoggedInUser());
-	}
-
-	public boolean isAdmin()
-	{
-		return "admin".equals(this.getLoggedInUser().getRole());
-	}
 
 	// --------------- Items ---------------
 
@@ -188,7 +98,7 @@ public class KitchenManager
 
 	public void createItem(String id, String name, double price, int amount, String kind)
 	{
-		if (!this.isAdmin())
+		if (!sessionManager.isAdmin())
 		{
 			return;
 		}
@@ -206,7 +116,7 @@ public class KitchenManager
 
 	public void updateItem(String id, String name, double price, int amount, String kind)
 	{
-		if (!this.isAdmin())
+		if (!sessionManager.isAdmin())
 		{
 			return;
 		}
@@ -227,7 +137,7 @@ public class KitchenManager
 
 	public void deleteItem(String id)
 	{
-		if (!this.isAdmin())
+		if (!sessionManager.isAdmin())
 		{
 			return;
 		}
@@ -241,8 +151,8 @@ public class KitchenManager
 
 	public void buyItem(Item item, int amount)
 	{
-		final Purchase purchase = new Purchase().setUser_id(this.getLoggedInUser().get_id()).setItem_id(item.get_id())
-		                                        .setAmount(amount);
+		final Purchase purchase = new Purchase().setUser_id(sessionManager.getLoggedInUser().get_id())
+		                                        .setItem_id(item.get_id()).setAmount(amount);
 
 		final Purchase createdPurchase = JsonTranslator
 			                                 .toPurchase(this.connection.buyItem(JsonTranslator.toJson(purchase)));

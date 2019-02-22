@@ -76,7 +76,7 @@ class Populator
 
 	private static int getColor(User user)
 	{
-		final boolean isLoggedIn = user.get_id().equals(MainActivity.kitchenManager.getLoggedInUser().get_id());
+		final boolean isLoggedIn = user.get_id().equals(MainActivity.kitchenManager.session().getLoggedInUser().get_id());
 		final boolean isAdmin = "admin".equals(user.getRole());
 
 		return isLoggedIn ?

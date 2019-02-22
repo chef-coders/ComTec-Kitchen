@@ -51,6 +51,6 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	@Override
 	public boolean swipeIsSupported()
 	{
-		return MainActivity.kitchenManager.isAdmin();
+		return MainActivity.kitchenManager.session().isAdmin();
 	}
 }

@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity
 				() ->
 				{
 					try {
-						return kitchenManager.tryLogin(this);
+
+						return kitchenManager.session().tryLogin(this);
 					} catch (Exception ex) {
 						return false;
 					}
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity
 		updatedDrawerHeader();
 
 		MenuItem item = navigationView.getMenu().findItem(R.id.nav_all_users);
-		item.setVisible(kitchenManager.isAdmin());
+		item.setVisible(kitchenManager.session().isAdmin());
 
 		checkAllItemsMenuItem(true);
 
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity
 							drawerLayout.closeDrawers();
 							break;
 						case R.id.nav_clear_user_data:
-							kitchenManager.clearUserData(MainActivity.this);
+							kitchenManager.session().clearUserData(this);
 							startLogin();
 							break;
 					}
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity
 
 	private void updatedDrawerHeader()
 	{
-		User user = kitchenManager.getLoggedInUser();
+		User user = kitchenManager.session().getLoggedInUser();
 
 		View headerView = navigationView.getHeaderView(0);
 		TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);

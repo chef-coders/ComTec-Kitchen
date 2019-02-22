@@ -42,7 +42,7 @@ public class CartManager
 			this.kitchenManager.getConnection().buyItem(JsonTranslator.toJson(purchase));
 		}
 
-		this.kitchenManager.refreshLoggedInUser();
+		this.kitchenManager.session().refreshLoggedInUser();
 
 		this.purchases.clear();
 	}
@@ -100,7 +100,7 @@ public class CartManager
 		}
 
 		final int actualAmount = Math.min(amount, item.getAmount());
-		final String loginId = this.kitchenManager.getLoggedInUser().get_id();
+		final String loginId = this.kitchenManager.session().getLoggedInUser().get_id();
 		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount)
 		                                        .setPrice(actualAmount * item.getPrice());
 		this.purchases.add(purchase);

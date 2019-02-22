@@ -37,8 +37,8 @@ public class TestKitchenManagerAPIAccess
 
 		usersToDelete = new ArrayList<>();
 
-		kitchenManager.register(context, "User", "Email", true);
-		usersToDelete.add(kitchenManager.getLoggedInUser());
+		kitchenManager.session().register(context, "User", "Email", true);
+		usersToDelete.add(kitchenManager.session().getLoggedInUser());
 	}
 
 	@After
@@ -58,7 +58,8 @@ public class TestKitchenManagerAPIAccess
 	@Test
 	public void tryLogin()
 	{
-		kitchenManager.tryLogin(context);
+
+		kitchenManager.session().tryLogin(context);
 	}
 
 	@Test

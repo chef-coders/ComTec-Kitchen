@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Switch;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
@@ -44,8 +43,8 @@ public class LoginActivity extends AppCompatActivity
         SimpleAsyncTask.execute(this.getApplicationContext(), () -> {
             String name = editTextName.getText().toString();
             String email = editTextEmail.getText().toString();
-            MainActivity.kitchenManager
-                    .register(LoginActivity.this, name, email, switchAdmin.isChecked());
+
+	        MainActivity.kitchenManager.session().register(this, name, email, switchAdmin.isChecked());
         }, this::startMainActivity);
     }
 
