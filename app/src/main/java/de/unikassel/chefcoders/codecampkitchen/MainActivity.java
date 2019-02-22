@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity
 			transaction.commitAllowingStateLoss();
 		} else {
 			AllItemsFragment fragment = new AllItemsFragment();
+			fragment.changeToolbar(toolbar);
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.replace(R.id.headlines_fragment, fragment);
