@@ -8,7 +8,6 @@ public class LocalDataStore
 	// =============== Fields ===============
 
 	private final Map<String, Item>     items     = createMap();
-	private final Map<String, Purchase> purchases = createMap();
 
 	// =============== Static Methods ===============
 
@@ -23,10 +22,5 @@ public class LocalDataStore
 	public Map<String, Item> getItems()
 	{
 		return this.items;
-	}
-
-	public Map<String, Purchase> getPurchases()
-	{
-		return this.purchases;
 	}
 }

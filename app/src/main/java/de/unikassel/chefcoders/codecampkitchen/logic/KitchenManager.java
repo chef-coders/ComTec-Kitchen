@@ -19,9 +19,10 @@ public class KitchenManager
 	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
-	private final CartManager    cartManager    = new CartManager(this);
-	private final UsersManager   usersManager   = new UsersManager(this);
-	private final SessionManager sessionManager = new SessionManager(this);
+	private final CartManager     cartManager     = new CartManager(this);
+	private final UsersManager    usersManager    = new UsersManager(this);
+	private final SessionManager  sessionManager  = new SessionManager(this);
+	private final PurchaseManager purchaseManager = new PurchaseManager(this);
 
 	// =============== Constructor ===============
 
@@ -63,6 +64,11 @@ public class KitchenManager
 	public SessionManager session()
 	{
 		return this.sessionManager;
+	}
+
+	public PurchaseManager purchases()
+	{
+		return this.purchaseManager;
 	}
 
 	// =============== Methods ===============
@@ -121,7 +127,7 @@ public class KitchenManager
 			return;
 		}
 
-		final Item currentItem = getItemById(id);
+		final Item currentItem = this.getItemById(id);
 
 		final Item item = new Item().setName(name).setPrice(price).setAmount(amount).setKind(kind);
 		final String itemJson = JsonTranslator.toJson(item);
@@ -142,7 +148,7 @@ public class KitchenManager
 			return;
 		}
 
-		Item currentItem = getItemById(id);
+		Item currentItem = this.getItemById(id);
 
 		this.connection.deleteItem(id);
 
@@ -172,45 +178,39 @@ public class KitchenManager
 
 	// --------------- Purchases ---------------
 
-	private static Predicate<Purchase> userFilter(String userId)
+	static Predicate<Purchase> userFilter(String userId)
 	{
 		return p -> userId.equals(p.getUser_id());
 	}
 
+	@Deprecated
 	public List<Purchase> getAllPurchases()
 	{
-		return new ArrayList<>(this.localDataStore.getPurchases().values());
+		return this.purchases().getAll();
 	}
 
+	@Deprecated
 	public void refreshAllPurchases()
 	{
-		JsonTranslator.toPurchases(this.connection.getAllPurchases())
-		              .forEach(purchase -> this.localDataStore.getPurchases().put(purchase.get_id(), purchase));
+		this.purchases().refreshAll();
 	}
 
+	@Deprecated
 	public List<Purchase> getMyPurchases()
 	{
-		final String userId = this.session().getLoggedInUser().get_id();
-		return this.localDataStore.getPurchases().values().stream().filter(userFilter(userId))
-		                          .collect(Collectors.toList());
+		return this.purchases().getMine();
 	}
 
+	@Deprecated
 	public Map<String, List<Purchase>> getMyGroupedPurchases()
 	{
-		final Collection<Purchase> purchases = this.localDataStore.getPurchases().values();
-		if (purchases.isEmpty())
-		{
-			return Collections.singletonMap("Nothing here", Collections.emptyList());
-		}
-
-		return purchases.stream().collect(Collectors.groupingBy(p -> p.getCreated().substring(0, 10)));
+		return this.purchases().getMineGrouped();
 	}
 
+	@Deprecated
 	public void refreshMyPurchases()
 	{
-		final Map<String, Purchase> purchases = this.localDataStore.getPurchases();
-		JsonTranslator.toPurchases(this.connection.getPurchasesForUser())
-		              .forEach(purchase -> purchases.put(purchase.get_id(), purchase));
+		this.purchases().refreshMine();
 	}
 
 	// --------------- Cart ---------------
