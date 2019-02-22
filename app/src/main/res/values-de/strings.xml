@@ -53,6 +53,6 @@
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
     <string name="statistics">Statistiken</string>
     <string name="generateBarcode">Barcode / ID generieren</string>
-    <string name="amounfOfBoughtItems">Verkaufte Stückzahl pro Artikel</string>
+    <string name="amounfOfBoughtItems">Übersicht - Verkaufte Artikel</string>
 
 </resources>

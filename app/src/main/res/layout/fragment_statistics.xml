@@ -16,14 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/amounfOfBoughtItems"
+            android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <com.jjoe64.graphview.GraphView
-            android:id="@+id/graph"
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible" />
+
     </LinearLayout>
 
 </FrameLayout>
