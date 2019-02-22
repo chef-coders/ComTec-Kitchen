@@ -63,7 +63,7 @@ public class EditUserFragment extends KitchenFragment
 
 		final FloatingActionButton floatingActionButton = view.findViewById(R.id.buttonSave);
 
-		final User user = MainActivity.kitchenManager.getUserById(this.userId);
+		final User user = MainActivity.kitchenManager.users().get(this.userId);
 		if (user != null)
 		{
 			this.editTextName.setText(user.getName());
@@ -84,7 +84,7 @@ public class EditUserFragment extends KitchenFragment
 		final FragmentActivity activity = this.getActivity();
 
 		SimpleAsyncTask.execute(activity, () -> {
-			MainActivity.kitchenManager.updateUser(user);
+			MainActivity.kitchenManager.users().update(user);
 		}, () -> {
 			Toast.makeText(activity, R.string.edit_user_successful, Toast.LENGTH_SHORT).show();
 			final MainActivity mainActivity = (MainActivity) activity;

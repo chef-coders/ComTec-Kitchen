@@ -2,53 +2,60 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
-import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class CartManager
 {
+	// =============== Fields ===============
+
 	private final KitchenManager kitchenManager;
+
+	private final List<Purchase> purchases = new ArrayList<>();
+
+	// =============== Constructors ===============
 
 	public CartManager(KitchenManager kitchenManager)
 	{
 		this.kitchenManager = kitchenManager;
 	}
 
+	// =============== Methods ===============
+
 	public List<Purchase> getPurchases()
 	{
-		return Collections.unmodifiableList(this.kitchenManager.getLocalDataStore().getShoppingCart());
+		return Collections.unmodifiableList(this.purchases);
 	}
 
 	public void clear()
 	{
-		this.kitchenManager.getLocalDataStore().getShoppingCart().clear();
+		this.purchases.clear();
 	}
 
 	public void submit()
 	{
-		for (Purchase purchase : this.kitchenManager.getLocalDataStore().getShoppingCart())
+		for (Purchase purchase : this.purchases)
 		{
 			this.kitchenManager.getConnection().buyItem(JsonTranslator.toJson(purchase));
 		}
 
 		this.kitchenManager.refreshLoggedInUser();
 
-		this.kitchenManager.getLocalDataStore().getShoppingCart().clear();
+		this.purchases.clear();
 	}
 
 	public double getTotal()
 	{
-		return this.kitchenManager.getLocalDataStore().getShoppingCart().stream().mapToDouble(Purchase::getPrice).sum();
+		return this.purchases.stream().mapToDouble(Purchase::getPrice).sum();
 	}
 
 	public int getAmount(Item item)
 	{
 		final String itemId = item.get_id();
-		return this.kitchenManager.getLocalDataStore().getShoppingCart().stream()
-		                          .filter(KitchenManager.itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
+		return this.purchases.stream().filter(KitchenManager.itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
 	}
 
 	/**
@@ -78,10 +85,9 @@ public class CartManager
 	 */
 	public int add(Item item, int amount)
 	{
-		final LocalDataStore localDataStore = this.kitchenManager.getLocalDataStore();
 		final String itemId = item.get_id();
 
-		for (Purchase purchase : localDataStore.getShoppingCart())
+		for (Purchase purchase : this.purchases)
 		{
 			if (itemId.equals(purchase.getItem_id()))
 			{
@@ -94,10 +100,10 @@ public class CartManager
 		}
 
 		final int actualAmount = Math.min(amount, item.getAmount());
-		final String loginId = localDataStore.getLoginId();
+		final String loginId = this.kitchenManager.getLoggedInUser().get_id();
 		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount)
 		                                        .setPrice(actualAmount * item.getPrice());
-		localDataStore.getShoppingCart().add(purchase);
+		this.purchases.add(purchase);
 		return actualAmount;
 	}
 
@@ -112,6 +118,6 @@ public class CartManager
 	public boolean remove(Item item)
 	{
 		final String itemId = item.get_id();
-		return this.kitchenManager.getLocalDataStore().getShoppingCart().removeIf(KitchenManager.itemFilter(itemId));
+		return this.purchases.removeIf(KitchenManager.itemFilter(itemId));
 	}
 }

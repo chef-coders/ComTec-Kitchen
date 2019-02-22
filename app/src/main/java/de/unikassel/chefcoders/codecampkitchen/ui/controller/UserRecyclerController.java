@@ -11,8 +11,8 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.refreshAllUsers();
-		this.fill(MainActivity.kitchenManager.getGroupedUsers());
+		MainActivity.kitchenManager.users().refreshAll();
+		this.fill(MainActivity.kitchenManager.users().getGrouped());
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	@Override
 	public boolean onSwiped(RowViewHolder v, int section, int item)
 	{
-		return MainActivity.kitchenManager.deleteUser(this.get(section, item));
+		return MainActivity.kitchenManager.users().delete(this.get(section, item));
 	}
 
 	@Override
