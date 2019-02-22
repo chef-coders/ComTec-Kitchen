@@ -116,7 +116,7 @@ public class PurchaseItemFragment extends KitchenFragment
 		}
 
 		SimpleAsyncTask.execute(this.getActivity(),
-				() -> MainActivity.kitchenManager.addToCart(MainActivity.kitchenManager.getItemById(barcode), amount),
+				() -> MainActivity.kitchenManager.cart().add(MainActivity.kitchenManager.getItemById(barcode), amount),
 				this::goBack
 		);
 	}

@@ -190,7 +190,7 @@ public class KitchenManager
 
 	public List<Purchase> getMyPurchases()
 	{
-		final String userId = this.localDataStore.getLoginId();
+		final String userId = this.session().getLoggedInUser().get_id();
 		return this.localDataStore.getPurchases().values().stream().filter(userFilter(userId))
 		                          .collect(Collectors.toList());
 	}
