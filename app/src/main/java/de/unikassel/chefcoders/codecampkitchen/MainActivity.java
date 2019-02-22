@@ -176,9 +176,15 @@ public class MainActivity extends AppCompatActivity
 							drawerLayout.closeDrawers();
 							break;
 						case R.id.nav_statistics:
-							changeFragment(new StatisticsFragment());
-							menuItem.setChecked(true);
-							drawerLayout.closeDrawers();
+							SimpleAsyncTask.execute(
+								this.getApplicationContext(),
+								() -> MainActivity.kitchenManager.refreshAllPurchases(),
+								() -> {
+									changeFragment(new StatisticsFragment());
+									menuItem.setChecked(true);
+									drawerLayout.closeDrawers();
+								}
+							);
 							break;
 						case R.id.nav_clear_user_data:
 							kitchenManager.clearUserData(MainActivity.this);
