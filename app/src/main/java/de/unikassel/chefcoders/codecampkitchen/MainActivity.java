@@ -218,6 +218,7 @@ public class MainActivity extends AppCompatActivity
 		View headerView = navigationView.getHeaderView(0);
 		TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
 		TextView textViewCredit = headerView.findViewById(R.id.textViewCredit);
+		TextView textViewEmail = headerView.findViewById(R.id.textViewEmail);
 		ImageButton buttonEditUser = headerView.findViewById(R.id.buttonEditUser);
 
 		buttonEditUser.setOnClickListener((v) ->
@@ -232,7 +233,8 @@ public class MainActivity extends AppCompatActivity
 			} else {
 				textViewUsername.setText(user.getName());
 			}
-			textViewCredit.setText(getString(R.string.item_price, user.getCredit()));
+			textViewEmail.setText(user.getMail());
+			textViewCredit.setText(getString(R.string.credit_value, user.getCredit()));
 		}
 	}
 
