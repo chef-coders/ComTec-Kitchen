@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
@@ -27,7 +28,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 	}
 
 	@Override
-	public boolean onClick(int section, int itemIndex)
+	public boolean onClick(RowViewHolder v, int section, int itemIndex)
 	{
 		if (!MainActivity.editMode)
 		{
@@ -38,7 +39,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 	}
 
 	@Override
-	public boolean onSwiped(int section, int itemIndex)
+	public boolean onSwiped(RowViewHolder viewHolder, int section, int itemIndex)
 	{
 		if (MainActivity.editMode)
 		{

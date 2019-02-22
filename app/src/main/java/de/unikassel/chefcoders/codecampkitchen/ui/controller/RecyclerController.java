@@ -3,7 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public interface RecyclerController<T extends RecyclerView.ViewHolder>
+public interface RecyclerController<V extends RecyclerView.ViewHolder>
 {
 	int getSections();
 
@@ -13,13 +13,13 @@ public interface RecyclerController<T extends RecyclerView.ViewHolder>
 
 	void refresh();
 
-	T create(View view);
+	V create(View view);
 
-	void populate(T v, int section, int item);
+	void populate(V v, int section, int item);
 
-	boolean onClick(int section, int item);
+	boolean onClick(V v, int section, int item);
 
-	boolean onSwiped(int section, int item);
+	boolean onSwiped(V v, int section, int item);
 
 	boolean swipeIsSupported();
 }

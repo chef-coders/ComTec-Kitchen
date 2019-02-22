@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
@@ -27,13 +28,13 @@ public class PurchasesRecyclerController extends GroupedRecyclerController<Purch
 	}
 
 	@Override
-	public boolean onClick(int section, int item)
+	public boolean onClick(RowViewHolder v, int section, int item)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean onSwiped(int section, int item)
+	public boolean onSwiped(RowViewHolder v, int section, int item)
 	{
 		return false;
 	}
