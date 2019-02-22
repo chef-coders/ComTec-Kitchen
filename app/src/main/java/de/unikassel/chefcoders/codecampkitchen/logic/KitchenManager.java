@@ -119,38 +119,6 @@ public class KitchenManager
 		return this.items().get(id);
 	}
 
-	// --------------- Purchases ---------------
-
-	@Deprecated
-	public List<Purchase> getAllPurchases()
-	{
-		return this.purchases().getAll();
-	}
-
-	@Deprecated
-	public void refreshAllPurchases()
-	{
-		this.purchases().refreshAll();
-	}
-
-	@Deprecated
-	public List<Purchase> getMyPurchases()
-	{
-		return this.purchases().getMine();
-	}
-
-	@Deprecated
-	public Map<String, List<Purchase>> getMyGroupedPurchases()
-	{
-		return this.purchases().getMineGrouped();
-	}
-
-	@Deprecated
-	public void refreshMyPurchases()
-	{
-		this.purchases().refreshMine();
-	}
-
 	// --------------- Helpers Methods---------------
 
 	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,

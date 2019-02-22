@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
@@ -11,8 +10,8 @@ public class PurchasesRecyclerController extends GroupedRecyclerController<Purch
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.refreshMyPurchases();
-		this.fill(MainActivity.kitchenManager.getMyGroupedPurchases());
+		MainActivity.kitchenManager.purchases().refreshMine();
+		this.fill(MainActivity.kitchenManager.purchases().getMineGrouped());
 	}
 
 	@Override
