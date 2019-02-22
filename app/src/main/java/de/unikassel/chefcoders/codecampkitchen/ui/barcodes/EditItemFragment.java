@@ -9,21 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
-import de.unikassel.chefcoders.codecampkitchen.model.ItemKind.Entry;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class EditItemFragment extends ItemDetailFragment
 {
-	private String itemId;
-	private Item item;
-
 	public static EditItemFragment newInstance(String itemId)
 	{
 		EditItemFragment fragment = new EditItemFragment();
@@ -33,53 +28,41 @@ public class EditItemFragment extends ItemDetailFragment
 		return fragment;
 	}
 
-	@Nullable
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+		@Nullable Bundle savedInstanceState)
 	{
 		View editItemView = inflater.inflate(R.layout.fragment_edit_item, container, false);
 
 		this.initViews(editItemView);
 
-		this.itemId = getArguments().getString("itemId");
-		this.item = MainActivity.kitchenManager.items().get(this.itemId);
+		final String itemId = this.getArguments().getString("itemId");
+		final Item item = MainActivity.kitchenManager.items().get(itemId);
 
 		Button editButton = editItemView.findViewById(R.id.editButton);
 		editButton.setOnClickListener(this::onEdit);
 
 		this.barcodeValue.setText(item.get_id());
 		this.nameText.setText(item.getName());
-		this.priceText.setText("" + item.getPrice());
-		this.amountText.setText("" + item.getAmount());
+		this.priceText.setText(String.valueOf(item.getPrice()));
+		this.amountText.setText(String.valueOf(item.getAmount()));
 		this.kindSpinner.setSelection(ItemKind.getIndex(item.getKind()));
 
 		return editItemView;
 	}
 
-	public void onEdit(View view) {
-		final String name = nameText.getText().toString();
-		final double price;
-		final int amount;
-		final Entry selectedEntry = (Entry) kindSpinner.getSelectedItem();
-		final String kind = selectedEntry.getValue();
-
-		try {
-			price = Double.parseDouble(priceText.getText().toString());
-			amount = Integer.parseInt(amountText.getText().toString());
-		} catch (NumberFormatException ex) {
-			priceText.setText("0.00");
-			amountText.setText("0");
+	public void onEdit(View view)
+	{
+		final Item item = this.getItem();
+		if (item == null)
+		{
 			return;
 		}
 
-		SimpleAsyncTask.execute(this.getContext(),
-		                        () -> MainActivity.kitchenManager.items().update(new Item().set_id(itemId).setName(name).setPrice(
-			                        price).setAmount(amount).setKind(kind)),
-			() -> {
-				MainActivity mainActivity = (MainActivity)this.getActivity();
-				mainActivity.changeFragment(new AllItemsFragment());
-			}
-		);
+		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().update(item), () -> {
+			MainActivity mainActivity = (MainActivity) this.getActivity();
+			mainActivity.changeFragment(new AllItemsFragment());
+		});
 	}
 
 	@Override

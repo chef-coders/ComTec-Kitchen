@@ -8,19 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 public class CreateItemFragment extends ItemDetailFragment
 {
-	private String barcode;
-
 	public static CreateItemFragment newInstance(String barcode)
 	{
 		CreateItemFragment fragment = new CreateItemFragment();
@@ -31,7 +27,8 @@ public class CreateItemFragment extends ItemDetailFragment
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+		@Nullable Bundle savedInstanceState)
 	{
 		View createItemView = inflater.inflate(R.layout.fragment_create_item, container, false);
 
@@ -44,53 +41,38 @@ public class CreateItemFragment extends ItemDetailFragment
 		genIdButton.setOnClickListener(this::onGeneratedId);
 
 		Bundle args = this.getArguments();
-		if(args != null)
+		if (args != null)
 		{
-			this.barcode = this.getArguments().getString("barcode");
 			this.barcodeValue.setEnabled(false);
 			genIdButton.setEnabled(false);
-			this.barcodeValue.setText(barcode);
+			this.barcodeValue.setText(this.getArguments().getString("barcode"));
 		}
 		else
 		{
-			this.barcode = "";
+			this.barcodeValue.setText("");
 		}
 
 		return createItemView;
 	}
 
-	public void onCreate(View view) {
-		final String name = nameText.getText().toString();
-		final double price;
-		final int amount;
-		final ItemKind.Entry selectedEntry = (ItemKind.Entry) kindSpinner.getSelectedItem();
-		final String kind = selectedEntry.getValue();
-
-		try {
-			price = Double.parseDouble(priceText.getText().toString());
-			amount = Integer.parseInt(amountText.getText().toString());
-		} catch (NumberFormatException ex) {
-			priceText.setText("0.00");
-			amountText.setText("0");
+	public void onCreate(View view)
+	{
+		final Item item = this.getItem();
+		if (item == null)
+		{
 			return;
 		}
 
-		SimpleAsyncTask.execute(
-			this.getContext(),
-			() -> MainActivity.kitchenManager.items().create(new Item().set_id(barcode).setName(name).setPrice(price).setAmount(
-				amount).setKind(kind)),
-			() -> {
-				MainActivity mainActivity = (MainActivity)this.getActivity();
-				mainActivity.changeFragment(new AllItemsFragment());
-			}
-		);
+		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().create(item), () -> {
+			MainActivity mainActivity = (MainActivity) this.getActivity();
+			mainActivity.changeFragment(new AllItemsFragment());
+		});
 	}
 
-	public void onGeneratedId(View view) {
-		Double doubleValue = Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L;
-		Long longValue = doubleValue.longValue();
-		barcode = "Generated:" + longValue.toString();
-		this.barcodeValue.setText(barcode);
+	public void onGeneratedId(View view)
+	{
+		final long barcode = (long) (Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L);
+		this.barcodeValue.setText("Generated:" + barcode);
 	}
 
 	@Override
