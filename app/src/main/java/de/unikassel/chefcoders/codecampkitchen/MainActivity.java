@@ -1,5 +1,8 @@
 package de.unikassel.chefcoders.codecampkitchen;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
@@ -353,5 +356,19 @@ public class MainActivity extends AppCompatActivity
 	public Toolbar getToolbar()
 	{
 		return toolbar;
+	}
+
+	public static Activity getActivity(View view)
+	{
+		Context context = view.getContext();
+		while (context instanceof ContextWrapper)
+		{
+			if (context instanceof Activity)
+			{
+				return (Activity) context;
+			}
+			context = ((ContextWrapper) context).getBaseContext();
+		}
+		return null;
 	}
 }
