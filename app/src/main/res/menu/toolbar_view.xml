@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_scan_code"
+        android:icon="@drawable/ic_linked_camera_white"
+        android:title="@string/barcode_toolbar_item_name"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_create"
         android:icon="@drawable/ic_add_white_24dp"
@@ -11,11 +18,6 @@
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_mode_edit_white_24dp"
         android:title="@string/editItem"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_scan_code"
-        android:icon="@drawable/ic_linked_camera_white"
-        android:title="@string/barcode_toolbar_item_name"
         app:showAsAction="ifRoom" />
 
     <item
