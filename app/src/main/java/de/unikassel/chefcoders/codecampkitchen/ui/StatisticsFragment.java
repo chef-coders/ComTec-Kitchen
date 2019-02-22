@@ -79,12 +79,12 @@ public class StatisticsFragment extends KitchenFragment
 		String userId = MainActivity.kitchenManager.session().getLoggedInUser().get_id();
 
 		for (Purchase purchase : this.purchases) {
-			totalAmount += purchase.getPrice() * purchase.getAmount();
+			totalAmount += purchase.getPrice();
 
 			totalNumber += purchase.getAmount();
 
 			if (purchase.getUser_id().equals(userId)) {
-				moneySpent += purchase.getPrice() * purchase.getAmount();
+				moneySpent += purchase.getPrice();
 
 				purchasedItems += purchase.getAmount();
 			}
