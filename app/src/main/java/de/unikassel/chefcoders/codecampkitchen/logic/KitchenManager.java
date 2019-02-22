@@ -163,9 +163,9 @@ public class KitchenManager
 		return this.localDataStore.getUsers().get(userId);
 	}
 
-	public void updateUser(String userId, String name, String mail, double credit)
+	public void updateUser(User user)
 	{
-		//TODO
+		this.connection.updateUser(user.get_id(), JsonTranslator.toJson(user));
 	}
 
 	// --------------- Items ---------------
