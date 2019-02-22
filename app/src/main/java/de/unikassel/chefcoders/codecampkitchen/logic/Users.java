@@ -36,7 +36,7 @@ public class Users
 
 	public Map<String, List<User>> getGrouped()
 	{
-		return KitchenManager.group(this.users.values(), u -> u.getName().substring(0, 1).toUpperCase(),
+		return KitchenManager.group(this.users.values().stream(), u -> u.getName().substring(0, 1).toUpperCase(),
 		                            Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 

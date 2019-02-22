@@ -3,10 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,7 +45,9 @@ public class Purchases
 
 	public Map<String, List<Purchase>> getMineGrouped()
 	{
-		return this.myPurchases().collect(Collectors.groupingBy(p -> p.getCreated().substring(0, 10)));
+		// comparing strings, but works for ISO 8601 timestamps
+		return KitchenManager.group(this.myPurchases(), p -> p.getCreated().substring(0, 10),
+		                            Comparator.comparing(Purchase::getCreated));
 	}
 
 	// --------------- Modification ---------------

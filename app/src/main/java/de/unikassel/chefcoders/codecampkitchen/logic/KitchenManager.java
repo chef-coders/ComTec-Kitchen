@@ -6,6 +6,7 @@ import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class KitchenManager
 {
@@ -69,10 +70,10 @@ public class KitchenManager
 
 	// --------------- Helpers Methods ---------------
 
-	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
+	static <K, V> Map<K, List<V>> group(Stream<V> items, Function<? super V, ? extends K> keyExtractor,
 		Comparator<? super V> comparator)
 	{
-		final Map<K, List<V>> grouped = items.stream().collect(
+		final Map<K, List<V>> grouped = items.collect(
 			Collectors.groupingBy(keyExtractor, TreeMap::new, Collectors.toList()));
 		grouped.values().forEach(l -> l.sort(comparator));
 		return grouped;

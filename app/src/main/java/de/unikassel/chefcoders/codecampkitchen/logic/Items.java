@@ -41,7 +41,7 @@ public class Items
 
 	public Map<String, List<Item>> getGrouped()
 	{
-		return KitchenManager.group(this.items.values(), Item::getKind,
+		return KitchenManager.group(this.items.values().stream(), Item::getKind,
 		                            Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
