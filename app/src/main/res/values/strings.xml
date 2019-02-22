@@ -57,7 +57,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generateBarcode">Generate Barcode / ID</string>
-    <string name="amounfOfBoughtItems">Sold Quantity Foreach Item</string>
+    <string name="amountOfBoughtItems">Sold Quantity Foreach Item</string>
     <string name="credit_value">Credit: %1$.2f €</string>
     <string name="dark_mode">Dark Mode</string>
 
