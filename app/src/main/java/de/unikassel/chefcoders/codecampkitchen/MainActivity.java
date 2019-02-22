@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity
 				.beginTransaction();
 		transaction.replace(R.id.headlines_fragment, fragment);
 		transaction.commit();
-		updateLayout();
 	}
 
 	private void initShortCuts()
@@ -310,16 +309,5 @@ public class MainActivity extends AppCompatActivity
 	public Toolbar getToolbar()
 	{
 		return toolbar;
-	}
-
-	public void updateLayout() {
-		FrameLayout layout = findViewById(R.id.fragment_layout);
-		if (layout != null) {
-			if (editMode) {
-				layout.setBackgroundResource(R.color.colorAccent);
-			} else {
-				layout.setBackgroundResource(R.color.cast_expanded_controller_ad_container_white_stripe_color);
-			}
-		}
 	}
 }
