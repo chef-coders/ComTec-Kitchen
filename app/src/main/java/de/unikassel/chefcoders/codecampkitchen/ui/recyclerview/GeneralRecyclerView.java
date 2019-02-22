@@ -135,7 +135,6 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
-		this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getItemId());
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
 			return this.recyclerController.onClick(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 		}, (Boolean b) -> {
@@ -143,6 +142,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			{
 				this.recyclerController.populate(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 			}
+			this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getItemId());
 		});
 	}
 
@@ -161,7 +161,6 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
-		this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
 			boolean refreshAll = this.recyclerController.onSwiped(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 			if (refreshAll)
@@ -182,6 +181,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 					adapter.notifyDataSetChanged();
 				}
 			}
+			this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
 		});
 	}
 

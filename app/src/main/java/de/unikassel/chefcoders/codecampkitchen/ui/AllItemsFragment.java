@@ -102,7 +102,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void onSwiped(int section, int item)
 	{
-		if(MainActivity.kitchenManager.cart().getPurchases().size() == 1)
+		if(MainActivity.kitchenManager.cart().getPurchases().size() == 0)
 		{
 			this.floatingActionButton.hide();
 		}
