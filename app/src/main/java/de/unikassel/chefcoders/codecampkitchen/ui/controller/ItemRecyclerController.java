@@ -1,11 +1,9 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
 public class ItemRecyclerController extends GroupedRecyclerController<Item, RowViewHolder>
@@ -35,15 +33,17 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		final Item item = this.get(section, itemIndex);
 		if (!MainActivity.editMode)
 		{
-			return MainActivity.kitchenManager.addToCart(item) > 0;
+			return MainActivity.kitchenManager.cart().add(item) > 0;
 		}
 
 		final View itemView = v.itemView;
 		itemView.post(() -> {
-			final Context context = itemView.getContext();
-			Intent intent = new Intent(context, EditItemActivity.class);
-			intent.putExtra("itemId", item.get_id());
-			context.startActivity(intent);
+			MainActivity mainActivity = (MainActivity)MainActivity.getActivity(itemView);
+			if(mainActivity != null)
+			{
+				EditItemFragment editItemFragment = EditItemFragment.newInstance(item.get_id());
+				mainActivity.changeFragment(editItemFragment);
+			}
 		});
 		return true;
 	}
@@ -59,7 +59,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		}
 		else
 		{
-			return MainActivity.kitchenManager.removeFromCart(this.get(section, itemIndex));
+			return MainActivity.kitchenManager.cart().remove(this.get(section, itemIndex));
 		}
 	}
 

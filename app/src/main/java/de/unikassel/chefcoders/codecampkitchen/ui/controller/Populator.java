@@ -12,7 +12,7 @@ class Populator
 {
 	static void populate(RowViewHolder v, Item item)
 	{
-		final int numInCart = MainActivity.kitchenManager.getCartAmount(item);
+		final int numInCart = MainActivity.kitchenManager.cart().getAmount(item);
 		final double price = item.getPrice();
 		populate(v, item.getName(), numInCart, price, numInCart * price);
 
@@ -76,7 +76,7 @@ class Populator
 
 	private static int getColor(User user)
 	{
-		final boolean isLoggedIn = user.get_id().equals(MainActivity.kitchenManager.getLoggedInUser().get_id());
+		final boolean isLoggedIn = user.get_id().equals(MainActivity.kitchenManager.session().getLoggedInUser().get_id());
 		final boolean isAdmin = "admin".equals(user.getRole());
 
 		return isLoggedIn ?

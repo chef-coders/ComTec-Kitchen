@@ -11,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.UserRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
 
@@ -77,11 +75,6 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 	@Override
 	public void onClick(int section, int item)
 	{
-		MainActivity mainActivity = (MainActivity) getActivity();
-		User user = MainActivity.kitchenManager.getUser(section, item);
-		if (mainActivity != null) {
-			mainActivity.changeFragment(EditUserFragment.newInstance(user.get_id()));
-		}
 	}
 
 	@Override

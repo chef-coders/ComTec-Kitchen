@@ -28,16 +28,18 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	}
 
 	@Override
-	public void onScanned(Barcode barcode) {
-		boolean isAdmin = MainActivity.kitchenManager.isAdmin();
+	public void onScanned(Barcode barcode)
+	{
+		boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
 		boolean itemExists = MainActivity.kitchenManager.containsItem(barcode.rawValue);
 		if (isAdmin && !itemExists) {
 			Intent intent = new Intent(BarcodeScannerActivity.this, CreateItemActivity.class);
 			intent.putExtra("barcode", barcode.rawValue);
 			startActivity(intent);
 		} else if (itemExists) {
-			Intent intent = new Intent(BarcodeScannerActivity.this, PurchaseItemActivity.class);
+			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
 			intent.putExtra("barcode", barcode.rawValue);
+			finish();
 			startActivity(intent);
 		} else {
 			Toast.makeText(getApplicationContext(), this.getString(R.string.itemNotFound), Toast.LENGTH_SHORT).show();
@@ -45,20 +47,32 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	}
 
 	@Override
-	public void onScannedMultiple(List<Barcode> list) {
+	public void onScannedMultiple(List<Barcode> list)
+	{
 	}
 
 	@Override
-	public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
+	public void onBitmapScanned(SparseArray<Barcode> sparseArray)
+	{
 	}
 
 	@Override
-	public void onScanError(String s) {
+	public void onScanError(String s)
+	{
 		Toast.makeText(getApplicationContext(), "Error occurred while scanning " + s, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
-	public void onCameraPermissionDenied() {
+	public void onCameraPermissionDenied()
+	{
 		finish();
+		startActivity(new Intent(this, MainActivity.class));
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		finish();
+		startActivity(new Intent(this, MainActivity.class));
 	}
 }

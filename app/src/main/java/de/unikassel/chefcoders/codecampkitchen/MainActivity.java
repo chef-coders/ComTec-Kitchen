@@ -1,5 +1,8 @@
 package de.unikassel.chefcoders.codecampkitchen;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
@@ -26,6 +29,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.*;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.PurchaseItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
@@ -52,7 +56,8 @@ public class MainActivity extends AppCompatActivity
 				() ->
 				{
 					try {
-						return kitchenManager.tryLogin(this);
+
+						return kitchenManager.session().tryLogin(this);
 					} catch (Exception ex) {
 						return false;
 					}
@@ -83,11 +88,20 @@ public class MainActivity extends AppCompatActivity
 
 	private void initFragment()
 	{
-		AllItemsFragment fragment = new AllItemsFragment();
-		FragmentTransaction transaction = getSupportFragmentManager()
-				.beginTransaction();
-		transaction.replace(R.id.headlines_fragment, fragment);
-		transaction.commit();
+		if (getIntent().hasExtra("barcode")) {
+			PurchaseItemFragment fragment = PurchaseItemFragment.newInstance(getIntent().getStringExtra("barcode"));
+			fragment.changeToolbar(toolbar);
+			FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
+			transaction.replace(R.id.headlines_fragment, fragment);
+			transaction.commit();
+		} else {
+			AllItemsFragment fragment = new AllItemsFragment();
+			FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
+			transaction.replace(R.id.headlines_fragment, fragment);
+			transaction.commit();
+		}
 	}
 
 	private void initShortCuts()
@@ -152,7 +166,7 @@ public class MainActivity extends AppCompatActivity
 		updatedDrawerHeader();
 
 		MenuItem item = navigationView.getMenu().findItem(R.id.nav_all_users);
-		item.setVisible(kitchenManager.isAdmin());
+		item.setVisible(kitchenManager.session().isAdmin());
 
 		checkAllItemsMenuItem(true);
 
@@ -187,7 +201,7 @@ public class MainActivity extends AppCompatActivity
 							);
 							break;
 						case R.id.nav_clear_user_data:
-							kitchenManager.clearUserData(MainActivity.this);
+							kitchenManager.session().clearUserData(this);
 							startLogin();
 							break;
 					}
@@ -199,7 +213,7 @@ public class MainActivity extends AppCompatActivity
 
 	private void updatedDrawerHeader()
 	{
-		User user = kitchenManager.getLoggedInUser();
+		User user = kitchenManager.session().getLoggedInUser();
 
 		View headerView = navigationView.getHeaderView(0);
 		TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
@@ -309,6 +323,7 @@ public class MainActivity extends AppCompatActivity
 				this.drawerLayout.openDrawer(GravityCompat.START);
 				return true;
 			case R.id.action_scan_code:
+				finish();
 				startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
 				return true;
 			case R.id.action_create:
@@ -318,7 +333,7 @@ public class MainActivity extends AppCompatActivity
 				setEditMode(!editMode);
 				return true;
 			case R.id.action_clear_all:
-				SimpleAsyncTask.execute(this.getApplicationContext(), () -> kitchenManager.clearCart(), () ->
+				SimpleAsyncTask.execute(this.getApplicationContext(), () -> kitchenManager.cart().clear(), () ->
 				{
 				});
 				changeFragment(new AllItemsFragment());
@@ -359,5 +374,19 @@ public class MainActivity extends AppCompatActivity
 	public Toolbar getToolbar()
 	{
 		return toolbar;
+	}
+
+	public static Activity getActivity(View view)
+	{
+		Context context = view.getContext();
+		while (context instanceof ContextWrapper)
+		{
+			if (context instanceof Activity)
+			{
+				return (Activity) context;
+			}
+			context = ((ContextWrapper) context).getBaseContext();
+		}
+		return null;
 	}
 }

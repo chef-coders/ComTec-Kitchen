@@ -62,7 +62,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 		menu.findItem(R.id.action_scan_code).setVisible(!MainActivity.editMode);
 		menu.findItem(R.id.action_create).setVisible(false);
 		menu.findItem(R.id.action_edit).setVisible(false);
-		ResultAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.isAdmin(), (value) -> {
+		ResultAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.session().isAdmin(), (value) -> {
 			menu.findItem(R.id.action_create).setVisible(value && !MainActivity.editMode);
 			menu.findItem(R.id.action_edit).setVisible(value);
 		});
@@ -84,7 +84,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
-		if(MainActivity.kitchenManager.getCart().size() > 0)
+		if(MainActivity.kitchenManager.cart().getPurchases().size() > 0)
 		{
 			this.floatingActionButton.show();
 		}
@@ -102,7 +102,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void onSwiped(int section, int item)
 	{
-		if(MainActivity.kitchenManager.getCart().size() == 1)
+		if(MainActivity.kitchenManager.cart().getPurchases().size() == 1)
 		{
 			this.floatingActionButton.hide();
 		}
