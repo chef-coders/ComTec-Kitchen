@@ -10,7 +10,6 @@ public class LocalDataStore
 	private String loginToken;
 	private String loginId;
 
-	private final Map<String, User>     users     = createMap();
 	private final Map<String, Item>     items     = createMap();
 	private final Map<String, Purchase> purchases = createMap();
 
@@ -45,11 +44,6 @@ public class LocalDataStore
 	}
 
 	// =============== Methods ===============
-
-	public Map<String, User> getUsers()
-	{
-		return this.users;
-	}
 
 	public Map<String, Item> getItems()
 	{

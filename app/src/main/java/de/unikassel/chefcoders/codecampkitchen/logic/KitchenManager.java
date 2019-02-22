@@ -71,7 +71,7 @@ public class KitchenManager
 		}
 
 		final User userData = JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId()));
-		this.localDataStore.getUsers().put(userData.get_id(), userData);
+		this.usersManager.updateLocal(userData);
 		return true;
 	}
 
@@ -95,7 +95,7 @@ public class KitchenManager
 		this.setUserInfo(createdUser.getToken(), createdUser.get_id());
 		this.saveUserInfo(context);
 
-		this.localDataStore.getUsers().put(createdUser.get_id(), createdUser);
+		this.usersManager.updateLocal(createdUser);
 	}
 
 	public void clearUserData(Context context)
@@ -144,19 +144,17 @@ public class KitchenManager
 
 	public User getLoggedInUser()
 	{
-		return this.localDataStore.getUsers().get(this.localDataStore.getLoginId());
+		return this.usersManager.get(this.localDataStore.getLoginId());
 	}
 
 	public void refreshLoggedInUser()
 	{
-		User user = JsonTranslator.toUser(this.connection.getUser(this.localDataStore.getLoginId()));
-		this.localDataStore.getUsers().put(user.get_id(), user);
+		this.usersManager.update(this.getLoggedInUser());
 	}
 
 	public boolean isAdmin()
 	{
-		User user = this.getLoggedInUser();
-		return "admin".equals(user.getRole());
+		return "admin".equals(this.getLoggedInUser().getRole());
 	}
 
 	// --------------- Items ---------------
