@@ -6,6 +6,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -106,19 +107,36 @@ public class CartManager
 	{
 		final String itemId = item.get_id();
 
-		for (Purchase purchase : this.purchases)
+		for (Iterator<Purchase> iterator = this.purchases.iterator(); iterator.hasNext(); )
 		{
-			if (itemId.equals(purchase.getItem_id()))
+			final Purchase purchase = iterator.next();
+			if (!itemId.equals(purchase.getItem_id()))
 			{
-				final int oldAmount = purchase.getAmount();
-				final int newAmount = Math.min(oldAmount + amount, item.getAmount());
-				purchase.setAmount(newAmount);
-				purchase.setPrice(newAmount * item.getPrice());
-				return newAmount - oldAmount; // difference is how many have actually been added
+				continue;
 			}
+
+			final int oldAmount = purchase.getAmount();
+			final int newAmount = Math.min(oldAmount + amount, item.getAmount());
+
+			if (newAmount <= 0)
+			{
+				// item no longer available, remove purchase
+				iterator.remove();
+				return 0;
+			}
+
+			purchase.setAmount(newAmount);
+			purchase.setPrice(newAmount * item.getPrice());
+			return newAmount - oldAmount; // difference is how many have actually been added
 		}
 
 		final int actualAmount = Math.min(amount, item.getAmount());
+		if (actualAmount <= 0)
+		{
+			// item not available, do not add purchase
+			return 0;
+		}
+
 		final String loginId = this.kitchenManager.session().getLoggedInUser().get_id();
 		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount)
 		                                        .setPrice(actualAmount * item.getPrice());
