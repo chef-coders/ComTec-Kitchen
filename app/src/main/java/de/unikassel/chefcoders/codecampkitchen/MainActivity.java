@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
 		transaction.replace(R.id.headlines_fragment, fragment);
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 	}
 
 	private void initShortCuts()
