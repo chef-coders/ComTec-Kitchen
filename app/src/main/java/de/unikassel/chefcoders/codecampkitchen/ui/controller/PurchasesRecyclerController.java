@@ -23,7 +23,7 @@ public class PurchasesRecyclerController extends GroupedRecyclerController<Purch
 	@Override
 	public void populate(RowViewHolder v, int section, int itemIndex)
 	{
-		Populator.populate(v, this.get(section, itemIndex));
+		Populator.populatePurchaseHistory(v, this.get(section, itemIndex));
 	}
 
 	@Override

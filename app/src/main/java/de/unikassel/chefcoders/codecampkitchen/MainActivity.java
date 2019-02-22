@@ -32,6 +32,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.*;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.PurchaseItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
@@ -110,11 +111,12 @@ public class MainActivity extends AppCompatActivity
 		if(getIntent().hasExtra("settings")){
 			SettingsFragment fragment = new SettingsFragment();
 			fragment.changeToolbar(toolbar);
-			fragment.changeToolbar(toolbar);
+			checkSettingsMenuItem(true);
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commitAllowingStateLoss();		} else if (getIntent().hasExtra("barcode")) {
+			transaction.commitAllowingStateLoss();
+		} else if (getIntent().hasExtra("barcode")) {
 			PurchaseItemFragment fragment = PurchaseItemFragment.newInstance(getIntent().getStringExtra("barcode"));
 			fragment.changeToolbar(toolbar);
 			FragmentTransaction transaction = getSupportFragmentManager()
@@ -285,11 +287,11 @@ public class MainActivity extends AppCompatActivity
 		if (fragment instanceof AllItemsFragment) {
 			changeFragmentBack(fragment);
 		} else {
-			changeFragmentForward(fragment);
+			changeFragmentForward(fragment, fragment instanceof EditItemFragment);
 		}
 	}
 
-	public void changeFragmentForward(KitchenFragment fragment)
+	public void changeFragmentForward(KitchenFragment fragment, boolean editMode)
 	{
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -301,7 +303,7 @@ public class MainActivity extends AppCompatActivity
 				R.anim.slide_out_left
 		);
 
-		setEditMode(false);
+		setEditMode(editMode);
 
 		transaction.replace(R.id.headlines_fragment, fragment);
 
@@ -338,6 +340,13 @@ public class MainActivity extends AppCompatActivity
 	{
 		Menu menuNav = navigationView.getMenu();
 		MenuItem item = menuNav.findItem(R.id.nav_all_users);
+		item.setChecked(check);
+	}
+
+	public void checkSettingsMenuItem(boolean check)
+	{
+		Menu menuNav = navigationView.getMenu();
+		MenuItem item = menuNav.findItem(R.id.nav_settings);
 		item.setChecked(check);
 	}
 
@@ -404,7 +413,7 @@ public class MainActivity extends AppCompatActivity
 				.setVisible(!MainActivity.editMode && isAllItemsFragmentVisible());
 		getToolbar().getMenu()
 				.findItem(R.id.action_create)
-				.setVisible(!MainActivity.editMode && isAllItemsFragmentVisible());
+				.setVisible(MainActivity.editMode && isAllItemsFragmentVisible());
 
 		//updateLayout();
 	}
