@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
@@ -76,7 +77,8 @@ public class CreateItemFragment extends ItemDetailFragment
 
 		SimpleAsyncTask.execute(
 			this.getContext(),
-			() -> MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind),
+			() -> MainActivity.kitchenManager.items().create(new Item().set_id(barcode).setName(name).setPrice(price).setAmount(
+				amount).setKind(kind)),
 			() -> {
 				MainActivity mainActivity = (MainActivity)this.getActivity();
 				mainActivity.changeFragment(new AllItemsFragment());

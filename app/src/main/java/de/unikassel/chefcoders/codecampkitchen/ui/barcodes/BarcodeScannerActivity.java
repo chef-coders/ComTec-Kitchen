@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +31,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	public void onScanned(Barcode barcode)
 	{
 		boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
-		boolean itemExists = MainActivity.kitchenManager.containsItem(barcode.rawValue);
+		boolean itemExists = MainActivity.kitchenManager.items().exists(barcode.rawValue);
 		if (isAdmin && !itemExists) {
 			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
 			intent.putExtra("barcodeCreate", barcode.rawValue);
