@@ -6,6 +6,7 @@ import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.*;
@@ -47,32 +49,30 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 
 		ResultAsyncTask.execute(
-			this.getApplicationContext(),
-			() -> {
-				try {
-					return kitchenManager.tryLogin(this);
-				} catch (Exception ex) {
-					return false;
-				}
-			},
-			(isLoggedIn) -> {
-				if (!isLoggedIn)
+				this.getApplicationContext(),
+				() ->
 				{
-					startLogin();
-				}
-				else
+					try {
+						return kitchenManager.tryLogin(this);
+					} catch (Exception ex) {
+						return false;
+					}
+				},
+				(isLoggedIn) ->
 				{
-					setContentView(R.layout.activity_main);
-					this.initToolbar();
-					this.initNavDrawer();
-					this.initShortCuts();
+					if (!isLoggedIn) {
+						startLogin();
+					} else {
+						setContentView(R.layout.activity_main);
+						this.initToolbar();
+						this.initNavDrawer();
+						this.initShortCuts();
 
-					if (savedInstanceState == null)
-					{
-						this.initFragment();
+						if (savedInstanceState == null) {
+							this.initFragment();
+						}
 					}
 				}
-			}
 		);
 	}
 
@@ -141,7 +141,8 @@ public class MainActivity extends AppCompatActivity
 		this.drawerLayout = this.findViewById(R.id.main_drawer_layout);
 		navigationView = this.findViewById(R.id.nav_view);
 
-		drawerLayout.addDrawerListener(new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close){
+		drawerLayout.addDrawerListener(new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+		{
 			@Override
 			public void onDrawerOpened(View drawerView)
 			{
@@ -186,7 +187,8 @@ public class MainActivity extends AppCompatActivity
 		);
 	}
 
-	private void updatedDrawerHeader(){
+	private void updatedDrawerHeader()
+	{
 		User user = kitchenManager.getLoggedInUser();
 
 		View headerView = navigationView.getHeaderView(0);
@@ -194,23 +196,52 @@ public class MainActivity extends AppCompatActivity
 		TextView textViewCredit = headerView.findViewById(R.id.textViewCredit);
 		ImageButton buttonEditUser = headerView.findViewById(R.id.buttonEditUser);
 
-		buttonEditUser.setOnClickListener((v)->{
+		buttonEditUser.setOnClickListener((v) ->
+		{
 			drawerLayout.closeDrawers();
 			changeFragment(EditUserFragment.newInstance(user.get_id()));
 		});
 
 		if (user != null) {
 			if (user.getRole().equals("admin")) {
-				textViewUsername.setText(user.getName()+" (Admin)");
+				textViewUsername.setText(user.getName() + " (Admin)");
 			} else {
 				textViewUsername.setText(user.getName());
 			}
-			textViewCredit.setText(getString(R.string.item_price,user.getCredit()));
+			textViewCredit.setText(getString(R.string.item_price, user.getCredit()));
 		}
 	}
 
 
 	public void changeFragment(KitchenFragment fragment)
+	{
+		if (fragment instanceof AllItemsFragment) {
+			changeFragmentBack(fragment);
+		} else {
+			changeFragmentForward(fragment);
+		}
+	}
+
+	public void changeFragmentForward(KitchenFragment fragment)
+	{
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+
+		fragment.changeToolbar(toolbar);
+
+		transaction.setCustomAnimations(
+				R.anim.slide_in_right,
+				R.anim.slide_out_left
+		);
+
+		setEditMode(false);
+
+		transaction.replace(R.id.headlines_fragment, fragment);
+
+		transaction.commit();
+	}
+
+	public void changeFragmentBack(KitchenFragment fragment)
 	{
 
 		FragmentTransaction transaction = getSupportFragmentManager()
@@ -218,22 +249,15 @@ public class MainActivity extends AppCompatActivity
 
 		fragment.changeToolbar(toolbar);
 
-		if (fragment instanceof AllItemsFragment) {
-			transaction.setCustomAnimations(
-					R.anim.slide_in_left,
-					R.anim.slide_out_right
-			);
-		} else {
-			transaction.setCustomAnimations(
-					R.anim.slide_in_right,
-					R.anim.slide_out_left
-			);
-			setEditMode(false);
-		}
+		transaction.setCustomAnimations(
+				R.anim.slide_in_left,
+				R.anim.slide_out_right
+		);
 
 		transaction.replace(R.id.headlines_fragment, fragment);
 
 		transaction.commit();
+
 	}
 
 	public void checkAllItemsMenuItem(boolean check)
@@ -243,12 +267,24 @@ public class MainActivity extends AppCompatActivity
 		item.setChecked(check);
 	}
 
+	public void checkAllUsersMenuItem(boolean check)
+	{
+		Menu menuNav = navigationView.getMenu();
+		MenuItem item = menuNav.findItem(R.id.nav_all_users);
+		item.setChecked(check);
+	}
+
 	@Override
 	public void onBackPressed()
 	{
-		if (getSupportFragmentManager().findFragmentById(R.id.headlines_fragment)
-				instanceof AllItemsFragment) {
+		Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+		if (MainActivity.editMode) {
+			setEditMode(false);
+		} else if (currentFragment instanceof AllItemsFragment) {
 			super.onBackPressed();
+		} else if (currentFragment instanceof EditUserFragment) {
+			changeFragmentBack(new AllUserFragment());
+			checkAllUsersMenuItem(true);
 		} else {
 			changeFragment(new AllItemsFragment());
 			checkAllItemsMenuItem(true);
@@ -272,7 +308,9 @@ public class MainActivity extends AppCompatActivity
 				setEditMode(!editMode);
 				return true;
 			case R.id.action_clear_all:
-				SimpleAsyncTask.execute(this.getApplicationContext(), ()->kitchenManager.clearCart(), ()->{});
+				SimpleAsyncTask.execute(this.getApplicationContext(), () -> kitchenManager.clearCart(), () ->
+				{
+				});
 				changeFragment(new AllItemsFragment());
 				return true;
 		}
@@ -280,15 +318,16 @@ public class MainActivity extends AppCompatActivity
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void setEditMode(boolean editMode){
+	public void setEditMode(boolean editMode)
+	{
 
 		MainActivity.editMode = editMode;
 
 		if (MainActivity.editMode) {
-			getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
+			getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
 			getToolbar().setTitle(R.string.edit_items);
 		} else {
-			getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+			getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
 			getToolbar().setTitle(R.string.shop);
 		}
 
@@ -302,7 +341,8 @@ public class MainActivity extends AppCompatActivity
 		//updateLayout();
 	}
 
-	boolean isAllItemsFragmentVisible(){
+	boolean isAllItemsFragmentVisible()
+	{
 		return getSupportFragmentManager().findFragmentById(R.id.headlines_fragment) instanceof AllItemsFragment;
 	}
 
