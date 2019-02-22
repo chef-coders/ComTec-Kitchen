@@ -7,9 +7,6 @@ public class LocalDataStore
 {
 	// =============== Fields ===============
 
-	private String loginToken;
-	private String loginId;
-
 	private final Map<String, Item>     items     = createMap();
 	private final Map<String, Purchase> purchases = createMap();
 
@@ -19,28 +16,6 @@ public class LocalDataStore
 	{
 		// TODO maybe WeakHashMap
 		return new HashMap<>();
-	}
-
-	// =============== Properties ===============
-
-	public String getLoginToken()
-	{
-		return this.loginToken;
-	}
-
-	public void setLoginToken(String loginToken)
-	{
-		this.loginToken = loginToken;
-	}
-
-	public String getLoginId()
-	{
-		return this.loginId;
-	}
-
-	public void setLoginId(String loginId)
-	{
-		this.loginId = loginId;
 	}
 
 	// =============== Methods ===============

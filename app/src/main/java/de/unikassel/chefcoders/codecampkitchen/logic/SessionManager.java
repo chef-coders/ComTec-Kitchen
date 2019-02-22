@@ -8,7 +8,14 @@ import de.unikassel.chefcoders.codecampkitchen.model.User;
 
 public class SessionManager
 {
+	// =============== Fields ===============
+
 	private final KitchenManager kitchenManager;
+
+	private String loginToken;
+	private String loginId;
+
+	// =============== Constructors ===============
 
 	public SessionManager(KitchenManager kitchenManager)
 	{
@@ -21,14 +28,12 @@ public class SessionManager
 
 	public boolean tryLogin(Context context)
 	{
-
-		if (!this.kitchenManager.session().loadUserInfo(context))
+		if (!this.loadUserInfo(context))
 		{
 			return false;
 		}
 
-		final User userData = JsonTranslator.toUser(
-			this.kitchenManager.getConnection().getUser(this.kitchenManager.getLocalDataStore().getLoginId()));
+		final User userData = JsonTranslator.toUser(this.kitchenManager.getConnection().getUser(this.loginId));
 		this.kitchenManager.users().updateLocal(userData);
 		return true;
 	}
@@ -50,41 +55,41 @@ public class SessionManager
 
 		final User createdUser = JsonTranslator.toUser(resultJson);
 
-		this.kitchenManager.session().setUserInfo(createdUser.getToken(), createdUser.get_id());
-		this.kitchenManager.session().saveUserInfo(context);
+		this.setUserInfo(createdUser.getToken(), createdUser.get_id());
+		this.saveUserInfo(context);
 
 		this.kitchenManager.users().updateLocal(createdUser);
 	}
 
 	public void clearUserData(Context context)
 	{
-		this.kitchenManager.session().setUserInfo(null, null);
-		this.kitchenManager.session().saveUserInfo(context);
+		this.setUserInfo(null, null);
+		this.saveUserInfo(context);
 	}
 
 	// --------------- Logged-In User ---------------
 
 	public User getLoggedInUser()
 	{
-		return this.kitchenManager.users().get(this.kitchenManager.getLocalDataStore().getLoginId());
+		return this.kitchenManager.users().get(this.loginId);
 	}
 
 	public void refreshLoggedInUser()
 	{
-		this.kitchenManager.users().update(this.kitchenManager.session().getLoggedInUser());
+		this.kitchenManager.users().update(this.getLoggedInUser());
 	}
 
 	public boolean isAdmin()
 	{
-		return "admin".equals(this.kitchenManager.session().getLoggedInUser().getRole());
+		return "admin".equals(this.getLoggedInUser().getRole());
 	}
 
 	// --------------- Helpers ---------------
 
 	private void setUserInfo(String userToken, String userId)
 	{
-		this.kitchenManager.getLocalDataStore().setLoginToken(userToken);
-		this.kitchenManager.getLocalDataStore().setLoginId(userId);
+		this.loginToken = userToken;
+		this.loginId = userId;
 		this.kitchenManager.getConnection().setUserToken(userToken);
 	}
 
@@ -104,14 +109,13 @@ public class SessionManager
 			return false;
 		}
 
-		this.kitchenManager.session().setUserInfo(userToken, userId);
+		this.setUserInfo(userToken, userId);
 		return true;
 	}
 
 	private void saveUserInfo(Context context)
 	{
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		preferences.edit().putString("userId", this.kitchenManager.getLocalDataStore().getLoginId())
-		           .putString("userToken", this.kitchenManager.getLocalDataStore().getLoginToken()).apply();
+		preferences.edit().putString("userId", this.loginId).putString("userToken", this.loginToken).apply();
 	}
 }
