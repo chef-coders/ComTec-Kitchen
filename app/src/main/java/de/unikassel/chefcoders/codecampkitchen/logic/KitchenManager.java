@@ -3,7 +3,6 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.*;
@@ -15,7 +14,6 @@ public class KitchenManager
 {
 	// =============== Fields ===============
 
-	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
 	private final CartManager     cartManager     = new CartManager(this);
@@ -26,9 +24,8 @@ public class KitchenManager
 
 	// =============== Constructor ===============
 
-	public KitchenManager(LocalDataStore localDataStore, KitchenConnection connection)
+	public KitchenManager(KitchenConnection connection)
 	{
-		this.localDataStore = localDataStore;
 		this.connection = connection;
 	}
 
@@ -36,15 +33,10 @@ public class KitchenManager
 
 	public static KitchenManager create()
 	{
-		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new OkHttpConnection()));
+		return new KitchenManager(new KitchenConnection(new OkHttpConnection()));
 	}
 
 	// =============== Properties ===============
-
-	public LocalDataStore getLocalDataStore()
-	{
-		return this.localDataStore;
-	}
 
 	public KitchenConnection getConnection()
 	{
