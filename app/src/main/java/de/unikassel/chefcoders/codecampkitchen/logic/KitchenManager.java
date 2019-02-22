@@ -163,6 +163,22 @@ public class KitchenManager
 		return this.localDataStore.getUsers().get(userId);
 	}
 
+	public User getUser(int section, int item)
+	{
+		final Map<String, List<User>> grouped = getGroupedUsers();
+		final int numSections = grouped.size();
+
+		User[][] users = new User[numSections][];
+
+		int sectionIndex = 0;
+		for (Map.Entry<String, List<User>> entry : grouped.entrySet())
+		{
+			users[sectionIndex++] = entry.getValue().toArray(new User[0]);
+		}
+
+		return users[section][item];
+	}
+
 	public void updateUser(String userId, String name, String mail, double credit)
 	{
 		//TODO
