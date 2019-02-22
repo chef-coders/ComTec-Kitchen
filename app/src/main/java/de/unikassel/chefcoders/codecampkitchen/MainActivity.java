@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
 
-        //fragment.changeToolbar(toolbar);
+        fragment.changeToolbar(toolbar);
 
         if (fragment instanceof AllItemsFragment) {
             transaction.setCustomAnimations(
@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity
                     R.anim.slide_in_right,
                     R.anim.slide_out_left
             );
+            setEditMode(false);
         }
 
         transaction.replace(R.id.headlines_fragment, fragment);
@@ -259,15 +260,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, CreateItemActivity.class));
                 return true;
             case R.id.action_edit:
-                editMode = !editMode;
-	            if (editMode) {
-		            getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
-		            getToolbar().setTitle(R.string.edit_items);
-	            } else {
-		            getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
-		            getToolbar().setTitle(R.string.shop);
-	            }
-                //updateLayout();
+            	setEditMode(!editMode);
                 return true;
             case R.id.action_clear_all:
                 SimpleAsyncTask.execute(this.getApplicationContext(), ()->kitchenManager.clearCart(), ()->{});
@@ -276,6 +269,32 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setEditMode(boolean editMode){
+
+	    MainActivity.editMode = editMode;
+
+	    if (MainActivity.editMode) {
+		    getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorAccent));
+		    getToolbar().setTitle(R.string.edit_items);
+	    } else {
+		    getToolbar().setBackgroundColor(ContextCompat.getColor(this,R.color.colorPrimary));
+		    getToolbar().setTitle(R.string.shop);
+	    }
+
+	    getToolbar().getMenu()
+			    .findItem(R.id.action_scan_code)
+			    .setVisible(!MainActivity.editMode && isAllItemsFragmentVisible());
+	    getToolbar().getMenu()
+			    .findItem(R.id.action_create)
+			    .setVisible(!MainActivity.editMode && isAllItemsFragmentVisible());
+
+	    //updateLayout();
+    }
+
+    boolean isAllItemsFragmentVisible(){
+        return getSupportFragmentManager().findFragmentById(R.id.headlines_fragment) instanceof AllItemsFragment;
     }
 
     public Toolbar getToolbar()
