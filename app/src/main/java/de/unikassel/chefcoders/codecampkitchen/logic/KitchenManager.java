@@ -3,7 +3,6 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.*;
 import java.util.function.Function;
@@ -74,13 +73,13 @@ public class KitchenManager
 	@Deprecated
 	public void createItem(String id, String name, double price, int amount, String kind)
 	{
-		this.items().createItem(id, name, price, amount, kind);
+		this.items().create(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
 	}
 
 	@Deprecated
 	public void updateItem(String id, String name, double price, int amount, String kind)
 	{
-		this.items().updateItem(id, name, price, amount, kind);
+		this.items().update(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
 	}
 
 	@Deprecated
