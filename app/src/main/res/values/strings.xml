@@ -49,4 +49,6 @@
     <string name="edit_user">Edit User</string>
     <string name="credit">Credit</string>
     <string name="edit_items">Edit Items</string>
+    <string name="edit_user_successful">Successfully edited user</string>
+
 </resources>
