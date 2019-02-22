@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -30,6 +31,14 @@ public class StatisticsFragment extends KitchenFragment
 {
 	private List<Purchase> purchases;
 
+	private LinearLayout statisticsLayout;
+	private TextView totalAmountView;
+	private TextView moneySpentView;
+	private TextView totalNumberView;
+	private TextView purchasedItemsView;
+
+	private HorizontalBarChart horizontalBarChart;
+
 	public StatisticsFragment()
 	{
 	}
@@ -37,36 +46,47 @@ public class StatisticsFragment extends KitchenFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		purchases = MainActivity.kitchenManager.purchases().getAll();
 		View allItemsView = inflater.inflate(R.layout.fragment_statistics, container, false);
-		this.initTotal(allItemsView);
-		this.initAmountOfBoughtItemsChart(allItemsView);
+
+		statisticsLayout = allItemsView.findViewById(R.id.statisticsLayout);
+		totalAmountView = allItemsView.findViewById(R.id.totalAmountView);
+		moneySpentView = allItemsView.findViewById(R.id.moneySpentView);
+		totalNumberView = allItemsView.findViewById(R.id.totalNumberView);
+		purchasedItemsView = allItemsView.findViewById(R.id.purchasedItemsView);
+
+		horizontalBarChart = allItemsView.findViewById(R.id.chart);
+
+		if (MainActivity.kitchenManager.session().isAdmin()) {
+			purchases = MainActivity.kitchenManager.purchases().getAll();
+		} else {
+			purchases = MainActivity.kitchenManager.purchases().getMine();
+			statisticsLayout.removeView(totalAmountView);
+			statisticsLayout.removeView(totalNumberView);
+		}
+
+		this.initValues();
+		this.initAmountOfBoughtItemsChart();
+
 		return allItemsView;
 	}
 
-	private void initTotal(View allItemsView) {
-		TextView totalAmountView = allItemsView.findViewById(R.id.totalAmountView);
-		TextView moneySpentView = allItemsView.findViewById(R.id.moneySpentView);
-		TextView totalNumberView = allItemsView.findViewById(R.id.totalNumberView);
-		TextView purchasedItemsView = allItemsView.findViewById(R.id.purchasedItemsView);
-
+	private void initValues() {
 		double totalAmount = 0;
 		double moneySpent = 0;
 		int totalNumber = 0;
 		int purchasedItems = 0;
+
+		String userId = MainActivity.kitchenManager.session().getLoggedInUser().get_id();
+
 		for (Purchase purchase : this.purchases) {
-			Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
-			if (item == null) { continue; }
+			totalAmount += purchase.getPrice() * purchase.getAmount();
 
-			totalAmount += item.getPrice();
+			totalNumber += purchase.getAmount();
 
-			totalNumber += item.getAmount();
-
-			String userId = MainActivity.kitchenManager.session().getLoggedInUser().get_id();
 			if (purchase.getUser_id().equals(userId)) {
-				moneySpent += item.getPrice();
+				moneySpent += purchase.getPrice() * purchase.getAmount();
 
-				purchasedItems += item.getAmount();
+				purchasedItems += purchase.getAmount();
 			}
 		}
 
@@ -76,9 +96,7 @@ public class StatisticsFragment extends KitchenFragment
 		purchasedItemsView.setText(getString(R.string.purchasedItemsText, purchasedItems));
 	}
 
-	private void initAmountOfBoughtItemsChart(View allItemsView) {
-		HorizontalBarChart horizontalBarChart = (HorizontalBarChart) allItemsView.findViewById(R.id.chart);
-
+	private void initAmountOfBoughtItemsChart() {
 		LinkedHashMap<Item, Integer> boughtItems = new LinkedHashMap<>();
 		for (Purchase purchase : this.purchases) {
 			Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());

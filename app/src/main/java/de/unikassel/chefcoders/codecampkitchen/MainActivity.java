@@ -227,7 +227,11 @@ public class MainActivity extends AppCompatActivity
 						case R.id.nav_statistics:
 							SimpleAsyncTask.execute(
 								this.getApplicationContext(),
-								() -> MainActivity.kitchenManager.purchases().refreshAll(),
+								() -> {
+									if (kitchenManager.session().isAdmin()) {
+										MainActivity.kitchenManager.purchases().refreshAll();
+									}
+								},
 								() -> {
 									changeFragment(new StatisticsFragment());
 									menuItem.setChecked(true);
