@@ -4,6 +4,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PurchaseManager
@@ -33,7 +34,7 @@ public class PurchaseManager
 	public List<Purchase> getMine()
 	{
 		final String userId = this.kitchenManager.session().getLoggedInUser().get_id();
-		return this.purchases.values().stream().filter(KitchenManager.userFilter(userId)).collect(Collectors.toList());
+		return this.purchases.values().stream().filter(userFilter(userId)).collect(Collectors.toList());
 	}
 
 	public Map<String, List<Purchase>> getMineGrouped()
@@ -69,5 +70,10 @@ public class PurchaseManager
 		final String resultJson = this.kitchenManager.getConnection().getPurchasesForUser();
 		final List<Purchase> resultPurchases = JsonTranslator.toPurchases(resultJson);
 		resultPurchases.forEach(this::updateLocal);
+	}
+
+	private static Predicate<Purchase> userFilter(String userId)
+	{
+		return p -> userId.equals(p.getUser_id());
 	}
 }

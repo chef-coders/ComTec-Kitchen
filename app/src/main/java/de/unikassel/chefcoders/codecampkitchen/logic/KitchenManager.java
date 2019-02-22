@@ -7,7 +7,6 @@ import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class KitchenManager
@@ -90,15 +89,6 @@ public class KitchenManager
 		return this.items().getGrouped();
 	}
 
-	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
-		Comparator<? super V> comparator)
-	{
-		final Map<K, List<V>> grouped = items.stream().collect(
-			Collectors.groupingBy(keyExtractor, TreeMap::new, Collectors.toList()));
-		grouped.values().forEach(l -> l.sort(comparator));
-		return grouped;
-	}
-
 	@Deprecated
 	public void createItem(String id, String name, double price, int amount, String kind)
 	{
@@ -131,11 +121,6 @@ public class KitchenManager
 
 	// --------------- Purchases ---------------
 
-	static Predicate<Purchase> userFilter(String userId)
-	{
-		return p -> userId.equals(p.getUser_id());
-	}
-
 	@Deprecated
 	public List<Purchase> getAllPurchases()
 	{
@@ -166,10 +151,14 @@ public class KitchenManager
 		this.purchases().refreshMine();
 	}
 
-	// --------------- Cart ---------------
+	// --------------- Helpers Methods---------------
 
-	static Predicate<Purchase> itemFilter(String itemId)
+	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
+		Comparator<? super V> comparator)
 	{
-		return p -> itemId.equals(p.getItem_id());
+		final Map<K, List<V>> grouped = items.stream().collect(
+			Collectors.groupingBy(keyExtractor, TreeMap::new, Collectors.toList()));
+		grouped.values().forEach(l -> l.sort(comparator));
+		return grouped;
 	}
 }
