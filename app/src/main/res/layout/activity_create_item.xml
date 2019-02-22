@@ -42,11 +42,19 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
+        <EditText
             android:id="@+id/barcodeValueView"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:textSize="18sp" />
+            android:ems="10"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/generateIdButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onGeneratedId"
+            android:text="@string/generateBarcode" />
 
         <Space
             android:layout_width="match_parent"

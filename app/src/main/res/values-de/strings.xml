@@ -16,7 +16,7 @@
     <string name="item_amount_not_available">nicht verfügbar</string>
     <string name="admin">Admin</string>
     <string name="create_add_button_menu">Artikel anlegen</string>
-    <string name="barcode">Barcode</string>
+    <string name="barcode">Barcode / ID</string>
     <string name="price">Preis</string>
     <string name="amount">Stückzahl</string>
     <string name="kind">Sorte</string>
@@ -52,5 +52,6 @@
     <string name="edit_items">Produkte bearbeiten</string>
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
     <string name="statistics">Statistiken</string>
+    <string name="generateBarcode">Barcode / ID generieren</string>
 
 </resources>
