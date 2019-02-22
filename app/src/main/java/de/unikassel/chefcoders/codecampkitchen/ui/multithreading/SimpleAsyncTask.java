@@ -34,7 +34,7 @@ public class SimpleAsyncTask extends AsyncTask<Void, Void, Void>
 		}
 		catch (HttpConnectionException ex)
 		{
-			this.errorMessage = ex.fullErrorMessage();
+			this.errorMessage = ex.smallErrorMessage();
 		}
 		return null;
 	}
