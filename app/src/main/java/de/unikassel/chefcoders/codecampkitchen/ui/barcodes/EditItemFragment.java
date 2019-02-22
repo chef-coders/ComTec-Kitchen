@@ -18,19 +18,14 @@ import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind.Entry;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
-public class EditItemFragment extends KitchenFragment
+public class EditItemFragment extends ItemDetailFragment
 {
 	private String itemId;
 	private Item item;
-
-	private TextView barcodeValue;
-	private EditText nameText;
-	private EditText priceText;
-	private EditText amountText;
-	private Spinner kindSpinner;
 
 	public static EditItemFragment newInstance(String itemId)
 	{
@@ -41,30 +36,19 @@ public class EditItemFragment extends KitchenFragment
 		return fragment;
 	}
 
+	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View editItemsView = inflater.inflate(R.layout.activity_edit_item, container, false);
+		View editItemView = inflater.inflate(R.layout.activity_edit_item, container, false);
+
+		this.initViews(editItemView);
 
 		this.itemId = getArguments().getString("itemId");
-
 		this.item = MainActivity.kitchenManager.getItemById(this.itemId);
 
-		this.barcodeValue = editItemsView.findViewById(R.id.barcodeValueView);
-		this.nameText = editItemsView.findViewById(R.id.nameText);
-		this.priceText = editItemsView.findViewById(R.id.priceText);
-		this.amountText = editItemsView.findViewById(R.id.amountText);
-		this.kindSpinner = editItemsView.findViewById(R.id.kindSpinner);
-		Button editButton = editItemsView.findViewById(R.id.editButton);
+		Button editButton = editItemView.findViewById(R.id.editButton);
 		editButton.setOnClickListener(this::onEdit);
-
-		this.kindSpinner.setAdapter(
-			new ArrayAdapter<>(
-				this.getActivity(),
-				android.R.layout.simple_spinner_dropdown_item,
-				ItemKind.createEntries(this.getContext())
-			)
-		);
 
 		this.barcodeValue.setText(item.get_id());
 		this.nameText.setText(item.getName());
@@ -72,7 +56,7 @@ public class EditItemFragment extends KitchenFragment
 		this.amountText.setText("" + item.getAmount());
 		this.kindSpinner.setSelection(ItemKind.getIndex(item.getKind()));
 
-		return editItemsView;
+		return editItemView;
 	}
 
 	public void onEdit(View view) {
