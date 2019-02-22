@@ -21,8 +21,6 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	private RecyclerController recyclerController;
 
 	private boolean swipeBack;
-	private boolean drawChildFirstTime = true;
-	private boolean showBgr;
 
 	public interface SwipeEvent
 	{
@@ -50,9 +48,9 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	@Override
 	public int convertToAbsoluteDirection(int flags, int layoutDirection)
 	{
-		if(swipeBack)
+		if(this.swipeBack)
 		{
-			swipeBack = false;
+			this.swipeBack = false;
 			return 0;
 		}
 
@@ -67,11 +65,7 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 		this.blockSwipe(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-		if(drawChildFirstTime)
-		{
-			drawChildFirstTime = false;
-			showBgr = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView) != null;
-		}
+		boolean showBgr = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView) != null;
 
 		if(showBgr)
 		{
@@ -130,6 +124,5 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
 	{
 		this.swipeEvent.handleOnSwiped(viewHolder);
-		drawChildFirstTime = true;
 	}
 }
