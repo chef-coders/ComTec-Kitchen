@@ -27,6 +27,7 @@ android {
 
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -66,6 +67,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
 
-    implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 
 }

@@ -53,8 +53,7 @@
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
     <string name="statistics">Statistiken</string>
     <string name="generateBarcode">Barcode / ID generieren</string>
-    <string name="amounfOfBoughtItems">Verkaufte Stückzahl pro Artikel</string>
+    <string name="amoundOfBoughtItems">Übersicht - Verkaufte Artikel</string>
     <string name="credit_value">Guthaben: %1$.2f €</string>
     <string name="credit">Guthaben</string>
-
 </resources>
