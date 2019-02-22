@@ -12,6 +12,8 @@ public class PurchaseManager
 
 	private final KitchenManager kitchenManager;
 
+	private Map<String, Purchase> purchases = new HashMap<>();
+
 	// =============== Constructors ===============
 
 	public PurchaseManager(KitchenManager kitchenManager)
@@ -23,25 +25,28 @@ public class PurchaseManager
 
 	public List<Purchase> getAll()
 	{
-		return new ArrayList<>(this.kitchenManager.getLocalDataStore().getPurchases().values());
+		return new ArrayList<>(this.purchases.values());
 	}
 
 	public void refreshAll()
 	{
-		JsonTranslator.toPurchases(this.kitchenManager.getConnection().getAllPurchases()).forEach(
-			purchase -> this.kitchenManager.getLocalDataStore().getPurchases().put(purchase.get_id(), purchase));
+		JsonTranslator.toPurchases(this.kitchenManager.getConnection().getAllPurchases()).forEach(this::updateLocal);
+	}
+
+	public void updateLocal(Purchase purchase)
+	{
+		this.purchases.put(purchase.get_id(), purchase);
 	}
 
 	public List<Purchase> getMine()
 	{
 		final String userId = this.kitchenManager.session().getLoggedInUser().get_id();
-		return this.kitchenManager.getLocalDataStore().getPurchases().values().stream()
-		                          .filter(KitchenManager.userFilter(userId)).collect(Collectors.toList());
+		return this.purchases.values().stream().filter(KitchenManager.userFilter(userId)).collect(Collectors.toList());
 	}
 
 	public Map<String, List<Purchase>> getMineGrouped()
 	{
-		final Collection<Purchase> purchases = this.kitchenManager.getLocalDataStore().getPurchases().values();
+		final Collection<Purchase> purchases = this.purchases.values();
 		if (purchases.isEmpty())
 		{
 			return Collections.singletonMap("Nothing here", Collections.emptyList());
@@ -52,8 +57,7 @@ public class PurchaseManager
 
 	public void refreshMine()
 	{
-		final Map<String, Purchase> purchases = this.kitchenManager.getLocalDataStore().getPurchases();
 		JsonTranslator.toPurchases(this.kitchenManager.getConnection().getPurchasesForUser())
-		              .forEach(purchase -> purchases.put(purchase.get_id(), purchase));
+		              .forEach(this::updateLocal);
 	}
 }
