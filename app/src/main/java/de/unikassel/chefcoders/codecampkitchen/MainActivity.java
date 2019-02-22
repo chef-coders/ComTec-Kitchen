@@ -87,10 +87,11 @@ public class MainActivity extends AppCompatActivity
 		);
 	}
 
-	private void setTheme(){
+	private void setTheme()
+	{
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		boolean darkMode = sharedPreferences.getBoolean("darkMode",false);
+		boolean darkMode = sharedPreferences.getBoolean("darkMode", false);
 
 		if (darkMode) {
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity
 
 	private void initFragment()
 	{
-		if(getIntent().hasExtra("settings")){
+		if (getIntent().hasExtra("settings")) {
 			SettingsFragment fragment = new SettingsFragment();
 			fragment.changeToolbar(toolbar);
 			checkSettingsMenuItem(true);
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity
 					.beginTransaction();
 			transaction.replace(R.id.headlines_fragment, fragment);
 			transaction.commitAllowingStateLoss();
-		} else if(getIntent().hasExtra("barcodeCreate")) {
+		} else if (getIntent().hasExtra("barcodeCreate")) {
 			CreateItemFragment fragment = CreateItemFragment.newInstance(getIntent().getStringExtra("barcodeCreate"));
 			fragment.changeToolbar(toolbar);
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -226,17 +227,19 @@ public class MainActivity extends AppCompatActivity
 							break;
 						case R.id.nav_statistics:
 							SimpleAsyncTask.execute(
-								this.getApplicationContext(),
-								() -> {
-									if (kitchenManager.session().isAdmin()) {
-										MainActivity.kitchenManager.purchases().refreshAll();
+									this.getApplicationContext(),
+									() ->
+									{
+										if (kitchenManager.session().isAdmin()) {
+											MainActivity.kitchenManager.purchases().refreshAll();
+										}
+									},
+									() ->
+									{
+										changeFragment(new StatisticsFragment());
+										menuItem.setChecked(true);
+										drawerLayout.closeDrawers();
 									}
-								},
-								() -> {
-									changeFragment(new StatisticsFragment());
-									menuItem.setChecked(true);
-									drawerLayout.closeDrawers();
-								}
 							);
 							break;
 						case R.id.nav_settings:
@@ -288,11 +291,11 @@ public class MainActivity extends AppCompatActivity
 		if (fragment instanceof AllItemsFragment) {
 			changeFragmentBack(fragment);
 		} else {
-			changeFragmentForward(fragment, fragment instanceof EditItemFragment);
+			changeFragmentForward(fragment);
 		}
 	}
 
-	public void changeFragmentForward(KitchenFragment fragment, boolean editMode)
+	public void changeFragmentForward(KitchenFragment fragment)
 	{
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -303,8 +306,6 @@ public class MainActivity extends AppCompatActivity
 				R.anim.slide_in_right,
 				R.anim.slide_out_left
 		);
-
-		setEditMode(editMode);
 
 		transaction.replace(R.id.headlines_fragment, fragment);
 
@@ -355,16 +356,15 @@ public class MainActivity extends AppCompatActivity
 	public void onBackPressed()
 	{
 		Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
-		if (MainActivity.editMode) {
-			setEditMode(false);
-		} else if (currentFragment instanceof AllItemsFragment) {
-			super.onBackPressed();
-		} else if (currentFragment instanceof EditUserFragment) {
-			changeFragmentBack(new AllUserFragment());
-			checkAllUsersMenuItem(true);
-		} else {
+		if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+			drawerLayout.closeDrawers();
+		} else if (!(currentFragment instanceof AllItemsFragment)) {
 			changeFragment(new AllItemsFragment());
 			checkAllItemsMenuItem(true);
+		} else if (MainActivity.editMode) {
+			setEditMode(false);
+		} else {
+			super.onBackPressed();
 		}
 	}
 
@@ -432,10 +432,8 @@ public class MainActivity extends AppCompatActivity
 	public static Activity getActivity(View view)
 	{
 		Context context = view.getContext();
-		while (context instanceof ContextWrapper)
-		{
-			if (context instanceof Activity)
-			{
+		while (context instanceof ContextWrapper) {
+			if (context instanceof Activity) {
 				return (Activity) context;
 			}
 			context = ((ContextWrapper) context).getBaseContext();

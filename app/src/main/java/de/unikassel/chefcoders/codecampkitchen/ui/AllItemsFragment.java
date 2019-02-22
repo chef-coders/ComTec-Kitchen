@@ -58,7 +58,6 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	protected void updateToolbar(android.support.v7.widget.Toolbar toolbar)
 	{
-		toolbar.setBackgroundColor(ContextCompat.getColor(toolbar.getContext(), R.color.colorPrimary));
 		toolbar.setTitle(R.string.shop);
 		Menu menu = toolbar.getMenu();
 		menu.findItem(R.id.action_scan_code).setVisible(!MainActivity.editMode);
