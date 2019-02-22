@@ -82,6 +82,6 @@ class Populator
 
 		return isLoggedIn ?
 			       isAdmin ? android.R.color.holo_orange_dark : android.R.color.holo_green_dark :
-			       isAdmin ? android.R.color.holo_red_dark : android.R.color.black;
+			       isAdmin ? android.R.color.holo_red_dark : R.color.colorPrimaryText;
 	}
 }

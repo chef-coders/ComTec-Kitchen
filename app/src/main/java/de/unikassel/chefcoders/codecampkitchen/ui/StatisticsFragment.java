@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -38,8 +39,41 @@ public class StatisticsFragment extends KitchenFragment
 	{
 		purchases = MainActivity.kitchenManager.purchases().getAll();
 		View allItemsView = inflater.inflate(R.layout.fragment_statistics, container, false);
+		this.initTotal(allItemsView);
 		this.initAmountOfBoughtItemsChart(allItemsView);
 		return allItemsView;
+	}
+
+	private void initTotal(View allItemsView) {
+		TextView totalAmountView = allItemsView.findViewById(R.id.totalAmountView);
+		TextView moneySpentView = allItemsView.findViewById(R.id.moneySpentView);
+		TextView totalNumberView = allItemsView.findViewById(R.id.totalNumberView);
+		TextView purchasedItemsView = allItemsView.findViewById(R.id.purchasedItemsView);
+
+		double totalAmount = 0;
+		double moneySpent = 0;
+		int totalNumber = 0;
+		int purchasedItems = 0;
+		for (Purchase purchase : this.purchases) {
+			Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
+			if (item == null) { continue; }
+
+			totalAmount += item.getPrice();
+
+			totalNumber += item.getAmount();
+
+			String userId = MainActivity.kitchenManager.session().getLoggedInUser().get_id();
+			if (purchase.getUser_id().equals(userId)) {
+				moneySpent += item.getPrice();
+
+				purchasedItems += item.getAmount();
+			}
+		}
+
+		totalAmountView.setText(getString(R.string.totalAmountText, totalAmount));
+		moneySpentView.setText(getString(R.string.moneySpentText, moneySpent));
+		totalNumberView.setText(getString(R.string.totalNumberText, totalNumber));
+		purchasedItemsView.setText(getString(R.string.purchasedItemsText, purchasedItems));
 	}
 
 	private void initAmountOfBoughtItemsChart(View allItemsView) {
@@ -47,7 +81,7 @@ public class StatisticsFragment extends KitchenFragment
 
 		LinkedHashMap<Item, Integer> boughtItems = new LinkedHashMap<>();
 		for (Purchase purchase : this.purchases) {
-			Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());
+			Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
 			if (item == null) { continue; }
 			if (boughtItems.containsKey(item)) {
 				Integer value = boughtItems.get(item);
