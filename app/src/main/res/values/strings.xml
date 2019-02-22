@@ -58,4 +58,8 @@
     <string name="generateBarcode">Generate Barcode / ID</string>
     <string name="amoundOfBoughtItems" >Overview - Sold articles</string>
     <string name="credit_value">Credit: %1$.2f €</string>
+    <string name="totalAmountText">Total Amount: %1$.2f€</string>
+    <string name="moneySpentText">Money spent: %1$.2f€</string>
+    <string name="totalNumberText">Total Number: %d</string>
+    <string name="purchasedItemsText" >Purchased Items: %d</string>
 </resources>

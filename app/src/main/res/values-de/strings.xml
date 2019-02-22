@@ -56,4 +56,8 @@
     <string name="amoundOfBoughtItems">Übersicht - Verkaufte Artikel</string>
     <string name="credit_value">Guthaben: %1$.2f €</string>
     <string name="credit">Guthaben</string>
+    <string name="totalAmountText">Gesamtbetrag: %1$.2f€</string>
+    <string name="moneySpentText">Ausgegebenes Geld: %1$.2f€</string>
+    <string name="purchasedItemsText">Gekaufte Artikel: %d</string>
+    <string name="totalNumberText">Gesamtanzahl: %d</string>
 </resources>
