@@ -6,6 +6,7 @@ import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -79,7 +80,6 @@ public class MainActivity extends AppCompatActivity
                 .beginTransaction();
         transaction.replace(R.id.headlines_fragment, fragment);
         transaction.commit();
-        updateLayout();
     }
 
     private void initShortCuts()
@@ -203,24 +203,45 @@ public class MainActivity extends AppCompatActivity
 
     public void changeFragment(KitchenFragment fragment)
     {
+        if (fragment instanceof AllItemsFragment) {
+            changeFragmentBack(fragment);
+        } else {
+            changeFragmentForward(fragment);
+        }
+    }
+
+    public void changeFragmentForward(KitchenFragment fragment)
+    {
 
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
 
         fragment.changeToolbar(toolbar);
 
-        if (fragment instanceof AllItemsFragment) {
-            transaction.setCustomAnimations(
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-            );
-        } else {
-            transaction.setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-            );
-            setEditMode(false);
-        }
+        transaction.setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+        );
+        setEditMode(false);
+
+
+        transaction.replace(R.id.headlines_fragment, fragment);
+
+        transaction.commit();
+    }
+
+    public void changeFragmentBack(KitchenFragment fragment)
+    {
+
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+
+        fragment.changeToolbar(toolbar);
+
+        transaction.setCustomAnimations(
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+        );
 
         transaction.replace(R.id.headlines_fragment, fragment);
 
@@ -234,12 +255,24 @@ public class MainActivity extends AppCompatActivity
         item.setChecked(check);
     }
 
+    public void checkAllUsersMenuItem(boolean check)
+    {
+        Menu menuNav = navigationView.getMenu();
+        MenuItem item = menuNav.findItem(R.id.nav_all_users);
+        item.setChecked(check);
+    }
+
     @Override
     public void onBackPressed()
     {
-        if (getSupportFragmentManager().findFragmentById(R.id.headlines_fragment)
-                instanceof AllItemsFragment) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+        if (MainActivity.editMode) {
+            setEditMode(false);
+        } else if (currentFragment instanceof AllItemsFragment) {
             super.onBackPressed();
+        } else if (currentFragment instanceof EditUserFragment) {
+            changeFragmentBack(new AllUserFragment());
+            checkAllUsersMenuItem(true);
         } else {
             changeFragment(new AllItemsFragment());
             checkAllItemsMenuItem(true);
@@ -300,16 +333,5 @@ public class MainActivity extends AppCompatActivity
     public Toolbar getToolbar()
     {
         return toolbar;
-    }
-
-    public void updateLayout() {
-        FrameLayout layout = findViewById(R.id.fragment_layout);
-        if (layout != null) {
-            if (editMode) {
-                layout.setBackgroundResource(R.color.colorAccent);
-            } else {
-                layout.setBackgroundResource(R.color.cast_expanded_controller_ad_container_white_stripe_color);
-            }
-        }
     }
 }
