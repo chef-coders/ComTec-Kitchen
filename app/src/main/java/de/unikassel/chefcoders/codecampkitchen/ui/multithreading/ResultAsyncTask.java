@@ -3,6 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.multithreading;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpConnectionException;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -13,7 +14,7 @@ public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 	private final Supplier<T> backgroundRunnable;
 	private final Consumer<T> postExeRunnable;
 
-	private Exception error;
+	private String errorMessage;
 
 	private ResultAsyncTask(Context context, Supplier<T> backgroundRunnable, Consumer<T> postExeRunnable)
 	{
@@ -34,9 +35,9 @@ public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 		{
 			return this.backgroundRunnable.get();
 		}
-		catch (Exception ex)
+		catch (HttpConnectionException ex)
 		{
-			this.error = ex;
+			this.errorMessage = ex.fullErrorMessage();
 			return null;
 		}
 	}
@@ -44,10 +45,9 @@ public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 	@Override
 	protected void onPostExecute(T t)
 	{
-		if (this.error != null)
+		if (this.errorMessage != null)
 		{
-			Toast.makeText(this.context, this.error.getMessage(), Toast.LENGTH_LONG).show();
-			this.error.printStackTrace();
+			Toast.makeText(this.context, this.errorMessage, Toast.LENGTH_LONG).show();
 			return;
 		}
 

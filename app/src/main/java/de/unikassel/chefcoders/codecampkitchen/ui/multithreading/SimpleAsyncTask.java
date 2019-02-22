@@ -3,6 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.multithreading;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpConnectionException;
 
 public class SimpleAsyncTask extends AsyncTask<Void, Void, Void>
 {
@@ -10,7 +11,7 @@ public class SimpleAsyncTask extends AsyncTask<Void, Void, Void>
 	private final Runnable backgroundRunnable;
 	private final Runnable postExecuteRunnable;
 
-	private Exception error;
+	private String errorMessage;
 
 	private SimpleAsyncTask(Context context, Runnable backgroundRunnable, Runnable postExecuteRunnable)
 	{
@@ -31,9 +32,9 @@ public class SimpleAsyncTask extends AsyncTask<Void, Void, Void>
 		{
 			this.backgroundRunnable.run();
 		}
-		catch (Exception ex)
+		catch (HttpConnectionException ex)
 		{
-			this.error = ex;
+			this.errorMessage = ex.fullErrorMessage();
 		}
 		return null;
 	}
@@ -41,10 +42,9 @@ public class SimpleAsyncTask extends AsyncTask<Void, Void, Void>
 	@Override
 	protected void onPostExecute(Void v)
 	{
-		if (this.error != null)
+		if (this.errorMessage != null)
 		{
-			Toast.makeText(this.context, this.error.getMessage(), Toast.LENGTH_LONG).show();
-			this.error.printStackTrace();
+			Toast.makeText(this.context, this.errorMessage, Toast.LENGTH_LONG).show();
 			return;
 		}
 		this.postExecuteRunnable.run();
