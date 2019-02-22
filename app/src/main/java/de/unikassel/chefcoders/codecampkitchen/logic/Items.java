@@ -75,17 +75,6 @@ public class Items
 		this.updateLocal(createdItem);
 	}
 
-	@Deprecated
-	public void createItem(String id, String name, double price, int amount, String kind)
-	{
-		if (!this.kitchenManager.session().isAdmin())
-		{
-			return;
-		}
-
-		this.create(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
-	}
-
 	public void update(Item item)
 	{
 		final String itemJson = JsonTranslator.toJson(item);
@@ -94,24 +83,8 @@ public class Items
 		this.updateLocal(updatedItem);
 	}
 
-	@Deprecated
-	public void updateItem(String id, String name, double price, int amount, String kind)
-	{
-		if (!this.kitchenManager.session().isAdmin())
-		{
-			return;
-		}
-
-		this.update(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
-	}
-
 	public void delete(Item item)
 	{
-		if (!this.kitchenManager.session().isAdmin())
-		{
-			return;
-		}
-
 		this.kitchenManager.getConnection().deleteItem(item.get_id());
 		this.deleteLocal(item);
 	}
