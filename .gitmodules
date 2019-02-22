@@ -1,0 +1,3 @@
+[submodule "doc/Documentation"]
+	path = doc/Documentation
+	url = https://github.com/chef-coders/Documentation.git
