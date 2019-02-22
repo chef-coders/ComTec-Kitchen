@@ -12,7 +12,7 @@ public class PurchaseManager
 
 	private final KitchenManager kitchenManager;
 
-	private Map<String, Purchase> purchases = new HashMap<>();
+	private final Map<String, Purchase> purchases = new HashMap<>();
 
 	// =============== Constructors ===============
 
@@ -23,19 +23,11 @@ public class PurchaseManager
 
 	// =============== Methods ===============
 
+	// --------------- Access ---------------
+
 	public List<Purchase> getAll()
 	{
 		return new ArrayList<>(this.purchases.values());
-	}
-
-	public void refreshAll()
-	{
-		JsonTranslator.toPurchases(this.kitchenManager.getConnection().getAllPurchases()).forEach(this::updateLocal);
-	}
-
-	public void updateLocal(Purchase purchase)
-	{
-		this.purchases.put(purchase.get_id(), purchase);
 	}
 
 	public List<Purchase> getMine()
@@ -49,15 +41,33 @@ public class PurchaseManager
 		final Collection<Purchase> purchases = this.purchases.values();
 		if (purchases.isEmpty())
 		{
+			// TODO implement in controller
 			return Collections.singletonMap("Nothing here", Collections.emptyList());
 		}
 
 		return purchases.stream().collect(Collectors.groupingBy(p -> p.getCreated().substring(0, 10)));
 	}
 
+	// --------------- Modification ---------------
+
+	public void updateLocal(Purchase purchase)
+	{
+		this.purchases.put(purchase.get_id(), purchase);
+	}
+
+	// --------------- Communication ---------------
+
+	public void refreshAll()
+	{
+		final String resultJson = this.kitchenManager.getConnection().getAllPurchases();
+		final List<Purchase> resultPurchases = JsonTranslator.toPurchases(resultJson);
+		resultPurchases.forEach(this::updateLocal);
+	}
+
 	public void refreshMine()
 	{
-		JsonTranslator.toPurchases(this.kitchenManager.getConnection().getPurchasesForUser())
-		              .forEach(this::updateLocal);
+		final String resultJson = this.kitchenManager.getConnection().getPurchasesForUser();
+		final List<Purchase> resultPurchases = JsonTranslator.toPurchases(resultJson);
+		resultPurchases.forEach(this::updateLocal);
 	}
 }
