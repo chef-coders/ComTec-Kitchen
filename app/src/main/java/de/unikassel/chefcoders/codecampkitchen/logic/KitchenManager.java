@@ -2,7 +2,6 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
 
 import java.util.*;
 import java.util.function.Function;
@@ -68,33 +67,7 @@ public class KitchenManager
 
 	// =============== Methods ===============
 
-	// --------------- Items ---------------
-
-	@Deprecated
-	public void createItem(String id, String name, double price, int amount, String kind)
-	{
-		this.items().create(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
-	}
-
-	@Deprecated
-	public void updateItem(String id, String name, double price, int amount, String kind)
-	{
-		this.items().update(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
-	}
-
-	@Deprecated
-	public boolean containsItem(String id)
-	{
-		return this.items().exists(id);
-	}
-
-	@Deprecated
-	public Item getItemById(String id)
-	{
-		return this.items().get(id);
-	}
-
-	// --------------- Helpers Methods---------------
+	// --------------- Helpers Methods ---------------
 
 	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
 		Comparator<? super V> comparator)

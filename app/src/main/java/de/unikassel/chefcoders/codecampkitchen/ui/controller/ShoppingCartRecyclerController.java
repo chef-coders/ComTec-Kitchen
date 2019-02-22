@@ -52,8 +52,12 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	public boolean onClick(RowViewHolder v, int section, int itemIndex)
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
-		final Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());
-		MainActivity.kitchenManager.cart().add(item);
+		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
+		if (item != null)
+		{
+			// TODO add(Purchase, int)
+			MainActivity.kitchenManager.cart().add(item);
+		}
 		return true;
 	}
 
@@ -61,8 +65,12 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	public boolean onSwiped(RowViewHolder v, int section, int itemIndex)
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
-		final Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());
-		MainActivity.kitchenManager.cart().remove(item);
+		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
+		if (item != null)
+		{
+			// TODO remove(Purchase)
+			MainActivity.kitchenManager.cart().remove(item);
+		}
 		return false;
 	}
 

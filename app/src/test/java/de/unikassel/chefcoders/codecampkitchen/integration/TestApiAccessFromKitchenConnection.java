@@ -3,6 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.integration;
 import de.unikassel.chefcoders.codecampkitchen.communication.HttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpConnectionException;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
@@ -166,6 +167,12 @@ public class TestApiAccessFromKitchenConnection
 	{
 		Item item = createItemFor("12354657864986198", "Item", "Saft", 2, 1);
 		itemsToDelete.add(item);
+	}
+
+	@Test(expected = HttpConnectionException.class)
+	public void createItemTooExpensive()
+	{
+		Item item = createItemFor("12354657864986198", "Item", "Saft", 10000, 1);
 	}
 
 	@Test

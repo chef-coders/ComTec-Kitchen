@@ -42,7 +42,7 @@ public class EditItemFragment extends ItemDetailFragment
 		this.initViews(editItemView);
 
 		this.itemId = getArguments().getString("itemId");
-		this.item = MainActivity.kitchenManager.getItemById(this.itemId);
+		this.item = MainActivity.kitchenManager.items().get(this.itemId);
 
 		Button editButton = editItemView.findViewById(R.id.editButton);
 		editButton.setOnClickListener(this::onEdit);
@@ -73,7 +73,8 @@ public class EditItemFragment extends ItemDetailFragment
 		}
 
 		SimpleAsyncTask.execute(this.getContext(),
-			() -> MainActivity.kitchenManager.updateItem(itemId, name, price, amount, kind),
+		                        () -> MainActivity.kitchenManager.items().update(new Item().set_id(itemId).setName(name).setPrice(
+			                        price).setAmount(amount).setKind(kind)),
 			() -> {
 				MainActivity mainActivity = (MainActivity)this.getActivity();
 				mainActivity.changeFragment(new AllItemsFragment());
@@ -85,6 +86,5 @@ public class EditItemFragment extends ItemDetailFragment
 	protected void updateToolbar(Toolbar toolbar)
 	{
 		toolbar.setTitle(R.string.edit_item_fragment_title);
-		toolbar.setBackgroundColor(ContextCompat.getColor(toolbar.getContext(), R.color.colorAccent));
 	}
 }

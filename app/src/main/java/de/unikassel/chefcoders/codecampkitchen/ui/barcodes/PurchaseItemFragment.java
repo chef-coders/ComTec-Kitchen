@@ -1,7 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -73,8 +72,7 @@ public class PurchaseItemFragment extends KitchenFragment
 		view.findViewById(R.id.buttonSave)
 				.setOnClickListener(this::onPurchase);
 
-		ResultAsyncTask.execute(getActivity(),
-				() -> MainActivity.kitchenManager.getItemById(barcode), (item) ->
+		ResultAsyncTask.execute(getActivity(), () -> MainActivity.kitchenManager.items().get(barcode), (item) ->
 				{
 					textViewName.setText(item.getName());
 					textViewPrice.setText(getString(R.string.item_price, item.getPrice()));
@@ -116,7 +114,8 @@ public class PurchaseItemFragment extends KitchenFragment
 		}
 
 		SimpleAsyncTask.execute(this.getActivity(),
-				() -> MainActivity.kitchenManager.cart().add(MainActivity.kitchenManager.getItemById(barcode), amount),
+		                        () -> MainActivity.kitchenManager.cart().add(
+			                        MainActivity.kitchenManager.items().get(barcode), amount),
 				this::goBack
 		);
 	}
