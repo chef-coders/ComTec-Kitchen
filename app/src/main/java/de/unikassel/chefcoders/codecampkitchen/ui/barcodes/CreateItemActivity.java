@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class CreateItemActivity extends AppCompatActivity
 	private EditText amountText;
 	private Spinner kindSpinner;
 
+	private Button generateIdButton;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -34,20 +37,22 @@ public class CreateItemActivity extends AppCompatActivity
 		Toolbar toolbar = findViewById(R.id.create_item_toolbar);
 		setSupportActionBar(toolbar);
 
-		Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-			barcode = (String) bundle.get("barcode");
-		} else {
-			Double doubleValue = Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L;
-			Long longValue = doubleValue.longValue();
-			barcode = "Generated:" + longValue.toString();
-		}
-
 		this.barcodeValue = findViewById(R.id.barcodeValueView);
 		this.nameText = findViewById(R.id.nameText);
 		this.priceText = findViewById(R.id.priceText);
 		this.amountText = findViewById(R.id.amountText);
 		this.kindSpinner = findViewById(R.id.kindSpinner);
+
+		this.generateIdButton = findViewById(R.id.generateIdButton);
+
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			barcode = (String) bundle.get("barcode");
+			this.barcodeValue.setEnabled(false);
+			this.generateIdButton.setEnabled(false);
+		} else {
+			barcode = "";
+		}
 
 		this.kindSpinner.setAdapter(
 			new ArrayAdapter<>(
@@ -86,5 +91,12 @@ public class CreateItemActivity extends AppCompatActivity
 	private void startMainActivity() {
 		finish();
 		startActivity(new Intent(CreateItemActivity.this, MainActivity.class));
+	}
+
+	public void onGeneratedId(View view) {
+		Double doubleValue = Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L;
+		Long longValue = doubleValue.longValue();
+		barcode = "Generated:" + longValue.toString();
+		this.barcodeValue.setText(barcode);
 	}
 }
