@@ -22,14 +22,11 @@ public class UsersManager
 
 	// =============== Methods ===============
 
+	// --------------- Access ---------------
+
 	public User get(String id)
 	{
 		return this.users.get(id);
-	}
-
-	public void updateLocal(User user)
-	{
-		this.users.put(user.get_id(), user);
 	}
 
 	public List<User> getAll()
@@ -43,24 +40,39 @@ public class UsersManager
 		                            Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
-	// --------------- Involving Communication ---------------
+	// --------------- Modification ---------------
+
+	public void updateLocal(User user)
+	{
+		this.users.put(user.get_id(), user);
+	}
+
+	public void deleteLocal(User user)
+	{
+		this.users.remove(user.get_id());
+	}
+
+	// --------------- Communication ---------------
 
 	public void refreshAll()
 	{
 		this.users.clear();
-		JsonTranslator.toUsers(this.kitchenManager.getConnection().getAllUsers()).forEach(this::updateLocal);
+		final String resultJson = this.kitchenManager.getConnection().getAllUsers();
+		final List<User> resultUsers = JsonTranslator.toUsers(resultJson);
+		resultUsers.forEach(this::updateLocal);
 	}
 
 	public void update(User user)
 	{
-		this.kitchenManager.getConnection().updateUser(user.get_id(), JsonTranslator.toJson(user));
+		final String userJson = JsonTranslator.toJson(user);
+		this.kitchenManager.getConnection().updateUser(user.get_id(), userJson);
 		this.updateLocal(user);
 	}
 
 	public boolean delete(User user)
 	{
 		this.kitchenManager.getConnection().deleteUser(user.get_id());
-		this.users.remove(user.get_id());
+		this.deleteLocal(user);
 		return true;
 	}
 }
