@@ -78,13 +78,8 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	{
 		if(actionState == ACTION_STATE_SWIPE)
 		{
-			recyclerView.setOnTouchListener((v, event) ->
-			{
-				RowPos rowPos = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
-				this.swipeBack = rowPos == null;
-
-				return false;
-			});
+			RowPos rowPos = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
+			this.swipeBack = rowPos == null;
 		}
 	}
 
