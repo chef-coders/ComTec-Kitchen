@@ -53,9 +53,12 @@
     <string name="edit_items">Edit Items</string>
     <string name="edit_user_successful">Successfully edited user</string>
     <string name="statistics">Statistics</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generateBarcode">Generate Barcode / ID</string>
-    <string name="amoundOfBoughtItems" >Overview - Sold articles</string>
+    <string name="amountOfBoughtItems">Sold Quantity Foreach Item</string>
     <string name="credit_value">Credit: %1$.2f €</string>
+    <string name="dark_mode">Dark Mode</string>
+
 </resources>

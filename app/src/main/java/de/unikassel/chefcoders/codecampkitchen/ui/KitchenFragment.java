@@ -23,6 +23,9 @@ public class KitchenFragment extends Fragment
 
 	public void changeToolbar(Toolbar toolbar)
 	{
+		if (toolbar == null) {
+			return;
+		}
 		Menu menu = toolbar.getMenu();
 		if (menu.size() <= 0) {
 			return;

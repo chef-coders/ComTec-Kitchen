@@ -52,9 +52,9 @@ public class Items
 		this.items.put(item.get_id(), item);
 	}
 
-	public void deleteLocal(String id)
+	public void deleteLocal(Item item)
 	{
-		this.items.remove(id);
+		this.items.remove(item.get_id());
 	}
 
 	// --------------- Communication ---------------
@@ -75,17 +75,6 @@ public class Items
 		this.updateLocal(createdItem);
 	}
 
-	@Deprecated
-	public void createItem(String id, String name, double price, int amount, String kind)
-	{
-		if (!this.kitchenManager.session().isAdmin())
-		{
-			return;
-		}
-
-		this.create(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
-	}
-
 	public void update(Item item)
 	{
 		final String itemJson = JsonTranslator.toJson(item);
@@ -94,25 +83,9 @@ public class Items
 		this.updateLocal(updatedItem);
 	}
 
-	@Deprecated
-	public void updateItem(String id, String name, double price, int amount, String kind)
+	public void delete(Item item)
 	{
-		if (!this.kitchenManager.session().isAdmin())
-		{
-			return;
-		}
-
-		this.update(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
-	}
-
-	public void delete(String id)
-	{
-		if (!this.kitchenManager.session().isAdmin())
-		{
-			return;
-		}
-
-		this.kitchenManager.getConnection().deleteItem(id);
-		this.deleteLocal(id);
+		this.kitchenManager.getConnection().deleteItem(item.get_id());
+		this.deleteLocal(item);
 	}
 }
