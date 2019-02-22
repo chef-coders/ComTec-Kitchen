@@ -35,6 +35,7 @@ public class GenDataModel
 		purchase.buildAttribute("user_id", "String");
 		purchase.buildAttribute("item_id", "String");
 		purchase.buildAttribute("amount", "int");
+		purchase.buildAttribute("price", "double");
 
 		// generate model
 
