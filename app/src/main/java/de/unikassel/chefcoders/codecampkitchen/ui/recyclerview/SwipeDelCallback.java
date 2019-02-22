@@ -15,17 +15,17 @@ import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 
 public class SwipeDelCallback extends ItemTouchHelper.Callback
 {
+	public interface SwipeEvent
+	{
+		void handleOnSwiped(RecyclerView.ViewHolder viewHolder);
+	}
+
 	private Drawable icon;
 	private Drawable background;
 
 	private RecyclerController recyclerController;
 
 	private boolean swipeBack;
-
-	public interface SwipeEvent
-	{
-		void handleOnSwiped(RecyclerView.ViewHolder viewHolder);
-	}
 
 	private SwipeEvent swipeEvent;
 
@@ -63,23 +63,17 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	                        float dX, float dY, int actionState, boolean isCurrentlyActive)
 	{
 		super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-		this.blockSwipe(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-		boolean showBgr = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView) != null;
+		boolean successfulSwipe = this.isSuccessfulSwipe(recyclerView, viewHolder);
 
-		if(showBgr)
-		{
-			this.drawBackgroundFrame(c, viewHolder, dX);
-		}
-	}
-
-	private void blockSwipe(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
-	                        float dX, float dY, int actionState, boolean isCurrentlyActive)
-	{
 		if(actionState == ACTION_STATE_SWIPE)
 		{
-			RowPos rowPos = GeneralRecyclerView.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
-			this.swipeBack = rowPos == null;
+			this.swipeBack = ! successfulSwipe;
+		}
+
+		if(successfulSwipe)
+		{
+			this.drawBackgroundFrame(c, viewHolder, dX);
 		}
 	}
 
@@ -108,6 +102,13 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		}
 		this.background.draw(c);
 		this.icon.draw(c);
+	}
+
+	private boolean isSuccessfulSwipe(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
+	{
+		RowPos swipePos = GeneralRecyclerView
+				.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
+		return swipePos != null;
 	}
 
 	// --- --- --- Not used --- --- ---
