@@ -3,7 +3,6 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
@@ -23,6 +22,7 @@ public class KitchenManager
 	private final UsersManager    usersManager    = new UsersManager(this);
 	private final SessionManager  sessionManager  = new SessionManager(this);
 	private final PurchaseManager purchaseManager = new PurchaseManager(this);
+	private final ItemManager     itemManager     = new ItemManager(this);
 
 	// =============== Constructor ===============
 
@@ -71,26 +71,31 @@ public class KitchenManager
 		return this.purchaseManager;
 	}
 
+	public ItemManager items()
+	{
+		return this.itemManager;
+	}
+
 	// =============== Methods ===============
 
 	// --------------- Items ---------------
 
+	@Deprecated
 	public List<Item> getItems()
 	{
-		return new ArrayList<>(this.localDataStore.getItems().values());
+		return this.items().getItems();
 	}
 
+	@Deprecated
 	public void refreshItems()
 	{
-		final Map<String, Item> items = this.localDataStore.getItems();
-		items.clear();
-		JsonTranslator.toItems(this.connection.getAllItems()).forEach(item -> items.put(item.get_id(), item));
+		this.items().refreshItems();
 	}
 
+	@Deprecated
 	public Map<String, List<Item>> getGroupedItems()
 	{
-		return group(this.localDataStore.getItems().values(), Item::getKind,
-		             Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
+		return this.items().getGroupedItems();
 	}
 
 	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
@@ -102,78 +107,40 @@ public class KitchenManager
 		return grouped;
 	}
 
+	@Deprecated
 	public void createItem(String id, String name, double price, int amount, String kind)
 	{
-		if (!sessionManager.isAdmin())
-		{
-			return;
-		}
-
-		final Item item = new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind);
-		final String itemJson = JsonTranslator.toJson(item);
-		final String resultJson;
-
-		resultJson = this.connection.createItem(itemJson);
-
-		final Item createdItem = JsonTranslator.toItem(resultJson);
-
-		this.localDataStore.getItems().put(createdItem.get_id(), createdItem);
+		this.items().createItem(id, name, price, amount, kind);
 	}
 
+	@Deprecated
 	public void updateItem(String id, String name, double price, int amount, String kind)
 	{
-		if (!sessionManager.isAdmin())
-		{
-			return;
-		}
-
-		final Item currentItem = this.getItemById(id);
-
-		final Item item = new Item().setName(name).setPrice(price).setAmount(amount).setKind(kind);
-		final String itemJson = JsonTranslator.toJson(item);
-		final String resultJson;
-
-		resultJson = this.connection.updateItem(id, itemJson);
-
-		final Item updatedItem = JsonTranslator.toItem(resultJson);
-
-		currentItem.setName(updatedItem.getName()).setPrice(updatedItem.getPrice()).setAmount(updatedItem.getAmount())
-		           .setKind(updatedItem.getKind());
+		this.items().updateItem(id, name, price, amount, kind);
 	}
 
+	@Deprecated
 	public void deleteItem(String id)
 	{
-		if (!sessionManager.isAdmin())
-		{
-			return;
-		}
-
-		Item currentItem = this.getItemById(id);
-
-		this.connection.deleteItem(id);
-
-		this.localDataStore.getItems().remove(currentItem);
+		this.items().deleteItem(id);
 	}
 
+	@Deprecated
 	public void buyItem(Item item, int amount)
 	{
-		final Purchase purchase = new Purchase().setUser_id(sessionManager.getLoggedInUser().get_id())
-		                                        .setItem_id(item.get_id()).setAmount(amount);
-
-		final Purchase createdPurchase = JsonTranslator
-			                                 .toPurchase(this.connection.buyItem(JsonTranslator.toJson(purchase)));
-
-		this.localDataStore.getPurchases().put(createdPurchase.get_id(), createdPurchase);
+		this.items().buyItem(item, amount);
 	}
 
+	@Deprecated
 	public boolean containsItem(String id)
 	{
-		return this.localDataStore.getItems().get(id) != null;
+		return this.items().containsItem(id);
 	}
 
+	@Deprecated
 	public Item getItemById(String id)
 	{
-		return this.localDataStore.getItems().get(id);
+		return this.items().getItemById(id);
 	}
 
 	// --------------- Purchases ---------------
