@@ -1,6 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.ErrorMessageBuilder;
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpExceptionBuilder;
 import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpConnectionException;
 import okhttp3.*;
 import okio.Buffer;
@@ -11,11 +11,11 @@ import java.util.Map;
 public class OkHttpConnection implements HttpConnection
 {
 	private OkHttpClient client;
-	private ErrorMessageBuilder errorMessageBuilder;
+	private HttpExceptionBuilder httpExceptionBuilder;
 
 	public OkHttpConnection()
 	{
-		errorMessageBuilder = new ErrorMessageBuilder();
+		httpExceptionBuilder = new HttpExceptionBuilder();
 		client = new OkHttpClient();
 	}
 
@@ -88,20 +88,18 @@ public class OkHttpConnection implements HttpConnection
 		}
 		catch (IOException e)
 		{
-			throw new HttpConnectionException("Error: invalid URL or Timeout");
+			throw new HttpConnectionException("ERROR: Server not available");
 		}
 
 		String responseString = tryGetResponseString(response);
 		int responseCode = response.code();
 
-		errorMessageBuilder.requestResponse = responseString;
-		errorMessageBuilder.responseCode = responseCode;
+		httpExceptionBuilder.withResponseString(responseString);
+		httpExceptionBuilder.withErrorCode(responseCode);
 
 		if (!isValid(responseCode))
 		{
-			String errorMessage = errorMessageBuilder.buildErrorMessage();
-
-			throw new HttpConnectionException(errorMessage);
+			throw httpExceptionBuilder.build();
 		}
 
 		return responseString;
@@ -127,9 +125,9 @@ public class OkHttpConnection implements HttpConnection
 
 	private Call createCallFromRequest(Request request)
 	{
-		errorMessageBuilder.requestType = request.method();
-		errorMessageBuilder.requestUrl = request.url().toString();
-		errorMessageBuilder.requestBody = readBodyFromRequest(request);
+		httpExceptionBuilder.withRequestMethod(request.method());
+		httpExceptionBuilder.withRequestUrl(request.url().toString());
+		httpExceptionBuilder.withRequestBodyString(readBodyFromRequest(request));
 
 		return client.newCall(request);
 	}
