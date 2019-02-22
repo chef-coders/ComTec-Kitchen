@@ -4,8 +4,8 @@
     <string name="login">Anmelden</string>
     <string name="email">Email</string>
     <string name="all_items_nav_title">Alle Artikel</string>
-    <string name="create_item_activity_title">Artikel erstellen</string>
-    <string name="edit_item_activity_title">Artikel bearbeiten</string>
+    <string name="create_item_fragment_title">Artikel erstellen</string>
+    <string name="edit_item_fragment_title">Artikel bearbeiten</string>
     <string name="my_purchases">Meine Einkäufe</string>
     <string name="settings">Einstellungen</string>
     <string name="barcode_toolbar_item_name">Artikel scannen</string>
@@ -53,6 +53,7 @@
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
     <string name="statistics">Statistiken</string>
     <string name="generateBarcode">Barcode / ID generieren</string>
-    <string name="amounfOfBoughtItems">Übersicht - Verkaufte Artikel</string>
-
+    <string name="amoundOfBoughtItems">Übersicht - Verkaufte Artikel</string>
+    <string name="credit_value">Guthaben: %1$.2f €</string>
+    <string name="credit">Guthaben</string>
 </resources>

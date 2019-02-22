@@ -15,7 +15,7 @@
             android:id="@+id/amountOfItemsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/amounfOfBoughtItems"
+            android:text="@string/amoundOfBoughtItems"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />

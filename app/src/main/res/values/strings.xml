@@ -3,8 +3,8 @@
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="all_items_nav_title">All items</string>
-    <string name="create_item_activity_title">Create item</string>
-    <string name="edit_item_activity_title">Edit item</string>
+    <string name="create_item_fragment_title">Create item</string>
+    <string name="edit_item_fragment_title">Edit item</string>
     <string name="my_purchases">My purchases</string>
     <string name="settings">Settings</string>
     <string name="barcode_toolbar_item_name">Scan item</string>
@@ -53,10 +53,9 @@
     <string name="edit_items">Edit Items</string>
     <string name="edit_user_successful">Successfully edited user</string>
     <string name="statistics">Statistics</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generateBarcode">Generate Barcode / ID</string>
-    <string name="amounfOfBoughtItems" >Overview - Sold articles</string>
-
+    <string name="amoundOfBoughtItems" >Overview - Sold articles</string>
+    <string name="credit_value">Credit: %1$.2f €</string>
 </resources>

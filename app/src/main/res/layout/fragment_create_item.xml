@@ -3,22 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.barcodes.EditItemFragment">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/edit_item_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/edit_item_activity_title"
-        app:titleTextColor="@android:color/white" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -32,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_item_toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/barcodeTextView"
@@ -42,11 +27,18 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
+        <EditText
             android:id="@+id/barcodeValueView"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:textSize="18sp" />
+            android:ems="10"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/generateIdButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/generateBarcode" />
 
         <Space
             android:layout_width="match_parent"
@@ -120,11 +112,11 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/editButton"
+            android:id="@+id/createButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
-            android:text="@string/edit"
+            android:text="@string/create"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

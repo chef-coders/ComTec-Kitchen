@@ -7,6 +7,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class CartManager
 {
@@ -25,37 +26,55 @@ public class CartManager
 
 	// =============== Methods ===============
 
+	// --------------- Access ---------------
+
 	public List<Purchase> getPurchases()
 	{
 		return Collections.unmodifiableList(this.purchases);
 	}
 
-	public void clear()
+	/**
+	 * Checks if the cart is empty (i.e. there are no items) or not.
+	 *
+	 * @return true iff there are no items in the cart
+	 */
+	public boolean isEmpty()
 	{
-		this.purchases.clear();
+		return this.purchases.isEmpty();
 	}
 
-	public void submit()
-	{
-		for (Purchase purchase : this.purchases)
-		{
-			this.kitchenManager.getConnection().buyItem(JsonTranslator.toJson(purchase));
-		}
-
-		this.kitchenManager.session().refreshLoggedInUser();
-
-		this.purchases.clear();
-	}
-
+	/**
+	 * Gets the total of all item prices multiplied by their amount.
+	 *
+	 * @return the cart total
+	 */
 	public double getTotal()
 	{
 		return this.purchases.stream().mapToDouble(Purchase::getPrice).sum();
 	}
 
+	/**
+	 * Returns the amount of times the given item is in the cart.
+	 *
+	 * @param item
+	 * 	the item
+	 *
+	 * @return the amount of times the item is in the cart
+	 */
 	public int getAmount(Item item)
 	{
 		final String itemId = item.get_id();
-		return this.purchases.stream().filter(KitchenManager.itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
+		return this.purchases.stream().filter(itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
+	}
+
+	// --------------- Modification ---------------
+
+	/**
+	 * Clears the shopping cart completely.
+	 */
+	public void clear()
+	{
+		this.purchases.clear();
 	}
 
 	/**
@@ -118,6 +137,28 @@ public class CartManager
 	public boolean remove(Item item)
 	{
 		final String itemId = item.get_id();
-		return this.purchases.removeIf(KitchenManager.itemFilter(itemId));
+		return this.purchases.removeIf(itemFilter(itemId));
+	}
+
+	// --------------- Communication ---------------
+
+	/**
+	 * Sends buy requests for all items in the shopping cart and clears it.
+	 */
+	public void submit()
+	{
+		for (Purchase purchase : this.purchases)
+		{
+			this.kitchenManager.getConnection().buyItem(JsonTranslator.toJson(purchase));
+		}
+
+		this.kitchenManager.session().refreshLoggedInUser();
+
+		this.purchases.clear();
+	}
+
+	private static Predicate<Purchase> itemFilter(String itemId)
+	{
+		return p -> itemId.equals(p.getItem_id());
 	}
 }

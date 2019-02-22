@@ -1,6 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
@@ -70,7 +71,7 @@ class Populator
 		v.topRightView.setText(v.itemView.getContext().getString(R.string.item_price, user.getCredit()));
 		v.bottomRightTextView.setText(user.getRole());
 
-		final int color = v.itemView.getContext().getResources().getColor(getColor(user));
+		final int color = ContextCompat.getColor(v.itemView.getContext(), getColor(user));
 		v.titleTextView.setTextColor(color);
 	}
 
