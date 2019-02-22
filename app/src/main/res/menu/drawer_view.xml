@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_all_items"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
@@ -9,6 +11,11 @@
             android:id="@+id/nav_my_purcheses"
             android:title="@string/purchase_history"
             android:icon="@drawable/ic_history_black_24dp" />
+    </group>
+
+    <group
+        android:id="@+id/menu_admin"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_all_users"
             android:title="@string/users"
@@ -17,6 +24,11 @@
             android:id="@+id/nav_statistics"
             android:title="@string/statistics"
             android:icon="@drawable/ic_poll_black_24dp"/>
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_settings"
             android:title="@string/settings"

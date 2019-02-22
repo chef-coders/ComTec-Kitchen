@@ -11,8 +11,8 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.refreshItems();
-		this.fill(MainActivity.kitchenManager.getGroupedItems());
+		MainActivity.kitchenManager.items().refreshAll();
+		this.fill(MainActivity.kitchenManager.items().getGrouped());
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		if (MainActivity.editMode)
 		{
 			final Item clickedItem = this.get(section, itemIndex);
-			MainActivity.kitchenManager.deleteItem(clickedItem.get_id());
+			MainActivity.kitchenManager.items().delete(clickedItem);
 			return true;
 		}
 		else

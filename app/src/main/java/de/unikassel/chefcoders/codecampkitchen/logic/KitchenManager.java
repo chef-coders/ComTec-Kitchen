@@ -3,7 +3,6 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.*;
 import java.util.function.Function;
@@ -15,11 +14,11 @@ public class KitchenManager
 
 	private final KitchenConnection connection;
 
-	private final CartManager     cartManager     = new CartManager(this);
-	private final UsersManager    usersManager    = new UsersManager(this);
-	private final SessionManager  sessionManager  = new SessionManager(this);
-	private final PurchaseManager purchaseManager = new PurchaseManager(this);
-	private final ItemManager     itemManager     = new ItemManager(this);
+	private final Cart      cart      = new Cart(this);
+	private final Users     users     = new Users(this);
+	private final Session   session   = new Session(this);
+	private final Purchases purchases = new Purchases(this);
+	private final Items     items     = new Items(this);
 
 	// =============== Constructor ===============
 
@@ -42,29 +41,29 @@ public class KitchenManager
 		return this.connection;
 	}
 
-	public CartManager cart()
+	public Cart cart()
 	{
-		return this.cartManager;
+		return this.cart;
 	}
 
-	public UsersManager users()
+	public Users users()
 	{
-		return this.usersManager;
+		return this.users;
 	}
 
-	public SessionManager session()
+	public Session session()
 	{
-		return this.sessionManager;
+		return this.session;
 	}
 
-	public PurchaseManager purchases()
+	public Purchases purchases()
 	{
-		return this.purchaseManager;
+		return this.purchases;
 	}
 
-	public ItemManager items()
+	public Items items()
 	{
-		return this.itemManager;
+		return this.items;
 	}
 
 	// =============== Methods ===============
@@ -72,39 +71,15 @@ public class KitchenManager
 	// --------------- Items ---------------
 
 	@Deprecated
-	public List<Item> getItems()
-	{
-		return this.items().getAll();
-	}
-
-	@Deprecated
-	public void refreshItems()
-	{
-		this.items().refreshAll();
-	}
-
-	@Deprecated
-	public Map<String, List<Item>> getGroupedItems()
-	{
-		return this.items().getGrouped();
-	}
-
-	@Deprecated
 	public void createItem(String id, String name, double price, int amount, String kind)
 	{
-		this.items().createItem(id, name, price, amount, kind);
+		this.items().create(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
 	}
 
 	@Deprecated
 	public void updateItem(String id, String name, double price, int amount, String kind)
 	{
-		this.items().updateItem(id, name, price, amount, kind);
-	}
-
-	@Deprecated
-	public void deleteItem(String id)
-	{
-		this.items().delete(id);
+		this.items().update(new Item().set_id(id).setName(name).setPrice(price).setAmount(amount).setKind(kind));
 	}
 
 	@Deprecated
@@ -117,38 +92,6 @@ public class KitchenManager
 	public Item getItemById(String id)
 	{
 		return this.items().get(id);
-	}
-
-	// --------------- Purchases ---------------
-
-	@Deprecated
-	public List<Purchase> getAllPurchases()
-	{
-		return this.purchases().getAll();
-	}
-
-	@Deprecated
-	public void refreshAllPurchases()
-	{
-		this.purchases().refreshAll();
-	}
-
-	@Deprecated
-	public List<Purchase> getMyPurchases()
-	{
-		return this.purchases().getMine();
-	}
-
-	@Deprecated
-	public Map<String, List<Purchase>> getMyGroupedPurchases()
-	{
-		return this.purchases().getMineGrouped();
-	}
-
-	@Deprecated
-	public void refreshMyPurchases()
-	{
-		this.purchases().refreshMine();
 	}
 
 	// --------------- Helpers Methods---------------

@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +37,7 @@ import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 import java.util.Arrays;
+import java.util.prefs.Preferences;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		setTheme();
+
 		super.onCreate(savedInstanceState);
 
 		ResultAsyncTask.execute(
@@ -80,6 +86,19 @@ public class MainActivity extends AppCompatActivity
 		);
 	}
 
+	private void setTheme(){
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		boolean darkMode = sharedPreferences.getBoolean("darkMode",false);
+
+		if (darkMode) {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		} else {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+		}
+
+	}
+
 	private void startLogin()
 	{
 		finish();
@@ -88,7 +107,14 @@ public class MainActivity extends AppCompatActivity
 
 	private void initFragment()
 	{
-		if (getIntent().hasExtra("barcode")) {
+		if(getIntent().hasExtra("settings")){
+			SettingsFragment fragment = new SettingsFragment();
+			fragment.changeToolbar(toolbar);
+			fragment.changeToolbar(toolbar);
+			FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
+			transaction.replace(R.id.headlines_fragment, fragment);
+			transaction.commitAllowingStateLoss();		} else if (getIntent().hasExtra("barcode")) {
 			PurchaseItemFragment fragment = PurchaseItemFragment.newInstance(getIntent().getStringExtra("barcode"));
 			fragment.changeToolbar(toolbar);
 			FragmentTransaction transaction = getSupportFragmentManager()
@@ -198,13 +224,18 @@ public class MainActivity extends AppCompatActivity
 						case R.id.nav_statistics:
 							SimpleAsyncTask.execute(
 								this.getApplicationContext(),
-								() -> MainActivity.kitchenManager.refreshAllPurchases(),
+								() -> MainActivity.kitchenManager.purchases().refreshAll(),
 								() -> {
 									changeFragment(new StatisticsFragment());
 									menuItem.setChecked(true);
 									drawerLayout.closeDrawers();
 								}
 							);
+							break;
+						case R.id.nav_settings:
+							changeFragment(new SettingsFragment());
+							menuItem.setChecked(true);
+							drawerLayout.closeDrawers();
 							break;
 						case R.id.nav_clear_user_data:
 							kitchenManager.session().clearUserData(this);

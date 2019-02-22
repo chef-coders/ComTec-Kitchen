@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 
-public class SessionManager
+public class Session
 {
 	// =============== Fields ===============
 
@@ -17,7 +17,7 @@ public class SessionManager
 
 	// =============== Constructors ===============
 
-	public SessionManager(KitchenManager kitchenManager)
+	public Session(KitchenManager kitchenManager)
 	{
 		this.kitchenManager = kitchenManager;
 	}
