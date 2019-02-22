@@ -176,8 +176,7 @@ public class MainActivity extends AppCompatActivity
 							drawerLayout.closeDrawers();
 							break;
 						case R.id.nav_statistics:
-							//TODO add a KitchenFragment
-							//changeFragment();
+							changeFragment(new StatisticsFragment());
 							menuItem.setChecked(true);
 							drawerLayout.closeDrawers();
 							break;
