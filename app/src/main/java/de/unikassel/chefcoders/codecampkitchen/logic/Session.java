@@ -76,7 +76,7 @@ public class Session
 
 	public void refreshLoggedInUser()
 	{
-		this.kitchenManager.users().update(this.getLoggedInUser());
+		this.kitchenManager.users().refresh(this.getLoggedInUser());
 	}
 
 	public boolean isAdmin()

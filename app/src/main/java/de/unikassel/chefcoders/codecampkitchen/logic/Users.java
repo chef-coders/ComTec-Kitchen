@@ -62,6 +62,13 @@ public class Users
 		resultUsers.forEach(this::updateLocal);
 	}
 
+	public void refresh(User user)
+	{
+		final String resultJson = this.kitchenManager.getConnection().getUser(user.get_id());
+		final User resultUser = JsonTranslator.toUser(resultJson);
+		this.updateLocal(resultUser);
+	}
+
 	public void update(User user)
 	{
 		final String userJson = JsonTranslator.toJson(user);
