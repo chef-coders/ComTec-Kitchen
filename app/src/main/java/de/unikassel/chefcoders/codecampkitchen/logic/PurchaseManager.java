@@ -3,9 +3,13 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PurchaseManager
 {
@@ -31,22 +35,20 @@ public class PurchaseManager
 		return new ArrayList<>(this.purchases.values());
 	}
 
-	public List<Purchase> getMine()
+	public Stream<Purchase> myPurchases()
 	{
 		final String userId = this.kitchenManager.session().getLoggedInUser().get_id();
-		return this.purchases.values().stream().filter(userFilter(userId)).collect(Collectors.toList());
+		return this.purchases.values().stream().filter(userFilter(userId));
+	}
+
+	public List<Purchase> getMine()
+	{
+		return this.myPurchases().collect(Collectors.toList());
 	}
 
 	public Map<String, List<Purchase>> getMineGrouped()
 	{
-		final Collection<Purchase> purchases = this.purchases.values();
-		if (purchases.isEmpty())
-		{
-			// TODO implement in controller
-			return Collections.singletonMap("Nothing here", Collections.emptyList());
-		}
-
-		return purchases.stream().collect(Collectors.groupingBy(p -> p.getCreated().substring(0, 10)));
+		return this.myPurchases().collect(Collectors.groupingBy(p -> p.getCreated().substring(0, 10)));
 	}
 
 	// --------------- Modification ---------------
