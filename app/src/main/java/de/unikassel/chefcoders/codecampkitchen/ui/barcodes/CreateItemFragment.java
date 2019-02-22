@@ -11,55 +11,58 @@ import android.widget.Button;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
-import de.unikassel.chefcoders.codecampkitchen.model.ItemKind.Entry;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
-public class EditItemFragment extends ItemDetailFragment
+public class CreateItemFragment extends ItemDetailFragment
 {
-	private String itemId;
-	private Item item;
+	private String barcode;
 
-	public static EditItemFragment newInstance(String itemId)
+	public static CreateItemFragment newInstance(String barcode)
 	{
-		EditItemFragment fragment = new EditItemFragment();
+		CreateItemFragment fragment = new CreateItemFragment();
 		Bundle bundle = new Bundle();
-		bundle.putString("itemId", itemId);
+		bundle.putString("barcode", barcode);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
 
-	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View editItemView = inflater.inflate(R.layout.fragment_edit_item, container, false);
+		View createItemView = inflater.inflate(R.layout.fragment_create_item, container, false);
 
-		this.initViews(editItemView);
+		this.initViews(createItemView);
 
-		this.itemId = getArguments().getString("itemId");
-		this.item = MainActivity.kitchenManager.getItemById(this.itemId);
+		Button createButton = createItemView.findViewById(R.id.createButton);
+		createButton.setOnClickListener(this::onCreate);
 
-		Button editButton = editItemView.findViewById(R.id.editButton);
-		editButton.setOnClickListener(this::onEdit);
+		Button genIdButton = createItemView.findViewById(R.id.generateIdButton);
+		genIdButton.setOnClickListener(this::onGeneratedId);
 
-		this.barcodeValue.setText(item.get_id());
-		this.nameText.setText(item.getName());
-		this.priceText.setText("" + item.getPrice());
-		this.amountText.setText("" + item.getAmount());
-		this.kindSpinner.setSelection(ItemKind.getIndex(item.getKind()));
+		Bundle args = this.getArguments();
+		if(args != null)
+		{
+			this.barcode = this.getArguments().getString("barcode");
+			this.barcodeValue.setEnabled(false);
+			genIdButton.setEnabled(false);
+			this.barcodeValue.setText(barcode);
+		}
+		else
+		{
+			this.barcode = "";
+		}
 
-		return editItemView;
+		return createItemView;
 	}
 
-	public void onEdit(View view) {
+	public void onCreate(View view) {
 		final String name = nameText.getText().toString();
 		final double price;
 		final int amount;
-		final Entry selectedEntry = (Entry) kindSpinner.getSelectedItem();
+		final ItemKind.Entry selectedEntry = (ItemKind.Entry) kindSpinner.getSelectedItem();
 		final String kind = selectedEntry.getValue();
 
 		try {
@@ -71,8 +74,9 @@ public class EditItemFragment extends ItemDetailFragment
 			return;
 		}
 
-		SimpleAsyncTask.execute(this.getContext(),
-			() -> MainActivity.kitchenManager.updateItem(itemId, name, price, amount, kind),
+		SimpleAsyncTask.execute(
+			this.getContext(),
+			() -> MainActivity.kitchenManager.createItem(barcode, name, price, amount, kind),
 			() -> {
 				MainActivity mainActivity = (MainActivity)this.getActivity();
 				mainActivity.changeFragment(new AllItemsFragment());
@@ -80,9 +84,16 @@ public class EditItemFragment extends ItemDetailFragment
 		);
 	}
 
+	public void onGeneratedId(View view) {
+		Double doubleValue = Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L;
+		Long longValue = doubleValue.longValue();
+		barcode = "Generated:" + longValue.toString();
+		this.barcodeValue.setText(barcode);
+	}
+
 	@Override
 	protected void updateToolbar(Toolbar toolbar)
 	{
-		toolbar.setTitle(R.string.edit_item_fragment_title);
+		toolbar.setTitle(R.string.create_item_fragment_title);
 	}
 }

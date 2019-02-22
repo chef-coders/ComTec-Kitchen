@@ -28,7 +28,7 @@ import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.*;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
-import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.PurchaseItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
@@ -94,13 +94,19 @@ public class MainActivity extends AppCompatActivity
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commit();
+			transaction.commitAllowingStateLoss();
+		} else if(getIntent().hasExtra("barcodeCreate")) {
+			CreateItemFragment fragment = CreateItemFragment.newInstance(getIntent().getStringExtra("barcodeCreate"));
+			fragment.changeToolbar(toolbar);
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.replace(R.id.headlines_fragment, fragment);
+			transaction.commitAllowingStateLoss();
 		} else {
 			AllItemsFragment fragment = new AllItemsFragment();
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commit();
+			transaction.commitAllowingStateLoss();
 		}
 	}
 
@@ -329,7 +335,7 @@ public class MainActivity extends AppCompatActivity
 				startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
 				return true;
 			case R.id.action_create:
-				startActivity(new Intent(MainActivity.this, CreateItemActivity.class));
+				changeFragment(new CreateItemFragment());
 				return true;
 			case R.id.action_edit:
 				setEditMode(!editMode);

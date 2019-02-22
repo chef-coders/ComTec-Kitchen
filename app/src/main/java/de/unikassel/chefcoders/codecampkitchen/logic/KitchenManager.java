@@ -3,19 +3,16 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.communication.OkHttpConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.LocalDataStore;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class KitchenManager
 {
 	// =============== Fields ===============
 
-	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
 	private final CartManager     cartManager     = new CartManager(this);
@@ -26,9 +23,8 @@ public class KitchenManager
 
 	// =============== Constructor ===============
 
-	public KitchenManager(LocalDataStore localDataStore, KitchenConnection connection)
+	public KitchenManager(KitchenConnection connection)
 	{
-		this.localDataStore = localDataStore;
 		this.connection = connection;
 	}
 
@@ -36,15 +32,10 @@ public class KitchenManager
 
 	public static KitchenManager create()
 	{
-		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new OkHttpConnection()));
+		return new KitchenManager(new KitchenConnection(new OkHttpConnection()));
 	}
 
 	// =============== Properties ===============
-
-	public LocalDataStore getLocalDataStore()
-	{
-		return this.localDataStore;
-	}
 
 	public KitchenConnection getConnection()
 	{
@@ -83,28 +74,19 @@ public class KitchenManager
 	@Deprecated
 	public List<Item> getItems()
 	{
-		return this.items().getItems();
+		return this.items().getAll();
 	}
 
 	@Deprecated
 	public void refreshItems()
 	{
-		this.items().refreshItems();
+		this.items().refreshAll();
 	}
 
 	@Deprecated
 	public Map<String, List<Item>> getGroupedItems()
 	{
-		return this.items().getGroupedItems();
-	}
-
-	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
-		Comparator<? super V> comparator)
-	{
-		final Map<K, List<V>> grouped = items.stream().collect(
-			Collectors.groupingBy(keyExtractor, TreeMap::new, Collectors.toList()));
-		grouped.values().forEach(l -> l.sort(comparator));
-		return grouped;
+		return this.items().getGrouped();
 	}
 
 	@Deprecated
@@ -122,33 +104,22 @@ public class KitchenManager
 	@Deprecated
 	public void deleteItem(String id)
 	{
-		this.items().deleteItem(id);
-	}
-
-	@Deprecated
-	public void buyItem(Item item, int amount)
-	{
-		this.items().buyItem(item, amount);
+		this.items().delete(id);
 	}
 
 	@Deprecated
 	public boolean containsItem(String id)
 	{
-		return this.items().containsItem(id);
+		return this.items().exists(id);
 	}
 
 	@Deprecated
 	public Item getItemById(String id)
 	{
-		return this.items().getItemById(id);
+		return this.items().get(id);
 	}
 
 	// --------------- Purchases ---------------
-
-	static Predicate<Purchase> userFilter(String userId)
-	{
-		return p -> userId.equals(p.getUser_id());
-	}
 
 	@Deprecated
 	public List<Purchase> getAllPurchases()
@@ -180,10 +151,14 @@ public class KitchenManager
 		this.purchases().refreshMine();
 	}
 
-	// --------------- Cart ---------------
+	// --------------- Helpers Methods---------------
 
-	static Predicate<Purchase> itemFilter(String itemId)
+	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
+		Comparator<? super V> comparator)
 	{
-		return p -> itemId.equals(p.getItem_id());
+		final Map<K, List<V>> grouped = items.stream().collect(
+			Collectors.groupingBy(keyExtractor, TreeMap::new, Collectors.toList()));
+		grouped.values().forEach(l -> l.sort(comparator));
+		return grouped;
 	}
 }

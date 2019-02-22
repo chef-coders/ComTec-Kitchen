@@ -7,6 +7,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class CartManager
 {
@@ -55,7 +56,7 @@ public class CartManager
 	public int getAmount(Item item)
 	{
 		final String itemId = item.get_id();
-		return this.purchases.stream().filter(KitchenManager.itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
+		return this.purchases.stream().filter(itemFilter(itemId)).mapToInt(Purchase::getAmount).sum();
 	}
 
 	/**
@@ -118,6 +119,11 @@ public class CartManager
 	public boolean remove(Item item)
 	{
 		final String itemId = item.get_id();
-		return this.purchases.removeIf(KitchenManager.itemFilter(itemId));
+		return this.purchases.removeIf(itemFilter(itemId));
+	}
+
+	private static Predicate<Purchase> itemFilter(String itemId)
+	{
+		return p -> itemId.equals(p.getItem_id());
 	}
 }
