@@ -44,7 +44,7 @@ public class PurchaseItemActivity extends AppCompatActivity
 			int amount = Integer.parseInt(this.amountText.getText().toString());
 			amount = amount + value;
 			this.amountText.setText("" + amount);
-		} catch (Exception ex) {
+		} catch (NumberFormatException ex) {
 			this.amountText.setText("1");
 		}
 	}
@@ -54,7 +54,7 @@ public class PurchaseItemActivity extends AppCompatActivity
 
 		try {
 			amount = Integer.parseInt(this.amountText.getText().toString());
-		} catch (Exception ex) {
+		} catch (NumberFormatException ex) {
 			this.amountText.setText("1");
 			return;
 		}
