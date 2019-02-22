@@ -15,11 +15,11 @@ public class KitchenManager
 
 	private final KitchenConnection connection;
 
-	private final CartManager     cartManager     = new CartManager(this);
-	private final UsersManager    usersManager    = new UsersManager(this);
-	private final SessionManager  sessionManager  = new SessionManager(this);
-	private final PurchaseManager purchaseManager = new PurchaseManager(this);
-	private final ItemManager     itemManager     = new ItemManager(this);
+	private final Cart      cart      = new Cart(this);
+	private final Users     users     = new Users(this);
+	private final Session   session   = new Session(this);
+	private final Purchases purchases = new Purchases(this);
+	private final Items     items     = new Items(this);
 
 	// =============== Constructor ===============
 
@@ -42,29 +42,29 @@ public class KitchenManager
 		return this.connection;
 	}
 
-	public CartManager cart()
+	public Cart cart()
 	{
-		return this.cartManager;
+		return this.cart;
 	}
 
-	public UsersManager users()
+	public Users users()
 	{
-		return this.usersManager;
+		return this.users;
 	}
 
-	public SessionManager session()
+	public Session session()
 	{
-		return this.sessionManager;
+		return this.session;
 	}
 
-	public PurchaseManager purchases()
+	public Purchases purchases()
 	{
-		return this.purchaseManager;
+		return this.purchases;
 	}
 
-	public ItemManager items()
+	public Items items()
 	{
-		return this.itemManager;
+		return this.items;
 	}
 
 	// =============== Methods ===============

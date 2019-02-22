@@ -5,7 +5,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 
 import java.util.*;
 
-public class ItemManager
+public class Items
 {
 	// =============== Fields ===============
 
@@ -15,7 +15,7 @@ public class ItemManager
 
 	// =============== Constructors ===============
 
-	public ItemManager(KitchenManager kitchenManager)
+	public Items(KitchenManager kitchenManager)
 	{
 		this.kitchenManager = kitchenManager;
 	}

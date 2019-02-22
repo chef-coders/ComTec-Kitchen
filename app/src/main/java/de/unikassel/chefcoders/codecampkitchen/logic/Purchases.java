@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PurchaseManager
+public class Purchases
 {
 	// =============== Fields ===============
 
@@ -21,7 +21,7 @@ public class PurchaseManager
 
 	// =============== Constructors ===============
 
-	public PurchaseManager(KitchenManager kitchenManager)
+	public Purchases(KitchenManager kitchenManager)
 	{
 		this.kitchenManager = kitchenManager;
 	}
