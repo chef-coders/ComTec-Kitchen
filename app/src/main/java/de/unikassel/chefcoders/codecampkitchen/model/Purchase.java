@@ -182,4 +182,25 @@ public class Purchase
       return result.substring(1);
    }
 
+   public static final String PROPERTY_price = "price";
+
+   private double price;
+
+   public double getPrice()
+   {
+      return price;
+   }
+
+   public Purchase setPrice(double value)
+   {
+      if (value != this.price)
+      {
+         double oldValue = this.price;
+         this.price = value;
+         firePropertyChange("price", oldValue, value);
+      }
+      return this;
+   }
+
+
 }
