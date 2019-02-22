@@ -36,7 +36,7 @@ public class StatisticsFragment extends KitchenFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		purchases = MainActivity.kitchenManager.getAllPurchases();
+		purchases = MainActivity.kitchenManager.purchases().getAll();
 		View allItemsView = inflater.inflate(R.layout.fragment_statistics, container, false);
 		this.initAmountOfBoughtItemsChart(allItemsView);
 		return allItemsView;

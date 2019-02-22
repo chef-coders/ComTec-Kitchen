@@ -5,7 +5,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.User;
 
 import java.util.*;
 
-public class UsersManager
+public class Users
 {
 	// =============== Fields ===============
 
@@ -15,7 +15,7 @@ public class UsersManager
 
 	// =============== Constructors ===============
 
-	public UsersManager(KitchenManager kitchenManager)
+	public Users(KitchenManager kitchenManager)
 	{
 		this.kitchenManager = kitchenManager;
 	}

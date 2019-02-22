@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class CartManager
+public class Cart
 {
 	// =============== Fields ===============
 
@@ -20,7 +20,7 @@ public class CartManager
 
 	// =============== Constructors ===============
 
-	public CartManager(KitchenManager kitchenManager)
+	public Cart(KitchenManager kitchenManager)
 	{
 		this.kitchenManager = kitchenManager;
 	}
@@ -86,7 +86,7 @@ public class CartManager
 	 *
 	 * @return 1 if the item was added successfully, 0 if not because not enough items are in stock.
 	 *
-	 * @see CartManager#add(Item, int)
+	 * @see Cart#add(Item, int)
 	 */
 	public int add(Item item)
 	{
