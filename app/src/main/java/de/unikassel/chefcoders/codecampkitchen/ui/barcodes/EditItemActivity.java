@@ -3,6 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -30,6 +31,9 @@ public class EditItemActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_item);
+
+		Toolbar toolbar = this.findViewById(R.id.edit_item_toolbar);
+		this.setSupportActionBar(toolbar);
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {

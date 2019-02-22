@@ -176,6 +176,12 @@ public class MainActivity extends AppCompatActivity
 							menuItem.setChecked(true);
 							drawerLayout.closeDrawers();
 							break;
+						case R.id.nav_statistics:
+							//TODO add a KitchenFragment
+							//changeFragment();
+							menuItem.setChecked(true);
+							drawerLayout.closeDrawers();
+							break;
 						case R.id.nav_clear_user_data:
 							kitchenManager.clearUserData(MainActivity.this);
 							startLogin();

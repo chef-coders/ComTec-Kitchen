@@ -3,11 +3,13 @@ package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
@@ -28,6 +30,9 @@ public class CreateItemActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_item);
+
+		Toolbar toolbar = findViewById(R.id.create_item_toolbar);
+		setSupportActionBar(toolbar);
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {

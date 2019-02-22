@@ -13,7 +13,8 @@ public class Populator
 	static void populate(RowViewHolder v, Item item)
 	{
 		final int numInCart = MainActivity.kitchenManager.getCartAmount(item);
-		populate(v, item, numInCart);
+		final double price = item.getPrice();
+		populate(v, item.getName(), numInCart, price, numInCart * price);
 
 		if (item.getAmount() != 0)
 		{
@@ -32,27 +33,17 @@ public class Populator
 		String itemId = purchase.getItem_id();
 		Item item = MainActivity.kitchenManager.getItemById(itemId);
 		final int amount = purchase.getAmount();
+		final double total = purchase.getPrice();
+		final String name = item != null ? item.getName() : itemId;
 
+		populate(v, name, amount, total / amount, total);
 		v.subTitleTextView.setText(purchase.getCreated().substring(11));
-
-		if (item != null)
-		{
-			populate(v, item, amount);
-		}
-		else
-		{
-			v.titleTextView.setText(itemId);
-			v.topRightView.setText("");
-			v.bottomRightTextView.setText("");
-		}
 	}
 
-	static void populate(RowViewHolder v, Item item, int amount)
+	static void populate(RowViewHolder v, String name, int amount, double price, double total)
 	{
-		v.titleTextView.setText(item.getName());
+		v.titleTextView.setText(name);
 
-		final double price = item.getPrice();
-		final double total = amount * price;
 		final Context context = v.itemView.getContext();
 
 		switch (amount)
