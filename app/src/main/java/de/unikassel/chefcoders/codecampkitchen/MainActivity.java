@@ -110,11 +110,12 @@ public class MainActivity extends AppCompatActivity
 		if(getIntent().hasExtra("settings")){
 			SettingsFragment fragment = new SettingsFragment();
 			fragment.changeToolbar(toolbar);
-			fragment.changeToolbar(toolbar);
+			checkSettingsMenuItem(true);
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commitAllowingStateLoss();		} else if (getIntent().hasExtra("barcode")) {
+			transaction.commitAllowingStateLoss();
+		} else if (getIntent().hasExtra("barcode")) {
 			PurchaseItemFragment fragment = PurchaseItemFragment.newInstance(getIntent().getStringExtra("barcode"));
 			fragment.changeToolbar(toolbar);
 			FragmentTransaction transaction = getSupportFragmentManager()
@@ -334,6 +335,13 @@ public class MainActivity extends AppCompatActivity
 	{
 		Menu menuNav = navigationView.getMenu();
 		MenuItem item = menuNav.findItem(R.id.nav_all_users);
+		item.setChecked(check);
+	}
+
+	public void checkSettingsMenuItem(boolean check)
+	{
+		Menu menuNav = navigationView.getMenu();
+		MenuItem item = menuNav.findItem(R.id.nav_settings);
 		item.setChecked(check);
 	}
 

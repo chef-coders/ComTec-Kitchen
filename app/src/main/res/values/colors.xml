@@ -5,5 +5,8 @@
 	<color name="colorPrimaryDark">#0b4aaf</color>
 	<color name="colorAccent">#d10054</color>
 	<color name="colorPrimaryText">#8A000000</color>
+	<color name="selectedDrawerItem">@color/colorPrimary</color>
+	<color name="drawerItem">@color/colorPrimaryText</color>
+
 
 </resources>
