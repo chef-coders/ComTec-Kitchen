@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.barcodes.EditItemActivity">
+    tools:context=".ui.barcodes.EditItemFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/edit_item_toolbar"
@@ -120,11 +120,10 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/createButton"
+            android:id="@+id/editButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
-            android:onClick="onEdit"
             android:text="@string/edit"
             android:textColor="@android:color/white" />
 

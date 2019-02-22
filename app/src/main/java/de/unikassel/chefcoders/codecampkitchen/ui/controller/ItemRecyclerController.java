@@ -1,11 +1,9 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemActivity;
+import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
 public class ItemRecyclerController extends GroupedRecyclerController<Item, RowViewHolder>
@@ -40,10 +38,12 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 
 		final View itemView = v.itemView;
 		itemView.post(() -> {
-			final Context context = itemView.getContext();
-			Intent intent = new Intent(context, EditItemActivity.class);
-			intent.putExtra("itemId", item.get_id());
-			context.startActivity(intent);
+			MainActivity mainActivity = (MainActivity)MainActivity.getActivity(itemView);
+			if(mainActivity != null)
+			{
+				EditItemFragment editItemFragment = EditItemFragment.newInstance(item.get_id());
+				mainActivity.changeFragment(editItemFragment);
+			}
 		});
 		return true;
 	}
