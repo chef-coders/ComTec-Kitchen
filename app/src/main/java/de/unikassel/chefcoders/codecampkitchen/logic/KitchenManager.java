@@ -83,19 +83,19 @@ public class KitchenManager
 	@Deprecated
 	public List<Item> getItems()
 	{
-		return this.items().getItems();
+		return this.items().getAll();
 	}
 
 	@Deprecated
 	public void refreshItems()
 	{
-		this.items().refreshItems();
+		this.items().refreshAll();
 	}
 
 	@Deprecated
 	public Map<String, List<Item>> getGroupedItems()
 	{
-		return this.items().getGroupedItems();
+		return this.items().getGrouped();
 	}
 
 	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
@@ -122,25 +122,19 @@ public class KitchenManager
 	@Deprecated
 	public void deleteItem(String id)
 	{
-		this.items().deleteItem(id);
-	}
-
-	@Deprecated
-	public void buyItem(Item item, int amount)
-	{
-		this.items().buyItem(item, amount);
+		this.items().delete(id);
 	}
 
 	@Deprecated
 	public boolean containsItem(String id)
 	{
-		return this.items().containsItem(id);
+		return this.items().exists(id);
 	}
 
 	@Deprecated
 	public Item getItemById(String id)
 	{
-		return this.items().getItemById(id);
+		return this.items().get(id);
 	}
 
 	// --------------- Purchases ---------------
