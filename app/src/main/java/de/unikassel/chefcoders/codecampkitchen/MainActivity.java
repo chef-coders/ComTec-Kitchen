@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity
 				setEditMode(!editMode);
 				return true;
 			case R.id.action_clear_all:
-				SimpleAsyncTask.execute(this.getApplicationContext(), () -> kitchenManager.clearCart(), () ->
+				SimpleAsyncTask.execute(this.getApplicationContext(), () -> kitchenManager.cart().clear(), () ->
 				{
 				});
 				changeFragment(new AllItemsFragment());

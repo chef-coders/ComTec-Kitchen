@@ -19,6 +19,8 @@ public class KitchenManager
 	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
+	private final CartManager       cartManager = new CartManager(this);
+
 	// =============== Constructor ===============
 
 	public KitchenManager(LocalDataStore localDataStore, KitchenConnection connection)
@@ -32,6 +34,23 @@ public class KitchenManager
 	public static KitchenManager create()
 	{
 		return new KitchenManager(new LocalDataStore(), new KitchenConnection(new OkHttpConnection()));
+	}
+
+	// =============== Properties ===============
+
+	public LocalDataStore getLocalDataStore()
+	{
+		return this.localDataStore;
+	}
+
+	public KitchenConnection getConnection()
+	{
+		return this.connection;
+	}
+
+	public CartManager cart()
+	{
+		return this.cartManager;
 	}
 
 	// =============== Methods ===============
@@ -316,104 +335,8 @@ public class KitchenManager
 
 	// --------------- Cart ---------------
 
-	private static Predicate<Purchase> itemFilter(String itemId)
+	static Predicate<Purchase> itemFilter(String itemId)
 	{
 		return p -> itemId.equals(p.getItem_id());
-	}
-
-	public List<Purchase> getCart()
-	{
-		return Collections.unmodifiableList(this.localDataStore.getShoppingCart());
-	}
-
-	public void clearCart()
-	{
-		this.localDataStore.getShoppingCart().clear();
-	}
-
-	public void submitCart()
-	{
-		for (Purchase purchase : this.localDataStore.getShoppingCart())
-		{
-			this.connection.buyItem(JsonTranslator.toJson(purchase));
-		}
-
-		this.refreshLoggedInUser();
-
-		this.localDataStore.getShoppingCart().clear();
-	}
-
-	public double getCartTotal()
-	{
-		return this.localDataStore.getShoppingCart().stream().mapToDouble(Purchase::getPrice).sum();
-	}
-
-	public int getCartAmount(Item item)
-	{
-		final String itemId = item.get_id();
-		return this.localDataStore.getShoppingCart().stream().filter(itemFilter(itemId)).mapToInt(Purchase::getAmount)
-		                          .sum();
-	}
-
-	/**
-	 * Adds the given item to the cart or increments its cart amount.
-	 *
-	 * @param item
-	 * 	the item to add
-	 *
-	 * @return 1 if the item was added successfully, 0 if not because not enough items are in stock.
-	 *
-	 * @see KitchenManager#addToCart(Item, int)
-	 */
-	public int addToCart(Item item)
-	{
-		return this.addToCart(item, 1);
-	}
-
-	/**
-	 * Adds the given item to the cart or adds its cart amount.
-	 *
-	 * @param item
-	 * 	the item to add
-	 * @param amount
-	 * 	the amount to add
-	 *
-	 * @return the amount that was actually added, may be less than {@code amount} if there are not enough items in stock.
-	 */
-	public int addToCart(Item item, int amount)
-	{
-		final String itemId = item.get_id();
-		for (Purchase purchase : this.localDataStore.getShoppingCart())
-		{
-			if (itemId.equals(purchase.getItem_id()))
-			{
-				final int oldAmount = purchase.getAmount();
-				final int newAmount = Math.min(oldAmount + amount, item.getAmount());
-				purchase.setAmount(newAmount);
-				purchase.setPrice(newAmount * item.getPrice());
-				return newAmount - oldAmount; // difference is how many have actually been added
-			}
-		}
-
-		final int actualAmount = Math.min(amount, item.getAmount());
-		final String loginId = this.localDataStore.getLoginId();
-		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount)
-		                                        .setPrice(actualAmount * item.getPrice());
-		this.localDataStore.getShoppingCart().add(purchase);
-		return actualAmount;
-	}
-
-	/**
-	 * Removes the item from the cart completely.
-	 *
-	 * @param item
-	 * 	the item to remove
-	 *
-	 * @return true iff the item was in the cart
-	 */
-	public boolean removeFromCart(Item item)
-	{
-		final String itemId = item.get_id();
-		return this.localDataStore.getShoppingCart().removeIf(itemFilter(itemId));
 	}
 }

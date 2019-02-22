@@ -12,7 +12,7 @@ class Populator
 {
 	static void populate(RowViewHolder v, Item item)
 	{
-		final int numInCart = MainActivity.kitchenManager.getCartAmount(item);
+		final int numInCart = MainActivity.kitchenManager.cart().getAmount(item);
 		final double price = item.getPrice();
 		populate(v, item.getName(), numInCart, price, numInCart * price);
 
