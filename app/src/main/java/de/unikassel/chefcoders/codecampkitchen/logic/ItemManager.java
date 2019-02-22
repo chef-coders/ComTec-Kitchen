@@ -4,14 +4,13 @@ import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ItemManager
 {
 	private final KitchenManager kitchenManager;
+
+	private final Map<String, Item> items = new HashMap<>();
 
 	public ItemManager(KitchenManager kitchenManager)
 	{
@@ -20,20 +19,18 @@ public class ItemManager
 
 	public List<Item> getItems()
 	{
-		return new ArrayList<>(this.kitchenManager.getLocalDataStore().getItems().values());
+		return new ArrayList<>(this.items.values());
 	}
 
 	public void refreshItems()
 	{
-		final Map<String, Item> items = this.kitchenManager.getLocalDataStore().getItems();
-		items.clear();
-		JsonTranslator.toItems(this.kitchenManager.getConnection().getAllItems())
-		              .forEach(item -> items.put(item.get_id(), item));
+		this.items.clear();
+		JsonTranslator.toItems(this.kitchenManager.getConnection().getAllItems()).forEach(this::updateLocal);
 	}
 
 	public Map<String, List<Item>> getGroupedItems()
 	{
-		return KitchenManager.group(this.kitchenManager.getLocalDataStore().getItems().values(), Item::getKind,
+		return KitchenManager.group(this.items.values(), Item::getKind,
 		                            Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
@@ -52,7 +49,7 @@ public class ItemManager
 
 		final Item createdItem = JsonTranslator.toItem(resultJson);
 
-		this.kitchenManager.getLocalDataStore().getItems().put(createdItem.get_id(), createdItem);
+		this.updateLocal(createdItem);
 	}
 
 	public void updateItem(String id, String name, double price, int amount, String kind)
@@ -87,7 +84,7 @@ public class ItemManager
 
 		this.kitchenManager.getConnection().deleteItem(id);
 
-		this.kitchenManager.getLocalDataStore().getItems().remove(currentItem);
+		this.items.remove(currentItem);
 	}
 
 	public void buyItem(Item item, int amount)
@@ -103,11 +100,16 @@ public class ItemManager
 
 	public boolean containsItem(String id)
 	{
-		return this.kitchenManager.getLocalDataStore().getItems().get(id) != null;
+		return this.items.get(id) != null;
 	}
 
 	public Item getItemById(String id)
 	{
-		return this.kitchenManager.getLocalDataStore().getItems().get(id);
+		return this.items.get(id);
+	}
+
+	private void updateLocal(Item item)
+	{
+		this.items.put(item.get_id(), item);
 	}
 }
