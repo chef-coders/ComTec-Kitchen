@@ -24,7 +24,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 	@Override
 	public void populate(RowViewHolder v, int section, int itemIndex)
 	{
-		Populator.populate(v, this.get(section, itemIndex));
+		Populator.populateItemList(v, this.get(section, itemIndex));
 	}
 
 	@Override

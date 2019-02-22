@@ -11,37 +11,18 @@ import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
 class Populator
 {
-	static void populate(RowViewHolder v, Item item)
+	// --------------- Items ---------------
+
+	static void populateItemList(RowViewHolder v, Item item)
 	{
 		final int numInCart = MainActivity.kitchenManager.cart().getAmount(item);
 		final double price = item.getPrice();
-		populate(v, item.getName(), numInCart, price, numInCart * price);
 
-		if (item.getAmount() != 0)
-		{
-			String amountAvailable = v.itemView.getContext()
-			                                   .getString(R.string.item_amount_available, item.getAmount());
-			v.subTitleTextView.setText(amountAvailable);
-		}
-		else
-		{
-			v.subTitleTextView.setText(R.string.item_amount_not_available);
-		}
+		populateItem(v, item.getName(), numInCart, price, numInCart * price);
+		populateAvailable(v, item.getAmount());
 	}
 
-	static void populate(RowViewHolder v, Purchase purchase)
-	{
-		String itemId = purchase.getItem_id();
-		Item item = MainActivity.kitchenManager.getItemById(itemId);
-		final int amount = purchase.getAmount();
-		final double total = purchase.getPrice();
-		final String name = item != null ? item.getName() : itemId;
-
-		populate(v, name, amount, total / amount, total);
-		v.subTitleTextView.setText(purchase.getCreated().substring(11));
-	}
-
-	static void populate(RowViewHolder v, String name, int amount, double price, double total)
+	private static void populateItem(RowViewHolder v, String name, int amount, double price, double total)
 	{
 		v.titleTextView.setText(name);
 
@@ -64,7 +45,58 @@ class Populator
 		}
 	}
 
-	static void populate(RowViewHolder v, User user)
+	private static void populateAvailable(RowViewHolder v, int numAvailable)
+	{
+		if (numAvailable != 0)
+		{
+			String amountAvailable = v.itemView.getContext().getString(R.string.item_amount_available, numAvailable);
+			v.subTitleTextView.setText(amountAvailable);
+		}
+		else
+		{
+			v.subTitleTextView.setText(R.string.item_amount_not_available);
+		}
+	}
+
+	// --------------- Purchases ---------------
+
+	static void populatePurchaseCart(RowViewHolder v, Purchase purchase)
+	{
+		populatePurchase(v, purchase);
+
+		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
+		populateAvailable(v, item != null ? item.getAmount() : 0);
+	}
+
+	static void populatePurchaseHistory(RowViewHolder v, Purchase purchase)
+	{
+		populatePurchase(v, purchase);
+
+		final String created = purchase.getCreated();
+		if (created != null && created.length() >= 11)
+		{
+			v.subTitleTextView.setText(created.substring(11));
+		}
+		else
+		{
+			v.subTitleTextView.setText("");
+		}
+	}
+
+	private static void populatePurchase(RowViewHolder v, Purchase purchase)
+	{
+		final String itemId = purchase.getItem_id();
+		final Item item = MainActivity.kitchenManager.items().get(itemId);
+		final int amount = purchase.getAmount();
+		final double total = purchase.getPrice();
+		final String name = item != null ? item.getName() : itemId;
+
+		populateItem(v, name, amount, total / amount, total);
+	}
+
+	// --------------- Users ---------------
+
+	static void populateUser(RowViewHolder v, User user)
 	{
 		v.titleTextView.setText(user.getName());
 		v.subTitleTextView.setText(user.getMail());
@@ -77,7 +109,8 @@ class Populator
 
 	private static int getColor(User user)
 	{
-		final boolean isLoggedIn = user.get_id().equals(MainActivity.kitchenManager.session().getLoggedInUser().get_id());
+		final boolean isLoggedIn = user.get_id()
+		                               .equals(MainActivity.kitchenManager.session().getLoggedInUser().get_id());
 		final boolean isAdmin = "admin".equals(user.getRole());
 
 		return isLoggedIn ?

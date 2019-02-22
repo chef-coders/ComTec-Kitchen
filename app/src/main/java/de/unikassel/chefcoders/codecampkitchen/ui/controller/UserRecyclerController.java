@@ -24,7 +24,7 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	@Override
 	public void populate(RowViewHolder v, int section, int item)
 	{
-		Populator.populate(v, this.get(section, item));
+		Populator.populateUser(v, this.get(section, item));
 	}
 
 	@Override

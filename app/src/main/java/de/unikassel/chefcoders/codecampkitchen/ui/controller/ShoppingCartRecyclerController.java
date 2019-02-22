@@ -48,7 +48,7 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
 		final Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());
 
-		Populator.populate(v, item);
+		Populator.populateItemList(v, item);
 	}
 
 	@Override
