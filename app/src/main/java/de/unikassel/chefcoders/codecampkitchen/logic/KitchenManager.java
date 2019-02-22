@@ -287,22 +287,6 @@ public class KitchenManager
 		return this.localDataStore.getItems().get(id);
 	}
 
-	public Item getItem(int section, int item)
-	{
-		final Map<String, List<Item>> grouped = getGroupedItems();
-		final int numSections = grouped.size();
-
-		Item[][] items = new Item[numSections][];
-
-		int sectionIndex = 0;
-		for (Map.Entry<String, List<Item>> entry : grouped.entrySet())
-		{
-			items[sectionIndex++] = entry.getValue().toArray(new Item[0]);
-		}
-
-		return items[section][item];
-	}
-
 	// --------------- Purchases ---------------
 
 	private static Predicate<Purchase> userFilter(String userId)

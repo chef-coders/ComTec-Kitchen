@@ -1,8 +1,8 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
-import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
@@ -53,7 +53,7 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	}
 
 	@Override
-	public boolean onClick(int section, int itemIndex)
+	public boolean onClick(RowViewHolder v, int section, int itemIndex)
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
 		final Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());
@@ -62,7 +62,7 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	}
 
 	@Override
-	public boolean onSwiped(int section, int itemIndex)
+	public boolean onSwiped(RowViewHolder v, int section, int itemIndex)
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
 		final Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());

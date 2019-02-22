@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
@@ -96,13 +93,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void onClick(int section, int item)
 	{
-		if (MainActivity.editMode) {
-			final Item clickedItem = MainActivity.kitchenManager.getItem(section, item);
-			Intent intent = new Intent(getActivity(), EditItemActivity.class);
-			intent.putExtra("itemId", clickedItem.get_id());
-			startActivity(intent);
-		}
-		else
+		if (!MainActivity.editMode)
 		{
 			this.floatingActionButton.show();
 		}

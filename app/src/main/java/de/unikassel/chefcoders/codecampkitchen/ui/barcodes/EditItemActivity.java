@@ -74,7 +74,7 @@ public class EditItemActivity extends AppCompatActivity
 		try {
 			price = Double.parseDouble(priceText.getText().toString());
 			amount = Integer.parseInt(amountText.getText().toString());
-		} catch (Exception ex) {
+		} catch (NumberFormatException ex) {
 			priceText.setText("0.00");
 			amountText.setText("0");
 			return;

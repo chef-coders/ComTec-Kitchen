@@ -1,7 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -131,12 +129,17 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
+		RecyclerView.ViewHolder viewHolder = rowPos.getSection().getItemViewHolder(view);
+		if (viewHolder == null)
+		{
+			return;
+		}
+
 		this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getItemId());
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			return this.recyclerController.onClick(rowPos.getSectionId(), rowPos.getItemId());
+			return this.recyclerController.onClick(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 		}, (Boolean b) -> {
-			RecyclerView.ViewHolder viewHolder = rowPos.getSection().getItemViewHolder(view);
-			if (b && viewHolder != null)
+			if (b)
 			{
 				this.recyclerController.populate(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 			}
@@ -160,7 +163,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 		this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			boolean refreshAll = this.recyclerController.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
+			boolean refreshAll = this.recyclerController.onSwiped(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 			if (refreshAll)
 			{
 				this.recyclerController.refresh();

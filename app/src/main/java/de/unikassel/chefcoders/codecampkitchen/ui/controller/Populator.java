@@ -8,7 +8,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
 
-public class Populator
+class Populator
 {
 	static void populate(RowViewHolder v, Item item)
 	{
