@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity
 				.setVisible(!MainActivity.editMode && isAllItemsFragmentVisible());
 		getToolbar().getMenu()
 				.findItem(R.id.action_create)
-				.setVisible(!MainActivity.editMode && isAllItemsFragmentVisible());
+				.setVisible(MainActivity.editMode && isAllItemsFragmentVisible());
 
 		//updateLayout();
 	}
