@@ -72,24 +72,6 @@ public class KitchenManager
 	// --------------- Items ---------------
 
 	@Deprecated
-	public List<Item> getItems()
-	{
-		return this.items().getAll();
-	}
-
-	@Deprecated
-	public void refreshItems()
-	{
-		this.items().refreshAll();
-	}
-
-	@Deprecated
-	public Map<String, List<Item>> getGroupedItems()
-	{
-		return this.items().getGrouped();
-	}
-
-	@Deprecated
 	public void createItem(String id, String name, double price, int amount, String kind)
 	{
 		this.items().createItem(id, name, price, amount, kind);
@@ -99,12 +81,6 @@ public class KitchenManager
 	public void updateItem(String id, String name, double price, int amount, String kind)
 	{
 		this.items().updateItem(id, name, price, amount, kind);
-	}
-
-	@Deprecated
-	public void deleteItem(String id)
-	{
-		this.items().delete(id);
 	}
 
 	@Deprecated

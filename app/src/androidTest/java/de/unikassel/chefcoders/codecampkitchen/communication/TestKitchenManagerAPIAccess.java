@@ -64,8 +64,8 @@ public class TestKitchenManagerAPIAccess
 	@Test
 	public void getAllItems()
 	{
-		kitchenManager.refreshItems();
-		List<Item> items = kitchenManager.getItems();
+		kitchenManager.items().refreshAll();
+		List<Item> items = kitchenManager.items().getAll();
 
 		Assert.assertThat(0, not(equalTo(items.size())));
 	}
