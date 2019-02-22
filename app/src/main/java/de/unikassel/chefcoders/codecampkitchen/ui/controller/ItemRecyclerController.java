@@ -35,7 +35,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		final Item item = this.get(section, itemIndex);
 		if (!MainActivity.editMode)
 		{
-			return MainActivity.kitchenManager.addToCart(item) > 0;
+			return MainActivity.kitchenManager.cart().add(item) > 0;
 		}
 
 		final View itemView = v.itemView;
@@ -59,7 +59,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		}
 		else
 		{
-			return MainActivity.kitchenManager.removeFromCart(this.get(section, itemIndex));
+			return MainActivity.kitchenManager.cart().remove(this.get(section, itemIndex));
 		}
 	}
 

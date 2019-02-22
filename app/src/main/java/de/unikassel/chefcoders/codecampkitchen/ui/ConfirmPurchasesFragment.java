@@ -55,7 +55,7 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 		SimpleDialog
 				.createDialog(
 						getActivity().getString(R.string.total_price,
-								MainActivity.kitchenManager.getCartTotal()),
+						                        MainActivity.kitchenManager.cart().getTotal()),
 						getActivity().getString(R.string.confirm_purchase),
 						getActivity().getString(R.string.purchase),
 						getActivity().getString(R.string.cancel),
@@ -78,7 +78,7 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	private void purchaseItems()
 	{
 		progressBar.setVisibility(View.VISIBLE);
-		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.submitCart(), () -> {
+		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.cart().submit(), () -> {
 			progressBar.setVisibility(View.GONE);
 			MainActivity mainActivity = (MainActivity) getActivity();
 			if (mainActivity != null)

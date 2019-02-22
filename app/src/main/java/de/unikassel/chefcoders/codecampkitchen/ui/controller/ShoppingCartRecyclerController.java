@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.controller;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
@@ -34,7 +33,7 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	@Override
 	public void refresh()
 	{
-		this.shoppingCart = MainActivity.kitchenManager.getCart();
+		this.shoppingCart = MainActivity.kitchenManager.cart().getPurchases();
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
 		final Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());
-		MainActivity.kitchenManager.addToCart(item);
+		MainActivity.kitchenManager.cart().add(item);
 		return true;
 	}
 
@@ -66,7 +65,7 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
 		final Item item = MainActivity.kitchenManager.getItemById(purchase.getItem_id());
-		MainActivity.kitchenManager.removeFromCart(item);
+		MainActivity.kitchenManager.cart().remove(item);
 		return false;
 	}
 
