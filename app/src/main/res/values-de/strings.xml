@@ -15,7 +15,7 @@
     <string name="item_amount_available">%1$d verfügbar</string>
     <string name="item_amount_not_available">nicht verfügbar</string>
     <string name="admin">Admin</string>
-    <string name="create_add_button_menu">Artikel anlegen</string>
+    <string name="create_add_button_menu">Artikel erstellen</string>
     <string name="barcode">Barcode / ID</string>
     <string name="price">Preis</string>
     <string name="amount">Stückzahl</string>
