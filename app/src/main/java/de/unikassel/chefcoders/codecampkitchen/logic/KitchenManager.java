@@ -19,7 +19,8 @@ public class KitchenManager
 	private final LocalDataStore    localDataStore;
 	private final KitchenConnection connection;
 
-	private final CartManager       cartManager = new CartManager(this);
+	private final CartManager  cartManager  = new CartManager(this);
+	private final UsersManager usersManager = new UsersManager(this);
 
 	// =============== Constructor ===============
 
@@ -51,6 +52,11 @@ public class KitchenManager
 	public CartManager cart()
 	{
 		return this.cartManager;
+	}
+
+	public UsersManager users()
+	{
+		return this.usersManager;
 	}
 
 	// =============== Methods ===============
@@ -136,24 +142,6 @@ public class KitchenManager
 
 	// --------------- Users ---------------
 
-	public List<User> getAllUsers()
-	{
-		return new ArrayList<>(this.localDataStore.getUsers().values());
-	}
-
-	public Map<String, List<User>> getGroupedUsers()
-	{
-		return group(this.localDataStore.getUsers().values(), u -> u.getName().substring(0, 1).toUpperCase(),
-		             Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER));
-	}
-
-	public void refreshAllUsers()
-	{
-		final Map<String, User> users = this.localDataStore.getUsers();
-		users.clear();
-		JsonTranslator.toUsers(this.connection.getAllUsers()).forEach(user -> users.put(user.get_id(), user));
-	}
-
 	public User getLoggedInUser()
 	{
 		return this.localDataStore.getUsers().get(this.localDataStore.getLoginId());
@@ -169,22 +157,6 @@ public class KitchenManager
 	{
 		User user = this.getLoggedInUser();
 		return "admin".equals(user.getRole());
-	}
-
-	public boolean deleteUser(User user)
-	{
-		this.connection.deleteUser(user.get_id());
-		return true;
-	}
-
-	public User getUserById(String userId)
-	{
-		return this.localDataStore.getUsers().get(userId);
-	}
-
-	public void updateUser(User user)
-	{
-		this.connection.updateUser(user.get_id(), JsonTranslator.toJson(user));
 	}
 
 	// --------------- Items ---------------
@@ -207,7 +179,7 @@ public class KitchenManager
 		             Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
-	private static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
+	static <K, V> Map<K, List<V>> group(Collection<V> items, Function<? super V, ? extends K> keyExtractor,
 		Comparator<? super V> comparator)
 	{
 		final Map<K, List<V>> grouped = items.stream().collect(
