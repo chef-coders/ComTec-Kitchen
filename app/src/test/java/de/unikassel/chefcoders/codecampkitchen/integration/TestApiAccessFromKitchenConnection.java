@@ -133,7 +133,7 @@ public class TestApiAccessFromKitchenConnection
 		Purchase purchase = userBuysItem(admin, item);
 		purchasesToDelete.add(purchase);
 
-		kitchenConnection.getPurchasesForUser();
+		kitchenConnection.getMyPurchases();
 	}
 
 	@Test
@@ -214,7 +214,7 @@ public class TestApiAccessFromKitchenConnection
 	{
 		Purchase purchase = new Purchase().setItem_id(item.get_id()).setUser_id(user.get_id()).setAmount(1);
 		String purchaseJson = JsonTranslator.toJson(purchase);
-		purchaseJson = kitchenConnection.buyItem(purchaseJson);
+		purchaseJson = kitchenConnection.createPurchase(purchaseJson);
 		purchase = JsonTranslator.toPurchase(purchaseJson);
 
 		return purchase;

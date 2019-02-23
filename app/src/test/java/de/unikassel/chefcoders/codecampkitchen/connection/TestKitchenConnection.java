@@ -182,7 +182,7 @@ public class TestKitchenConnection
 			this.oneOf(TestKitchenConnection.this.httpConnection).get(url, headers());
 		}});
 
-		this.kitchenConnection.getPurchasesForUser();
+		this.kitchenConnection.getMyPurchases();
 
 		this.context.assertIsSatisfied();
 	}
@@ -216,7 +216,7 @@ public class TestKitchenConnection
 			this.oneOf(TestKitchenConnection.this.httpConnection).post(url, purchaseJson, headers);
 		}});
 
-		this.kitchenConnection.buyItem(purchaseJson);
+		this.kitchenConnection.createPurchase(purchaseJson);
 
 		this.context.assertIsSatisfied();
 	}

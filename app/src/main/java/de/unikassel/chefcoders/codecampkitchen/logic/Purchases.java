@@ -68,7 +68,7 @@ public class Purchases
 
 	public void refreshMine()
 	{
-		final String resultJson = this.kitchenManager.getConnection().getPurchasesForUser();
+		final String resultJson = this.kitchenManager.getConnection().getMyPurchases();
 		final List<Purchase> resultPurchases = JsonTranslator.toPurchases(resultJson);
 		resultPurchases.forEach(this::updateLocal);
 	}

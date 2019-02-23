@@ -167,7 +167,7 @@ public class Cart
 	{
 		for (Purchase purchase : this.purchases)
 		{
-			this.kitchenManager.getConnection().buyItem(JsonTranslator.toJson(purchase));
+			this.kitchenManager.getConnection().createPurchase(JsonTranslator.toJson(purchase));
 		}
 
 		this.kitchenManager.session().refreshLoggedInUser();
