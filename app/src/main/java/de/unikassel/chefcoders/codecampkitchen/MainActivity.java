@@ -234,6 +234,8 @@ public class MainActivity extends AppCompatActivity
 									{
 										if (kitchenManager.session().isAdmin()) {
 											MainActivity.kitchenManager.purchases().refreshAll();
+										} else {
+											MainActivity.kitchenManager.purchases().refreshMine();
 										}
 									},
 									() ->
