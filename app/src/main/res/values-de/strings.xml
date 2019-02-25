@@ -53,12 +53,12 @@
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
     <string name="statistics">Statistiken</string>
     <string name="generateBarcode">Barcode / ID generieren</string>
-    <string name="amountOfBoughtItems">Übersicht - Verkaufte Artikel</string>
+    <string name="amountOfBoughtItems">Übersicht - Artikel</string>
     <string name="credit_value">Guthaben: %1$.2f €</string>
     <string name="credit">Guthaben</string>
     <string name="totalAmountText">Gesamtbetrag: %1$.2f€</string>
     <string name="moneySpentText">Ausgegebenes Geld: %1$.2f€</string>
     <string name="purchasedItemsText">Gekaufte Artikel: %d</string>
-    <string name="totalNumberText">Gesamtanzahl: %d</string>
+    <string name="totalNumberText">Anzahl verkaufter Artikel: %d</string>
     <string name="dark_mode">Dunkel Modus</string>
 </resources>

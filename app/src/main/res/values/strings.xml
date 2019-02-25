@@ -57,11 +57,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generateBarcode">Generate Barcode / ID</string>
-    <string name="amountOfBoughtItems">Overview - Sold Articles</string>
+    <string name="amountOfBoughtItems">Overview - Items</string>
     <string name="credit_value">Credit: %1$.2f €</string>
-    <string name="totalAmountText">Total Amount: %1$.2f€</string>
-    <string name="moneySpentText">Money spent: %1$.2f€</string>
-    <string name="totalNumberText">Total Number: %d</string>
+    <string name="totalAmountText">Total: %1$.2f€</string>
+    <string name="moneySpentText">Spent Money: %1$.2f€</string>
+    <string name="totalNumberText">Number of Items Sold: %d</string>
     <string name="purchasedItemsText" >Purchased Items: %d</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="connection_request">Please connect to a network</string>
