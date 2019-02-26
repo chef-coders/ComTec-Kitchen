@@ -96,6 +96,12 @@ public class PurchaseItemFragment extends KitchenFragment
 		try {
 			int amount = Integer.parseInt(this.amountText.getText().toString());
 			amount = amount + value;
+
+			if(amount < 1)
+			{
+				return;
+			}
+
 			this.amountText.setText("" + amount);
 		} catch (NumberFormatException ex) {
 			this.amountText.setText("1");
