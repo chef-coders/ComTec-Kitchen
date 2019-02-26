@@ -7,11 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
@@ -22,15 +22,16 @@ import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask
  */
 public class PurchaseItemFragment extends KitchenFragment
 {
-
 	private String barcode;
 
 	private TextView textViewName;
 	private TextView textViewPrice;
+	private TextView textViewAvailable;
 
 	private TextView barcodeValue;
 	private TextView amountText;
 
+	private int amountAvailableToAdd;
 
 	public PurchaseItemFragment()
 	{
@@ -54,12 +55,21 @@ public class PurchaseItemFragment extends KitchenFragment
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_purchase_item, container, false);
 
-		barcode = getArguments().getString("barcode");
+		this.barcode = getArguments().getString("barcode");
+
+		Item item = MainActivity.kitchenManager.items().get(this.barcode);
+		int amountInCart = MainActivity.kitchenManager.cart().getAmount(item);
+		this.amountAvailableToAdd = item.getAmount() - amountInCart;
 
 		this.barcodeValue = view.findViewById(R.id.barcodeValueView);
 		this.amountText = view.findViewById(R.id.amountText);
 		this.textViewName = view.findViewById(R.id.textViewName);
 		this.textViewPrice = view.findViewById(R.id.textViewPrice);
+		this.textViewAvailable = view.findViewById(R.id.availableTextView);
+
+		this.textViewAvailable.setText("" + this.amountAvailableToAdd);
+		textViewName.setText(item.getName());
+		textViewPrice.setText(getString(R.string.item_price, item.getPrice()));
 
 		this.barcodeValue.setText(barcode);
 
@@ -71,12 +81,6 @@ public class PurchaseItemFragment extends KitchenFragment
 
 		view.findViewById(R.id.buttonSave)
 				.setOnClickListener(this::onPurchase);
-
-		ResultAsyncTask.execute(getActivity(), () -> MainActivity.kitchenManager.items().get(barcode), (item) ->
-				{
-					textViewName.setText(item.getName());
-					textViewPrice.setText(getString(R.string.item_price, item.getPrice()));
-				});
 
 		return view;
 	}
@@ -97,7 +101,7 @@ public class PurchaseItemFragment extends KitchenFragment
 			int amount = Integer.parseInt(this.amountText.getText().toString());
 			amount = amount + value;
 
-			if(amount < 1)
+			if(amount < 1 || amount > this.amountAvailableToAdd)
 			{
 				return;
 			}

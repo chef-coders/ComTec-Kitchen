@@ -60,6 +60,19 @@
             android:layout_marginBottom="8dp"
             android:textSize="18sp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/available"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/availableTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/amountTextView"
