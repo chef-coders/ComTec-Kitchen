@@ -379,7 +379,14 @@ public class MainActivity extends AppCompatActivity
 		if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
 			drawerLayout.closeDrawers();
 		} else if (!(currentFragment instanceof AllItemsFragment)) {
-			changeFragment(new AllItemsFragment());
+			if(currentFragment instanceof EditUserFragment)
+			{
+				changeFragment(new AllUserFragment());
+			}
+			else
+			{
+				changeFragment(new AllItemsFragment());
+			}
 			checkAllItemsMenuItem(true);
 		} else if (MainActivity.editMode) {
 			setEditMode(false);
