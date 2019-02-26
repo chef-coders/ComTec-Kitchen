@@ -64,4 +64,5 @@
     <string name="purchased_items_text">Purchased Items: %d</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="connection_request">Please connect to a network</string>
+    <string name="add_to_cart">Add To Shopping Cart</string>
 </resources>

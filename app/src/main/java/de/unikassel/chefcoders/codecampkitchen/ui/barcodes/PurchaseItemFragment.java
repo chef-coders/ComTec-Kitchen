@@ -29,7 +29,7 @@ public class PurchaseItemFragment extends KitchenFragment
 	private TextView textViewPrice;
 
 	private TextView barcodeValue;
-	private EditText amountText;
+	private TextView amountText;
 
 
 	public PurchaseItemFragment()
@@ -129,7 +129,7 @@ public class PurchaseItemFragment extends KitchenFragment
 	@Override
 	protected void updateToolbar(Toolbar toolbar)
 	{
-		toolbar.setTitle(R.string.purchase);
+		toolbar.setTitle(R.string.add_to_cart);
 	}
 
 	private void goBack()

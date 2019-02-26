@@ -63,4 +63,5 @@
     <string name="total_number_text">Anzahl verkaufter Artikel: %d</string>
     <string name="dark_mode">Dunkel Modus</string>
     <string name="connection_request">Bitte verbinde dich mit einem Netzwerk</string>
+    <string name="add_to_cart">Zum Warenkorb hinzufügen</string>
 </resources>
