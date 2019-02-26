@@ -38,7 +38,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		if(itemId.isEmpty())
 		{
 			Toast.makeText(this.getContext(),
-					getString(R.string.fieldIsEmpty, getString(R.string.barcode)),
+					getString(R.string.field_is_empty, getString(R.string.barcode)),
 					Toast.LENGTH_LONG).show();
 			return null;
 		}
@@ -47,7 +47,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		if(name.isEmpty())
 		{
 			Toast.makeText(this.getContext(),
-					getString(R.string.fieldIsEmpty, getString(R.string.theNameText)),
+					getString(R.string.field_is_empty, getString(R.string.theNameText)),
 					Toast.LENGTH_LONG).show();
 			return null;
 		}
@@ -71,7 +71,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 
 		if(amount <= 0)
 		{
-			Toast.makeText(this.getContext(), R.string.amountMinimumError, Toast.LENGTH_LONG)
+			Toast.makeText(this.getContext(), R.string.amount_minimum_error, Toast.LENGTH_LONG)
 					.show();
 			this.amountText.setText("1");
 			return null;

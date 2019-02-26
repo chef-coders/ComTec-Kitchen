@@ -39,7 +39,7 @@
     <string name="confirm_purchase">Möchtest du diese Sachen Kaufen?</string>
     <string name="total_price">Gesamtpreis: %1$.2f €</string>
     <string name="cancel">Abbrechen</string>
-    <string name="itemNotFound">Artikel nicht vorhanden</string>
+    <string name="item_not_found">Artikel nicht vorhanden</string>
     <string name="user">Nutzer</string>
     <string name="users">Nutzer</string>
     <string name="open">Öffnen</string>
@@ -47,19 +47,20 @@
     <string name="shop">Shop</string>
     <string name="purchase_history">Einkaufs Historie</string>
     <string name="logout">Logout</string>
-    <string name="fieldIsEmpty">Das %1$s-Feld ist leer</string>
-    <string name="amountMinimumError">Die kleinst mögliche Stückzahl ist 1</string>
+    <string name="field_is_empty">Das %1$s-Feld ist leer</string>
+    <string name="amount_minimum_error">Die kleinst mögliche Stückzahl ist 1</string>
     <string name="edit_user">Nutzer bearbeiten</string>
     <string name="edit_items">Artikel bearbeiten</string>
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
     <string name="statistics">Statistiken</string>
-    <string name="generateBarcode">Barcode / ID generieren</string>
-    <string name="amountOfBoughtItems">Übersicht - Artikel</string>
+    <string name="generate_barcode">Barcode / ID generieren</string>
+    <string name="amount_of_bought_items">Übersicht - Artikel</string>
     <string name="credit_value">Guthaben: %1$.2f €</string>
     <string name="credit">Guthaben</string>
-    <string name="totalAmountText">Gesamtbetrag: %1$.2f€</string>
-    <string name="moneySpentText">Ausgegebenes Geld: %1$.2f€</string>
-    <string name="purchasedItemsText">Gekaufte Artikel: %d</string>
-    <string name="totalNumberText">Anzahl verkaufter Artikel: %d</string>
+    <string name="total_amount_text">Gesamtbetrag: %1$.2f€</string>
+    <string name="money_spent_text">Ausgegebenes Geld: %1$.2f€</string>
+    <string name="purchased_items_text">Gekaufte Artikel: %d</string>
+    <string name="total_number_text">Anzahl verkaufter Artikel: %d</string>
     <string name="dark_mode">Dunkel Modus</string>
+    <string name="connection_request">Bitte verbinde dich mit einem Netzwerk</string>
 </resources>

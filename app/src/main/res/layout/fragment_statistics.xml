@@ -16,7 +16,7 @@
             android:id="@+id/amountOfItemsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/amountOfBoughtItems"
+            android:text="@string/amount_of_bought_items"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -25,28 +25,28 @@
             android:id="@+id/totalAmountView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/totalAmountText"
+            android:text="@string/total_amount_text"
             android:textAlignment="center" />
 
         <TextView
             android:id="@+id/moneySpentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/moneySpentText"
+            android:text="@string/money_spent_text"
             android:textAlignment="center" />
 
         <TextView
             android:id="@+id/totalNumberView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/totalNumberText"
+            android:text="@string/total_number_text"
             android:textAlignment="center" />
 
         <TextView
             android:id="@+id/purchasedItemsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/purchasedItemsText"
+            android:text="@string/purchased_items_text"
             android:textAlignment="center" />
 
         <com.github.mikephil.charting.charts.HorizontalBarChart

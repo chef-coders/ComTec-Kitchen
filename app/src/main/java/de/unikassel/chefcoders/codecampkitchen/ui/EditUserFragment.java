@@ -2,7 +2,6 @@ package de.unikassel.chefcoders.codecampkitchen.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -81,7 +80,7 @@ public class EditUserFragment extends KitchenFragment
 		if(name.isEmpty())
 		{
 			Toast.makeText(this.getContext(),
-					getString(R.string.fieldIsEmpty, getString(R.string.theNameText)),
+					getString(R.string.field_is_empty, getString(R.string.theNameText)),
 					Toast.LENGTH_LONG).show();
 			return null;
 		}
@@ -90,7 +89,7 @@ public class EditUserFragment extends KitchenFragment
 		if(email.isEmpty())
 		{
 			Toast.makeText(this.getContext(),
-					getString(R.string.fieldIsEmpty, getString(R.string.email)),
+					getString(R.string.field_is_empty, getString(R.string.email)),
 					Toast.LENGTH_LONG).show();
 			return null;
 		}

@@ -42,7 +42,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 			finish();
 			startActivity(intent);
 		} else {
-			Toast.makeText(getApplicationContext(), this.getString(R.string.itemNotFound), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), this.getString(R.string.item_not_found), Toast.LENGTH_SHORT).show();
 		}
 	}
 

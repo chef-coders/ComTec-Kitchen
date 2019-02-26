@@ -39,7 +39,7 @@
             android:id="@+id/generateIdButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/generateBarcode" />
+            android:text="@string/generate_barcode" />
 
         <Space
             android:layout_width="match_parent"

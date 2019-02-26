@@ -90,10 +90,10 @@ public class StatisticsFragment extends KitchenFragment
 			}
 		}
 
-		totalAmountView.setText(getString(R.string.totalAmountText, totalAmount));
-		moneySpentView.setText(getString(R.string.moneySpentText, moneySpent));
-		totalNumberView.setText(getString(R.string.totalNumberText, totalNumber));
-		purchasedItemsView.setText(getString(R.string.purchasedItemsText, purchasedItems));
+		totalAmountView.setText(getString(R.string.total_amount_text, totalAmount));
+		moneySpentView.setText(getString(R.string.money_spent_text, moneySpent));
+		totalNumberView.setText(getString(R.string.total_number_text, totalNumber));
+		purchasedItemsView.setText(getString(R.string.purchased_items_text, purchasedItems));
 	}
 
 	private void initAmountOfBoughtItemsChart() {
