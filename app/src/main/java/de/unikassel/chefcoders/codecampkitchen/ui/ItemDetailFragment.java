@@ -5,6 +5,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
@@ -33,7 +35,23 @@ public abstract class ItemDetailFragment extends KitchenFragment
 	protected Item getItem()
 	{
 		final String itemId = this.barcodeValue.getText().toString();
+		if(itemId.isEmpty())
+		{
+			Toast.makeText(this.getContext(),
+					getString(R.string.fieldIsEmpty, getString(R.string.barcode)),
+					Toast.LENGTH_LONG).show();
+			return null;
+		}
+
 		final String name = this.nameText.getText().toString();
+		if(name.isEmpty())
+		{
+			Toast.makeText(this.getContext(),
+					getString(R.string.fieldIsEmpty, getString(R.string.theNameText)),
+					Toast.LENGTH_LONG).show();
+			return null;
+		}
+
 		final double price;
 		final int amount;
 		final ItemKind.Entry selectedEntry = (ItemKind.Entry) this.kindSpinner.getSelectedItem();

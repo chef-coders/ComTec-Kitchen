@@ -48,6 +48,7 @@
     <string name="shop">Shop</string>
     <string name="purchase_history">Einkaufs Historie</string>
     <string name="logout">Logout</string>
+    <string name="fieldIsEmpty">Das %1$s-Feld ist leer</string>
     <string name="edit_user">Nutzer bearbeiten</string>
     <string name="edit_items">Produkte bearbeiten</string>
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
