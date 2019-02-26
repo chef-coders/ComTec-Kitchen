@@ -34,29 +34,42 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 		boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
 		boolean itemExists = MainActivity.kitchenManager.items().exists(barcode.rawValue);
 
-		if (isAdmin && !itemExists) {
-			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-			intent.putExtra("barcodeCreate", barcode.rawValue);
-			startActivity(intent);
-		} else if (itemExists) {
-
-			if(this.getAvailableAmount(barcode.rawValue) >= 1)
-			{
-				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-				intent.putExtra("barcode", barcode.rawValue);
-				finish();
-				startActivity(intent);
-			}
-			else
-			{
-				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-				intent.putExtra("barcodeFailed", barcode.rawValue);
-				finish();
-				startActivity(intent);
-			}
-
-		} else {
+		if(itemExists)
+		{
+			this.scannedExistingItem(barcode);
+		}
+		else if(isAdmin)
+		{
+			this.adminScannedNewItem(barcode);
+		}
+		else
+		{
 			Toast.makeText(getApplicationContext(), this.getString(R.string.item_not_found), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private void adminScannedNewItem(Barcode barcode)
+	{
+		Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
+		intent.putExtra("barcodeCreate", barcode.rawValue);
+		startActivity(intent);
+	}
+
+	private void scannedExistingItem(Barcode barcode)
+	{
+		if(this.getAvailableAmount(barcode.rawValue) >= 1)
+		{
+			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
+			intent.putExtra("barcode", barcode.rawValue);
+			finish();
+			startActivity(intent);
+		}
+		else
+		{
+			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
+			intent.putExtra("barcodeFailed", barcode.rawValue);
+			finish();
+			startActivity(intent);
 		}
 	}
 
