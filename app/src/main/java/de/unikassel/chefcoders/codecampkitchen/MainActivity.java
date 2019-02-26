@@ -272,15 +272,22 @@ public class MainActivity extends AppCompatActivity
 		TextView textViewEmail = headerView.findViewById(R.id.textViewEmail);
 		ImageButton buttonEditUser = headerView.findViewById(R.id.buttonEditUser);
 
-		buttonEditUser.setOnClickListener((v) ->
+		if(user != null && "admin".equals(user.getRole()))
 		{
-			drawerLayout.closeDrawers();
-			changeFragment(EditUserFragment.newInstance(user.get_id()));
-		});
+			buttonEditUser.setOnClickListener((v) ->
+			{
+				drawerLayout.closeDrawers();
+				changeFragment(EditUserFragment.newInstance(user.get_id()));
+			});
+		}
+		else
+		{
+			buttonEditUser.setVisibility(View.GONE);
+		}
 
 		if (user != null) {
 			if (user.getRole().equals("admin")) {
-				textViewUsername.setText(user.getName() + " (Admin)");
+				textViewUsername.setText(String.format("%s (Admin)", user.getName()));
 			} else {
 				textViewUsername.setText(user.getName());
 			}
