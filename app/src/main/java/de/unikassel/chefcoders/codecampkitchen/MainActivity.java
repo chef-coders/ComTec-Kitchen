@@ -281,6 +281,10 @@ public class MainActivity extends AppCompatActivity
 		{
 			buttonEditUser.setOnClickListener((v) ->
 			{
+				if(MainActivity.editMode)
+				{
+					this.setEditMode(false);
+				}
 				drawerLayout.closeDrawers();
 				changeFragment(EditUserFragment.newInstance(user.get_id()));
 			});
