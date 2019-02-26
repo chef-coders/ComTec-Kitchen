@@ -363,20 +363,6 @@ public class MainActivity extends AppCompatActivity
 		item.setChecked(check);
 	}
 
-	public void checkAllUsersMenuItem(boolean check)
-	{
-		Menu menuNav = navigationView.getMenu();
-		MenuItem item = menuNav.findItem(R.id.nav_all_users);
-		item.setChecked(check);
-	}
-
-	public void checkSettingsMenuItem(boolean check)
-	{
-		Menu menuNav = navigationView.getMenu();
-		MenuItem item = menuNav.findItem(R.id.nav_settings);
-		item.setChecked(check);
-	}
-
 	@Override
 	public void onBackPressed()
 	{
