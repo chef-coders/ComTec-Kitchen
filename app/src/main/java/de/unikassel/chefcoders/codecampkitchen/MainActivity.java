@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity
 		MenuItem item = navigationView.getMenu().findItem(R.id.nav_all_users);
 		item.setVisible(kitchenManager.session().isAdmin());
 
-		checkAllItemsMenuItem(true);
+		setMenuItem(R.id.nav_all_items, true);
 
 		navigationView.setNavigationItemSelectedListener(
 				menuItem ->
@@ -351,10 +352,10 @@ public class MainActivity extends AppCompatActivity
 
 	}
 
-	public void checkAllItemsMenuItem(boolean check)
+	public void setMenuItem(@IdRes int menuItemRes, boolean check)
 	{
 		Menu menuNav = navigationView.getMenu();
-		MenuItem item = menuNav.findItem(R.id.nav_all_items);
+		MenuItem item = menuNav.findItem(menuItemRes);
 		item.setChecked(check);
 	}
 
@@ -381,13 +382,14 @@ public class MainActivity extends AppCompatActivity
 		} else if (!(currentFragment instanceof AllItemsFragment)) {
 			if(currentFragment instanceof EditUserFragment)
 			{
-				changeFragment(new AllUserFragment());
+				this.changeFragment(new AllUserFragment());
+				this.setMenuItem(R.id.nav_all_users, true);
 			}
 			else
 			{
-				changeFragment(new AllItemsFragment());
+				this.changeFragment(new AllItemsFragment());
+				this.setMenuItem(R.id.nav_all_items, true);
 			}
-			checkAllItemsMenuItem(true);
 		} else if (MainActivity.editMode) {
 			setEditMode(false);
 		} else {
