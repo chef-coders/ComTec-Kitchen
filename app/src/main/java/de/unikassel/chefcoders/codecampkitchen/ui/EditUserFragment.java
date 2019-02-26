@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
@@ -57,11 +58,11 @@ public class EditUserFragment extends KitchenFragment
 	{
 		this.userId = this.getArguments().getString("userId");
 
+		final Button saveButton = view.findViewById(R.id.buttonSave);
+
 		this.editTextEmail = view.findViewById(R.id.editTextEmail);
 		this.editTextName = view.findViewById(R.id.editTextName);
 		this.editTextCredit = view.findViewById(R.id.editTextCredit);
-
-		final FloatingActionButton floatingActionButton = view.findViewById(R.id.buttonSave);
 
 		final User user = MainActivity.kitchenManager.users().get(this.userId);
 		if (user != null)
@@ -71,7 +72,7 @@ public class EditUserFragment extends KitchenFragment
 			this.editTextCredit.setText(String.valueOf(user.getCredit()));
 		}
 
-		floatingActionButton.setOnClickListener(this::onSaveClicked);
+		saveButton.setOnClickListener(this::onSaveClicked);
 	}
 
 	private void onSaveClicked(View v)
