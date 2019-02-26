@@ -58,7 +58,14 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	protected void updateToolbar(android.support.v7.widget.Toolbar toolbar)
 	{
-		toolbar.setTitle(R.string.shop);
+		if(MainActivity.editMode)
+		{
+			toolbar.setTitle(R.string.edit_items);
+		}
+		else
+		{
+			toolbar.setTitle(R.string.shop);
+		}
 		Menu menu = toolbar.getMenu();
 		menu.findItem(R.id.action_scan_code).setVisible(!MainActivity.editMode);
 		menu.findItem(R.id.action_create).setVisible(false);

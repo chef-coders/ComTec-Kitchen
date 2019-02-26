@@ -211,6 +211,11 @@ public class MainActivity extends AppCompatActivity
 		navigationView.setNavigationItemSelectedListener(
 				menuItem ->
 				{
+					if(MainActivity.editMode)
+					{
+						this.setEditMode(false);
+					}
+
 					switch (menuItem.getItemId()) {
 						case R.id.nav_all_items:
 							changeFragment(new AllItemsFragment());
