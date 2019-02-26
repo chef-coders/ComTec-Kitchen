@@ -49,6 +49,7 @@
     <string name="purchase_history">Purchase History</string>
     <string name="logout">Logout</string>
     <string name="fieldIsEmpty">The %1$s-Field is empty</string>
+    <string name="amountMinimumError">The minimum amount is 1</string>
     <string name="edit_user">Edit User</string>
     <string name="credit">Credit</string>
     <string name="edit_items">Edit Items</string>

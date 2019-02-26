@@ -65,7 +65,15 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		catch (NumberFormatException ex)
 		{
 			this.priceText.setText("0.00");
-			this.amountText.setText("0");
+			this.amountText.setText("1");
+			return null;
+		}
+
+		if(amount <= 0)
+		{
+			Toast.makeText(this.getContext(), R.string.amountMinimumError, Toast.LENGTH_LONG)
+					.show();
+			this.amountText.setText("1");
 			return null;
 		}
 
