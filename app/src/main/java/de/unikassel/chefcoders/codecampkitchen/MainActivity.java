@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
@@ -112,35 +113,38 @@ public class MainActivity extends AppCompatActivity
 
 	private void initFragment()
 	{
-		if (getIntent().hasExtra("settings")) {
-			SettingsFragment fragment = new SettingsFragment();
-			fragment.changeToolbar(toolbar);
-			checkSettingsMenuItem(true);
-			FragmentTransaction transaction = getSupportFragmentManager()
-					.beginTransaction();
-			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commitAllowingStateLoss();
-		} else if (getIntent().hasExtra("barcode")) {
-			PurchaseItemFragment fragment = PurchaseItemFragment.newInstance(getIntent().getStringExtra("barcode"));
-			fragment.changeToolbar(toolbar);
-			FragmentTransaction transaction = getSupportFragmentManager()
-					.beginTransaction();
-			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commitAllowingStateLoss();
-		} else if (getIntent().hasExtra("barcodeCreate")) {
-			CreateItemFragment fragment = CreateItemFragment.newInstance(getIntent().getStringExtra("barcodeCreate"));
-			fragment.changeToolbar(toolbar);
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commitAllowingStateLoss();
-		} else {
-			AllItemsFragment fragment = new AllItemsFragment();
-			fragment.changeToolbar(toolbar);
-			FragmentTransaction transaction = getSupportFragmentManager()
-					.beginTransaction();
-			transaction.replace(R.id.headlines_fragment, fragment);
-			transaction.commitAllowingStateLoss();
+		KitchenFragment fragment;
+
+		if (getIntent().hasExtra("settings"))
+		{
+			fragment = new SettingsFragment();
+			setMenuItem(R.id.nav_settings, true);
 		}
+		else if (getIntent().hasExtra("barcode"))
+		{
+			fragment = PurchaseItemFragment.newInstance(getIntent().getStringExtra("barcode"));
+		}
+		else if (getIntent().hasExtra("barcodeCreate"))
+		{
+			fragment = CreateItemFragment.newInstance(getIntent().getStringExtra("barcodeCreate"));
+		}
+		else if(getIntent().hasExtra("barcodeFailed"))
+		{
+			fragment = new AllItemsFragment();
+			Toast.makeText(getApplicationContext(), R.string.item_amount_not_available, Toast.LENGTH_LONG)
+					.show();
+		}
+		else
+		{
+			fragment = new AllItemsFragment();
+		}
+
+		fragment.changeToolbar(toolbar);
+
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+		transaction.replace(R.id.headlines_fragment, fragment);
+		transaction.commitAllowingStateLoss();
 	}
 
 	private void initShortCuts()

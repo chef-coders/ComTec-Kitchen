@@ -12,6 +12,7 @@ import java.util.List;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import info.androidhive.barcode.BarcodeReader;
 
 public class BarcodeScannerActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener
@@ -32,18 +33,37 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	{
 		boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
 		boolean itemExists = MainActivity.kitchenManager.items().exists(barcode.rawValue);
+
 		if (isAdmin && !itemExists) {
 			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
 			intent.putExtra("barcodeCreate", barcode.rawValue);
 			startActivity(intent);
 		} else if (itemExists) {
-			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-			intent.putExtra("barcode", barcode.rawValue);
-			finish();
-			startActivity(intent);
+
+			if(this.getAmountAvailable(barcode.rawValue) >= 1)
+			{
+				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
+				intent.putExtra("barcode", barcode.rawValue);
+				finish();
+				startActivity(intent);
+			}
+			else
+			{
+				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
+				intent.putExtra("barcodeFailed", barcode.rawValue);
+				finish();
+				startActivity(intent);
+			}
+
 		} else {
 			Toast.makeText(getApplicationContext(), this.getString(R.string.item_not_found), Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	private int getAmountAvailable(String barcode)
+	{
+		Item item = MainActivity.kitchenManager.items().get(barcode);
+		return item.getAmount() - MainActivity.kitchenManager.cart().getAmount(item);
 	}
 
 	@Override
