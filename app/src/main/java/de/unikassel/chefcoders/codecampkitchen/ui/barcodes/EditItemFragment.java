@@ -60,6 +60,8 @@ public class EditItemFragment extends ItemDetailFragment
 		}
 
 		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().update(item), () -> {
+			MainActivity.kitchenManager.cart().clear();
+
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			mainActivity.changeFragment(new AllItemsFragment());
 		});
