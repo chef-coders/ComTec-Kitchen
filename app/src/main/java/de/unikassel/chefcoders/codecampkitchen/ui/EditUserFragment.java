@@ -75,12 +75,47 @@ public class EditUserFragment extends KitchenFragment
 		saveButton.setOnClickListener(this::onSaveClicked);
 	}
 
-	private void onSaveClicked(View v)
+	private User getUser()
 	{
 		final String name = this.editTextName.getText().toString();
+		if(name.isEmpty())
+		{
+			Toast.makeText(this.getContext(),
+					getString(R.string.fieldIsEmpty, getString(R.string.theNameText)),
+					Toast.LENGTH_LONG).show();
+			return null;
+		}
+
 		final String email = this.editTextEmail.getText().toString();
-		final double credit = Double.valueOf(this.editTextCredit.getText().toString());
-		final User user = new User().set_id(this.userId).setName(name).setMail(email).setCredit(credit);
+		if(email.isEmpty())
+		{
+			Toast.makeText(this.getContext(),
+					getString(R.string.fieldIsEmpty, getString(R.string.email)),
+					Toast.LENGTH_LONG).show();
+			return null;
+		}
+
+		final double credit;
+		try
+		{
+			credit = Double.valueOf(this.editTextCredit.getText().toString());
+		}
+		catch (NumberFormatException e)
+		{
+			this.editTextCredit.setText("0.0");
+			return null;
+		}
+
+		return new User().set_id(this.userId).setName(name).setMail(email).setCredit(credit);
+	}
+
+	private void onSaveClicked(View v)
+	{
+		User user = this.getUser();
+		if(user == null)
+		{
+			return;
+		}
 
 		final FragmentActivity activity = this.getActivity();
 
