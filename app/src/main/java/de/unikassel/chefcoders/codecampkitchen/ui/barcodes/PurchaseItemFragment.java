@@ -14,7 +14,6 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
 /**
@@ -31,7 +30,7 @@ public class PurchaseItemFragment extends KitchenFragment
 	private TextView barcodeValue;
 	private TextView amountText;
 
-	private int amountAvailableToAdd;
+	private int availableAmountToAdd;
 
 	public PurchaseItemFragment()
 	{
@@ -59,7 +58,7 @@ public class PurchaseItemFragment extends KitchenFragment
 
 		Item item = MainActivity.kitchenManager.items().get(this.barcode);
 		int amountInCart = MainActivity.kitchenManager.cart().getAmount(item);
-		this.amountAvailableToAdd = item.getAmount() - amountInCart;
+		this.availableAmountToAdd = item.getAmount() - amountInCart;
 
 		this.barcodeValue = view.findViewById(R.id.barcodeValueView);
 		this.amountText = view.findViewById(R.id.amountText);
@@ -67,7 +66,7 @@ public class PurchaseItemFragment extends KitchenFragment
 		this.textViewPrice = view.findViewById(R.id.textViewPrice);
 		this.textViewAvailable = view.findViewById(R.id.availableTextView);
 
-		this.textViewAvailable.setText("" + this.amountAvailableToAdd);
+		this.textViewAvailable.setText("" + this.availableAmountToAdd);
 		textViewName.setText(item.getName());
 		textViewPrice.setText(getString(R.string.item_price, item.getPrice()));
 
@@ -101,7 +100,7 @@ public class PurchaseItemFragment extends KitchenFragment
 			int amount = Integer.parseInt(this.amountText.getText().toString());
 			amount = amount + value;
 
-			if(amount < 1 || amount > this.amountAvailableToAdd)
+			if(amount < 1 || amount > this.availableAmountToAdd)
 			{
 				return;
 			}

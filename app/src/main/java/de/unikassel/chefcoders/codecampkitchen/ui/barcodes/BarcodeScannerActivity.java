@@ -40,7 +40,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 			startActivity(intent);
 		} else if (itemExists) {
 
-			if(this.getAmountAvailable(barcode.rawValue) >= 1)
+			if(this.getAvailableAmount(barcode.rawValue) >= 1)
 			{
 				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
 				intent.putExtra("barcode", barcode.rawValue);
@@ -60,7 +60,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 		}
 	}
 
-	private int getAmountAvailable(String barcode)
+	private int getAvailableAmount(String barcode)
 	{
 		Item item = MainActivity.kitchenManager.items().get(barcode);
 		return item.getAmount() - MainActivity.kitchenManager.cart().getAmount(item);
