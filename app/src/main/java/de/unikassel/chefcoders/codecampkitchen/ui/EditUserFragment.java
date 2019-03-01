@@ -82,22 +82,7 @@ public class EditUserFragment extends KitchenFragment
 	private User getUser()
 	{
 		final String name = this.editTextName.getText().toString();
-		if(name.isEmpty())
-		{
-			Toast.makeText(this.getContext(),
-					getString(R.string.field_is_empty, getString(R.string.theNameText)),
-					Toast.LENGTH_LONG).show();
-			return null;
-		}
-
 		final String email = this.editTextEmail.getText().toString();
-		if(email.isEmpty())
-		{
-			Toast.makeText(this.getContext(),
-					getString(R.string.field_is_empty, getString(R.string.email)),
-					Toast.LENGTH_LONG).show();
-			return null;
-		}
 
 		final double credit;
 		try

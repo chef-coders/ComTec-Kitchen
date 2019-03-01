@@ -35,37 +35,36 @@ public abstract class ItemDetailFragment extends KitchenFragment
 	protected Item getItem()
 	{
 		final String itemId = this.barcodeTextView.getText().toString();
-		if(itemId.isEmpty())
-		{
-			Toast.makeText(this.getContext(),
-					getString(R.string.field_is_empty, getString(R.string.barcode)),
-					Toast.LENGTH_LONG).show();
-			return null;
-		}
-
 		final String name = this.nameText.getText().toString();
-		if(name.isEmpty())
-		{
-			Toast.makeText(this.getContext(),
-					getString(R.string.field_is_empty, getString(R.string.theNameText)),
-					Toast.LENGTH_LONG).show();
-			return null;
-		}
 
-		final double price;
-		final int amount;
+		double price = 0.0;
+		int amount = 0;
 		final ItemKind.Entry selectedEntry = (ItemKind.Entry) this.kindSpinner.getSelectedItem();
 		final String kind = selectedEntry.getValue();
 
+		boolean formatException = false;
 		try
 		{
 			price = Double.parseDouble(this.priceText.getText().toString());
-			amount = Integer.parseInt(this.amountText.getText().toString());
 		}
 		catch (NumberFormatException ex)
 		{
 			this.priceText.setText("0.00");
+			formatException = true;
+		}
+
+		try
+		{
+			amount = Integer.parseInt(this.amountText.getText().toString());
+		}
+		catch (NumberFormatException ex)
+		{
 			this.amountText.setText("1");
+			formatException = true;
+		}
+
+		if(formatException)
+		{
 			return null;
 		}
 
