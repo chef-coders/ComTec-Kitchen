@@ -22,7 +22,7 @@ public class OkHttpConnection implements HttpConnection
 	@Override
 	public String get(String url, Map<String, String> headers)
 	{
-		Request request = HttpRequestBuilder.createGetRequestFor(url, headers);
+		Request request = HttpRequestFactory.createGetRequestFor(url, headers);
 
 		return this.executeRequestAndReturnResponseString(request);
 	}
@@ -30,7 +30,7 @@ public class OkHttpConnection implements HttpConnection
 	@Override
 	public String post(String url, String jsonBody, Map<String, String> headers)
 	{
-		Request request = HttpRequestBuilder.createPostRequestFor(url, jsonBody, headers);
+		Request request = HttpRequestFactory.createPostRequestFor(url, jsonBody, headers);
 
 		return this.executeRequestAndReturnResponseString(request);
 	}
@@ -38,7 +38,7 @@ public class OkHttpConnection implements HttpConnection
 	@Override
 	public String put(String url, String jsonBody, Map<String, String> headers)
 	{
-		Request request = HttpRequestBuilder.createPutRequestFor(url, jsonBody, headers);
+		Request request = HttpRequestFactory.createPutRequestFor(url, jsonBody, headers);
 
 		return this.executeRequestAndReturnResponseString(request);
 	}
@@ -46,7 +46,7 @@ public class OkHttpConnection implements HttpConnection
 	@Override
 	public String delete(String url, Map<String, String> headers)
 	{
-		Request request = HttpRequestBuilder.createDeleteRequestFor(url, headers);
+		Request request = HttpRequestFactory.createDeleteRequestFor(url, headers);
 
 		return this.executeRequestAndReturnResponseString(request);
 	}

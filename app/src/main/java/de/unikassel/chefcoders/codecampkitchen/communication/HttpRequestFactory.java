@@ -6,7 +6,7 @@ import okhttp3.RequestBody;
 
 import java.util.Map;
 
-public class HttpRequestBuilder
+public class HttpRequestFactory
 {
 	public static Request createGetRequestFor(String url, Map<String, String> headers)
 	{
