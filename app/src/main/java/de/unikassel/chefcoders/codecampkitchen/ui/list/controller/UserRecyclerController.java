@@ -1,10 +1,10 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.controller;
+package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
-import de.unikassel.chefcoders.codecampkitchen.ui.EditUserFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
+import de.unikassel.chefcoders.codecampkitchen.ui.edit.EditUserFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolder;
 
 public class UserRecyclerController extends GroupedRecyclerController<User, RowViewHolder>
 {

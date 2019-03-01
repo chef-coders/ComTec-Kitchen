@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
+package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,10 +14,8 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
-import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.DisableButtonTextWatcher;
-import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 
 public class EditItemFragment extends ItemDetailFragment
 {

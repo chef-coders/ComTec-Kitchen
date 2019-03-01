@@ -12,9 +12,9 @@ import android.widget.TextView;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 
 /**
  * A simple {@link Fragment} subclass.

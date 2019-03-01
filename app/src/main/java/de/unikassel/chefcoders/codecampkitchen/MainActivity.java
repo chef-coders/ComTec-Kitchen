@@ -8,8 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
@@ -35,14 +33,16 @@ import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.*;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
-import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.CreateItemFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.EditItemFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.edit.CreateItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.PurchaseItemFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.edit.EditUserFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.AllUserFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.MyPurchasesFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 
 import java.util.Arrays;
-import java.util.prefs.Preferences;
 
 public class MainActivity extends AppCompatActivity
 {

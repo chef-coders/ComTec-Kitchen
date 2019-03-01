@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.multithreading;
+package de.unikassel.chefcoders.codecampkitchen.ui.async;
 
 import android.content.Context;
 

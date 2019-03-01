@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.controller;
+package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -7,7 +7,7 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolder;
 
 class Populator
 {

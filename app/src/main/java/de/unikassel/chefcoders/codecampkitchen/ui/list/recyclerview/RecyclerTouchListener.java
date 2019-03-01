@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
+package de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

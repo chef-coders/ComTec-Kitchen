@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui;
+package de.unikassel.chefcoders.codecampkitchen.ui.list;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.controller.ShoppingCartRecyclerController;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
+import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.SimpleDialog;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ShoppingCartRecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.

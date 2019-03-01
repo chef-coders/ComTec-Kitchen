@@ -1,14 +1,13 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
+package de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview;
 
 import android.graphics.Canvas;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;

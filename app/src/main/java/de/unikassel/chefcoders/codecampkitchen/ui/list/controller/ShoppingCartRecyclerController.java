@@ -1,10 +1,10 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.controller;
+package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.RowViewHolder;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolder;
 
 import java.util.List;
 

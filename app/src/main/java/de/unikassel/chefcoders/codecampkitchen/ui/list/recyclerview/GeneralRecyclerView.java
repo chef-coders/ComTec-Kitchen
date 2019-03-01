@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.recyclerview;
+package de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview;
 
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -8,9 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.controller.RecyclerController;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 

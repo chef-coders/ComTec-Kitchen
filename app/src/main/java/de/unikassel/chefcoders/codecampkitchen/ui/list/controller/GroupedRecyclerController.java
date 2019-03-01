@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui.controller;
+package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.support.v7.widget.RecyclerView;
 

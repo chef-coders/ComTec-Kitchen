@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui;
+package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 
 import android.text.Editable;
 import android.text.TextWatcher;

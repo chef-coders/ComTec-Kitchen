@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui;
+package de.unikassel.chefcoders.codecampkitchen.ui.list;
 
 
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.controller.UserRecyclerController;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.UserRecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.

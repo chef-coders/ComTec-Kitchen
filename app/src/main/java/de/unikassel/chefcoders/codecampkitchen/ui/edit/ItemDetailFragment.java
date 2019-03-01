@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.ui;
+package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,6 +11,7 @@ import android.widget.Toolbar;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
+import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 
 public abstract class ItemDetailFragment extends KitchenFragment
 {

@@ -1,10 +1,9 @@
-package de.unikassel.chefcoders.codecampkitchen.ui;
+package de.unikassel.chefcoders.codecampkitchen.ui.list;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,9 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.controller.ItemRecyclerController;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.ResultAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.recyclerview.GeneralRecyclerView;
+import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ItemRecyclerController;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
 
 public class AllItemsFragment extends KitchenFragment implements GeneralRecyclerView.RecViewEventHandler
 {

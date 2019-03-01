@@ -17,7 +17,8 @@ import android.widget.TextView;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.edit.DisableButtonTextWatcher;
 
 public class LoginActivity extends AppCompatActivity
 {
