@@ -7,6 +7,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -42,15 +44,23 @@ public class LoginActivity extends AppCompatActivity
         progressBar = findViewById(R.id.progressBar);
         if (!isConnected()) {
             textViewConnection.setText(getString(R.string.connection_request));
-            setButtonEnabled(false);
         }
     }
 
 
     public void loginClick(View v)
     {
-        progressBar.setVisibility(View.VISIBLE);
-        setButtonEnabled(false);
+	    if( ! isConnected())
+	    {
+	    	textViewConnection.setText(getString(R.string.connection_request));
+		    final Animation shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
+		    this.textViewConnection.startAnimation(shakeAnim);
+	    	return;
+	    }
+
+	    setButtonEnabled(false);
+	    textViewConnection.setText("");
+	    this.progressBar.setVisibility(View.VISIBLE);
 
         SimpleAsyncTask.execute(this.getApplicationContext(), () -> {
             String name = editTextName.getText().toString();
