@@ -51,7 +51,7 @@
     <string name="price_max_error">Der größtmögliche Preis ist %1$d €</string>
     <string name="edit_user">Nutzer bearbeiten</string>
     <string name="edit_items">Artikel bearbeiten</string>
-    <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
+    <string name="edit_user_successful">Nutzer erfolgreich bearbeitet</string>
     <string name="statistics">Statistiken</string>
     <string name="generate_barcode">Barcode / ID generieren</string>
     <string name="amount_of_bought_items">Übersicht - Artikel</string>
@@ -65,4 +65,6 @@
     <string name="connection_request">Bitte verbinde dich mit einem Netzwerk</string>
     <string name="add_to_cart">Zum Warenkorb hinzufügen</string>
     <string name="available">Verfügbar</string>
+    <string name="edit_item_successful">Artikel erfolgreich bearbeitet</string>
+    <string name="create_item_successful">Artikel erfolgreich erstellt</string>
 </resources>

@@ -66,4 +66,6 @@
     <string name="connection_request">Please connect to a network</string>
     <string name="add_to_cart">Add To Shopping Cart</string>
     <string name="available">Available</string>
+    <string name="edit_item_successful">Successfully edited item</string>
+    <string name="create_item_successful">Successfully created item</string>
 </resources>

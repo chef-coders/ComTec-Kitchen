@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
@@ -40,7 +42,7 @@ public class EditItemFragment extends ItemDetailFragment
 		final Item item = MainActivity.kitchenManager.items().get(itemId);
 
 		Button editButton = editItemView.findViewById(R.id.editButton);
-		editButton.setOnClickListener(this::onEdit);
+		editButton.setOnClickListener(this::onEditClicked);
 
 		DisableButtonTextWatcher.bind(editButton,
 				this.nameText,
@@ -56,7 +58,7 @@ public class EditItemFragment extends ItemDetailFragment
 		return editItemView;
 	}
 
-	public void onEdit(View view)
+	public void onEditClicked(View view)
 	{
 		final Item item = this.getItem();
 		if (item == null)
@@ -66,7 +68,7 @@ public class EditItemFragment extends ItemDetailFragment
 
 		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().update(item), () -> {
 			MainActivity.kitchenManager.cart().clear();
-
+			Toast.makeText(this.getActivity(), R.string.edit_item_successful, Toast.LENGTH_SHORT).show();
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			mainActivity.changeFragment(new AllItemsFragment());
 		});
