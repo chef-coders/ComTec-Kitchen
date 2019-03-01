@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
@@ -49,7 +50,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		}
 		catch (NumberFormatException ex)
 		{
-			this.priceText.setText("0.00");
+			this.priceText.setText("0.0");
 			formatException = true;
 		}
 
@@ -59,7 +60,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		}
 		catch (NumberFormatException ex)
 		{
-			this.amountText.setText("1");
+			this.amountText.setText(getResources().getInteger(R.integer.min_amount));
 			formatException = true;
 		}
 
@@ -68,11 +69,25 @@ public abstract class ItemDetailFragment extends KitchenFragment
 			return null;
 		}
 
-		if(amount <= 0)
+		int maxPrice = getResources().getInteger(R.integer.max_price);
+		if(price > (double)maxPrice)
 		{
-			Toast.makeText(this.getContext(), R.string.amount_minimum_error, Toast.LENGTH_LONG)
+			Toast.makeText(this.getContext(),
+					getString(R.string.price_max_error, maxPrice),
+					Toast.LENGTH_LONG)
 					.show();
-			this.amountText.setText("1");
+			this.priceText.setText("" + maxPrice);
+			return null;
+		}
+
+		int minAmount = getResources().getInteger(R.integer.min_amount);
+		if(amount < minAmount)
+		{
+			Toast.makeText(this.getContext(),
+					getString(R.string.amount_minimum_error, minAmount),
+					Toast.LENGTH_LONG)
+					.show();
+			this.amountText.setText("" + minAmount);
 			return null;
 		}
 

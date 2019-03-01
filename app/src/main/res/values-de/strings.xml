@@ -47,7 +47,8 @@
     <string name="shop">Shop</string>
     <string name="purchase_history">Einkaufs Historie</string>
     <string name="logout">Logout</string>
-    <string name="amount_minimum_error">Die kleinst mögliche Stückzahl ist 1</string>
+    <string name="amount_minimum_error">Die kleinstmögliche Stückzahl ist %1$d</string>
+    <string name="price_max_error">Der größtmögliche Preis ist %1$d €</string>
     <string name="edit_user">Nutzer bearbeiten</string>
     <string name="edit_items">Artikel bearbeiten</string>
     <string name="edit_user_successful">Nutzer erfolgreich Bearbeitet</string>
