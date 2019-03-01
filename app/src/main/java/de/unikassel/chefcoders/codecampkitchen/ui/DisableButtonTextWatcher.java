@@ -25,18 +25,6 @@ public class DisableButtonTextWatcher implements TextWatcher
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
-	{
-
-	}
-
-	@Override
-	public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-	{
-
-	}
-
-	@Override
 	public void afterTextChanged(Editable editable)
 	{
 		if(editable.length() == 0)
@@ -58,4 +46,10 @@ public class DisableButtonTextWatcher implements TextWatcher
 			this.button.setAlpha(1f);
 		}
 	}
+
+	@Override
+	public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+	@Override
+	public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 }
