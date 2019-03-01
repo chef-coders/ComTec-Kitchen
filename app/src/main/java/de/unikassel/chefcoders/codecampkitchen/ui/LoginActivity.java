@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity
         progressBar = findViewById(R.id.progressBar);
         if (!isConnected()) {
             textViewConnection.setText(getString(R.string.connection_request));
-            disableButton();
+            setButtonEnabled(false);
         }
     }
 
@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity
     public void loginClick(View v)
     {
         progressBar.setVisibility(View.VISIBLE);
-        disableButton();
+        setButtonEnabled(false);
 
         SimpleAsyncTask.execute(this.getApplicationContext(), () -> {
             String name = editTextName.getText().toString();
@@ -61,18 +61,11 @@ public class LoginActivity extends AppCompatActivity
     }
 
 
-    private void disableButton()
+    private void setButtonEnabled(boolean enable)
     {
-        buttonLogin.setClickable(false);
-        buttonLogin.setActivated(false);
-        buttonLogin.setEnabled(false);
-    }
-
-    private void enableButton()
-    {
-        buttonLogin.setClickable(true);
-        buttonLogin.setActivated(true);
-        buttonLogin.setEnabled(true);
+        buttonLogin.setClickable(enable);
+        buttonLogin.setActivated(enable);
+        buttonLogin.setEnabled(enable);
     }
 
     private void startMainActivity()
