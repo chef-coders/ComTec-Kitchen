@@ -15,66 +15,57 @@ import java.util.List;
 
 public class BarcodeScannerActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener
 {
-	private BarcodeReader barcodeReader;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_barcode_scanner);
-
-		this.barcodeReader = (BarcodeReader) this.getSupportFragmentManager().findFragmentById(R.id.barcodeScanner);
 	}
 
 	@Override
 	public void onScanned(Barcode barcode)
 	{
 		boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
-		boolean itemExists = MainActivity.kitchenManager.items().exists(barcode.rawValue);
+		final Item item = MainActivity.kitchenManager.items().get(barcode.rawValue);
 
-		if (itemExists)
+		if (item != null)
 		{
-			this.scannedExistingItem(barcode);
+			// item exists
+
+			final int amountAvailable = item.getAmount() - MainActivity.kitchenManager.cart().getAmount(item);
+			if (amountAvailable >= 1)
+			{
+				// still available, close scanner and display view that allows entering an amount
+
+				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
+				intent.putExtra("barcode", barcode.rawValue);
+				this.finish();
+				this.startActivity(intent);
+			}
+			else
+			{
+				// not available, close scanner and show Shop
+
+				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
+				intent.putExtra("barcodeFailed", barcode.rawValue);
+				this.finish();
+				this.startActivity(intent);
+			}
 		}
 		else if (isAdmin)
 		{
-			this.adminScannedNewItem(barcode);
+			// unknown barcode and user is admin, close scanner and show Create Item view
+
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.putExtra("barcodeCreate", barcode.rawValue);
+			this.startActivity(intent);
 		}
 		else
 		{
+			// unknown item and not admin, inform user but don't close scanner
+
 			Toast.makeText(this.getApplicationContext(), this.getString(R.string.item_not_found), Toast.LENGTH_SHORT).show();
 		}
-	}
-
-	private void adminScannedNewItem(Barcode barcode)
-	{
-		Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-		intent.putExtra("barcodeCreate", barcode.rawValue);
-		this.startActivity(intent);
-	}
-
-	private void scannedExistingItem(Barcode barcode)
-	{
-		if (this.getAvailableAmount(barcode.rawValue) >= 1)
-		{
-			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-			intent.putExtra("barcode", barcode.rawValue);
-			this.finish();
-			this.startActivity(intent);
-		}
-		else
-		{
-			Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-			intent.putExtra("barcodeFailed", barcode.rawValue);
-			this.finish();
-			this.startActivity(intent);
-		}
-	}
-
-	private int getAvailableAmount(String barcode)
-	{
-		Item item = MainActivity.kitchenManager.items().get(barcode);
-		return item.getAmount() - MainActivity.kitchenManager.cart().getAmount(item);
 	}
 
 	@Override
