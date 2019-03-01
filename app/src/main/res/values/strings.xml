@@ -68,4 +68,12 @@
     <string name="available">Available</string>
     <string name="edit_item_successful">Successfully edited item</string>
     <string name="create_item_successful">Successfully created item</string>
+
+    <!-- Hints -->
+    <string name="name_hint">Type a name</string>
+    <string name="email_hint">Type an email</string>
+    <string name="barcode_hint">Type a barcode</string>
+    <string name="price_hint">Type a price</string>
+    <string name="amount_hint">Type an amount</string>
+    <string name="credit_hint">Type the number of credits</string>
 </resources>

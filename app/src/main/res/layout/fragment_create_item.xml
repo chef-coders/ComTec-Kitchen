@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:ems="10"
-            android:hint="@string/barcode"
+            android:hint="@string/barcode_hint"
             android:inputType="text" />
 
         <Button
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:ems="10"
-            android:hint="@string/theNameText"
+            android:hint="@string/name_hint"
             android:inputType="textPersonName" />
 
         <TextView
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:ems="10"
-            android:hint="@string/price"
+            android:hint="@string/price_hint"
             android:inputType="numberDecimal" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:ems="10"
-            android:hint="@string/amount"
+            android:hint="@string/amount_hint"
             android:inputType="number" />
 
         <TextView
