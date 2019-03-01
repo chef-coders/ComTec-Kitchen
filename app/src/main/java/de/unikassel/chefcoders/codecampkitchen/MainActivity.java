@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen;
 
-import android.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -30,6 +29,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity
 			intent.setAction(Intent.ACTION_VIEW);
 			ShortcutInfo shortcut = new ShortcutInfo.Builder(this, "id1").setShortLabel("Barcode Scanner")
 			                                                             .setLongLabel("Barcode Scanner").setIcon(
-					Icon.createWithResource(this, R.drawable.ic_menu_camera)).setIntent(intent).build();
+					Icon.createWithResource(this, android.R.drawable.ic_menu_camera)).setIntent(intent).build();
 
 			shortcutManager.setDynamicShortcuts(Arrays.asList(shortcut));
 		}
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		this.toolbar = this.findViewById(R.id.main_toolbar);
 
-		this.toolbar.setTitleTextColor(this.getColor(R.color.white));
+		this.toolbar.setTitleTextColor(this.getColor(android.R.color.white));
 
 		this.setSupportActionBar(this.toolbar);
 		ActionBar actionBar = this.getSupportActionBar();
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		switch (item.getItemId())
 		{
-		case R.id.home:
+		case android.R.id.home:
 			this.drawerLayout.openDrawer(GravityCompat.START);
 			return true;
 		case R.id.action_scan_code:
