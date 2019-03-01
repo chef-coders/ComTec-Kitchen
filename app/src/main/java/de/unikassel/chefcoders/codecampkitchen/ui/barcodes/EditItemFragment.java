@@ -3,7 +3,6 @@ package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.DisableButtonTextWatcher;
 import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
@@ -42,7 +42,12 @@ public class EditItemFragment extends ItemDetailFragment
 		Button editButton = editItemView.findViewById(R.id.editButton);
 		editButton.setOnClickListener(this::onEdit);
 
-		this.barcodeValue.setText(item.get_id());
+		DisableButtonTextWatcher.bind(editButton,
+				this.nameText,
+				this.priceText,
+				this.amountText);
+
+		this.barcodeTextView.setText(item.get_id());
 		this.nameText.setText(item.getName());
 		this.priceText.setText(String.valueOf(item.getPrice()));
 		this.amountText.setText(String.valueOf(item.getAmount()));

@@ -63,6 +63,11 @@ public class EditUserFragment extends KitchenFragment
 		this.editTextName = view.findViewById(R.id.editTextName);
 		this.editTextCredit = view.findViewById(R.id.editTextCredit);
 
+		DisableButtonTextWatcher.bind(saveButton,
+				this.editTextEmail,
+				this.editTextName,
+				this.editTextCredit);
+
 		final User user = MainActivity.kitchenManager.users().get(this.userId);
 		if (user != null)
 		{

@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity
         editTextEmail = findViewById(R.id.editTextEmail);
         switchAdmin = findViewById(R.id.switchAdmin);
         buttonLogin = findViewById(R.id.buttonLogin);
+        DisableButtonTextWatcher.bind(this.buttonLogin, this.editTextEmail, this.editTextName);
         textViewConnection = findViewById(R.id.textViewConnection);
         progressBar = findViewById(R.id.progressBar);
         if (!isConnected()) {

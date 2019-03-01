@@ -13,7 +13,7 @@ import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 
 public abstract class ItemDetailFragment extends KitchenFragment
 {
-	protected TextView barcodeValue;
+	protected TextView barcodeTextView;
 	protected EditText nameText;
 	protected EditText priceText;
 	protected EditText amountText;
@@ -21,7 +21,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 
 	protected void initViews(View itemDetailView)
 	{
-		this.barcodeValue = itemDetailView.findViewById(R.id.barcodeValueView);
+		this.barcodeTextView = itemDetailView.findViewById(R.id.barcodeValueView);
 		this.nameText = itemDetailView.findViewById(R.id.nameText);
 		this.priceText = itemDetailView.findViewById(R.id.priceText);
 		this.amountText = itemDetailView.findViewById(R.id.amountText);
@@ -34,7 +34,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 
 	protected Item getItem()
 	{
-		final String itemId = this.barcodeValue.getText().toString();
+		final String itemId = this.barcodeTextView.getText().toString();
 		if(itemId.isEmpty())
 		{
 			Toast.makeText(this.getContext(),

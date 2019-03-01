@@ -12,6 +12,7 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.AllItemsFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.DisableButtonTextWatcher;
 import de.unikassel.chefcoders.codecampkitchen.ui.ItemDetailFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.multithreading.SimpleAsyncTask;
 
@@ -37,19 +38,25 @@ public class CreateItemFragment extends ItemDetailFragment
 		Button createButton = createItemView.findViewById(R.id.createButton);
 		createButton.setOnClickListener(this::onCreate);
 
+		DisableButtonTextWatcher.bind(createButton,
+				this.priceText,
+				this.amountText,
+				this.nameText,
+				this.barcodeTextView);
+
 		Button genIdButton = createItemView.findViewById(R.id.generateIdButton);
 		genIdButton.setOnClickListener(this::onGeneratedId);
 
 		Bundle args = this.getArguments();
 		if (args != null)
 		{
-			this.barcodeValue.setEnabled(false);
+			this.barcodeTextView.setEnabled(false);
 			genIdButton.setEnabled(false);
-			this.barcodeValue.setText(this.getArguments().getString("barcode"));
+			this.barcodeTextView.setText(this.getArguments().getString("barcode"));
 		}
 		else
 		{
-			this.barcodeValue.setText("");
+			this.barcodeTextView.setText("");
 		}
 
 		return createItemView;
@@ -72,7 +79,7 @@ public class CreateItemFragment extends ItemDetailFragment
 	public void onGeneratedId(View view)
 	{
 		final long barcode = (long) (Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L);
-		this.barcodeValue.setText("Generated:" + barcode);
+		this.barcodeTextView.setText("Generated:" + barcode);
 	}
 
 	@Override
