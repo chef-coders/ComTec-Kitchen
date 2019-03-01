@@ -5,8 +5,8 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 public class RowPos
 {
 	private Section section;
-	private int sectionId;
-	private int itemId;
+	private int     sectionId;
+	private int     itemId;
 
 	public RowPos(Section section, int sectionId, int itemId)
 	{
@@ -17,7 +17,7 @@ public class RowPos
 
 	public Section getSection()
 	{
-		return section;
+		return this.section;
 	}
 
 	public void setSection(Section section)
@@ -27,7 +27,7 @@ public class RowPos
 
 	public int getSectionId()
 	{
-		return sectionId;
+		return this.sectionId;
 	}
 
 	public void setSectionId(int sectionId)
@@ -37,7 +37,7 @@ public class RowPos
 
 	public int getItemId()
 	{
-		return itemId;
+		return this.itemId;
 	}
 
 	public void setItemId(int itemId)
@@ -48,6 +48,6 @@ public class RowPos
 	@Override
 	public String toString()
 	{
-		return "itemId: " + this.itemId + " sectionId: " + sectionId;
+		return "itemId: " + this.itemId + " sectionId: " + this.sectionId;
 	}
 }

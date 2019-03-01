@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.list;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.UserRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
@@ -28,10 +26,8 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 		// Required empty public constructor
 	}
 
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState)
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_all_user, container, false);
@@ -41,11 +37,9 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 
 	private void initRecyclerView(View view)
 	{
-		progressBar = view.findViewById(R.id.progressBar);
-		new GeneralRecyclerView(view.findViewById(R.id.recyclerView),
-				new UserRecyclerController(),
-				view.findViewById(R.id.swipeRefreshLayout),
-				this);
+		this.progressBar = view.findViewById(R.id.progressBar);
+		new GeneralRecyclerView(view.findViewById(R.id.recyclerView), new UserRecyclerController(),
+		                        view.findViewById(R.id.swipeRefreshLayout), this);
 	}
 
 	@Override
@@ -57,7 +51,7 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 	@Override
 	public void handleRecViewLoadFinished()
 	{
-		progressBar.setVisibility(View.GONE);
+		this.progressBar.setVisibility(View.GONE);
 	}
 
 	@Override

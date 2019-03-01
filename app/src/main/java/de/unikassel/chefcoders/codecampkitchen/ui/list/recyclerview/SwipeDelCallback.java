@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
@@ -29,7 +28,8 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	private SwipeEvent swipeEvent;
 
 	// --- --- --- Initialization --- --- ---
-	public SwipeDelCallback(SwipeEvent swipeEvent, Drawable icon, Drawable background, RecyclerController recyclerController)
+	public SwipeDelCallback(SwipeEvent swipeEvent, Drawable icon, Drawable background,
+		RecyclerController recyclerController)
 	{
 		this.swipeEvent = swipeEvent;
 		this.icon = icon;
@@ -47,7 +47,7 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	@Override
 	public int convertToAbsoluteDirection(int flags, int layoutDirection)
 	{
-		if(this.swipeBack)
+		if (this.swipeBack)
 		{
 			this.swipeBack = false;
 			return 0;
@@ -58,19 +58,19 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 
 	// --- --- --- Handle draw action --- --- ---
 	@Override
-	public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
-	                        float dX, float dY, int actionState, boolean isCurrentlyActive)
+	public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+		@NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)
 	{
 		super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
 		boolean successfulSwipe = this.isSuccessfulSwipe(recyclerView, viewHolder);
 
-		if(actionState == ACTION_STATE_SWIPE)
+		if (actionState == ACTION_STATE_SWIPE)
 		{
-			this.swipeBack = ! successfulSwipe;
+			this.swipeBack = !successfulSwipe;
 		}
 
-		if(successfulSwipe)
+		if (successfulSwipe)
 		{
 			this.drawBackgroundFrame(c, viewHolder, dX);
 		}
@@ -81,19 +81,19 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		View itemView = viewHolder.itemView;
 		int backgroundCornerOffset = 20;
 
-		int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-		int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-		int iconBottom = iconTop + icon.getIntrinsicHeight();
+		int iconMargin = (itemView.getHeight() - this.icon.getIntrinsicHeight()) / 2;
+		int iconTop = itemView.getTop() + (itemView.getHeight() - this.icon.getIntrinsicHeight()) / 2;
+		int iconBottom = iconTop + this.icon.getIntrinsicHeight();
 
-		if(dX < 0)
+		if (dX < 0)
 		{
 			// swiping to the left
-			int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
+			int iconLeft = itemView.getRight() - iconMargin - this.icon.getIntrinsicWidth();
 			int iconRight = itemView.getRight() - iconMargin;
-			icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+			this.icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
-			background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
-					itemView.getTop(), itemView.getRight(), itemView.getBottom());
+			this.background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset, itemView.getTop(),
+			                          itemView.getRight(), itemView.getBottom());
 		}
 		else
 		{
@@ -106,14 +106,17 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	private boolean isSuccessfulSwipe(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
 	{
 		RowPos swipePos = GeneralRecyclerView
-				.calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
+			                  .calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
 		return swipePos != null;
 	}
 
 	// --- --- --- Not used --- --- ---
 	@Override
-	public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-	{ return false; }
+	public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+		@NonNull RecyclerView.ViewHolder viewHolder1)
+	{
+		return false;
+	}
 
 	@Override
 	public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)

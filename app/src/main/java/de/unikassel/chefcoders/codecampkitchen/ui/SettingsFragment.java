@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 
@@ -24,33 +22,28 @@ public class SettingsFragment extends KitchenFragment
 
 	Switch switchDarkMode;
 
-
 	public SettingsFragment()
 	{
 		// Required empty public constructor
 	}
 
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState)
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		switchDarkMode = view.findViewById(R.id.switchDarkMode);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		this.switchDarkMode = view.findViewById(R.id.switchDarkMode);
 
-		switchDarkMode.setChecked(sharedPreferences.getBoolean("darkMode", false));
-		switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+		this.switchDarkMode.setChecked(sharedPreferences.getBoolean("darkMode", false));
+		this.switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
 		{
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
 			{
-				sharedPreferences.edit()
-						.putBoolean("darkMode", isChecked)
-						.commit();
-				restart();
+				sharedPreferences.edit().putBoolean("darkMode", isChecked).commit();
+				SettingsFragment.this.restart();
 			}
 		});
 
@@ -59,13 +52,14 @@ public class SettingsFragment extends KitchenFragment
 
 	private void restart()
 	{
-		if (getActivity() == null) {
+		if (this.getActivity() == null)
+		{
 			return;
 		}
-		getActivity().finish();
-		Intent intent = new Intent(getActivity(), MainActivity.class);
+		this.getActivity().finish();
+		Intent intent = new Intent(this.getActivity(), MainActivity.class);
 		intent.putExtra("settings", true);
-		startActivity(intent);
+		this.startActivity(intent);
 	}
 
 	@Override

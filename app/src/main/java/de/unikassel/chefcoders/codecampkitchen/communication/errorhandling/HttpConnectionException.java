@@ -6,7 +6,7 @@ import com.google.gson.JsonSyntaxException;
 
 public class HttpConnectionException extends RuntimeException
 {
-	private int responseCode;
+	private int    responseCode;
 	private String responseString;
 	private String requestBodyString;
 	private String method;
@@ -14,7 +14,8 @@ public class HttpConnectionException extends RuntimeException
 
 	private String simpleMessage;
 
-	public HttpConnectionException(String requestUrl, String method, int responseCode, String requestBodyString, String responseString)
+	public HttpConnectionException(String requestUrl, String method, int responseCode, String requestBodyString,
+		String responseString)
 	{
 		this.requestUrl = requestUrl;
 		this.method = method;
@@ -30,12 +31,14 @@ public class HttpConnectionException extends RuntimeException
 
 	public String fullErrorMessage()
 	{
-		StringBuilder errorMessageBuilder = new StringBuilder()
-				.append("\nError: Responsecode was " + responseCode + ", trying to execute Request\n")
-				.append("\tof Type \"" + method + "\"\n")
-				.append("\ton URL \"" + requestUrl + "\"\n")
-				.append("\twith Body \"" + requestBodyString + "\"\n")
-				.append("\twith Response \"" + responseString + "\"\n");
+		StringBuilder errorMessageBuilder = new StringBuilder().append(
+			"\nError: Responsecode was " + this.responseCode + ", trying to execute Request\n")
+		                                                       .append("\tof Type \"" + this.method + "\"\n")
+		                                                       .append("\ton URL \"" + this.requestUrl + "\"\n")
+		                                                       .append("\twith Body \"" + this.requestBodyString
+		                                                               + "\"\n")
+		                                                       .append("\twith Response \"" + this.responseString
+		                                                               + "\"\n");
 
 		return errorMessageBuilder.toString();
 	}
@@ -46,7 +49,7 @@ public class HttpConnectionException extends RuntimeException
 		try
 		{
 			JsonParser parser = new JsonParser();
-			JsonObject jsonObject = (JsonObject) parser.parse(responseString);
+			JsonObject jsonObject = (JsonObject) parser.parse(this.responseString);
 
 			JsonObject outerMessage = (JsonObject) jsonObject.get("message");
 			innerMessage = outerMessage.get("message").getAsString();
@@ -58,6 +61,6 @@ public class HttpConnectionException extends RuntimeException
 
 		this.simpleMessage = innerMessage;
 
-		return simpleMessage;
+		return this.simpleMessage;
 	}
 }

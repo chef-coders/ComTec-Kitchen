@@ -10,8 +10,7 @@ public class HttpRequestBuilder
 {
 	public static Request createGetRequestFor(String url, Map<String, String> headers)
 	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
+		Request.Builder builder = new Request.Builder().url(url);
 
 		setHeadersOnBuilder(headers, builder);
 
@@ -22,8 +21,7 @@ public class HttpRequestBuilder
 
 	public static Request createPostRequestFor(String url, String body, Map<String, String> headers)
 	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
+		Request.Builder builder = new Request.Builder().url(url);
 
 		setHeadersOnBuilder(headers, builder);
 
@@ -34,8 +32,7 @@ public class HttpRequestBuilder
 
 	public static Request createPutRequestFor(String url, String body, Map<String, String> headers)
 	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
+		Request.Builder builder = new Request.Builder().url(url);
 
 		setHeadersOnBuilder(headers, builder);
 
@@ -46,8 +43,7 @@ public class HttpRequestBuilder
 
 	public static Request createDeleteRequestFor(String url, Map<String, String> headers)
 	{
-		Request.Builder builder = new Request.Builder()
-				.url(url);
+		Request.Builder builder = new Request.Builder().url(url);
 
 		setHeadersOnBuilder(headers, builder);
 

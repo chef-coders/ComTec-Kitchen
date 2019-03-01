@@ -8,9 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -67,7 +67,8 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		if (this.recyclerController.swipeIsSupported())
 		{
 			ItemTouchHelper.Callback itemSwipeCallback = new SwipeDelCallback(this, ContextCompat.getDrawable(
-				this.recyclerView.getContext(), R.drawable.ic_delete_white_36dp), ContextCompat.getDrawable(this.recyclerView.getContext(), R.color.colorAccent), recyclerController);
+				this.recyclerView.getContext(), R.drawable.ic_delete_white_36dp), ContextCompat.getDrawable(
+				this.recyclerView.getContext(), R.color.colorAccent), this.recyclerController);
 			new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
 		}
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
@@ -99,7 +100,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 		for (int sectionId = 0; sectionId < numOfSections; sectionId++)
 		{
-			if(pos == counter)
+			if (pos == counter)
 			{
 				return null;
 			}
@@ -123,7 +124,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 	private void handleOnTouch(final View view, int pos)
 	{
-		final RowPos rowPos = calcRowPos(pos, recyclerController, recyclerView);
+		final RowPos rowPos = calcRowPos(pos, this.recyclerController, this.recyclerView);
 		if (rowPos == null || rowPos.getSection() == null)
 		{
 			return;
@@ -155,14 +156,15 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
-		final RowPos rowPos = calcRowPos(position, recyclerController, recyclerView);
+		final RowPos rowPos = calcRowPos(position, this.recyclerController, this.recyclerView);
 		if (rowPos == null || rowPos.getSection() == null)
 		{
 			return;
 		}
 
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			boolean refreshAll = this.recyclerController.onSwiped(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
+			boolean refreshAll = this.recyclerController
+				                     .onSwiped(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
 			if (refreshAll)
 			{
 				this.recyclerController.refresh();

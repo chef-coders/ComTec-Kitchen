@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -13,17 +14,18 @@ import android.widget.ProgressBar;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
 
 public class AllItemsFragment extends KitchenFragment implements GeneralRecyclerView.RecViewEventHandler
 {
 	private FloatingActionButton floatingActionButton;
-	private ProgressBar progressBar;
+	private ProgressBar          progressBar;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+		@Nullable Bundle savedInstanceState)
 	{
 		View allItemsView = inflater.inflate(R.layout.fragment_all_items, container, false);
 
@@ -36,11 +38,11 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 
 	private void initFloatingActionButton(View allItemsView)
 	{
-		floatingActionButton = allItemsView.findViewById(R.id.buyItemButton);
-		floatingActionButton.setOnClickListener(v ->
-		{
-			MainActivity mainActivity = (MainActivity) getActivity();
-			if (mainActivity != null) {
+		this.floatingActionButton = allItemsView.findViewById(R.id.buyItemButton);
+		this.floatingActionButton.setOnClickListener(v -> {
+			MainActivity mainActivity = (MainActivity) this.getActivity();
+			if (mainActivity != null)
+			{
 				mainActivity.changeFragment(new ConfirmPurchasesFragment());
 				mainActivity.setMenuItem(R.id.nav_all_items, false);
 			}
@@ -49,16 +51,14 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 
 	private void initRecyclerView(View allItemsView)
 	{
-		new GeneralRecyclerView(allItemsView.findViewById(R.id.allItemsRecView),
-				new ItemRecyclerController(),
-				allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
-				this);
+		new GeneralRecyclerView(allItemsView.findViewById(R.id.allItemsRecView), new ItemRecyclerController(),
+		                        allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout), this);
 	}
 
 	@Override
-	protected void updateToolbar(android.support.v7.widget.Toolbar toolbar)
+	protected void updateToolbar(Toolbar toolbar)
 	{
-		if(MainActivity.editMode)
+		if (MainActivity.editMode)
 		{
 			toolbar.setTitle(R.string.edit_items);
 		}
@@ -92,7 +92,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
-		if( ! MainActivity.kitchenManager.cart().getPurchases().isEmpty())
+		if (!MainActivity.kitchenManager.cart().getPurchases().isEmpty())
 		{
 			this.floatingActionButton.show();
 		}
@@ -101,7 +101,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void onClick(int section, int item)
 	{
-		if ( ! MainActivity.editMode && ! MainActivity.kitchenManager.cart().getPurchases().isEmpty())
+		if (!MainActivity.editMode && !MainActivity.kitchenManager.cart().getPurchases().isEmpty())
 		{
 			this.floatingActionButton.show();
 		}
@@ -110,7 +110,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	@Override
 	public void onSwiped(int section, int item)
 	{
-		if(MainActivity.kitchenManager.cart().getPurchases().isEmpty())
+		if (MainActivity.kitchenManager.cart().getPurchases().isEmpty())
 		{
 			this.floatingActionButton.hide();
 		}

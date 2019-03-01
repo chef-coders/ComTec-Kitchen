@@ -17,8 +17,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
 		void onTouch(View view, int pos);
 	}
 
-	public RecyclerTouchListener(Context context, RecyclerView recyclerView,
-	                             OnTouchListener onTouchListener)
+	public RecyclerTouchListener(Context context, RecyclerView recyclerView, OnTouchListener onTouchListener)
 	{
 		this.gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
 		{
@@ -39,16 +38,19 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
 	}
 
 	@Override
-	public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView,
-	                                     @NonNull MotionEvent motionEvent)
+	public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent)
 	{
 		this.gestureDetector.onTouchEvent(motionEvent);
 		return false;
 	}
 
 	@Override
-	public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {}
+	public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent)
+	{
+	}
 
 	@Override
-	public void onRequestDisallowInterceptTouchEvent(boolean b) {}
+	public void onRequestDisallowInterceptTouchEvent(boolean b)
+	{
+	}
 }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -15,8 +16,8 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.SimpleDialog;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ShoppingCartRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ShoppingCartRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
 
 /**
@@ -26,17 +27,15 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 {
 
 	private FloatingActionButton floatingActionButton;
-	private ProgressBar progressBar;
+	private ProgressBar          progressBar;
 
 	public ConfirmPurchasesFragment()
 	{
 		// Required empty public constructor
 	}
 
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState)
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.fragment_confirm_purchases, container, false);
 		this.initFloatingActionButton(view);
@@ -46,74 +45,67 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 
 	private void initFloatingActionButton(View view)
 	{
-		floatingActionButton = view.findViewById(R.id.buyItemButton);
-		floatingActionButton.setOnClickListener(v ->
-				confirmPurchaseDialog());
+		this.floatingActionButton = view.findViewById(R.id.buyItemButton);
+		this.floatingActionButton.setOnClickListener(v -> this.confirmPurchaseDialog());
 	}
 
 	private void confirmPurchaseDialog()
 	{
 
 		SimpleDialog
-				.createDialog(
-						getActivity().getString(R.string.total_price,
-						                        MainActivity.kitchenManager.cart().getTotal()),
-						getActivity().getString(R.string.confirm_purchase),
-						getActivity().getString(R.string.purchase),
-						getActivity().getString(R.string.cancel),
-						new SimpleDialog.ConfirmClick()
-						{
-							@Override
-							public void confirmPositive()
-							{
-								purchaseItems();
-							}
+			.createDialog(this.getActivity().getString(R.string.total_price, MainActivity.kitchenManager.cart().getTotal()),
+			              this.getActivity().getString(R.string.confirm_purchase),
+			              this.getActivity().getString(R.string.purchase), this.getActivity().getString(R.string.cancel),
+			              new SimpleDialog.ConfirmClick()
+			              {
+				              @Override
+				              public void confirmPositive()
+				              {
+					              ConfirmPurchasesFragment.this.purchaseItems();
+				              }
 
-							@Override
-							public void confirmNegative()
-							{
+				              @Override
+				              public void confirmNegative()
+				              {
 
-							}
-						}).show(getFragmentManager(), "dialog");
+				              }
+			              }).show(this.getFragmentManager(), "dialog");
 	}
 
 	private void purchaseItems()
 	{
-		progressBar.setVisibility(View.VISIBLE);
+		this.progressBar.setVisibility(View.VISIBLE);
 		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.cart().submit(), () -> {
-			progressBar.setVisibility(View.GONE);
-			MainActivity mainActivity = (MainActivity) getActivity();
+			this.progressBar.setVisibility(View.GONE);
+			MainActivity mainActivity = (MainActivity) this.getActivity();
 			if (mainActivity != null)
 			{
 				mainActivity.changeFragment(new AllItemsFragment());
-				Toast.makeText(getActivity(), R.string.purchase_success, Toast.LENGTH_LONG).show();
+				Toast.makeText(this.getActivity(), R.string.purchase_success, Toast.LENGTH_LONG).show();
 			}
 		});
 	}
 
 	private void initRecyclerView(View view)
 	{
-		progressBar = view.findViewById(R.id.progressBar);
-		new GeneralRecyclerView(view.findViewById(R.id.allItemsRecView),
-				new ShoppingCartRecyclerController(),
-				view.findViewById(R.id.allItemsSwipeRefreshLayout),
-				this);
+		this.progressBar = view.findViewById(R.id.progressBar);
+		new GeneralRecyclerView(view.findViewById(R.id.allItemsRecView), new ShoppingCartRecyclerController(),
+		                        view.findViewById(R.id.allItemsSwipeRefreshLayout), this);
 	}
 
 	@Override
-	protected void updateToolbar(android.support.v7.widget.Toolbar toolbar)
+	protected void updateToolbar(Toolbar toolbar)
 	{
 
 		toolbar.setTitle(R.string.purchase);
 		Menu menu = toolbar.getMenu();
-		menu.findItem(R.id.action_clear_all)
-				.setVisible(true);
+		menu.findItem(R.id.action_clear_all).setVisible(true);
 	}
 
 	@Override
 	public void handleRecViewLoadFinished()
 	{
-		progressBar.setVisibility(View.GONE);
+		this.progressBar.setVisibility(View.GONE);
 	}
 
 	@Override

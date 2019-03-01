@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -16,26 +15,25 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import de.unikassel.chefcoders.codecampkitchen.MainActivity;
+import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.model.Item;
+import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.unikassel.chefcoders.codecampkitchen.MainActivity;
-import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
-
 public class StatisticsFragment extends KitchenFragment
 {
 	private List<Purchase> purchases;
 
 	private LinearLayout statisticsLayout;
-	private TextView totalAmountView;
-	private TextView moneySpentView;
-	private TextView totalNumberView;
-	private TextView purchasedItemsView;
+	private TextView     totalAmountView;
+	private TextView     moneySpentView;
+	private TextView     totalNumberView;
+	private TextView     purchasedItemsView;
 
 	private HorizontalBarChart horizontalBarChart;
 
@@ -48,20 +46,23 @@ public class StatisticsFragment extends KitchenFragment
 	{
 		View allItemsView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
-		statisticsLayout = allItemsView.findViewById(R.id.statisticsLayout);
-		totalAmountView = allItemsView.findViewById(R.id.totalAmountView);
-		moneySpentView = allItemsView.findViewById(R.id.moneySpentView);
-		totalNumberView = allItemsView.findViewById(R.id.totalNumberView);
-		purchasedItemsView = allItemsView.findViewById(R.id.purchasedItemsView);
+		this.statisticsLayout = allItemsView.findViewById(R.id.statisticsLayout);
+		this.totalAmountView = allItemsView.findViewById(R.id.totalAmountView);
+		this.moneySpentView = allItemsView.findViewById(R.id.moneySpentView);
+		this.totalNumberView = allItemsView.findViewById(R.id.totalNumberView);
+		this.purchasedItemsView = allItemsView.findViewById(R.id.purchasedItemsView);
 
-		horizontalBarChart = allItemsView.findViewById(R.id.chart);
+		this.horizontalBarChart = allItemsView.findViewById(R.id.chart);
 
-		if (MainActivity.kitchenManager.session().isAdmin()) {
-			purchases = MainActivity.kitchenManager.purchases().getAll();
-		} else {
-			purchases = MainActivity.kitchenManager.purchases().getMine();
-			statisticsLayout.removeView(totalAmountView);
-			statisticsLayout.removeView(totalNumberView);
+		if (MainActivity.kitchenManager.session().isAdmin())
+		{
+			this.purchases = MainActivity.kitchenManager.purchases().getAll();
+		}
+		else
+		{
+			this.purchases = MainActivity.kitchenManager.purchases().getMine();
+			this.statisticsLayout.removeView(this.totalAmountView);
+			this.statisticsLayout.removeView(this.totalNumberView);
 		}
 
 		this.initValues();
@@ -70,7 +71,8 @@ public class StatisticsFragment extends KitchenFragment
 		return allItemsView;
 	}
 
-	private void initValues() {
+	private void initValues()
+	{
 		double totalAmount = 0;
 		double moneySpent = 0;
 		int totalNumber = 0;
@@ -78,33 +80,43 @@ public class StatisticsFragment extends KitchenFragment
 
 		String userId = MainActivity.kitchenManager.session().getLoggedInUser().get_id();
 
-		for (Purchase purchase : this.purchases) {
+		for (Purchase purchase : this.purchases)
+		{
 			totalAmount += purchase.getPrice();
 
 			totalNumber += purchase.getAmount();
 
-			if (purchase.getUser_id().equals(userId)) {
+			if (purchase.getUser_id().equals(userId))
+			{
 				moneySpent += purchase.getPrice();
 
 				purchasedItems += purchase.getAmount();
 			}
 		}
 
-		totalAmountView.setText(getString(R.string.total_amount_text, totalAmount));
-		moneySpentView.setText(getString(R.string.money_spent_text, moneySpent));
-		totalNumberView.setText(getString(R.string.total_number_text, totalNumber));
-		purchasedItemsView.setText(getString(R.string.purchased_items_text, purchasedItems));
+		this.totalAmountView.setText(getString(R.string.total_amount_text, totalAmount));
+		this.moneySpentView.setText(getString(R.string.money_spent_text, moneySpent));
+		this.totalNumberView.setText(getString(R.string.total_number_text, totalNumber));
+		this.purchasedItemsView.setText(getString(R.string.purchased_items_text, purchasedItems));
 	}
 
-	private void initAmountOfBoughtItemsChart() {
+	private void initAmountOfBoughtItemsChart()
+	{
 		LinkedHashMap<Item, Integer> boughtItems = new LinkedHashMap<>();
-		for (Purchase purchase : this.purchases) {
+		for (Purchase purchase : this.purchases)
+		{
 			Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
-			if (item == null) { continue; }
-			if (boughtItems.containsKey(item)) {
+			if (item == null)
+			{
+				continue;
+			}
+			if (boughtItems.containsKey(item))
+			{
 				Integer value = boughtItems.get(item);
 				value += purchase.getAmount();
-			} else {
+			}
+			else
+			{
 				boughtItems.put(item, purchase.getAmount());
 			}
 		}
@@ -112,7 +124,8 @@ public class StatisticsFragment extends KitchenFragment
 		int index = 0;
 		ArrayList<IBarDataSet> records = new ArrayList<>();
 		ArrayList<String> names = new ArrayList<>();
-		for (Map.Entry<Item, Integer> entry : boughtItems.entrySet()) {
+		for (Map.Entry<Item, Integer> entry : boughtItems.entrySet())
+		{
 			String name = entry.getKey().getName();
 			names.add(name);
 
@@ -126,7 +139,7 @@ public class StatisticsFragment extends KitchenFragment
 			records.add(record);
 		}
 
-		XAxis xAxis = horizontalBarChart.getXAxis();
+		XAxis xAxis = this.horizontalBarChart.getXAxis();
 		xAxis.setLabelCount(names.size());
 		xAxis.setValueFormatter(new IndexAxisValueFormatter(names));
 		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -134,25 +147,25 @@ public class StatisticsFragment extends KitchenFragment
 		xAxis.setDrawGridLines(false);
 		xAxis.setEnabled(true);
 
-		YAxis yAxis = horizontalBarChart.getAxisLeft();
+		YAxis yAxis = this.horizontalBarChart.getAxisLeft();
 		yAxis.setDrawAxisLine(true);
 		yAxis.setDrawGridLines(true);
 		yAxis.setAxisMinimum(0f);
 		yAxis.setAxisMinimum(0f);
 
-		YAxis yAxisRight = horizontalBarChart.getAxisRight();
+		YAxis yAxisRight = this.horizontalBarChart.getAxisRight();
 		yAxisRight.setDrawAxisLine(true);
 		yAxisRight.setDrawGridLines(false);
 
-		horizontalBarChart.setFitBars(true);
-		horizontalBarChart.animateXY(2500, 2500);
+		this.horizontalBarChart.setFitBars(true);
+		this.horizontalBarChart.animateXY(2500, 2500);
 
 		BarData data = new BarData(records);
 
-		horizontalBarChart.setData(data);
-		horizontalBarChart.getDescription().setEnabled(false);
-		horizontalBarChart.getLegend().setEnabled(false);
-		horizontalBarChart.invalidate();
+		this.horizontalBarChart.setData(data);
+		this.horizontalBarChart.getDescription().setEnabled(false);
+		this.horizontalBarChart.getLegend().setEnabled(false);
+		this.horizontalBarChart.invalidate();
 	}
 
 	@Override

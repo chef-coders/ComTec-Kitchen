@@ -2,7 +2,7 @@ package de.unikassel.chefcoders.codecampkitchen.communication.errorhandling;
 
 public class HttpExceptionBuilder
 {
-	private int errorCode;
+	private int    errorCode;
 	private String responseString;
 	private String requestBodyString;
 	private String method;
@@ -45,6 +45,7 @@ public class HttpExceptionBuilder
 
 	public HttpConnectionException build()
 	{
-		return new HttpConnectionException(this.requestUrl, this.method, this.errorCode, this.requestBodyString, this.responseString);
+		return new HttpConnectionException(this.requestUrl, this.method, this.errorCode, this.requestBodyString,
+		                                   this.responseString);
 	}
 }

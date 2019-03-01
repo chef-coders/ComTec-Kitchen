@@ -1,7 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.communication;
 
-import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpExceptionBuilder;
 import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpConnectionException;
+import de.unikassel.chefcoders.codecampkitchen.communication.errorhandling.HttpExceptionBuilder;
 import okhttp3.*;
 import okio.Buffer;
 
@@ -10,13 +10,13 @@ import java.util.Map;
 
 public class OkHttpConnection implements HttpConnection
 {
-	private OkHttpClient client;
+	private OkHttpClient         client;
 	private HttpExceptionBuilder httpExceptionBuilder;
 
 	public OkHttpConnection()
 	{
-		httpExceptionBuilder = new HttpExceptionBuilder();
-		client = new OkHttpClient();
+		this.httpExceptionBuilder = new HttpExceptionBuilder();
+		this.client = new OkHttpClient();
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class OkHttpConnection implements HttpConnection
 	{
 		Request request = HttpRequestBuilder.createGetRequestFor(url, headers);
 
-		return executeRequestAndReturnResponseString(request);
+		return this.executeRequestAndReturnResponseString(request);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class OkHttpConnection implements HttpConnection
 	{
 		Request request = HttpRequestBuilder.createPostRequestFor(url, jsonBody, headers);
 
-		return executeRequestAndReturnResponseString(request);
+		return this.executeRequestAndReturnResponseString(request);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class OkHttpConnection implements HttpConnection
 	{
 		Request request = HttpRequestBuilder.createPutRequestFor(url, jsonBody, headers);
 
-		return executeRequestAndReturnResponseString(request);
+		return this.executeRequestAndReturnResponseString(request);
 	}
 
 	@Override
@@ -48,14 +48,14 @@ public class OkHttpConnection implements HttpConnection
 	{
 		Request request = HttpRequestBuilder.createDeleteRequestFor(url, headers);
 
-		return executeRequestAndReturnResponseString(request);
+		return this.executeRequestAndReturnResponseString(request);
 	}
 
 	private String executeRequestAndReturnResponseString(Request request)
 	{
-		Call call = createCallFromRequest(request);
+		Call call = this.createCallFromRequest(request);
 
-		return tryExecuteCall(call);
+		return this.tryExecuteCall(call);
 	}
 
 	private String readBodyFromRequest(Request request)
@@ -91,15 +91,15 @@ public class OkHttpConnection implements HttpConnection
 			throw new HttpConnectionException("ERROR: Server not available");
 		}
 
-		String responseString = tryGetResponseString(response);
+		String responseString = this.tryGetResponseString(response);
 		int responseCode = response.code();
 
-		httpExceptionBuilder.withResponseString(responseString);
-		httpExceptionBuilder.withErrorCode(responseCode);
+		this.httpExceptionBuilder.withResponseString(responseString);
+		this.httpExceptionBuilder.withErrorCode(responseCode);
 
-		if (!isValid(responseCode))
+		if (!this.isValid(responseCode))
 		{
-			throw httpExceptionBuilder.build();
+			throw this.httpExceptionBuilder.build();
 		}
 
 		return responseString;
@@ -125,10 +125,10 @@ public class OkHttpConnection implements HttpConnection
 
 	private Call createCallFromRequest(Request request)
 	{
-		httpExceptionBuilder.withRequestMethod(request.method());
-		httpExceptionBuilder.withRequestUrl(request.url().toString());
-		httpExceptionBuilder.withRequestBodyString(readBodyFromRequest(request));
+		this.httpExceptionBuilder.withRequestMethod(request.method());
+		this.httpExceptionBuilder.withRequestUrl(request.url().toString());
+		this.httpExceptionBuilder.withRequestBodyString(this.readBodyFromRequest(request));
 
-		return client.newCall(request);
+		return this.client.newCall(request);
 	}
 }

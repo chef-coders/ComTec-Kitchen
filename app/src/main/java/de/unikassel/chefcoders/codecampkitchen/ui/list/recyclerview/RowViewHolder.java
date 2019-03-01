@@ -26,7 +26,5 @@ public class RowViewHolder extends RecyclerView.ViewHolder
 
 		this.topRightView = itemView.findViewById(R.id.item_price);
 		this.bottomRightTextView = itemView.findViewById(R.id.item_num_selected);
-
-
 	}
 }

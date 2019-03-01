@@ -13,9 +13,9 @@ import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.AllUserFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.AllUserFragment;
 
 public class EditUserFragment extends KitchenFragment
 {
@@ -65,10 +65,7 @@ public class EditUserFragment extends KitchenFragment
 		this.editTextName = view.findViewById(R.id.editTextName);
 		this.editTextCredit = view.findViewById(R.id.editTextCredit);
 
-		DisableButtonTextWatcher.bind(saveButton,
-		                              this.editTextEmail,
-		                              this.editTextName,
-		                              this.editTextCredit);
+		DisableButtonTextWatcher.bind(saveButton, this.editTextEmail, this.editTextName, this.editTextCredit);
 
 		final User user = MainActivity.kitchenManager.users().get(this.userId);
 		if (user != null)
@@ -103,7 +100,7 @@ public class EditUserFragment extends KitchenFragment
 	private void onSaveClicked(View v)
 	{
 		User user = this.getUser();
-		if(user == null)
+		if (user == null)
 		{
 			return;
 		}

@@ -38,8 +38,8 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 
 		final View itemView = v.itemView;
 		itemView.post(() -> {
-			MainActivity mainActivity = (MainActivity)MainActivity.getActivity(itemView);
-			if(mainActivity != null)
+			MainActivity mainActivity = (MainActivity) MainActivity.getActivity(itemView);
+			if (mainActivity != null)
 			{
 				EditItemFragment editItemFragment = EditItemFragment.newInstance(item.get_id());
 				mainActivity.changeFragment(editItemFragment);

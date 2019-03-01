@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 
 public class EditItemFragment extends ItemDetailFragment
 {
@@ -42,10 +41,7 @@ public class EditItemFragment extends ItemDetailFragment
 		Button editButton = editItemView.findViewById(R.id.editButton);
 		editButton.setOnClickListener(this::onEditClicked);
 
-		DisableButtonTextWatcher.bind(editButton,
-				this.nameText,
-				this.priceText,
-				this.amountText);
+		DisableButtonTextWatcher.bind(editButton, this.nameText, this.priceText, this.amountText);
 
 		this.barcodeTextView.setText(item.get_id());
 		this.nameText.setText(item.getName());

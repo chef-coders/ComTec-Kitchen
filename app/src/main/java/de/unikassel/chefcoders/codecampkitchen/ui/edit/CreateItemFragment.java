@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 
 public class CreateItemFragment extends ItemDetailFragment
 {
@@ -38,11 +37,8 @@ public class CreateItemFragment extends ItemDetailFragment
 		Button createButton = createItemView.findViewById(R.id.createButton);
 		createButton.setOnClickListener(this::onCreateClicked);
 
-		DisableButtonTextWatcher.bind(createButton,
-				this.priceText,
-				this.amountText,
-				this.nameText,
-				this.barcodeTextView);
+		DisableButtonTextWatcher
+			.bind(createButton, this.priceText, this.amountText, this.nameText, this.barcodeTextView);
 
 		Button genIdButton = createItemView.findViewById(R.id.generateIdButton);
 		genIdButton.setOnClickListener(this::onGeneratedId);
