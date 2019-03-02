@@ -21,10 +21,8 @@ import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StatisticsFragment extends KitchenFragment
 {
@@ -88,7 +86,7 @@ public class StatisticsFragment extends KitchenFragment
 		}
 
 		this.initValues();
-		this.initAmountOfBoughtItemsChart();
+		this.initChart();
 	}
 
 	private void initValues()
@@ -120,42 +118,25 @@ public class StatisticsFragment extends KitchenFragment
 		this.purchasedItemsView.setText(getString(R.string.purchased_items_text, purchasedItems));
 	}
 
-	private void initAmountOfBoughtItemsChart()
+	private void initChart()
 	{
-		LinkedHashMap<Item, Integer> boughtItems = new LinkedHashMap<>();
-		for (Purchase purchase : this.purchases)
-		{
-			Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
-			if (item == null)
-			{
-				continue;
-			}
-			if (boughtItems.containsKey(item))
-			{
-				Integer value = boughtItems.get(item);
-				value += purchase.getAmount();
-			}
-			else
-			{
-				boughtItems.put(item, purchase.getAmount());
-			}
-		}
+		final Map<String, Integer> boughtItems = this.purchases.stream().collect(Collectors.groupingBy(
+			StatisticsFragment::getItemName, TreeMap::new, Collectors.summingInt(Purchase::getAmount)));
 
 		int index = 0;
-		ArrayList<IBarDataSet> records = new ArrayList<>();
-		ArrayList<String> names = new ArrayList<>();
-		for (Map.Entry<Item, Integer> entry : boughtItems.entrySet())
+		final List<String> names = new ArrayList<>();
+		final List<IBarDataSet> records = new ArrayList<>();
+
+		for (Map.Entry<String, Integer> entry : boughtItems.entrySet())
 		{
-			String name = entry.getKey().getName();
+			final String name = entry.getKey();
+
 			names.add(name);
 
-			BarEntry barEntry = new BarEntry(index++, entry.getValue());
+			final BarEntry barEntry = new BarEntry(index++, entry.getValue());
+			final BarDataSet record = new BarDataSet(Collections.singletonList(barEntry), name);
 
-			ArrayList<BarEntry> barEntries = new ArrayList<>();
-			barEntries.add(barEntry);
-
-			BarDataSet record = new BarDataSet(barEntries, name);
-			record.setValueTextSize(10f);
+			record.setValueTextSize(10F);
 			records.add(record);
 		}
 
@@ -186,6 +167,13 @@ public class StatisticsFragment extends KitchenFragment
 		this.horizontalBarChart.getDescription().setEnabled(false);
 		this.horizontalBarChart.getLegend().setEnabled(false);
 		this.horizontalBarChart.invalidate();
+	}
+
+	private static String getItemName(Purchase purchase)
+	{
+		final String itemId = purchase.getItem_id();
+		final Item item = MainActivity.kitchenManager.items().get(itemId);
+		return item != null ? item.getName() : "...";
 	}
 
 	@Override
