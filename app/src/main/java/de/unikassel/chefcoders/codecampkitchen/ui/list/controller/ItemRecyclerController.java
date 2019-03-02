@@ -9,10 +9,15 @@ import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolde
 public class ItemRecyclerController extends GroupedRecyclerController<Item, RowViewHolder>
 {
 	@Override
+	public void reload()
+	{
+		this.fill(MainActivity.kitchenManager.items().getGrouped());
+	}
+
+	@Override
 	public void refresh()
 	{
 		MainActivity.kitchenManager.items().refreshAll();
-		this.fill(MainActivity.kitchenManager.items().getGrouped());
 	}
 
 	@Override

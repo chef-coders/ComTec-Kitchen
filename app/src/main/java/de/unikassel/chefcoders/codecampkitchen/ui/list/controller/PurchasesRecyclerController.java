@@ -8,10 +8,15 @@ import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolde
 public class PurchasesRecyclerController extends GroupedRecyclerController<Purchase, RowViewHolder>
 {
 	@Override
+	public void reload()
+	{
+		this.fill(MainActivity.kitchenManager.purchases().getMineGrouped());
+	}
+
+	@Override
 	public void refresh()
 	{
 		MainActivity.kitchenManager.purchases().refreshMine();
-		this.fill(MainActivity.kitchenManager.purchases().getMineGrouped());
 	}
 
 	@Override

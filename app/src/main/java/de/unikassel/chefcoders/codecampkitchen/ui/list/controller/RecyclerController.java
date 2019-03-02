@@ -11,6 +11,8 @@ public interface RecyclerController<V extends RecyclerView.ViewHolder>
 
 	String getHeader(int section);
 
+	void reload();
+
 	void refresh();
 
 	V create(View view);

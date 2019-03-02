@@ -9,10 +9,15 @@ import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolde
 public class UserRecyclerController extends GroupedRecyclerController<User, RowViewHolder>
 {
 	@Override
+	public void reload()
+	{
+		this.fill(MainActivity.kitchenManager.users().getGrouped());
+	}
+
+	@Override
 	public void refresh()
 	{
 		MainActivity.kitchenManager.users().refreshAll();
-		this.fill(MainActivity.kitchenManager.users().getGrouped());
 	}
 
 	@Override

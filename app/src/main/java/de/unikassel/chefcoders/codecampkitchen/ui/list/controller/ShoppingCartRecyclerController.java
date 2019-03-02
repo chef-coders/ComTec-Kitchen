@@ -31,10 +31,15 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	}
 
 	@Override
+	public void reload()
+	{
+		this.shoppingCart = MainActivity.kitchenManager.cart().getPurchases();
+	}
+
+	@Override
 	public void refresh()
 	{
 		MainActivity.kitchenManager.cart().refreshAll();
-		this.shoppingCart = MainActivity.kitchenManager.cart().getPurchases();
 	}
 
 	@Override

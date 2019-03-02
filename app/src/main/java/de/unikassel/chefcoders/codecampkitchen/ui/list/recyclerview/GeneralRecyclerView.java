@@ -75,8 +75,9 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		this.recyclerView.setLayoutManager(layoutManager);
 		this.recyclerView.setAdapter(new SectionedRecyclerViewAdapter());
 
-		SimpleAsyncTask.execute(this.recyclerView.getContext(), () -> this.recyclerController.refresh(), () -> {
-			this.reloadSections();
+		this.reload();
+		SimpleAsyncTask.execute(this.recyclerView.getContext(), this.recyclerController::refresh, () -> {
+			this.reload();
 			this.eventHandler.handleRecViewLoadFinished();
 		});
 	}
@@ -173,7 +174,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		}, (Boolean refreshAll) -> {
 			if (refreshAll)
 			{
-				this.reloadSections();
+				this.reload();
 			}
 			else
 			{
@@ -189,8 +190,9 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 	private void handleOnSwipeRefresh()
 	{
-		SimpleAsyncTask.execute(this.recyclerView.getContext(), () -> this.recyclerController.refresh(), () -> {
-			this.reloadSections();
+		this.reload();
+		SimpleAsyncTask.execute(this.recyclerView.getContext(), this.recyclerController::refresh, () -> {
+			this.reload();
 			this.swipeRefreshLayout.setRefreshing(false);
 		});
 	}
@@ -209,8 +211,10 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		}
 	}
 
-	private void reloadSections()
+	private void reload()
 	{
+		this.recyclerController.reload();
+
 		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
 		assert adapter != null;
 
