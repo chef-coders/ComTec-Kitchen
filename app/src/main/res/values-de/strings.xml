@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">CodeCampKitchen</string>
     <string name="login">Anmelden</string>
-    <string name="email">Email</string>
+    <string name="email">E-Mail</string>
     <string name="all_items_nav_title">Alle Artikel</string>
     <string name="create_item_fragment_title">Artikel erstellen</string>
     <string name="edit_item_fragment_title">Artikel bearbeiten</string>
@@ -36,7 +36,7 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="edit">Bearbeiten</string>
-    <string name="confirm_purchase">Möchtest du diese Sachen Kaufen?</string>
+    <string name="confirm_purchase">Möchtest du diese Artikel kaufen?</string>
     <string name="total_price">Gesamtpreis: %1$.2f €</string>
     <string name="cancel">Abbrechen</string>
     <string name="item_not_found">Artikel nicht vorhanden</string>
@@ -45,7 +45,7 @@
     <string name="open">Öffnen</string>
     <string name="close">Schließen</string>
     <string name="shop">Shop</string>
-    <string name="purchase_history">Einkaufs Historie</string>
+    <string name="purchase_history">Kaufhistorie</string>
     <string name="logout">Logout</string>
     <string name="amount_minimum_error">Die kleinstmögliche Stückzahl ist %1$d</string>
     <string name="price_max_error">Der größtmögliche Preis ist %1$d €</string>
@@ -61,7 +61,7 @@
     <string name="money_spent_text">Ausgegebenes Geld: %1$.2f€</string>
     <string name="purchased_items_text">Gekaufte Artikel: %d</string>
     <string name="total_number_text">Anzahl verkaufter Artikel: %d</string>
-    <string name="dark_mode">Dunkel Modus</string>
+    <string name="dark_mode">Nachtmodus</string>
     <string name="connection_request">Bitte verbinde dich mit einem Netzwerk</string>
     <string name="add_to_cart">Zum Warenkorb hinzufügen</string>
     <string name="available">Verfügbar</string>
@@ -69,10 +69,10 @@
     <string name="create_item_successful">Artikel erfolgreich erstellt</string>
 
     <!-- Hints -->
-    <string name="name_hint">Tippe einen Namen</string>
-    <string name="email_hint">Tippe eine Email</string>
-    <string name="barcode_hint">Tippe einen Barcode</string>
-    <string name="price_hint">Tippe einen Preis</string>
-    <string name="amount_hint">Tippe eine Stückzahl</string>
-    <string name="credit_hint">Tippe das Guthaben</string>
+    <string name="name_hint">Gib einen Namen ein</string>
+    <string name="email_hint">Gib eine E-Mail ein</string>
+    <string name="barcode_hint">Gib einen Barcode ein</string>
+    <string name="price_hint">Gib einen Preis ein</string>
+    <string name="amount_hint">Gib eine Stückzahl ein</string>
+    <string name="credit_hint">Gib das Guthaben ein</string>
 </resources>
