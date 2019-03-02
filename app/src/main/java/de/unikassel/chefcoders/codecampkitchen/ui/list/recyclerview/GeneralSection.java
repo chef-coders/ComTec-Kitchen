@@ -9,22 +9,36 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class GeneralSection extends StatelessSection
 {
-	private final RecyclerController recyclerController;
-	private final int                section;
+	// =============== Fields ===============
 
-	public GeneralSection(RecyclerController recyclerController, int section)
+	private final RecyclerController recyclerController;
+
+	private final int index;
+
+	// =============== Constructors ===============
+
+	public GeneralSection(RecyclerController recyclerController, int index)
 	{
 		super(SectionParameters.builder().itemResourceId(R.layout.item_view).headerResourceId(R.layout.header_view)
 		                       .build());
 
 		this.recyclerController = recyclerController;
-		this.section = section;
+		this.index = index;
 	}
+
+	// =============== Properties ===============
+
+	public int getIndex()
+	{
+		return this.index;
+	}
+
+	// =============== Methods ===============
 
 	@Override
 	public int getContentItemsTotal()
 	{
-		return this.recyclerController.getItems(this.section);
+		return this.recyclerController.getItems(this.index);
 	}
 
 	@Override
@@ -36,7 +50,7 @@ public class GeneralSection extends StatelessSection
 	@Override
 	public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position)
 	{
-		this.recyclerController.populate(holder, this.section, position);
+		this.recyclerController.populate(holder, this.index, position);
 	}
 
 	@Override
@@ -48,6 +62,6 @@ public class GeneralSection extends StatelessSection
 	@Override
 	public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder)
 	{
-		((SectionHolder) holder).setTitle(this.recyclerController.getHeader(this.section));
+		((SectionHolder) holder).setTitle(this.recyclerController.getHeader(this.index));
 	}
 }
