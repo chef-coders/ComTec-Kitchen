@@ -106,8 +106,8 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 	private boolean isSuccessfulSwipe(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
 	{
 		RowPos swipePos = GeneralRecyclerView
-			                  .calcRowPos(viewHolder.getLayoutPosition(), this.recyclerController, recyclerView);
-		return swipePos != null;
+			                  .calcRowPos(viewHolder.getLayoutPosition(), recyclerView);
+		return swipePos.getItemId() >= 0;
 	}
 
 	// --- --- --- Not used --- --- ---

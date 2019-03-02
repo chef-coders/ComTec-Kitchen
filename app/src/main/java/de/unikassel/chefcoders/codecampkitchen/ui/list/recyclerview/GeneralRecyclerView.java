@@ -11,7 +11,6 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
-import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
@@ -88,46 +87,21 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
 	}
 
-	public static RowPos calcRowPos(int pos, RecyclerController recyclerController, RecyclerView recyclerView)
+	public static RowPos calcRowPos(int pos, RecyclerView recyclerView)
 	{
-		SectionedRecyclerViewAdapter sectionedAdapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
-		if (sectionedAdapter == null)
-		{
-			return null;
-		}
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
+		assert adapter != null;
 
-		int numOfSections = recyclerController.getSections();
-		int counter = 0;
-
-		for (int sectionId = 0; sectionId < numOfSections; sectionId++)
-		{
-			if (pos == counter)
-			{
-				return null;
-			}
-			counter++;
-			Section section = sectionedAdapter.getSectionForPosition(sectionId);
-			int sectionSize = recyclerController.getItems(sectionId);
-
-			for (int itemId = 0; itemId < sectionSize; itemId++)
-			{
-				if (counter + itemId == pos)
-				{
-					return new RowPos(section, sectionId, itemId);
-				}
-			}
-
-			counter += sectionSize;
-		}
-
-		return null;
+		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
+		return new RowPos(section, section.getIndex(), adapter.getPositionInSection(pos));
 	}
 
 	private void handleOnTouch(final View view, int pos)
 	{
-		final RowPos rowPos = calcRowPos(pos, this.recyclerController, this.recyclerView);
-		if (rowPos == null || rowPos.getSection() == null)
+		final RowPos rowPos = calcRowPos(pos, this.recyclerView);
+		if (rowPos.getItemId() < 0)
 		{
+			// header clicked
 			return;
 		}
 
@@ -157,9 +131,10 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			return;
 		}
 
-		final RowPos rowPos = calcRowPos(position, this.recyclerController, this.recyclerView);
-		if (rowPos == null || rowPos.getSection() == null)
+		final RowPos rowPos = calcRowPos(position, this.recyclerView);
+		if (rowPos.getItemId() < 0)
 		{
+			// header swiped
 			return;
 		}
 
