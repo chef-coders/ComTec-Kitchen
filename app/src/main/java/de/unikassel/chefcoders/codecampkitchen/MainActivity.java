@@ -195,15 +195,16 @@ public class MainActivity extends AppCompatActivity
 		this.drawerLayout = this.findViewById(R.id.main_drawer_layout);
 		this.navigationView = this.findViewById(R.id.nav_view);
 
-		this.drawerLayout.addDrawerListener(new ActionBarDrawerToggle(this, this.drawerLayout, R.string.open, R.string.close)
-		{
-			@Override
-			public void onDrawerOpened(View drawerView)
+		this.drawerLayout
+			.addDrawerListener(new ActionBarDrawerToggle(this, this.drawerLayout, R.string.open, R.string.close)
 			{
-				super.onDrawerOpened(drawerView);
-				MainActivity.this.updatedDrawerHeader();
-			}
-		});
+				@Override
+				public void onDrawerOpened(View drawerView)
+				{
+					super.onDrawerOpened(drawerView);
+					MainActivity.this.updatedDrawerHeader();
+				}
+			});
 		this.updatedDrawerHeader();
 
 		MenuItem item = this.navigationView.getMenu().findItem(R.id.nav_all_users);
@@ -235,20 +236,9 @@ public class MainActivity extends AppCompatActivity
 				this.drawerLayout.closeDrawers();
 				break;
 			case R.id.nav_statistics:
-				SimpleAsyncTask.execute(this.getApplicationContext(), () -> {
-					if (kitchenManager.session().isAdmin())
-					{
-						MainActivity.kitchenManager.purchases().refreshAll();
-					}
-					else
-					{
-						MainActivity.kitchenManager.purchases().refreshMine();
-					}
-				}, () -> {
-					this.changeFragment(new StatisticsFragment());
-					menuItem.setChecked(true);
-					this.drawerLayout.closeDrawers();
-				});
+				this.changeFragment(new StatisticsFragment());
+				menuItem.setChecked(true);
+				this.drawerLayout.closeDrawers();
 				break;
 			case R.id.nav_settings:
 				this.changeFragment(new SettingsFragment());

@@ -19,6 +19,7 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
+import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -54,6 +55,27 @@ public class StatisticsFragment extends KitchenFragment
 
 		this.horizontalBarChart = allItemsView.findViewById(R.id.chart);
 
+		// display whatever is currently available, then refresh and update display
+		this.reload();
+		SimpleAsyncTask.execute(this.getActivity(), this::refresh, this::reload);
+
+		return allItemsView;
+	}
+
+	private void refresh()
+	{
+		if (MainActivity.kitchenManager.session().isAdmin())
+		{
+			MainActivity.kitchenManager.purchases().refreshAll();
+		}
+		else
+		{
+			MainActivity.kitchenManager.purchases().refreshMine();
+		}
+	}
+
+	private void reload()
+	{
 		if (MainActivity.kitchenManager.session().isAdmin())
 		{
 			this.purchases = MainActivity.kitchenManager.purchases().getAll();
@@ -67,8 +89,6 @@ public class StatisticsFragment extends KitchenFragment
 
 		this.initValues();
 		this.initAmountOfBoughtItemsChart();
-
-		return allItemsView;
 	}
 
 	private void initValues()
