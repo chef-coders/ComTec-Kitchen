@@ -2,6 +2,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,44 +12,81 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 
 public class SimpleDialog extends DialogFragment
 {
+	// =============== Fields ===============
 
-	public interface ConfirmClick
-	{
-		void confirmPositive();
+	protected DialogInterface.OnClickListener yesClickListener;
+	protected DialogInterface.OnClickListener noClickListener;
 
-		void confirmNegative();
-	}
-
-	private ConfirmClick confirmClick;
+	// =============== Constructors ===============
 
 	public SimpleDialog()
 	{
 	}
 
-	public static SimpleDialog createDialog(Context context, String title, ConfirmClick confirmClick)
+	// =============== Static Methods ===============
+
+	public static Builder builder()
 	{
-		return createDialog(context, title, "", confirmClick);
+		return new Builder();
 	}
 
-	public static SimpleDialog createDialog(Context context, String title, String message, ConfirmClick confirmClick)
+	// =============== Classes ===============
+
+	public static class Builder
 	{
-		return createDialog(title, message, context.getString(R.string.yes), context.getString(R.string.no),
-		                    confirmClick);
+		private final SimpleDialog simpleDialog;
+		private final Bundle       bundle;
+
+		public Builder()
+		{
+			this.simpleDialog = new SimpleDialog();
+			this.bundle = new Bundle();
+		}
+
+		public Builder title(String title)
+		{
+			this.bundle.putString("title", title);
+			return this;
+		}
+
+		public Builder message(String message)
+		{
+			this.bundle.putString("message", message);
+			return this;
+		}
+
+		public Builder yesButton(String yesButtonLabel, DialogInterface.OnClickListener clickListener)
+		{
+			this.bundle.putString("positive", yesButtonLabel);
+			this.simpleDialog.yesClickListener = clickListener;
+			return this;
+		}
+
+		public Builder noButton(String noButtonLabel, DialogInterface.OnClickListener clickListener)
+		{
+			this.bundle.putString("negative", noButtonLabel);
+			this.simpleDialog.noClickListener = clickListener;
+			return this;
+		}
+
+		public DialogFragment build(Context context)
+		{
+			if (!this.bundle.containsKey("positive"))
+			{
+				this.bundle.putString("positive", context.getString(R.string.yes));
+			}
+
+			if (!this.bundle.containsKey("negative"))
+			{
+				this.bundle.putString("negative", context.getString(R.string.no));
+			}
+
+			this.simpleDialog.setArguments(this.bundle);
+			return this.simpleDialog;
+		}
 	}
 
-	public static SimpleDialog createDialog(String title, String message, String positive, String negative,
-		ConfirmClick confirmClick)
-	{
-		SimpleDialog simpleDialog = new SimpleDialog();
-		simpleDialog.setConfirmClick(confirmClick);
-		Bundle bundle = new Bundle();
-		bundle.putString("title", title);
-		bundle.putString("message", message);
-		bundle.putString("positive", positive);
-		bundle.putString("negative", negative);
-		simpleDialog.setArguments(bundle);
-		return simpleDialog;
-	}
+	// =============== Methods ===============
 
 	@NonNull
 	@Override
@@ -61,18 +99,12 @@ public class SimpleDialog extends DialogFragment
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		builder.setTitle(title);
-		if (!message.isEmpty())
+		if (message != null && !message.isEmpty())
 		{
 			builder.setMessage(message);
 		}
-		builder.setPositiveButton(positive, (dialog, id) -> this.confirmClick.confirmPositive())
-		       .setNegativeButton(negative, (dialog, id) -> this.confirmClick.confirmNegative());
-		// Create the AlertDialog object and return it
+		builder.setPositiveButton(positive, this.yesClickListener);
+		builder.setNegativeButton(negative, this.noClickListener);
 		return builder.create();
-	}
-
-	public void setConfirmClick(ConfirmClick confirmClick)
-	{
-		this.confirmClick = confirmClick;
 	}
 }

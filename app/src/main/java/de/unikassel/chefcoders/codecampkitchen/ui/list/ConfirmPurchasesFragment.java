@@ -51,25 +51,12 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 
 	private void confirmPurchaseDialog()
 	{
-
-		SimpleDialog
-			.createDialog(this.getActivity().getString(R.string.total_price, MainActivity.kitchenManager.cart().getTotal()),
-			              this.getActivity().getString(R.string.confirm_purchase),
-			              this.getActivity().getString(R.string.purchase), this.getActivity().getString(R.string.cancel),
-			              new SimpleDialog.ConfirmClick()
-			              {
-				              @Override
-				              public void confirmPositive()
-				              {
-					              ConfirmPurchasesFragment.this.purchaseItems();
-				              }
-
-				              @Override
-				              public void confirmNegative()
-				              {
-
-				              }
-			              }).show(this.getFragmentManager(), "dialog");
+		final double total = MainActivity.kitchenManager.cart().getTotal();
+		SimpleDialog.builder().title(this.getActivity().getString(R.string.total_price, total))
+		            .message(this.getActivity().getString(R.string.confirm_purchase))
+		            .yesButton(this.getActivity().getString(R.string.purchase), (dialog, which) -> this.purchaseItems())
+		            .noButton(this.getActivity().getString(R.string.cancel), (dialog, which) -> {})
+		            .build(this.getActivity()).show(this.getFragmentManager(), "dialog");
 	}
 
 	private void purchaseItems()
