@@ -11,7 +11,10 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+
+import java.util.Map;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
@@ -196,17 +199,31 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 	private void reload()
 	{
-		this.recyclerController.reload();
-
 		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
 		assert adapter != null;
 
-		adapter.removeAllSections();
+		final int oldSections = this.recyclerController.getSections();
+		this.recyclerController.reload();
+		final int newSections = this.recyclerController.getSections();
 
-		final int sections = this.recyclerController.getSections();
-		for (int section = 0; section < sections; section++)
+		// add missing sections
+		for (int index = oldSections; index < newSections; index++)
 		{
-			adapter.addSection(new GeneralSection(this.recyclerController, section));
+			adapter.addSection(new GeneralSection(this.recyclerController, index));
+		}
+		// remove extra sections
+		if (oldSections > newSections)
+		{
+			for (Map.Entry<String, Section> entry : adapter.getCopyOfSectionsMap().entrySet())
+			{
+				final GeneralSection section = (GeneralSection) entry.getValue();
+				final int sectionIndex = section.getIndex();
+				if (sectionIndex >= newSections)
+				{
+					final String tag = entry.getKey();
+					adapter.removeSection(tag);
+				}
+			}
 		}
 
 		adapter.notifyDataSetChanged();
