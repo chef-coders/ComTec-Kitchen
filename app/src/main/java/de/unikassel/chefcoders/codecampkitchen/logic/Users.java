@@ -56,9 +56,11 @@ public class Users
 
 	public void refreshAll()
 	{
-		this.users.clear();
 		final String resultJson = this.kitchenManager.getConnection().getAllUsers();
 		final List<User> resultUsers = JsonTranslator.toUsers(resultJson);
+
+		// only clear when resultsUsers was successfully parsed!
+		this.users.clear();
 		resultUsers.forEach(this::updateLocal);
 	}
 
