@@ -29,11 +29,6 @@ public class Items
 		return this.items.get(id);
 	}
 
-	public boolean exists(String id)
-	{
-		return this.items.containsKey(id);
-	}
-
 	public List<Item> getAll()
 	{
 		return new ArrayList<>(this.items.values());
