@@ -87,60 +87,59 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
 	}
 
-	public static RowPos calcRowPos(int pos, RecyclerView recyclerView)
-	{
-		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
-		assert adapter != null;
-
-		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
-		return new RowPos(section, section.getIndex(), adapter.getPositionInSection(pos));
-	}
-
 	private void handleOnTouch(final View view, int pos)
 	{
-		final RowPos rowPos = calcRowPos(pos, this.recyclerView);
-		if (rowPos.getItemId() < 0)
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
+		assert adapter != null;
+
+		final int itemIndex = adapter.getPositionInSection(pos);
+		if (itemIndex < 0)
 		{
 			// header clicked
 			return;
 		}
 
-		RecyclerView.ViewHolder viewHolder = rowPos.getSection().getItemViewHolder(view);
-		if (viewHolder == null)
-		{
-			return;
-		}
+		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
+		final int sectionIndex = section.getIndex();
+		final RecyclerView.ViewHolder viewHolder = section.getItemViewHolder(view);
+		assert viewHolder != null;
 
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			return this.recyclerController.onClick(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
+			return this.recyclerController.onClick(viewHolder, sectionIndex, itemIndex);
 		}, (Boolean b) -> {
 			if (b)
 			{
-				this.recyclerController.populate(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
+				// TODO adapter.notifyItemChanged(pos);
+				this.recyclerController.populate(viewHolder, sectionIndex, itemIndex);
 			}
-			this.eventHandler.onClick(rowPos.getSectionId(), rowPos.getItemId());
+			this.eventHandler.onClick(sectionIndex, itemIndex);
 		});
 	}
 
 	@Override
 	public void handleOnSwiped(RecyclerView.ViewHolder viewHolder)
 	{
-		final int position = viewHolder.getLayoutPosition();
-		if (position == NO_POSITION)
+		final int pos = viewHolder.getLayoutPosition();
+		if (pos == NO_POSITION)
 		{
 			return;
 		}
 
-		final RowPos rowPos = calcRowPos(position, this.recyclerView);
-		if (rowPos.getItemId() < 0)
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
+		assert adapter != null;
+
+		final int itemIndex = adapter.getPositionInSection(pos);
+		if (itemIndex < 0)
 		{
 			// header swiped
 			return;
 		}
 
+		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
+		final int sectionIndex = section.getIndex();
+
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			boolean refreshAll = this.recyclerController
-				                     .onSwiped(viewHolder, rowPos.getSectionId(), rowPos.getItemId());
+			boolean refreshAll = this.recyclerController.onSwiped(viewHolder, sectionIndex, itemIndex);
 			if (refreshAll)
 			{
 				this.recyclerController.refresh();
@@ -153,13 +152,10 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			}
 			else
 			{
-				RecyclerView.Adapter adapter = this.recyclerView.getAdapter();
-				if (adapter != null)
-				{
-					adapter.notifyDataSetChanged();
-				}
+				// TODO not necessary
+				adapter.notifyDataSetChanged();
 			}
-			this.eventHandler.onSwiped(rowPos.getSectionId(), rowPos.getItemId());
+			this.eventHandler.onSwiped(sectionIndex, itemIndex);
 		});
 	}
 

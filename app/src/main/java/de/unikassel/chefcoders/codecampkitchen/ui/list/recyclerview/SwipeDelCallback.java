@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
@@ -105,9 +106,11 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 
 	private boolean isSuccessfulSwipe(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
 	{
-		RowPos swipePos = GeneralRecyclerView
-			                  .calcRowPos(viewHolder.getLayoutPosition(), recyclerView);
-		return swipePos.getItemId() >= 0;
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
+		assert adapter != null;
+
+		final int itemIndex = adapter.getPositionInSection(viewHolder.getAdapterPosition());
+		return itemIndex >= 0;
 	}
 
 	// --- --- --- Not used --- --- ---
