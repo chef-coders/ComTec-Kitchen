@@ -122,8 +122,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		}, (Boolean b) -> {
 			if (b)
 			{
-				// TODO adapter.notifyItemChanged(pos);
-				this.recyclerController.populate(viewHolder, sectionIndex, itemIndex);
+				adapter.notifyItemChanged(pos);
 			}
 			this.eventHandler.onClick(sectionIndex, itemIndex);
 		});
