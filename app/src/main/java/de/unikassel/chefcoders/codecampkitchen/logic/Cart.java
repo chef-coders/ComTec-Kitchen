@@ -158,7 +158,47 @@ public class Cart
 		return this.purchases.removeIf(itemFilter(itemId));
 	}
 
+	/**
+	 * Updates amount and price of all purchases according to their item.
+	 * If an item is no longer available or no longer exists, the purchase is automatically removed.
+	 */
+	public void updateAll()
+	{
+		for (Iterator<Purchase> iterator = this.purchases.iterator(); iterator.hasNext(); )
+		{
+			final Purchase purchase = iterator.next();
+			final Item item = this.kitchenManager.items().get(purchase.getItem_id());
+			if (item != null)
+			{
+				purchase.setAmount(Math.min(purchase.getAmount(), item.getAmount()));
+				purchase.setPrice(item.getPrice() * purchase.getAmount());
+
+				if (purchase.getAmount() <= 0)
+				{
+					// remove if item no longer available
+					iterator.remove();
+				}
+			}
+			else
+			{
+				// remove if item no longer exists
+				iterator.remove();
+			}
+		}
+	}
+
 	// --------------- Communication ---------------
+
+	/**
+	 * Refreshes all items and updates purchases.
+	 *
+	 * @see #updateAll()
+	 */
+	public void refreshAll()
+	{
+		this.kitchenManager.items().refreshAll();
+		this.updateAll();
+	}
 
 	/**
 	 * Sends buy requests for all items in the shopping cart and clears it.
