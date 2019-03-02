@@ -1,6 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,6 +138,7 @@ public class StatisticsFragment extends KitchenFragment
 			final BarDataSet record = new BarDataSet(Collections.singletonList(barEntry), name);
 
 			record.setValueTextSize(10F);
+			record.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
 			records.add(record);
 		}
 
@@ -147,12 +149,14 @@ public class StatisticsFragment extends KitchenFragment
 		xAxis.setDrawAxisLine(true);
 		xAxis.setDrawGridLines(false);
 		xAxis.setEnabled(true);
+		xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
 
 		YAxis yAxis = this.horizontalBarChart.getAxisLeft();
 		yAxis.setDrawAxisLine(true);
 		yAxis.setDrawGridLines(true);
 		yAxis.setAxisMinimum(0f);
 		yAxis.setAxisMinimum(0f);
+		yAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
 
 		YAxis yAxisRight = this.horizontalBarChart.getAxisRight();
 		yAxisRight.setDrawAxisLine(true);
