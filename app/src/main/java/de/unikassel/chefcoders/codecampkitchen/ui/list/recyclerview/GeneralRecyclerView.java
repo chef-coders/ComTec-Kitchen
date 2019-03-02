@@ -93,14 +93,27 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		assert adapter != null;
 
 		final int itemIndex = adapter.getPositionInSection(pos);
+		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
+		final int sectionIndex = section.getIndex();
+
 		if (itemIndex < 0)
 		{
-			// header clicked
+			final int numItems = this.recyclerController.getItems(section.getIndex());
+
+			if (section.isCollapsed())
+			{
+				section.setCollapsed(false);
+				adapter.notifyItemRangeInsertedInSection(section, 0, numItems);
+			}
+			else
+			{
+				section.setCollapsed(true);
+				adapter.notifyItemRangeRemovedFromSection(section, 0, numItems);
+			}
+
 			return;
 		}
 
-		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
-		final int sectionIndex = section.getIndex();
 		final RecyclerView.ViewHolder viewHolder = section.getItemViewHolder(view);
 		assert viewHolder != null;
 

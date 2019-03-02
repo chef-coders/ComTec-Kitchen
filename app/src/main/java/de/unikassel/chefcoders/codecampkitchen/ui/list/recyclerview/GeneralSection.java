@@ -15,6 +15,8 @@ public class GeneralSection extends StatelessSection
 
 	private final int index;
 
+	private boolean collapsed;
+
 	// =============== Constructors ===============
 
 	public GeneralSection(RecyclerController recyclerController, int index)
@@ -33,12 +35,22 @@ public class GeneralSection extends StatelessSection
 		return this.index;
 	}
 
+	public boolean isCollapsed()
+	{
+		return this.collapsed;
+	}
+
+	public void setCollapsed(boolean collapsed)
+	{
+		this.collapsed = collapsed;
+	}
+
 	// =============== Methods ===============
 
 	@Override
 	public int getContentItemsTotal()
 	{
-		return this.recyclerController.getItems(this.index);
+		return this.isCollapsed() ? 0 : this.recyclerController.getItems(this.index);
 	}
 
 	@Override
