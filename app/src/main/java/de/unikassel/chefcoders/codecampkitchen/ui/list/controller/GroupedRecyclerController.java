@@ -13,7 +13,7 @@ public abstract class GroupedRecyclerController<T, V extends RecyclerView.ViewHo
 	@Override
 	public int getSections()
 	{
-		return this.items.length;
+		return this.items != null ? this.items.length : 0;
 	}
 
 	@Override

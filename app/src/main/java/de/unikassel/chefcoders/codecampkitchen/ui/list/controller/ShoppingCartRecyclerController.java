@@ -15,7 +15,7 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	@Override
 	public int getSections()
 	{
-		return 1;
+		return this.shoppingCart != null && !this.shoppingCart.isEmpty() ? 1 : 0;
 	}
 
 	@Override
