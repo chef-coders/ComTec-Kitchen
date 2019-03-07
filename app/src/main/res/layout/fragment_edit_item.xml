@@ -107,13 +107,5 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:text="@string/edit"
-            android:textColor="@android:color/white" />
-
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
