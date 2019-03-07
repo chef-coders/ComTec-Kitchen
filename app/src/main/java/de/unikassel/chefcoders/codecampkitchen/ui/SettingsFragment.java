@@ -30,6 +30,7 @@ public class SettingsFragment extends KitchenFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_settings, container, false);
 

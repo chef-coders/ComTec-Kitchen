@@ -30,6 +30,7 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_my_purchases, container, false);
 		this.progressBar = view.findViewById(R.id.progressBar);
 		this.initRecyclerView(view);

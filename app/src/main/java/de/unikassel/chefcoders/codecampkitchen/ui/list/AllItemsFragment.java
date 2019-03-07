@@ -27,6 +27,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 		@Nullable Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		View allItemsView = inflater.inflate(R.layout.fragment_all_items, container, false);
 
 		this.progressBar = allItemsView.findViewById(R.id.progressBar);

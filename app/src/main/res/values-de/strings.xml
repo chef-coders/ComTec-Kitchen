@@ -67,6 +67,7 @@
     <string name="available">Verfügbar</string>
     <string name="edit_item_successful">Artikel erfolgreich bearbeitet</string>
     <string name="create_item_successful">Artikel erfolgreich erstellt</string>
+    <string name="save">Speichern</string>
 
     <!-- Hints -->
     <string name="name_hint">Gib einen Namen ein</string>

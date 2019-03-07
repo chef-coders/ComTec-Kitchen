@@ -44,6 +44,7 @@ public class StatisticsFragment extends KitchenFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		View allItemsView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
 		this.statisticsLayout = allItemsView.findViewById(R.id.statisticsLayout);

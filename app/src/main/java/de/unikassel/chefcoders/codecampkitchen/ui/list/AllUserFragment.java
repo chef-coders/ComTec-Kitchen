@@ -30,6 +30,7 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_all_user, container, false);
 		this.initRecyclerView(view);

@@ -30,6 +30,8 @@ public class CreateItemFragment extends ItemDetailFragment
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 		@Nullable Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
+
 		View createItemView = inflater.inflate(R.layout.fragment_create_item, container, false);
 
 		this.initViews(createItemView);
@@ -83,5 +85,14 @@ public class CreateItemFragment extends ItemDetailFragment
 	protected void updateToolbar(Toolbar toolbar)
 	{
 		toolbar.setTitle(R.string.create_item_fragment_title);
+		this.addSaveViewToToolbar(toolbar);
+	}
+
+	private void addSaveViewToToolbar(Toolbar toolbar)
+	{
+		View saveView = this.getLayoutInflater().inflate(R.layout.toolbar_save_view, null);
+		toolbar.addView(saveView);
+		Button saveButton = saveView.findViewById(R.id.saveButton);
+		saveButton.setOnClickListener(this::onCreateClicked);
 	}
 }

@@ -37,6 +37,7 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_confirm_purchases, container, false);
 		this.initFloatingActionButton(view);
 		this.initRecyclerView(view);

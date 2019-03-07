@@ -312,8 +312,6 @@ public class MainActivity extends AppCompatActivity
 	{
 		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
 
-		fragment.changeToolbar(this.toolbar);
-
 		transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
 
 		transaction.replace(R.id.headlines_fragment, fragment);

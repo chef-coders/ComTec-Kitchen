@@ -49,6 +49,7 @@ public class EditUserFragment extends KitchenFragment
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_edit_user, container, false);
 		this.init(view);
