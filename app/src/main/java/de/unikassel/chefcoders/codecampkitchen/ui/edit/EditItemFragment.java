@@ -38,10 +38,7 @@ public class EditItemFragment extends ItemDetailFragment
 		final String itemId = this.getArguments().getString("itemId");
 		final Item item = MainActivity.kitchenManager.items().get(itemId);
 
-		Button editButton = editItemView.findViewById(R.id.editButton);
-		editButton.setOnClickListener(this::onEditClicked);
-
-		DisableButtonTextWatcher.bind(editButton, this.nameText, this.priceText, this.amountText);
+		DisableButtonTextWatcher.bind(this.saveButton, this.nameText, this.priceText, this.amountText);
 
 		this.barcodeTextView.setText(item.get_id());
 		this.nameText.setText(item.getName());
@@ -52,7 +49,8 @@ public class EditItemFragment extends ItemDetailFragment
 		return editItemView;
 	}
 
-	public void onEditClicked(View view)
+	@Override
+	public void onSaveClicked(View view)
 	{
 		final Item item = this.getItem();
 		if (item == null)
@@ -71,6 +69,7 @@ public class EditItemFragment extends ItemDetailFragment
 	@Override
 	protected void updateToolbar(Toolbar toolbar)
 	{
+		super.updateToolbar(toolbar);
 		toolbar.setTitle(R.string.edit_item_fragment_title);
 	}
 }

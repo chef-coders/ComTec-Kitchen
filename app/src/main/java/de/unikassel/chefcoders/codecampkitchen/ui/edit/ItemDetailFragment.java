@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.*;
 import de.unikassel.chefcoders.codecampkitchen.R;
@@ -9,6 +10,8 @@ import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 
 public abstract class ItemDetailFragment extends KitchenFragment
 {
+	protected Button saveButton;
+
 	protected TextView barcodeTextView;
 	protected EditText nameText;
 	protected EditText priceText;
@@ -83,4 +86,15 @@ public abstract class ItemDetailFragment extends KitchenFragment
 
 		return new Item().set_id(itemId).setName(name).setPrice(price).setAmount(amount).setKind(kind);
 	}
+
+	@Override
+	protected void updateToolbar(Toolbar toolbar)
+	{
+		View saveView = this.getLayoutInflater().inflate(R.layout.toolbar_save_view, null);
+		toolbar.addView(saveView);
+		this.saveButton = saveView.findViewById(R.id.saveButton);
+		this.saveButton.setOnClickListener(this::onSaveClicked);
+	}
+
+	protected abstract void onSaveClicked(View view);
 }

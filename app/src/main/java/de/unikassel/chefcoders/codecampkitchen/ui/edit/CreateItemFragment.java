@@ -36,11 +36,8 @@ public class CreateItemFragment extends ItemDetailFragment
 
 		this.initViews(createItemView);
 
-		Button createButton = createItemView.findViewById(R.id.createButton);
-		createButton.setOnClickListener(this::onCreateClicked);
-
 		DisableButtonTextWatcher
-			.bind(createButton, this.priceText, this.amountText, this.nameText, this.barcodeTextView);
+			.bind(this.saveButton, this.priceText, this.amountText, this.nameText, this.barcodeTextView);
 
 		Button genIdButton = createItemView.findViewById(R.id.generateIdButton);
 		genIdButton.setOnClickListener(this::onGeneratedId);
@@ -60,7 +57,21 @@ public class CreateItemFragment extends ItemDetailFragment
 		return createItemView;
 	}
 
-	public void onCreateClicked(View view)
+	public void onGeneratedId(View view)
+	{
+		final long barcode = (long) (Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L);
+		this.barcodeTextView.setText("Generated:" + barcode);
+	}
+
+	@Override
+	protected void updateToolbar(Toolbar toolbar)
+	{
+		super.updateToolbar(toolbar);
+		toolbar.setTitle(R.string.create_item_fragment_title);
+	}
+
+	@Override
+	protected void onSaveClicked(View view)
 	{
 		final Item item = this.getItem();
 		if (item == null)
@@ -73,26 +84,5 @@ public class CreateItemFragment extends ItemDetailFragment
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			mainActivity.changeFragment(new AllItemsFragment());
 		});
-	}
-
-	public void onGeneratedId(View view)
-	{
-		final long barcode = (long) (Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L);
-		this.barcodeTextView.setText("Generated:" + barcode);
-	}
-
-	@Override
-	protected void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.create_item_fragment_title);
-		this.addSaveViewToToolbar(toolbar);
-	}
-
-	private void addSaveViewToToolbar(Toolbar toolbar)
-	{
-		View saveView = this.getLayoutInflater().inflate(R.layout.toolbar_save_view, null);
-		toolbar.addView(saveView);
-		Button saveButton = saveView.findViewById(R.id.saveButton);
-		saveButton.setOnClickListener(this::onCreateClicked);
 	}
 }
