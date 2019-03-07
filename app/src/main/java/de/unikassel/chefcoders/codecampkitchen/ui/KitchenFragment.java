@@ -35,6 +35,10 @@ public abstract class KitchenFragment extends Fragment
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
+		this.title = getString(titleRes);
+
+		this.hideKeyboard(container);
+
 		MainActivity mainActivity = (MainActivity) this.getActivity();
 		if (mainActivity != null)
 		{
@@ -42,6 +46,13 @@ public abstract class KitchenFragment extends Fragment
 			this.changeToolbar(toolbar);
 		}
 		return null;
+	}
+
+	private void hideKeyboard(View view)
+	{
+		InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		view.clearFocus();
 	}
 
 	private void changeToolbar(Toolbar toolbar)
