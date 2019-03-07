@@ -120,13 +120,12 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
 			return this.recyclerController.onClick(viewHolder, sectionIndex, itemIndex);
-		}, (Boolean b) -> {
-			if (b)
+		}, refreshRow -> {
+			if (refreshRow)
 			{
 				adapter.notifyItemChanged(pos);
 			}
-			this.eventHandler.onClick(sectionIndex, itemIndex);
-		});
+		}, () -> this.eventHandler.onClick(sectionIndex, itemIndex));
 	}
 
 	@Override
@@ -158,7 +157,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 				this.recyclerController.refresh();
 			}
 			return refreshAll;
-		}, (Boolean refreshAll) -> {
+		}, refreshAll -> {
 			if (refreshAll)
 			{
 				this.reload();
@@ -168,8 +167,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 				// TODO not necessary
 				adapter.notifyDataSetChanged();
 			}
-			this.eventHandler.onSwiped(sectionIndex, itemIndex);
-		});
+		}, () -> this.eventHandler.onSwiped(sectionIndex, itemIndex));
 	}
 
 	private void handleOnSwipeRefresh()
