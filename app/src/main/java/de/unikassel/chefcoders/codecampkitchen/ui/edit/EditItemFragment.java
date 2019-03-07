@@ -31,6 +31,7 @@ public class EditItemFragment extends ItemDetailFragment
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 		@Nullable Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		View editItemView = inflater.inflate(R.layout.fragment_edit_item, container, false);
 
 		this.initViews(editItemView);
