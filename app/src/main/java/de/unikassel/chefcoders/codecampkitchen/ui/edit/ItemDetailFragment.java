@@ -90,9 +90,8 @@ public abstract class ItemDetailFragment extends KitchenFragment
 	@Override
 	protected void updateToolbar(Toolbar toolbar)
 	{
-		View saveView = this.getLayoutInflater().inflate(R.layout.toolbar_save_view, null);
-		toolbar.addView(saveView);
-		this.saveButton = saveView.findViewById(R.id.saveButton);
+		this.saveButton = toolbar.findViewById(R.id.saveButton);
+		this.saveButton.setVisibility(View.VISIBLE);
 		this.saveButton.setOnClickListener(this::onSaveClicked);
 	}
 

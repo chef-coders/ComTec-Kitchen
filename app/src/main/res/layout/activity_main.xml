@@ -22,7 +22,18 @@
 			android:elevation="4dp"
 			android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
 			app:layout_constraintTop_toTopOf="parent"
-			app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+			app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <Button xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/saveButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:layout_gravity="end"
+                android:layout_alignParentEnd="true" />
+
+        </android.support.v7.widget.Toolbar>
 
 		<FrameLayout
 			android:id="@+id/fragment_layout"

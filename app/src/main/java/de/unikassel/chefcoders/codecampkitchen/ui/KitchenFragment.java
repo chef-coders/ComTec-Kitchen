@@ -53,10 +53,11 @@ public class KitchenFragment extends Fragment
 			menu.getItem(i).setVisible(false);
 		}
 
-		View saveButtonView = toolbar.findViewById(R.id.saveButton);
-		if(saveButtonView != null)
+		View saveButton = toolbar.findViewById(R.id.saveButton);
+		if(saveButton != null)
 		{
-			toolbar.removeView(saveButtonView);
+			saveButton.setVisibility(View.GONE);
+			saveButton.setOnClickListener(null);
 		}
 
 		this.updateToolbar(toolbar);
