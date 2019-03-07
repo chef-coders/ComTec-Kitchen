@@ -17,6 +17,11 @@ import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 
 public class EditItemFragment extends ItemDetailFragment
 {
+	public EditItemFragment()
+	{
+		super(R.string.edit_item_fragment_title);
+	}
+
 	public static EditItemFragment newInstance(String itemId)
 	{
 		EditItemFragment fragment = new EditItemFragment();
@@ -50,7 +55,7 @@ public class EditItemFragment extends ItemDetailFragment
 	}
 
 	@Override
-	public void onSaveClicked(View view)
+	protected void handleClickedOnSave(View view)
 	{
 		final Item item = this.getItem();
 		if (item == null)
@@ -64,12 +69,5 @@ public class EditItemFragment extends ItemDetailFragment
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			mainActivity.changeFragment(new AllItemsFragment());
 		});
-	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		super.updateToolbar(toolbar);
-		toolbar.setTitle(R.string.edit_item_fragment_title);
 	}
 }

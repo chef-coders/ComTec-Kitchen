@@ -32,7 +32,7 @@ public class PurchaseItemFragment extends KitchenFragment
 
 	public PurchaseItemFragment()
 	{
-		// Required empty public constructor
+		super(R.string.add_to_cart, false);
 	}
 
 	public static PurchaseItemFragment newInstance(String barcode)
@@ -124,12 +124,6 @@ public class PurchaseItemFragment extends KitchenFragment
 
 		SimpleAsyncTask.execute(this.getActivity(), () -> MainActivity.kitchenManager.cart().add(
 			MainActivity.kitchenManager.items().get(this.barcode), amount), this::goBack);
-	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.add_to_cart);
 	}
 
 	private void goBack()

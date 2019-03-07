@@ -17,6 +17,11 @@ import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 
 public class CreateItemFragment extends ItemDetailFragment
 {
+	public CreateItemFragment()
+	{
+		super(R.string.create_item_fragment_title);
+	}
+
 	public static CreateItemFragment newInstance(String barcode)
 	{
 		CreateItemFragment fragment = new CreateItemFragment();
@@ -64,14 +69,7 @@ public class CreateItemFragment extends ItemDetailFragment
 	}
 
 	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		super.updateToolbar(toolbar);
-		toolbar.setTitle(R.string.create_item_fragment_title);
-	}
-
-	@Override
-	protected void onSaveClicked(View view)
+	protected void handleClickedOnSave(View view)
 	{
 		final Item item = this.getItem();
 		if (item == null)

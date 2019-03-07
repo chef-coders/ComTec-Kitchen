@@ -24,7 +24,7 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 
 	public AllUserFragment()
 	{
-		// Required empty public constructor
+		super(R.string.users, false);
 	}
 
 	@Override
@@ -42,12 +42,6 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 		this.progressBar = view.findViewById(R.id.progressBar);
 		new GeneralRecyclerView(view.findViewById(R.id.recyclerView), new UserRecyclerController(),
 		                        view.findViewById(R.id.swipeRefreshLayout), this);
-	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.users);
 	}
 
 	@Override

@@ -10,13 +10,16 @@ import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 
 public abstract class ItemDetailFragment extends KitchenFragment
 {
-	protected Button saveButton;
-
 	protected TextView barcodeTextView;
 	protected EditText nameText;
 	protected EditText priceText;
 	protected EditText amountText;
 	protected Spinner  kindSpinner;
+
+	public ItemDetailFragment(int titleRes)
+	{
+		super(titleRes, true);
+	}
 
 	protected void initViews(View itemDetailView)
 	{
@@ -86,14 +89,4 @@ public abstract class ItemDetailFragment extends KitchenFragment
 
 		return new Item().set_id(itemId).setName(name).setPrice(price).setAmount(amount).setKind(kind);
 	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		this.saveButton = toolbar.findViewById(R.id.saveButton);
-		this.saveButton.setVisibility(View.VISIBLE);
-		this.saveButton.setOnClickListener(this::onSaveClicked);
-	}
-
-	protected abstract void onSaveClicked(View view);
 }

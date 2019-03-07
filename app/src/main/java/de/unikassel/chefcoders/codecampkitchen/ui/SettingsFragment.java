@@ -24,7 +24,7 @@ public class SettingsFragment extends KitchenFragment
 
 	public SettingsFragment()
 	{
-		// Required empty public constructor
+		super(R.string.settings, false);
 	}
 
 	@Override
@@ -61,11 +61,5 @@ public class SettingsFragment extends KitchenFragment
 		Intent intent = new Intent(this.getActivity(), MainActivity.class);
 		intent.putExtra("settings", true);
 		this.startActivity(intent);
-	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.settings);
 	}
 }

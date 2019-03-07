@@ -39,6 +39,7 @@ public class StatisticsFragment extends KitchenFragment
 
 	public StatisticsFragment()
 	{
+		super(R.string.statistics, false);
 	}
 
 	@Override
@@ -179,11 +180,5 @@ public class StatisticsFragment extends KitchenFragment
 		final String itemId = purchase.getItem_id();
 		final Item item = MainActivity.kitchenManager.items().get(itemId);
 		return item != null ? item.getName() : "...";
-	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.statistics);
 	}
 }

@@ -21,13 +21,16 @@ public class EditUserFragment extends KitchenFragment
 {
 	// =============== Fields ===============
 
-	private Button saveButton;
-
 	private String userId;
 
 	private EditText editTextEmail;
 	private EditText editTextName;
 	private EditText editTextCredit;
+
+	public EditUserFragment()
+	{
+		super(R.string.edit_user, true);
+	}
 
 	// =============== Static Methods ===============
 
@@ -69,8 +72,6 @@ public class EditUserFragment extends KitchenFragment
 			this.editTextEmail.setText(user.getMail());
 			this.editTextCredit.setText(String.valueOf(user.getCredit()));
 		}
-
-		saveButton.setOnClickListener(this::onSaveClicked);
 	}
 
 	private User getUser()
@@ -92,7 +93,8 @@ public class EditUserFragment extends KitchenFragment
 		return new User().set_id(this.userId).setName(name).setMail(email).setCredit(credit);
 	}
 
-	private void onSaveClicked(View v)
+	@Override
+	protected void handleClickedOnSave(View v)
 	{
 		User user = this.getUser();
 		if (user == null)
@@ -112,13 +114,5 @@ public class EditUserFragment extends KitchenFragment
 				mainActivity.changeFragmentBack(new AllUserFragment());
 			}
 		});
-	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.edit_user);
-		this.saveButton = toolbar.findViewById(R.id.saveButton);
-		this.saveButton.setVisibility(View.VISIBLE);
 	}
 }

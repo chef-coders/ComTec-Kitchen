@@ -23,6 +23,11 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	private FloatingActionButton floatingActionButton;
 	private ProgressBar          progressBar;
 
+	public AllItemsFragment()
+	{
+		super(R.string.shop, false);
+	}
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 		@Nullable Bundle savedInstanceState)
@@ -62,10 +67,6 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 		if (MainActivity.editMode)
 		{
 			toolbar.setTitle(R.string.edit_items);
-		}
-		else
-		{
-			toolbar.setTitle(R.string.shop);
 		}
 		Menu menu = toolbar.getMenu();
 		menu.findItem(R.id.action_scan_code).setVisible(!MainActivity.editMode);

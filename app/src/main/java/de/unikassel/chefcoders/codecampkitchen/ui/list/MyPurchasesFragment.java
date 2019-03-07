@@ -24,7 +24,7 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
 
 	public MyPurchasesFragment()
 	{
-		// Required empty public constructor
+		super(R.string.purchase_history, false);
 	}
 
 	@Override
@@ -41,12 +41,6 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
 	{
 		new GeneralRecyclerView(view.findViewById(R.id.allItemsRecView), new PurchasesRecyclerController(),
 		                        view.findViewById(R.id.allItemsSwipeRefreshLayout), this);
-	}
-
-	@Override
-	public void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.purchase_history);
 	}
 
 	// --- --- --- Handle user interactions --- --- ---
