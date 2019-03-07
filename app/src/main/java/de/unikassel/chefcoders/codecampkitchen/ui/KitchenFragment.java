@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
@@ -22,7 +23,8 @@ public class KitchenFragment extends Fragment
 		MainActivity mainActivity = (MainActivity) this.getActivity();
 		if (mainActivity != null)
 		{
-			this.changeToolbar(mainActivity.getToolbar());
+			Toolbar toolbar = mainActivity.getToolbar();
+			this.changeToolbar(toolbar);
 		}
 		return null;
 	}

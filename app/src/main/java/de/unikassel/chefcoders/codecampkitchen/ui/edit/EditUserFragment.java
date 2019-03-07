@@ -118,6 +118,7 @@ public class EditUserFragment extends KitchenFragment
 	public void updateToolbar(Toolbar toolbar)
 	{
 		toolbar.setTitle(R.string.edit_user);
+		this.saveButton = toolbar.findViewById(R.id.saveButton);
 		this.saveButton.setVisibility(View.VISIBLE);
 	}
 }
