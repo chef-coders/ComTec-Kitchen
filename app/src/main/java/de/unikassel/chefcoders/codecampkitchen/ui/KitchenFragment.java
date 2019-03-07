@@ -37,7 +37,10 @@ public abstract class KitchenFragment extends Fragment
 	{
 		this.title = getString(titleRes);
 
-		this.hideKeyboard(container);
+		if(container != null)
+		{
+			this.hideKeyboard(container);
+		}
 
 		MainActivity mainActivity = (MainActivity) this.getActivity();
 		if (mainActivity != null)
