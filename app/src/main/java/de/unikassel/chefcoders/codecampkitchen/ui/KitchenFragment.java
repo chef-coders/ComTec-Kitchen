@@ -27,7 +27,7 @@ public class KitchenFragment extends Fragment
 		return null;
 	}
 
-	public void changeToolbar(Toolbar toolbar)
+	private void changeToolbar(Toolbar toolbar)
 	{
 		if (toolbar == null)
 		{
@@ -63,8 +63,5 @@ public class KitchenFragment extends Fragment
 		this.updateToolbar(toolbar);
 	}
 
-	protected void updateToolbar(Toolbar toolbar)
-	{
-
-	}
+	protected void updateToolbar(Toolbar toolbar) {}
 }

@@ -144,8 +144,6 @@ public class MainActivity extends AppCompatActivity
 			fragment = new AllItemsFragment();
 		}
 
-		fragment.changeToolbar(this.toolbar);
-
 		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.headlines_fragment, fragment);
 		transaction.commitAllowingStateLoss();
@@ -323,8 +321,6 @@ public class MainActivity extends AppCompatActivity
 	{
 
 		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-
-		fragment.changeToolbar(this.toolbar);
 
 		transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
 

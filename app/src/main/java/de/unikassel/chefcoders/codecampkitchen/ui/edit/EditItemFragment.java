@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
@@ -68,7 +67,7 @@ public class EditItemFragment extends ItemDetailFragment
 	}
 
 	@Override
-	protected void updateToolbar(Toolbar toolbar)
+	public void updateToolbar(Toolbar toolbar)
 	{
 		super.updateToolbar(toolbar);
 		toolbar.setTitle(R.string.edit_item_fragment_title);

@@ -64,7 +64,7 @@ public class CreateItemFragment extends ItemDetailFragment
 	}
 
 	@Override
-	protected void updateToolbar(Toolbar toolbar)
+	public void updateToolbar(Toolbar toolbar)
 	{
 		super.updateToolbar(toolbar);
 		toolbar.setTitle(R.string.create_item_fragment_title);

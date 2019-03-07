@@ -182,8 +182,9 @@ public class StatisticsFragment extends KitchenFragment
 	}
 
 	@Override
-	protected void updateToolbar(Toolbar toolbar)
+	public void updateToolbar(Toolbar toolbar)
 	{
+		super.updateToolbar(toolbar);
 		toolbar.setTitle(R.string.statistics);
 	}
 }

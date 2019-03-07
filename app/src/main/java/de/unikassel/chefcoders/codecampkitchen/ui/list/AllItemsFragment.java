@@ -57,8 +57,9 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	}
 
 	@Override
-	protected void updateToolbar(Toolbar toolbar)
+	public void updateToolbar(Toolbar toolbar)
 	{
+		super.updateToolbar(toolbar);
 		if (MainActivity.editMode)
 		{
 			toolbar.setTitle(R.string.edit_items);

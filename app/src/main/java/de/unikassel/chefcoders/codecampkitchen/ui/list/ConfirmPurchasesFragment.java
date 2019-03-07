@@ -82,8 +82,9 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	}
 
 	@Override
-	protected void updateToolbar(Toolbar toolbar)
+	public void updateToolbar(Toolbar toolbar)
 	{
+		super.updateToolbar(toolbar);
 
 		toolbar.setTitle(R.string.purchase);
 		Menu menu = toolbar.getMenu();

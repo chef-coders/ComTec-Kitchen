@@ -45,8 +45,9 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 	}
 
 	@Override
-	protected void updateToolbar(Toolbar toolbar)
+	public void updateToolbar(Toolbar toolbar)
 	{
+		super.updateToolbar(toolbar);
 		toolbar.setTitle(R.string.users);
 	}
 

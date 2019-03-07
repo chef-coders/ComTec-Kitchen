@@ -21,6 +21,8 @@ public class EditUserFragment extends KitchenFragment
 {
 	// =============== Fields ===============
 
+	private Button saveButton;
+
 	private String userId;
 
 	private EditText editTextEmail;
@@ -41,12 +43,6 @@ public class EditUserFragment extends KitchenFragment
 	// =============== Methods ===============
 
 	@Override
-	protected void updateToolbar(Toolbar toolbar)
-	{
-		toolbar.setTitle(R.string.edit_user);
-	}
-
-	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -60,13 +56,11 @@ public class EditUserFragment extends KitchenFragment
 	{
 		this.userId = this.getArguments().getString("userId");
 
-		final Button saveButton = view.findViewById(R.id.buttonSave);
-
 		this.editTextEmail = view.findViewById(R.id.editTextEmail);
 		this.editTextName = view.findViewById(R.id.editTextName);
 		this.editTextCredit = view.findViewById(R.id.editTextCredit);
 
-		DisableButtonTextWatcher.bind(saveButton, this.editTextEmail, this.editTextName, this.editTextCredit);
+		DisableButtonTextWatcher.bind(this.saveButton, this.editTextEmail, this.editTextName, this.editTextCredit);
 
 		final User user = MainActivity.kitchenManager.users().get(this.userId);
 		if (user != null)
@@ -118,5 +112,16 @@ public class EditUserFragment extends KitchenFragment
 				mainActivity.changeFragmentBack(new AllUserFragment());
 			}
 		});
+	}
+
+	@Override
+	public void updateToolbar(Toolbar toolbar)
+	{
+		super.updateToolbar(toolbar);
+
+		toolbar.setTitle(R.string.edit_user);
+
+		this.saveButton = toolbar.findViewById(R.id.saveButton);
+		this.saveButton.setVisibility(View.VISIBLE);
 	}
 }
