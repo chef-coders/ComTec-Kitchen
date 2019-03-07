@@ -67,7 +67,7 @@ public class EditItemFragment extends ItemDetailFragment
 			MainActivity.kitchenManager.cart().clear();
 			Toast.makeText(this.getActivity(), R.string.edit_item_successful, Toast.LENGTH_SHORT).show();
 			MainActivity mainActivity = (MainActivity) this.getActivity();
-			mainActivity.changeFragment(new AllItemsFragment());
+			mainActivity.changeFragmentBack(new AllItemsFragment());
 		});
 	}
 }

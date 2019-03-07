@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity
 					this.setEditMode(false);
 				}
 				this.drawerLayout.closeDrawers();
-				this.changeFragment(EditUserFragment.newInstance(user.get_id()));
+				this.changeFragmentForward(EditUserFragment.newInstance(user.get_id()));
 			});
 		}
 		else
@@ -342,12 +342,12 @@ public class MainActivity extends AppCompatActivity
 		{
 			if (currentFragment instanceof EditUserFragment)
 			{
-				this.changeFragment(new AllUserFragment());
+				this.changeFragmentBack(new AllUserFragment());
 				this.setMenuItem(R.id.nav_all_users, true);
 			}
 			else
 			{
-				this.changeFragment(new AllItemsFragment());
+				this.changeFragmentBack(new AllItemsFragment());
 				this.setMenuItem(R.id.nav_all_items, true);
 			}
 		}
@@ -374,14 +374,14 @@ public class MainActivity extends AppCompatActivity
 			this.startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
 			return true;
 		case R.id.action_create:
-			this.changeFragment(new CreateItemFragment());
+			this.changeFragmentForward(new CreateItemFragment());
 			return true;
 		case R.id.action_edit:
 			this.setEditMode(!editMode);
 			return true;
 		case R.id.action_clear_all:
 			kitchenManager.cart().clear();
-			this.changeFragment(new AllItemsFragment());
+			this.changeFragmentBack(new AllItemsFragment());
 			return true;
 		}
 

@@ -80,7 +80,7 @@ public class CreateItemFragment extends ItemDetailFragment
 		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().create(item), () -> {
 			Toast.makeText(this.getActivity(), R.string.create_item_successful, Toast.LENGTH_SHORT).show();
 			MainActivity mainActivity = (MainActivity) this.getActivity();
-			mainActivity.changeFragment(new AllItemsFragment());
+			mainActivity.changeFragmentBack(new AllItemsFragment());
 		});
 	}
 }

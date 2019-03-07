@@ -47,7 +47,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 			if (mainActivity != null)
 			{
 				EditItemFragment editItemFragment = EditItemFragment.newInstance(item.get_id());
-				mainActivity.changeFragment(editItemFragment);
+				mainActivity.changeFragmentForward(editItemFragment);
 			}
 		});
 		return true;

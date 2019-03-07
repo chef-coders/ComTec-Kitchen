@@ -41,7 +41,7 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 			final MainActivity mainActivity = (MainActivity) MainActivity.getActivity(itemView);
 			if (mainActivity != null)
 			{
-				mainActivity.changeFragment(EditUserFragment.newInstance(user.get_id()));
+				mainActivity.changeFragmentForward(EditUserFragment.newInstance(user.get_id()));
 			}
 		});
 		return false;

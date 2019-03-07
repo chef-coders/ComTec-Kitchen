@@ -67,7 +67,7 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			if (mainActivity != null)
 			{
-				mainActivity.changeFragment(new AllItemsFragment());
+				mainActivity.changeFragmentBack(new AllItemsFragment());
 				Toast.makeText(this.getActivity(), R.string.purchase_success, Toast.LENGTH_LONG).show();
 			}
 		}, () -> this.progressBar.setVisibility(View.GONE));
