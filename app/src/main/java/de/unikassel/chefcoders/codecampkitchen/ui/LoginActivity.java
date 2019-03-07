@@ -63,7 +63,10 @@ public class LoginActivity extends AppCompatActivity
 			String email = this.editTextEmail.getText().toString();
 
 			MainActivity.kitchenManager.session().register(this, name, email, this.switchAdmin.isChecked());
-		}, this::startMainActivity);
+		}, this::startMainActivity, () -> {
+			this.setButtonEnabled(true);
+			this.progressBar.setVisibility(View.GONE);
+		});
 	}
 
 	private void setButtonEnabled(boolean enable)

@@ -64,14 +64,13 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	{
 		this.progressBar.setVisibility(View.VISIBLE);
 		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.cart().submit(), () -> {
-			this.progressBar.setVisibility(View.GONE);
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			if (mainActivity != null)
 			{
 				mainActivity.changeFragment(new AllItemsFragment());
 				Toast.makeText(this.getActivity(), R.string.purchase_success, Toast.LENGTH_LONG).show();
 			}
-		});
+		}, () -> this.progressBar.setVisibility(View.GONE));
 	}
 
 	private void initRecyclerView(View view)

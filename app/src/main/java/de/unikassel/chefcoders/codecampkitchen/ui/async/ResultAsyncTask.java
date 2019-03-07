@@ -10,23 +10,68 @@ import java.util.function.Supplier;
 
 public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 {
-	private final Context     context;
-	private final Supplier<T> backgroundRunnable;
-	private final Consumer<T> postExeRunnable;
+	// =============== Fields ===============
 
-	private String errorMessage;
+	private final Supplier<? extends T>       backgroundRunnable;
+	private final Consumer<? super T>         successHandler;
+	private final Consumer<? super Exception> exceptionHandler;
+	private final Runnable                    completionHandler;
 
-	private ResultAsyncTask(Context context, Supplier<T> backgroundRunnable, Consumer<T> postExeRunnable)
+	private Exception exception;
+
+	// =============== Constructors ===============
+
+	private ResultAsyncTask(Supplier<? extends T> backgroundRunnable, Consumer<? super T> successHandler,
+		Consumer<? super Exception> exceptionHandler, Runnable completionHandler)
 	{
-		this.context = context;
 		this.backgroundRunnable = backgroundRunnable;
-		this.postExeRunnable = postExeRunnable;
+		this.successHandler = successHandler;
+		this.exceptionHandler = exceptionHandler;
+		this.completionHandler = completionHandler;
 	}
 
-	public static <T> void execute(Context context, Supplier<T> backgroundRunnable, Consumer<T> postExeRunnable)
+	// =============== Static Methods ===============
+
+	public static <T> void execute(Context context, Supplier<? extends T> backgroundTask,
+		Consumer<? super T> successHandler)
 	{
-		new ResultAsyncTask<>(context, backgroundRunnable, postExeRunnable).execute();
+		execute(backgroundTask, successHandler, defaultExceptionHandler(context), null);
 	}
+
+	public static <T> void execute(Context context, Supplier<? extends T> backgroundTask,
+		Consumer<? super T> successHandler, Runnable completionHandler)
+	{
+		execute(backgroundTask, successHandler, defaultExceptionHandler(context), completionHandler);
+	}
+
+	public static <T> void execute(Supplier<? extends T> backgroundTask, Consumer<? super T> successHandler,
+		Consumer<? super Exception> exceptionHandler)
+	{
+		execute(backgroundTask, successHandler, exceptionHandler, null);
+	}
+
+	public static <T> void execute(Supplier<? extends T> backgroundTask, Consumer<? super T> successHandler,
+		Consumer<? super Exception> exceptionHandler, Runnable completionHandler)
+	{
+		new ResultAsyncTask<>(backgroundTask, successHandler, exceptionHandler, completionHandler).execute();
+	}
+
+	private static Consumer<Exception> defaultExceptionHandler(Context context)
+	{
+		return exception -> defaultHandleException(context, exception);
+	}
+
+	public static void defaultHandleException(Context context, Exception exception)
+	{
+		exception.printStackTrace();
+		if (exception instanceof HttpConnectionException)
+		{
+			final String message = ((HttpConnectionException) exception).smallErrorMessage();
+			Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	// =============== Methods ===============
 
 	@Override
 	protected T doInBackground(Void... voids)
@@ -35,9 +80,9 @@ public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 		{
 			return this.backgroundRunnable.get();
 		}
-		catch (HttpConnectionException ex)
+		catch (Exception ex)
 		{
-			this.errorMessage = ex.smallErrorMessage();
+			this.exception = ex;
 			return null;
 		}
 	}
@@ -45,12 +90,18 @@ public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 	@Override
 	protected void onPostExecute(T t)
 	{
-		if (this.errorMessage != null)
+		if (this.exception != null)
 		{
-			Toast.makeText(this.context, this.errorMessage, Toast.LENGTH_LONG).show();
-			return;
+			this.exceptionHandler.accept(this.exception);
+		}
+		else
+		{
+			this.successHandler.accept(t);
 		}
 
-		this.postExeRunnable.accept(t);
+		if (this.completionHandler != null)
+		{
+			this.completionHandler.run();
+		}
 	}
 }
