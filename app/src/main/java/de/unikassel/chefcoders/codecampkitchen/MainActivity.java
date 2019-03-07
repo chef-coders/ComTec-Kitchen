@@ -37,7 +37,6 @@ import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.SettingsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.StatisticsFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.BarcodeScannerActivity;
 import de.unikassel.chefcoders.codecampkitchen.ui.barcodes.PurchaseItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.edit.CreateItemFragment;
@@ -308,24 +307,19 @@ public class MainActivity extends AppCompatActivity
 
 	public void changeFragmentForward(KitchenFragment fragment)
 	{
-		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-
-		transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-
-		transaction.replace(R.id.headlines_fragment, fragment);
-
-		transaction.commit();
+		this.changeFragment(fragment, R.anim.slide_in_right, R.anim.slide_out_left);
 	}
 
 	public void changeFragmentBack(KitchenFragment fragment)
 	{
+		this.changeFragment(fragment, R.anim.slide_in_left, R.anim.slide_out_right);
+	}
 
-		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-
-		transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-
+	private void changeFragment(KitchenFragment fragment, int inAnimation, int outAnimation)
+	{
+		final FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
+		transaction.setCustomAnimations(inAnimation, outAnimation);
 		transaction.replace(R.id.headlines_fragment, fragment);
-
 		transaction.commit();
 	}
 
