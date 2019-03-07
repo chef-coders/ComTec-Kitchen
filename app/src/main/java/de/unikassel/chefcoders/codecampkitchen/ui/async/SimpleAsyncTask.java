@@ -12,16 +12,28 @@ public abstract class SimpleAsyncTask
 		// no instances
 	}
 
-	@Deprecated
 	public static void execute(Context context, Runnable backgroundTask, Runnable successHandler)
 	{
 		ResultAsyncTask.execute(context, voidSupplier(backgroundTask), voidConsumer(successHandler));
+	}
+
+	public static void execute(Context context, Runnable backgroundTask, Runnable successHandler,
+		Runnable completionHandler)
+	{
+		ResultAsyncTask.execute(context, voidSupplier(backgroundTask), voidConsumer(successHandler), completionHandler);
 	}
 
 	public static void execute(Runnable backgroundTask, Runnable successHandler,
 		Consumer<? super Exception> exceptionHandler)
 	{
 		ResultAsyncTask.execute(voidSupplier(backgroundTask), voidConsumer(successHandler), exceptionHandler);
+	}
+
+	public static void execute(Runnable backgroundTask, Runnable successHandler,
+		Consumer<? super Exception> exceptionHandler, Runnable completionHandler)
+	{
+		ResultAsyncTask
+			.execute(voidSupplier(backgroundTask), voidConsumer(successHandler), exceptionHandler, completionHandler);
 	}
 
 	private static Supplier<Object> voidSupplier(Runnable runnable)

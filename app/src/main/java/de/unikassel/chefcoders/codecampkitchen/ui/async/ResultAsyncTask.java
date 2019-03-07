@@ -15,32 +15,45 @@ public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 	private final Supplier<? extends T>       backgroundRunnable;
 	private final Consumer<? super T>         successHandler;
 	private final Consumer<? super Exception> exceptionHandler;
+	private final Runnable                    completionHandler;
 
 	private Exception exception;
 
 	// =============== Constructors ===============
 
 	private ResultAsyncTask(Supplier<? extends T> backgroundRunnable, Consumer<? super T> successHandler,
-		Consumer<? super Exception> exceptionHandler)
+		Consumer<? super Exception> exceptionHandler, Runnable completionHandler)
 	{
 		this.backgroundRunnable = backgroundRunnable;
 		this.successHandler = successHandler;
 		this.exceptionHandler = exceptionHandler;
+		this.completionHandler = completionHandler;
 	}
 
 	// =============== Static Methods ===============
 
-	@Deprecated
 	public static <T> void execute(Context context, Supplier<? extends T> backgroundTask,
 		Consumer<? super T> successHandler)
 	{
-		new ResultAsyncTask<>(backgroundTask, successHandler, defaultExceptionHandler(context)).execute();
+		execute(backgroundTask, successHandler, defaultExceptionHandler(context), null);
+	}
+
+	public static <T> void execute(Context context, Supplier<? extends T> backgroundTask,
+		Consumer<? super T> successHandler, Runnable completionHandler)
+	{
+		execute(backgroundTask, successHandler, defaultExceptionHandler(context), completionHandler);
 	}
 
 	public static <T> void execute(Supplier<? extends T> backgroundTask, Consumer<? super T> successHandler,
 		Consumer<? super Exception> exceptionHandler)
 	{
-		new ResultAsyncTask<>(backgroundTask, successHandler, exceptionHandler).execute();
+		execute(backgroundTask, successHandler, exceptionHandler, null);
+	}
+
+	public static <T> void execute(Supplier<? extends T> backgroundTask, Consumer<? super T> successHandler,
+		Consumer<? super Exception> exceptionHandler, Runnable completionHandler)
+	{
+		new ResultAsyncTask<>(backgroundTask, successHandler, exceptionHandler, completionHandler).execute();
 	}
 
 	private static Consumer<Exception> defaultExceptionHandler(Context context)
@@ -80,9 +93,15 @@ public class ResultAsyncTask<T> extends AsyncTask<Void, Void, T>
 		if (this.exception != null)
 		{
 			this.exceptionHandler.accept(this.exception);
-			return;
+		}
+		else
+		{
+			this.successHandler.accept(t);
 		}
 
-		this.successHandler.accept(t);
+		if (this.completionHandler != null)
+		{
+			this.completionHandler.run();
+		}
 	}
 }
