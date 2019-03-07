@@ -2,10 +2,11 @@ package de.unikassel.chefcoders.codecampkitchen.communication.errorhandling;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 
 public class HttpConnectionException extends RuntimeException
 {
+	// =============== Fields ===============
+
 	private int    responseCode;
 	private String responseString;
 	private String requestBodyString;
@@ -13,6 +14,8 @@ public class HttpConnectionException extends RuntimeException
 	private String requestUrl;
 
 	private String simpleMessage;
+
+	// =============== Constructors ===============
 
 	public HttpConnectionException(String requestUrl, String method, int responseCode, String requestBodyString,
 		String responseString)
@@ -29,38 +32,35 @@ public class HttpConnectionException extends RuntimeException
 		this.simpleMessage = message;
 	}
 
+	// =============== Methods ===============
+
 	public String fullErrorMessage()
 	{
-		StringBuilder errorMessageBuilder = new StringBuilder().append(
-			"\nError: Responsecode was " + this.responseCode + ", trying to execute Request\n")
-		                                                       .append("\tof Type \"" + this.method + "\"\n")
-		                                                       .append("\ton URL \"" + this.requestUrl + "\"\n")
-		                                                       .append("\twith Body \"" + this.requestBodyString
-		                                                               + "\"\n")
-		                                                       .append("\twith Response \"" + this.responseString
-		                                                               + "\"\n");
-
-		return errorMessageBuilder.toString();
+		return "\nError: Responsecode was " + this.responseCode + ", trying to execute Request\n" + "\tof Type \""
+		       + this.method + "\"\n" + "\ton URL \"" + this.requestUrl + "\"\n" + "\twith Body \""
+		       + this.requestBodyString + "\"\n" + "\twith Response \"" + this.responseString + "\"\n";
 	}
 
 	public String smallErrorMessage()
 	{
+		if (this.simpleMessage != null)
+		{
+			return this.simpleMessage;
+		}
+
 		String innerMessage = "";
 		try
 		{
-			JsonParser parser = new JsonParser();
-			JsonObject jsonObject = (JsonObject) parser.parse(this.responseString);
+			final JsonObject jsonObject = (JsonObject) new JsonParser().parse(this.responseString);
+			final JsonObject outerMessage = (JsonObject) jsonObject.get("message");
 
-			JsonObject outerMessage = (JsonObject) jsonObject.get("message");
 			innerMessage = outerMessage.get("message").getAsString();
 		}
-		catch (JsonSyntaxException e)
+		catch (Exception ignored)
 		{
-
+			// we don't want an "error occurred while displaying previous error", so just catch-all
 		}
 
-		this.simpleMessage = innerMessage;
-
-		return this.simpleMessage;
+		return this.simpleMessage = innerMessage;
 	}
 }
