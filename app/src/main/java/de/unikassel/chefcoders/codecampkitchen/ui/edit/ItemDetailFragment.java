@@ -10,8 +10,6 @@ import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 
 public abstract class ItemDetailFragment extends KitchenFragment
 {
-	protected Button saveButton;
-
 	protected TextView barcodeTextView;
 	protected EditText nameText;
 	protected EditText priceText;
@@ -90,10 +88,7 @@ public abstract class ItemDetailFragment extends KitchenFragment
 	@Override
 	public void updateToolbar(Toolbar toolbar)
 	{
-		super.updateToolbar(toolbar);
-		this.saveButton = toolbar.findViewById(R.id.saveButton);
 		this.saveButton.setVisibility(View.VISIBLE);
-
 		this.saveButton.setOnClickListener(this::onSaveClicked);
 	}
 

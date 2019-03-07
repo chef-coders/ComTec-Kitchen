@@ -46,7 +46,6 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
 	@Override
 	public void updateToolbar(Toolbar toolbar)
 	{
-		super.updateToolbar(toolbar);
 		toolbar.setTitle(R.string.purchase_history);
 	}
 

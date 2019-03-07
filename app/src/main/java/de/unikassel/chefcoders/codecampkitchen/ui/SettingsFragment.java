@@ -66,7 +66,6 @@ public class SettingsFragment extends KitchenFragment
 	@Override
 	public void updateToolbar(Toolbar toolbar)
 	{
-		super.updateToolbar(toolbar);
 		toolbar.setTitle(R.string.settings);
 	}
 }
