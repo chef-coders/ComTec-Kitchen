@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -125,34 +124,28 @@ public class MainActivity extends AppCompatActivity
 
 	private void initFragment()
 	{
-		KitchenFragment fragment;
-
 		if (this.getIntent().hasExtra("settings"))
 		{
-			fragment = new SettingsFragment();
 			this.selectMenuItem(R.id.nav_settings);
 		}
 		else if (this.getIntent().hasExtra("barcode"))
 		{
-			fragment = PurchaseItemFragment.newInstance(this.getIntent().getStringExtra("barcode"));
+			this.changeFragmentForward(PurchaseItemFragment.newInstance(this.getIntent().getStringExtra("barcode")));
 		}
 		else if (this.getIntent().hasExtra("barcodeCreate"))
 		{
-			fragment = CreateItemFragment.newInstance(this.getIntent().getStringExtra("barcodeCreate"));
+			this.changeFragmentForward(
+				CreateItemFragment.newInstance(this.getIntent().getStringExtra("barcodeCreate")));
 		}
 		else if (this.getIntent().hasExtra("barcodeFailed"))
 		{
-			fragment = new AllItemsFragment();
+			this.selectMenuItem(R.id.nav_all_items);
 			Toast.makeText(this.getApplicationContext(), R.string.item_amount_not_available, Toast.LENGTH_LONG).show();
 		}
 		else
 		{
-			fragment = new AllItemsFragment();
+			this.selectMenuItem(R.id.nav_all_items);
 		}
-
-		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-		transaction.replace(R.id.headlines_fragment, fragment);
-		transaction.commitAllowingStateLoss();
 	}
 
 	private void initShortCuts()
@@ -281,7 +274,7 @@ public class MainActivity extends AppCompatActivity
 
 		this.selectMenuItem(R.id.nav_all_items);
 
-		this.navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
+		this.navigationView.setNavigationItemSelectedListener(this::selectMenuItem);
 	}
 
 	private void updatedDrawerHeader()
@@ -325,7 +318,12 @@ public class MainActivity extends AppCompatActivity
 		}
 	}
 
-	private boolean onNavigationItemSelected(MenuItem menuItem)
+	private void selectMenuItem(@IdRes int menuItemRes)
+	{
+		this.selectMenuItem(this.navigationView.getMenu().findItem(menuItemRes));
+	}
+
+	private boolean selectMenuItem(MenuItem menuItem)
 	{
 		if (MainActivity.editMode)
 		{
@@ -336,28 +334,18 @@ public class MainActivity extends AppCompatActivity
 		{
 		case R.id.nav_all_items:
 			this.selectFragment(new AllItemsFragment());
-			menuItem.setChecked(true);
-			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_my_purcheses:
 			this.selectFragment(new MyPurchasesFragment());
-			menuItem.setChecked(true);
-			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_all_users:
 			this.selectFragment(new AllUserFragment());
-			menuItem.setChecked(true);
-			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_statistics:
 			this.selectFragment(new StatisticsFragment());
-			menuItem.setChecked(true);
-			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_settings:
 			this.selectFragment(new SettingsFragment());
-			menuItem.setChecked(true);
-			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_clear_user_data:
 			kitchenManager.session().clearUserData(this);
@@ -365,22 +353,18 @@ public class MainActivity extends AppCompatActivity
 			break;
 		}
 
+		menuItem.setChecked(true);
+		this.drawerLayout.closeDrawers();
+
 		return true;
 	}
-
-	private void selectMenuItem(@IdRes int menuItemRes)
-	{
-		Menu menuNav = this.navigationView.getMenu();
-		MenuItem item = menuNav.findItem(menuItemRes);
-		item.setChecked(true);
-	}
-
-	// --------------- Navigation ---------------
 
 	private void selectFragment(KitchenFragment fragment)
 	{
 		this.getSupportFragmentManager().beginTransaction().replace(R.id.headlines_fragment, fragment).commit();
 	}
+
+	// --------------- Navigation ---------------
 
 	public void changeFragmentForward(KitchenFragment fragment)
 	{
