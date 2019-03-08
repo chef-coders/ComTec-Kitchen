@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerController;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
@@ -14,29 +13,33 @@ import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 
 public class SwipeDelCallback extends ItemTouchHelper.Callback
 {
+	// =============== Classes ===============
+
 	public interface SwipeEvent
 	{
 		void handleOnSwiped(RecyclerView.ViewHolder viewHolder);
 	}
 
-	private Drawable icon;
-	private Drawable background;
+	// =============== Fields ===============
 
-	private RecyclerController recyclerController;
+	private final Drawable   icon;
+	private final Drawable   background;
+	private final SwipeEvent swipeEvent;
 
 	private boolean swipeBack;
 
-	private SwipeEvent swipeEvent;
+	// =============== Constructors ===============
 
-	// --- --- --- Initialization --- --- ---
-	public SwipeDelCallback(SwipeEvent swipeEvent, Drawable icon, Drawable background,
-		RecyclerController recyclerController)
+	public SwipeDelCallback(Drawable icon, Drawable background, SwipeEvent swipeEvent)
 	{
 		this.swipeEvent = swipeEvent;
 		this.icon = icon;
 		this.background = background;
-		this.recyclerController = recyclerController;
 	}
+
+	// =============== Methods ===============
+
+	// --------------- General ---------------
 
 	@Override
 	public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder)
@@ -44,7 +47,6 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		return makeMovementFlags(0, LEFT);
 	}
 
-	// --- --- --- Handle swipe action --- --- ---
 	@Override
 	public int convertToAbsoluteDirection(int flags, int layoutDirection)
 	{
@@ -57,7 +59,8 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		return super.convertToAbsoluteDirection(flags, layoutDirection);
 	}
 
-	// --- --- --- Handle draw action --- --- ---
+	// --------------- Draw ---------------
+
 	@Override
 	public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
 		@NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)
@@ -74,6 +77,22 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		if (successfulSwipe)
 		{
 			this.drawBackgroundFrame(c, viewHolder, dX);
+		}
+	}
+
+	private boolean isSuccessfulSwipe(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
+	{
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
+		assert adapter != null;
+
+		try
+		{
+			final int itemIndex = adapter.getPositionInSection(viewHolder.getAdapterPosition());
+			return itemIndex >= 0;
+		}
+		catch (IndexOutOfBoundsException ex)
+		{
+			return false;
 		}
 	}
 
@@ -104,29 +123,16 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		this.icon.draw(c);
 	}
 
-	private boolean isSuccessfulSwipe(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
-	{
-		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
-		assert adapter != null;
+	// --------------- Movement ---------------
 
-		try
-		{
-			final int itemIndex = adapter.getPositionInSection(viewHolder.getAdapterPosition());
-			return itemIndex >= 0;
-		}
-		catch (IndexOutOfBoundsException ex)
-		{
-			return false;
-		}
-	}
-
-	// --- --- --- Not used --- --- ---
 	@Override
 	public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
 		@NonNull RecyclerView.ViewHolder viewHolder1)
 	{
 		return false;
 	}
+
+	// --------------- Swipe ---------------
 
 	@Override
 	public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
