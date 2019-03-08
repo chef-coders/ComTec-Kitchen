@@ -44,12 +44,11 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 			}
 			else
 			{
-				// not available, close scanner and show Shop
-
-				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-				intent.putExtra("barcodeFailed", barcode.rawValue);
-				this.finish();
-				this.startActivity(intent);
+				// not available, inform user but don't close scanner
+				this.runOnUiThread(() -> {
+					Toast.makeText(this.getApplicationContext(), R.string.item_amount_not_available, Toast.LENGTH_SHORT)
+					     .show();
+				});
 			}
 		}
 		else if (isAdmin)
@@ -63,8 +62,9 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 		else
 		{
 			// unknown item and not admin, inform user but don't close scanner
-
-			Toast.makeText(this.getApplicationContext(), this.getString(R.string.item_not_found), Toast.LENGTH_SHORT).show();
+			this.runOnUiThread(() -> {
+				Toast.makeText(this.getApplicationContext(), R.string.item_not_found, Toast.LENGTH_SHORT).show();
+			});
 		}
 	}
 
@@ -81,14 +81,12 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	@Override
 	public void onScanError(String s)
 	{
-		Toast.makeText(this.getApplicationContext(), "Error occurred while scanning " + s, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onCameraPermissionDenied()
 	{
-		this.finish();
-		this.startActivity(new Intent(this, MainActivity.class));
+		this.onBackPressed();
 	}
 
 	@Override

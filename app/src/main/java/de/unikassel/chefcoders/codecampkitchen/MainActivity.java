@@ -137,11 +137,6 @@ public class MainActivity extends AppCompatActivity
 			this.changeFragmentForward(
 				CreateItemFragment.newInstance(this.getIntent().getStringExtra("barcodeCreate")));
 		}
-		else if (this.getIntent().hasExtra("barcodeFailed"))
-		{
-			this.selectMenuItem(R.id.nav_all_items);
-			Toast.makeText(this.getApplicationContext(), R.string.item_amount_not_available, Toast.LENGTH_LONG).show();
-		}
 		else
 		{
 			this.selectMenuItem(R.id.nav_all_items);
