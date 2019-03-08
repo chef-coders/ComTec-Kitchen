@@ -37,10 +37,10 @@ public class GeneralRecyclerView
 
 	// =============== Fields ===============
 
-	private RecyclerView        recyclerView;
-	private SwipeRefreshLayout  swipeRefreshLayout;
-	private RecViewEventHandler eventHandler;
-	private RecyclerController  recyclerController;
+	private final RecyclerView        recyclerView;
+	private final SwipeRefreshLayout  swipeRefreshLayout;
+	private final RecViewEventHandler eventHandler;
+	private final RecyclerController  recyclerController;
 
 	// =============== Constructors ===============
 
@@ -49,44 +49,30 @@ public class GeneralRecyclerView
 	{
 		this.eventHandler = eventHandler;
 		this.recyclerController = recyclerController;
+		this.recyclerView = recyclerView;
+		this.swipeRefreshLayout = swipeRefreshLayout;
 
-		this.initRecyclerView(recyclerView);
-		this.initSwipeRefreshLayout(swipeRefreshLayout);
+		this.initRecyclerView();
+		this.initData();
+		this.initSwipeRefreshLayout();
+		this.initScroll();
+		this.initTouch();
+		this.initSwipe();
 	}
 
 	// =============== Methods ===============
 
 	// --------------- Initialization ---------------
 
-	private void initRecyclerView(RecyclerView recyclerView)
+	private void initRecyclerView()
 	{
-		this.recyclerView = recyclerView;
-
 		this.recyclerView.setHasFixedSize(true);
-
-		this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
-		{
-			@Override
-			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
-			{
-				GeneralRecyclerView.this.handleOnScrolled(recyclerView, dx, dy);
-			}
-		});
-
-		RecyclerTouchListener.install(recyclerView, this::handleOnTouch);
-
-		if (this.recyclerController.swipeIsSupported())
-		{
-			final Drawable trashIcon = ContextCompat.getDrawable(this.recyclerView.getContext(),
-			                                                     R.drawable.ic_delete_white_36dp);
-			final Drawable accentColor = ContextCompat.getDrawable(this.recyclerView.getContext(), R.color.colorAccent);
-			SwipeDelCallback.install(recyclerView, trashIcon, accentColor, this::handleOnSwiped);
-		}
-
-		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
-		this.recyclerView.setLayoutManager(layoutManager);
+		this.recyclerView.setLayoutManager(new LinearLayoutManager(this.recyclerView.getContext()));
 		this.recyclerView.setAdapter(new SectionedRecyclerViewAdapter());
+	}
 
+	private void initData()
+	{
 		this.reload();
 		SimpleAsyncTask.execute(this.recyclerView.getContext(), this.recyclerController::refresh, this::reload,
 		                        this.eventHandler::handleRecViewLoadFinished);
@@ -128,9 +114,8 @@ public class GeneralRecyclerView
 
 	// --------------- Swipe Refresh ---------------
 
-	private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout)
+	private void initSwipeRefreshLayout()
 	{
-		this.swipeRefreshLayout = swipeRefreshLayout;
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
 	}
 
@@ -142,6 +127,18 @@ public class GeneralRecyclerView
 	}
 
 	// --------------- Scroll ---------------
+
+	private void initScroll()
+	{
+		this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+		{
+			@Override
+			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+			{
+				GeneralRecyclerView.this.handleOnScrolled(recyclerView, dx, dy);
+			}
+		});
+	}
 
 	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
@@ -158,6 +155,11 @@ public class GeneralRecyclerView
 	}
 
 	// --------------- Touch ---------------
+
+	private void initTouch()
+	{
+		RecyclerTouchListener.install(this.recyclerView, this::handleOnTouch);
+	}
 
 	private void handleOnTouch(final View view, int pos)
 	{
@@ -200,6 +202,17 @@ public class GeneralRecyclerView
 	}
 
 	// --------------- Swipe ---------------
+
+	private void initSwipe()
+	{
+		if (this.recyclerController.swipeIsSupported())
+		{
+			final Drawable trashIcon = ContextCompat.getDrawable(this.recyclerView.getContext(),
+			                                                     R.drawable.ic_delete_white_36dp);
+			final Drawable accentColor = ContextCompat.getDrawable(this.recyclerView.getContext(), R.color.colorAccent);
+			SwipeDelCallback.install(this.recyclerView, trashIcon, accentColor, this::handleOnSwiped);
+		}
+	}
 
 	private void handleOnSwiped(RecyclerView.ViewHolder viewHolder)
 	{
