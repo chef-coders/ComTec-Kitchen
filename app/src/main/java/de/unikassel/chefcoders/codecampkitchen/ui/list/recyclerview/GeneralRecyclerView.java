@@ -44,20 +44,28 @@ public class GeneralRecyclerView
 
 	// =============== Constructors ===============
 
-	public GeneralRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
+	private GeneralRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
 		SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
 		this.recyclerController = recyclerController;
 		this.recyclerView = recyclerView;
 		this.swipeRefreshLayout = swipeRefreshLayout;
+	}
 
-		this.initRecyclerView();
-		this.initData();
-		this.initSwipeRefreshLayout();
-		this.initScroll();
-		this.initTouch();
-		this.initSwipe();
+	// =============== Static Methods ===============
+
+	public static void install(RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout,
+		RecyclerController recyclerController, RecViewEventHandler eventHandler)
+	{
+		final GeneralRecyclerView view = new GeneralRecyclerView(recyclerView, recyclerController, swipeRefreshLayout,
+		                                                         eventHandler);
+		view.initRecyclerView();
+		view.initData();
+		view.initSwipeRefreshLayout();
+		view.initScroll();
+		view.initTouch();
+		view.initSwipe();
 	}
 
 	// =============== Methods ===============

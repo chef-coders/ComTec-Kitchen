@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +39,8 @@ public class AllUserFragment extends KitchenFragment implements GeneralRecyclerV
 	private void initRecyclerView(View view)
 	{
 		this.progressBar = view.findViewById(R.id.progressBar);
-		new GeneralRecyclerView(view.findViewById(R.id.recyclerView), new UserRecyclerController(),
-		                        view.findViewById(R.id.swipeRefreshLayout), this);
+		GeneralRecyclerView.install(view.findViewById(R.id.recyclerView), view.findViewById(R.id.swipeRefreshLayout),
+		                            new UserRecyclerController(), this);
 	}
 
 	@Override

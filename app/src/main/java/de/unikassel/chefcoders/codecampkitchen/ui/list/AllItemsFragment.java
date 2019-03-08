@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
-import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
 
@@ -56,8 +55,9 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 
 	private void initRecyclerView(View allItemsView)
 	{
-		new GeneralRecyclerView(allItemsView.findViewById(R.id.allItemsRecView), new ItemRecyclerController(),
-		                        allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout), this);
+		GeneralRecyclerView.install(allItemsView.findViewById(R.id.allItemsRecView),
+		                            allItemsView.findViewById(R.id.allItemsSwipeRefreshLayout),
+		                            new ItemRecyclerController(), this);
 	}
 
 	@Override

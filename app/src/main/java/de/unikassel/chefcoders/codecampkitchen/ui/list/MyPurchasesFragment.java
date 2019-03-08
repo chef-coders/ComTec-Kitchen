@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +38,9 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
 
 	private void initRecyclerView(View view)
 	{
-		new GeneralRecyclerView(view.findViewById(R.id.allItemsRecView), new PurchasesRecyclerController(),
-		                        view.findViewById(R.id.allItemsSwipeRefreshLayout), this);
+		GeneralRecyclerView
+			.install(view.findViewById(R.id.allItemsRecView), view.findViewById(R.id.allItemsSwipeRefreshLayout),
+			         new PurchasesRecyclerController(), this);
 	}
 
 	// --- --- --- Handle user interactions --- --- ---

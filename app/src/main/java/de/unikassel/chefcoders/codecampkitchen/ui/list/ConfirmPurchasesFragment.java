@@ -76,8 +76,9 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements General
 	private void initRecyclerView(View view)
 	{
 		this.progressBar = view.findViewById(R.id.progressBar);
-		new GeneralRecyclerView(view.findViewById(R.id.allItemsRecView), new ShoppingCartRecyclerController(),
-		                        view.findViewById(R.id.allItemsSwipeRefreshLayout), this);
+		GeneralRecyclerView
+			.install(view.findViewById(R.id.allItemsRecView), view.findViewById(R.id.allItemsSwipeRefreshLayout),
+			         new ShoppingCartRecyclerController(), this);
 	}
 
 	@Override
