@@ -20,10 +20,7 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
 public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 {
-	private RecyclerView        recyclerView;
-	private SwipeRefreshLayout  swipeRefreshLayout;
-	private RecViewEventHandler eventHandler;
-	private RecyclerController  recyclerController;
+	// =============== Classes ===============
 
 	public interface RecViewEventHandler
 	{
@@ -38,6 +35,15 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		void onSwiped(int section, int item);
 	}
 
+	// =============== Fields ===============
+
+	private RecyclerView        recyclerView;
+	private SwipeRefreshLayout  swipeRefreshLayout;
+	private RecViewEventHandler eventHandler;
+	private RecyclerController  recyclerController;
+
+	// =============== Constructors ===============
+
 	public GeneralRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
 		SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
 	{
@@ -47,6 +53,10 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		this.initRecyclerView(recyclerView);
 		this.initSwipeRefreshLayout(swipeRefreshLayout);
 	}
+
+	// =============== Methods ===============
+
+	// --------------- Initialization ---------------
 
 	private void initRecyclerView(RecyclerView recyclerView)
 	{
@@ -82,11 +92,72 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		                        this.eventHandler::handleRecViewLoadFinished);
 	}
 
+	// --------------- Reload ---------------
+
+	private void reload()
+	{
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
+		assert adapter != null;
+
+		final int oldSections = this.recyclerController.getSections();
+		this.recyclerController.reload();
+		final int newSections = this.recyclerController.getSections();
+
+		// add missing sections
+		for (int index = oldSections; index < newSections; index++)
+		{
+			adapter.addSection(new GeneralSection(this.recyclerController, index));
+		}
+		// remove extra sections
+		if (oldSections > newSections)
+		{
+			for (Map.Entry<String, Section> entry : adapter.getCopyOfSectionsMap().entrySet())
+			{
+				final GeneralSection section = (GeneralSection) entry.getValue();
+				final int sectionIndex = section.getIndex();
+				if (sectionIndex >= newSections)
+				{
+					final String tag = entry.getKey();
+					adapter.removeSection(tag);
+				}
+			}
+		}
+
+		adapter.notifyDataSetChanged();
+	}
+
+	// --------------- Swipe Refresh ---------------
+
 	private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout)
 	{
 		this.swipeRefreshLayout = swipeRefreshLayout;
 		this.swipeRefreshLayout.setOnRefreshListener(this::handleOnSwipeRefresh);
 	}
+
+	private void handleOnSwipeRefresh()
+	{
+		this.reload();
+		SimpleAsyncTask.execute(this.recyclerView.getContext(), this.recyclerController::refresh, this::reload,
+		                        () -> this.swipeRefreshLayout.setRefreshing(false));
+	}
+
+	// --------------- Scroll ---------------
+
+	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
+	{
+		if (dy > 0)
+		{
+			// scrolls down
+			this.eventHandler.handleRecViewScrolledDown(recyclerView, dx, dy);
+		}
+		else
+		{
+			// scrolls up
+			this.eventHandler.handleRecViewScrolledUp(recyclerView, dx, dy);
+		}
+	}
+
+	// --------------- Touch ---------------
 
 	private void handleOnTouch(final View view, int pos)
 	{
@@ -127,6 +198,8 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 			}
 		}, () -> this.eventHandler.onClick(sectionIndex, itemIndex));
 	}
+
+	// --------------- Swipe ---------------
 
 	@Override
 	public void handleOnSwiped(RecyclerView.ViewHolder viewHolder)
@@ -171,59 +244,6 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 				adapter.notifyItemRemoved(pos);
 			}
 		}, () -> this.eventHandler.onSwiped(sectionIndex, itemIndex));
-	}
-
-	private void handleOnSwipeRefresh()
-	{
-		this.reload();
-		SimpleAsyncTask.execute(this.recyclerView.getContext(), this.recyclerController::refresh, this::reload,
-		                        () -> this.swipeRefreshLayout.setRefreshing(false));
-	}
-
-	private void handleOnScrolled(@NonNull RecyclerView recyclerView, int dx, int dy)
-	{
-		if (dy > 0)
-		{
-			// scrolls down
-			this.eventHandler.handleRecViewScrolledDown(recyclerView, dx, dy);
-		}
-		else
-		{
-			// scrolls up
-			this.eventHandler.handleRecViewScrolledUp(recyclerView, dx, dy);
-		}
-	}
-
-	private void reload()
-	{
-		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
-		assert adapter != null;
-
-		final int oldSections = this.recyclerController.getSections();
-		this.recyclerController.reload();
-		final int newSections = this.recyclerController.getSections();
-
-		// add missing sections
-		for (int index = oldSections; index < newSections; index++)
-		{
-			adapter.addSection(new GeneralSection(this.recyclerController, index));
-		}
-		// remove extra sections
-		if (oldSections > newSections)
-		{
-			for (Map.Entry<String, Section> entry : adapter.getCopyOfSectionsMap().entrySet())
-			{
-				final GeneralSection section = (GeneralSection) entry.getValue();
-				final int sectionIndex = section.getIndex();
-				if (sectionIndex >= newSections)
-				{
-					final String tag = entry.getKey();
-					adapter.removeSection(tag);
-				}
-			}
-		}
-
-		adapter.notifyDataSetChanged();
 	}
 
 	private void removeSection(GeneralSection toRemove)
