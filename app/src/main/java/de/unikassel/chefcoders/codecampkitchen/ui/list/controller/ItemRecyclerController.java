@@ -64,7 +64,8 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		}
 		else
 		{
-			return MainActivity.kitchenManager.cart().remove(this.get(section, itemIndex));
+			MainActivity.kitchenManager.cart().remove(this.get(section, itemIndex));
+			return false;
 		}
 	}
 
