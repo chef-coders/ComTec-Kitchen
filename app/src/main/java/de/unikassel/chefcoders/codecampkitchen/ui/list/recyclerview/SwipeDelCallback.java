@@ -30,11 +30,18 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 
 	// =============== Constructors ===============
 
-	public SwipeDelCallback(Drawable icon, Drawable background, SwipeEvent swipeEvent)
+	private SwipeDelCallback(Drawable icon, Drawable background, SwipeEvent swipeEvent)
 	{
 		this.swipeEvent = swipeEvent;
 		this.icon = icon;
 		this.background = background;
+	}
+
+	// =============== Static Methods ===============
+
+	public static void install(RecyclerView recyclerView, Drawable icon, Drawable background, SwipeEvent eventHandler)
+	{
+		new ItemTouchHelper(new SwipeDelCallback(icon, background, eventHandler)).attachToRecyclerView(recyclerView);
 	}
 
 	// =============== Methods ===============

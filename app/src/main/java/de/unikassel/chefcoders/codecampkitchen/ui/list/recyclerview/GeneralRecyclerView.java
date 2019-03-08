@@ -1,11 +1,11 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
@@ -77,11 +77,12 @@ public class GeneralRecyclerView
 
 		if (this.recyclerController.swipeIsSupported())
 		{
-			ItemTouchHelper.Callback itemSwipeCallback = new SwipeDelCallback(ContextCompat.getDrawable(
-				this.recyclerView.getContext(), R.drawable.ic_delete_white_36dp), ContextCompat.getDrawable(
-				this.recyclerView.getContext(), R.color.colorAccent), this::handleOnSwiped);
-			new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
+			final Drawable trashIcon = ContextCompat.getDrawable(this.recyclerView.getContext(),
+			                                                     R.drawable.ic_delete_white_36dp);
+			final Drawable accentColor = ContextCompat.getDrawable(this.recyclerView.getContext(), R.color.colorAccent);
+			SwipeDelCallback.install(recyclerView, trashIcon, accentColor, this::handleOnSwiped);
 		}
+
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
 		this.recyclerView.setLayoutManager(layoutManager);
 		this.recyclerView.setAdapter(new SectionedRecyclerViewAdapter());
