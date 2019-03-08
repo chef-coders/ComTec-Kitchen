@@ -50,7 +50,6 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 			if (mainActivity != null)
 			{
 				mainActivity.changeFragmentForward(new ConfirmPurchasesFragment());
-				mainActivity.setMenuItem(R.id.nav_all_items, false);
 			}
 		});
 	}

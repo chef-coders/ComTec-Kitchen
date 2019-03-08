@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 		if (this.getIntent().hasExtra("settings"))
 		{
 			fragment = new SettingsFragment();
-			this.setMenuItem(R.id.nav_settings, true);
+			this.selectMenuItem(R.id.nav_settings);
 		}
 		else if (this.getIntent().hasExtra("barcode"))
 		{
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity
 		MenuItem item = this.navigationView.getMenu().findItem(R.id.nav_all_users);
 		item.setVisible(kitchenManager.session().isAdmin());
 
-		this.setMenuItem(R.id.nav_all_items, true);
+		this.selectMenuItem(R.id.nav_all_items);
 
 		this.navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 	}
@@ -369,11 +369,11 @@ public class MainActivity extends AppCompatActivity
 		return true;
 	}
 
-	public void setMenuItem(@IdRes int menuItemRes, boolean check) // TODO make private
+	private void selectMenuItem(@IdRes int menuItemRes)
 	{
 		Menu menuNav = this.navigationView.getMenu();
 		MenuItem item = menuNav.findItem(menuItemRes);
-		item.setChecked(check);
+		item.setChecked(true);
 	}
 
 	// --------------- Navigation ---------------
@@ -421,12 +421,10 @@ public class MainActivity extends AppCompatActivity
 			if (currentFragment instanceof EditUserFragment)
 			{
 				this.changeFragmentBack(new AllUserFragment());
-				this.setMenuItem(R.id.nav_all_users, true);
 			}
 			else
 			{
 				this.changeFragmentBack(new AllItemsFragment());
-				this.setMenuItem(R.id.nav_all_items, true);
 			}
 		}
 		else if (MainActivity.editMode)
