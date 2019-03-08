@@ -1,13 +1,13 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
+public final class RecyclerTouchListener extends GestureDetector.SimpleOnGestureListener
+	implements RecyclerView.OnItemTouchListener
 {
 	// =============== Classes ===============
 
@@ -18,30 +18,29 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
 
 	// =============== Fields ===============
 
-	private GestureDetector gestureDetector;
+	private final RecyclerView    recyclerView;
+	private final GestureDetector gestureDetector;
+	private final OnTouchListener onTouchListener;
 
 	// =============== Constructors ===============
 
-	public RecyclerTouchListener(Context context, RecyclerView recyclerView, OnTouchListener onTouchListener)
+	private RecyclerTouchListener(RecyclerView recyclerView, OnTouchListener onTouchListener)
 	{
-		this.gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
-		{
-			@Override
-			public boolean onSingleTapUp(MotionEvent e)
-			{
-				View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-				if (child == null)
-				{
-					return true;
-				}
-				int childPos = recyclerView.getChildAdapterPosition(child);
-				onTouchListener.onTouch(child, childPos);
-				return false;
-			}
-		});
+		this.recyclerView = recyclerView;
+		this.gestureDetector = new GestureDetector(recyclerView.getContext(), this);
+		this.onTouchListener = onTouchListener;
+	}
+
+	// =============== Static Methods ===============
+
+	public static void install(RecyclerView recyclerView, OnTouchListener onTouchListener)
+	{
+		recyclerView.addOnItemTouchListener(new RecyclerTouchListener(recyclerView, onTouchListener));
 	}
 
 	// =============== Methods ===============
+
+	// --------------- OnItemTouchListener ---------------
 
 	@Override
 	public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent)
@@ -58,5 +57,20 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
 	@Override
 	public void onRequestDisallowInterceptTouchEvent(boolean b)
 	{
+	}
+
+	// --------------- SimpleOnGestureListener ---------------
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e)
+	{
+		View child = this.recyclerView.findChildViewUnder(e.getX(), e.getY());
+		if (child == null)
+		{
+			return true;
+		}
+		int childPos = this.recyclerView.getChildAdapterPosition(child);
+		this.onTouchListener.onTouch(child, childPos);
+		return false;
 	}
 }

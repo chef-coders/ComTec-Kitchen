@@ -73,8 +73,7 @@ public class GeneralRecyclerView
 			}
 		});
 
-		this.recyclerView.addOnItemTouchListener(
-			new RecyclerTouchListener(recyclerView.getContext(), this.recyclerView, this::handleOnTouch));
+		RecyclerTouchListener.install(recyclerView, this::handleOnTouch);
 
 		if (this.recyclerController.swipeIsSupported())
 		{
