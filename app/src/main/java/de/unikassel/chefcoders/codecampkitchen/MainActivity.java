@@ -49,13 +49,21 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
 {
-	private Toolbar        toolbar;
-	private DrawerLayout   drawerLayout;
-	private NavigationView navigationView;
+	// =============== Static Fields ===============
 
 	public static KitchenManager kitchenManager = KitchenManager.create();
 
 	public static boolean editMode = false;
+
+	// =============== Fields ===============
+
+	private Toolbar        toolbar;
+	private DrawerLayout   drawerLayout;
+	private NavigationView navigationView;
+
+	// =============== Methods ===============
+
+	// --------------- Initialization ---------------
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -165,6 +173,13 @@ public class MainActivity extends AppCompatActivity
 		}
 	}
 
+	// --------------- Toolbar ---------------
+
+	public Toolbar getToolbar()
+	{
+		return this.toolbar;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -186,6 +201,64 @@ public class MainActivity extends AppCompatActivity
 			actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 		}
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case android.R.id.home:
+			this.drawerLayout.openDrawer(GravityCompat.START);
+			return true;
+		case R.id.action_scan_code:
+			this.finish();
+			this.startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
+			return true;
+		case R.id.action_create:
+			this.changeFragmentForward(new CreateItemFragment());
+			return true;
+		case R.id.action_edit:
+			this.setEditMode(!editMode);
+			return true;
+		case R.id.action_clear_all:
+			kitchenManager.cart().clear();
+			this.changeFragmentBack(new AllItemsFragment());
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void setEditMode(boolean editMode)
+	{
+
+		MainActivity.editMode = editMode;
+
+		if (MainActivity.editMode)
+		{
+			this.getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+			this.getToolbar().setTitle(R.string.edit_items);
+		}
+		else
+		{
+			this.getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+			this.getToolbar().setTitle(R.string.shop);
+		}
+
+		this.getToolbar().getMenu().findItem(R.id.action_scan_code)
+		    .setVisible(!MainActivity.editMode && this.isAllItemsFragmentVisible());
+		this.getToolbar().getMenu().findItem(R.id.action_create)
+		    .setVisible(MainActivity.editMode && this.isAllItemsFragmentVisible());
+
+		//updateLayout();
+	}
+
+	private boolean isAllItemsFragmentVisible()
+	{
+		return this.getSupportFragmentManager().findFragmentById(R.id.headlines_fragment) instanceof AllItemsFragment;
+	}
+
+	// --------------- Navigation Drawer ---------------
 
 	private void initNavDrawer()
 	{
@@ -209,47 +282,7 @@ public class MainActivity extends AppCompatActivity
 
 		this.setMenuItem(R.id.nav_all_items, true);
 
-		this.navigationView.setNavigationItemSelectedListener(menuItem -> {
-			if (MainActivity.editMode)
-			{
-				this.setEditMode(false);
-			}
-
-			switch (menuItem.getItemId())
-			{
-			case R.id.nav_all_items:
-				this.changeFragment(new AllItemsFragment());
-				menuItem.setChecked(true);
-				this.drawerLayout.closeDrawers();
-				break;
-			case R.id.nav_my_purcheses:
-				this.changeFragment(new MyPurchasesFragment());
-				menuItem.setChecked(true);
-				this.drawerLayout.closeDrawers();
-				break;
-			case R.id.nav_all_users:
-				this.changeFragment(new AllUserFragment());
-				menuItem.setChecked(true);
-				this.drawerLayout.closeDrawers();
-				break;
-			case R.id.nav_statistics:
-				this.changeFragment(new StatisticsFragment());
-				menuItem.setChecked(true);
-				this.drawerLayout.closeDrawers();
-				break;
-			case R.id.nav_settings:
-				this.changeFragment(new SettingsFragment());
-				menuItem.setChecked(true);
-				this.drawerLayout.closeDrawers();
-				break;
-			case R.id.nav_clear_user_data:
-				kitchenManager.session().clearUserData(this);
-				this.startLogin();
-				break;
-			}
-
-			return true;
-		});
+		this.navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 	}
 
 	private void updatedDrawerHeader()
@@ -293,6 +326,58 @@ public class MainActivity extends AppCompatActivity
 		}
 	}
 
+	private boolean onNavigationItemSelected(MenuItem menuItem)
+	{
+		if (MainActivity.editMode)
+		{
+			this.setEditMode(false);
+		}
+
+		switch (menuItem.getItemId())
+		{
+		case R.id.nav_all_items:
+			this.changeFragment(new AllItemsFragment());
+			menuItem.setChecked(true);
+			this.drawerLayout.closeDrawers();
+			break;
+		case R.id.nav_my_purcheses:
+			this.changeFragment(new MyPurchasesFragment());
+			menuItem.setChecked(true);
+			this.drawerLayout.closeDrawers();
+			break;
+		case R.id.nav_all_users:
+			this.changeFragment(new AllUserFragment());
+			menuItem.setChecked(true);
+			this.drawerLayout.closeDrawers();
+			break;
+		case R.id.nav_statistics:
+			this.changeFragment(new StatisticsFragment());
+			menuItem.setChecked(true);
+			this.drawerLayout.closeDrawers();
+			break;
+		case R.id.nav_settings:
+			this.changeFragment(new SettingsFragment());
+			menuItem.setChecked(true);
+			this.drawerLayout.closeDrawers();
+			break;
+		case R.id.nav_clear_user_data:
+			kitchenManager.session().clearUserData(this);
+			this.startLogin();
+			break;
+		}
+
+		return true;
+	}
+
+	public void setMenuItem(@IdRes int menuItemRes, boolean check) // TODO make private
+	{
+		Menu menuNav = this.navigationView.getMenu();
+		MenuItem item = menuNav.findItem(menuItemRes);
+		item.setChecked(check);
+	}
+
+	// --------------- Navigation ---------------
+
 	public void changeFragment(KitchenFragment fragment)
 	{
 		if (fragment instanceof AllItemsFragment)
@@ -321,13 +406,6 @@ public class MainActivity extends AppCompatActivity
 		transaction.setCustomAnimations(inAnimation, outAnimation);
 		transaction.replace(R.id.headlines_fragment, fragment);
 		transaction.commit();
-	}
-
-	public void setMenuItem(@IdRes int menuItemRes, boolean check)
-	{
-		Menu menuNav = this.navigationView.getMenu();
-		MenuItem item = menuNav.findItem(menuItemRes);
-		item.setChecked(check);
 	}
 
 	@Override
@@ -361,66 +439,9 @@ public class MainActivity extends AppCompatActivity
 		}
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-		case android.R.id.home:
-			this.drawerLayout.openDrawer(GravityCompat.START);
-			return true;
-		case R.id.action_scan_code:
-			this.finish();
-			this.startActivity(new Intent(MainActivity.this, BarcodeScannerActivity.class));
-			return true;
-		case R.id.action_create:
-			this.changeFragmentForward(new CreateItemFragment());
-			return true;
-		case R.id.action_edit:
-			this.setEditMode(!editMode);
-			return true;
-		case R.id.action_clear_all:
-			kitchenManager.cart().clear();
-			this.changeFragmentBack(new AllItemsFragment());
-			return true;
-		}
+	// =============== Static Methods ===============
 
-		return super.onOptionsItemSelected(item);
-	}
-
-	public void setEditMode(boolean editMode)
-	{
-
-		MainActivity.editMode = editMode;
-
-		if (MainActivity.editMode)
-		{
-			this.getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
-			this.getToolbar().setTitle(R.string.edit_items);
-		}
-		else
-		{
-			this.getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-			this.getToolbar().setTitle(R.string.shop);
-		}
-
-		this.getToolbar().getMenu().findItem(R.id.action_scan_code)
-		    .setVisible(!MainActivity.editMode && this.isAllItemsFragmentVisible());
-		this.getToolbar().getMenu().findItem(R.id.action_create)
-		    .setVisible(MainActivity.editMode && this.isAllItemsFragmentVisible());
-
-		//updateLayout();
-	}
-
-	boolean isAllItemsFragmentVisible()
-	{
-		return this.getSupportFragmentManager().findFragmentById(R.id.headlines_fragment) instanceof AllItemsFragment;
-	}
-
-	public Toolbar getToolbar()
-	{
-		return this.toolbar;
-	}
+	// --------------- Helper Methods ---------------
 
 	public static Activity getActivity(View view)
 	{
