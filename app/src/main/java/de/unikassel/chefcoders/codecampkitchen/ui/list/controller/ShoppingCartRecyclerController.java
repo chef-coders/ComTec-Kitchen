@@ -59,12 +59,8 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
 		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
-		if (item != null)
-		{
-			// TODO add(Purchase, int)
-			MainActivity.kitchenManager.cart().add(item);
-		}
-		return true;
+		// TODO add(Purchase, int)
+		return item == null || MainActivity.kitchenManager.cart().add(item) > 0;
 	}
 
 	@Override
@@ -72,12 +68,8 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	{
 		final Purchase purchase = this.shoppingCart.get(itemIndex);
 		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
-		if (item != null)
-		{
-			// TODO remove(Purchase)
-			MainActivity.kitchenManager.cart().remove(item);
-		}
-		return false;
+		// TODO remove(Purchase)
+		return item != null && MainActivity.kitchenManager.cart().remove(item);
 	}
 
 	@Override

@@ -107,9 +107,8 @@ public class Cart
 	{
 		final String itemId = item.get_id();
 
-		for (Iterator<Purchase> iterator = this.purchases.iterator(); iterator.hasNext(); )
+		for (final Purchase purchase : this.purchases)
 		{
-			final Purchase purchase = iterator.next();
 			if (!itemId.equals(purchase.getItem_id()))
 			{
 				continue;
@@ -117,13 +116,6 @@ public class Cart
 
 			final int oldAmount = purchase.getAmount();
 			final int newAmount = Math.min(oldAmount + amount, item.getAmount());
-
-			if (newAmount <= 0)
-			{
-				// item no longer available, remove purchase
-				iterator.remove();
-				return 0;
-			}
 
 			purchase.setAmount(newAmount);
 			purchase.setPrice(newAmount * item.getPrice());
