@@ -9,13 +9,18 @@ import android.view.View;
 
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
 {
-	private GestureDetector gestureDetector;
-	private OnTouchListener onTouchListener;
+	// =============== Classes ===============
 
 	public interface OnTouchListener
 	{
 		void onTouch(View view, int pos);
 	}
+
+	// =============== Fields ===============
+
+	private GestureDetector gestureDetector;
+
+	// =============== Constructors ===============
 
 	public RecyclerTouchListener(Context context, RecyclerView recyclerView, OnTouchListener onTouchListener)
 	{
@@ -34,8 +39,9 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
 				return false;
 			}
 		});
-		this.onTouchListener = onTouchListener;
 	}
+
+	// =============== Methods ===============
 
 	@Override
 	public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent)
