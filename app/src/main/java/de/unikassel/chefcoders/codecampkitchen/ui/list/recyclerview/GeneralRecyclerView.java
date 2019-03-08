@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
-public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
+public class GeneralRecyclerView
 {
 	// =============== Classes ===============
 
@@ -80,7 +80,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		{
 			ItemTouchHelper.Callback itemSwipeCallback = new SwipeDelCallback(ContextCompat.getDrawable(
 				this.recyclerView.getContext(), R.drawable.ic_delete_white_36dp), ContextCompat.getDrawable(
-				this.recyclerView.getContext(), R.color.colorAccent), this);
+				this.recyclerView.getContext(), R.color.colorAccent), this::handleOnSwiped);
 			new ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(this.recyclerView);
 		}
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.recyclerView.getContext());
@@ -201,8 +201,7 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 
 	// --------------- Swipe ---------------
 
-	@Override
-	public void handleOnSwiped(RecyclerView.ViewHolder viewHolder)
+	private void handleOnSwiped(RecyclerView.ViewHolder viewHolder)
 	{
 		final int pos = viewHolder.getLayoutPosition();
 		if (pos == NO_POSITION)
