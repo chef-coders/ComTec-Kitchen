@@ -109,8 +109,15 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) recyclerView.getAdapter();
 		assert adapter != null;
 
-		final int itemIndex = adapter.getPositionInSection(viewHolder.getAdapterPosition());
-		return itemIndex >= 0;
+		try
+		{
+			final int itemIndex = adapter.getPositionInSection(viewHolder.getAdapterPosition());
+			return itemIndex >= 0;
+		}
+		catch (IndexOutOfBoundsException ex)
+		{
+			return false;
+		}
 	}
 
 	// --- --- --- Not used --- --- ---

@@ -13,7 +13,7 @@ public class GeneralSection extends StatelessSection
 
 	private final RecyclerController recyclerController;
 
-	private final int index;
+	private int index;
 
 	private boolean collapsed;
 
@@ -33,6 +33,11 @@ public class GeneralSection extends StatelessSection
 	public int getIndex()
 	{
 		return this.index;
+	}
+
+	public void setIndex(int index)
+	{
+		this.index = index;
 	}
 
 	public boolean isCollapsed()

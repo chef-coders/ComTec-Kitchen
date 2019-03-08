@@ -151,21 +151,24 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 		final int sectionIndex = section.getIndex();
 
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			boolean refreshAll = this.recyclerController.onSwiped(viewHolder, sectionIndex, itemIndex);
-			if (refreshAll)
+			return this.recyclerController.onSwiped(viewHolder, sectionIndex, itemIndex);
+		}, removed -> {
+			if (!removed)
 			{
-				this.recyclerController.refresh();
+				// not removed -> only refresh the row
+				adapter.notifyItemChanged(pos);
 			}
-			return refreshAll;
-		}, refreshAll -> {
-			if (refreshAll)
+			else if (section.getSectionItemsTotal() == 2)
 			{
-				this.reload();
+				// last item in section removed (i.e. 2 items before reload, header and row) -> remove section
+				this.recyclerController.reload();
+				this.removeSection(section);
 			}
 			else
 			{
-				// TODO not necessary
-				adapter.notifyDataSetChanged();
+				// one item removed
+				this.recyclerController.reload();
+				adapter.notifyItemRemoved(pos);
 			}
 		}, () -> this.eventHandler.onSwiped(sectionIndex, itemIndex));
 	}
@@ -217,6 +220,29 @@ public class GeneralRecyclerView implements SwipeDelCallback.SwipeEvent
 					final String tag = entry.getKey();
 					adapter.removeSection(tag);
 				}
+			}
+		}
+
+		adapter.notifyDataSetChanged();
+	}
+
+	private void removeSection(GeneralSection toRemove)
+	{
+		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
+		assert adapter != null;
+
+		for (Map.Entry<String, Section> entry : adapter.getCopyOfSectionsMap().entrySet())
+		{
+			final GeneralSection generalSection = (GeneralSection) entry.getValue();
+			final int index = generalSection.getIndex();
+
+			if (generalSection == toRemove)
+			{
+				adapter.removeSection(entry.getKey());
+			}
+			else if (index > toRemove.getIndex())
+			{
+				generalSection.setIndex(index - 1);
 			}
 		}
 
