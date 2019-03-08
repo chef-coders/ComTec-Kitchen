@@ -2,7 +2,6 @@ package de.unikassel.chefcoders.codecampkitchen.ui.barcodes;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -131,7 +129,7 @@ public class PurchaseItemFragment extends KitchenFragment
 		MainActivity mainActivity = (MainActivity) this.getActivity();
 		if (mainActivity != null)
 		{
-			mainActivity.changeFragmentBack(new AllItemsFragment());
+			mainActivity.changeFragmentBack();
 		}
 	}
 }

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -222,7 +221,7 @@ public class MainActivity extends AppCompatActivity
 			return true;
 		case R.id.action_clear_all:
 			kitchenManager.cart().clear();
-			this.changeFragmentBack(new AllItemsFragment());
+			this.changeFragmentBack();
 			return true;
 		}
 
@@ -336,27 +335,27 @@ public class MainActivity extends AppCompatActivity
 		switch (menuItem.getItemId())
 		{
 		case R.id.nav_all_items:
-			this.changeFragment(new AllItemsFragment());
+			this.selectFragment(new AllItemsFragment());
 			menuItem.setChecked(true);
 			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_my_purcheses:
-			this.changeFragment(new MyPurchasesFragment());
+			this.selectFragment(new MyPurchasesFragment());
 			menuItem.setChecked(true);
 			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_all_users:
-			this.changeFragment(new AllUserFragment());
+			this.selectFragment(new AllUserFragment());
 			menuItem.setChecked(true);
 			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_statistics:
-			this.changeFragment(new StatisticsFragment());
+			this.selectFragment(new StatisticsFragment());
 			menuItem.setChecked(true);
 			this.drawerLayout.closeDrawers();
 			break;
 		case R.id.nav_settings:
-			this.changeFragment(new SettingsFragment());
+			this.selectFragment(new SettingsFragment());
 			menuItem.setChecked(true);
 			this.drawerLayout.closeDrawers();
 			break;
@@ -378,58 +377,30 @@ public class MainActivity extends AppCompatActivity
 
 	// --------------- Navigation ---------------
 
-	public void changeFragment(KitchenFragment fragment)
+	private void selectFragment(KitchenFragment fragment)
 	{
-		if (fragment instanceof AllItemsFragment)
-		{
-			this.changeFragmentBack(fragment);
-		}
-		else
-		{
-			this.changeFragmentForward(fragment);
-		}
+		this.getSupportFragmentManager().beginTransaction().replace(R.id.headlines_fragment, fragment).commit();
 	}
 
 	public void changeFragmentForward(KitchenFragment fragment)
 	{
-		this.changeFragment(fragment, R.anim.slide_in_right, R.anim.slide_out_left);
+		this.getSupportFragmentManager().beginTransaction()
+		    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left,
+		                         R.anim.slide_out_right).replace(R.id.headlines_fragment, fragment)
+		    .addToBackStack(fragment.getTag()).commit();
 	}
 
-	public void changeFragmentBack(KitchenFragment fragment)
+	public void changeFragmentBack()
 	{
-		this.changeFragment(fragment, R.anim.slide_in_left, R.anim.slide_out_right);
-	}
-
-	private void changeFragment(KitchenFragment fragment, int inAnimation, int outAnimation)
-	{
-		final FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
-		transaction.setCustomAnimations(inAnimation, outAnimation);
-		transaction.replace(R.id.headlines_fragment, fragment);
-		transaction.commit();
+		this.onBackPressed();
 	}
 
 	@Override
 	public void onBackPressed()
 	{
-		Fragment currentFragment = this.getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
 		if (this.drawerLayout.isDrawerOpen(GravityCompat.START))
 		{
 			this.drawerLayout.closeDrawers();
-		}
-		else if (!(currentFragment instanceof AllItemsFragment))
-		{
-			if (currentFragment instanceof EditUserFragment)
-			{
-				this.changeFragmentBack(new AllUserFragment());
-			}
-			else
-			{
-				this.changeFragmentBack(new AllItemsFragment());
-			}
-		}
-		else if (MainActivity.editMode)
-		{
-			this.setEditMode(false);
 		}
 		else
 		{

@@ -3,11 +3,9 @@ package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
@@ -15,7 +13,6 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.AllUserFragment;
 
 public class EditUserFragment extends KitchenFragment
 {
@@ -111,7 +108,7 @@ public class EditUserFragment extends KitchenFragment
 			final MainActivity mainActivity = (MainActivity) activity;
 			if (mainActivity != null)
 			{
-				mainActivity.changeFragmentBack(new AllUserFragment());
+				mainActivity.changeFragmentBack();
 			}
 		});
 	}

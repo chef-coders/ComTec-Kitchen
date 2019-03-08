@@ -3,7 +3,6 @@ package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
-import de.unikassel.chefcoders.codecampkitchen.ui.list.AllItemsFragment;
 
 public class CreateItemFragment extends ItemDetailFragment
 {
@@ -80,7 +78,7 @@ public class CreateItemFragment extends ItemDetailFragment
 		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().create(item), () -> {
 			Toast.makeText(this.getActivity(), R.string.create_item_successful, Toast.LENGTH_SHORT).show();
 			MainActivity mainActivity = (MainActivity) this.getActivity();
-			mainActivity.changeFragmentBack(new AllItemsFragment());
+			mainActivity.changeFragmentBack();
 		});
 	}
 }
