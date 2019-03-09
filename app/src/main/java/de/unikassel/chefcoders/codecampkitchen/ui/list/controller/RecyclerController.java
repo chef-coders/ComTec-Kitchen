@@ -2,6 +2,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 
 public interface RecyclerController<V extends RecyclerView.ViewHolder>
 {
@@ -19,9 +20,9 @@ public interface RecyclerController<V extends RecyclerView.ViewHolder>
 
 	void populate(V v, int section, int item);
 
-	boolean onClick(V v, int section, int item);
+	boolean onClick(RowInfo<V> row);
 
-	boolean onSwiped(V v, int section, int item);
+	boolean onSwiped(RowInfo<V> row);
 
 	boolean swipeIsSupported();
 }

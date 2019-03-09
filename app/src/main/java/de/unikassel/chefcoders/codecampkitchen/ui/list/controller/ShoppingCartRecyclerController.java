@@ -4,6 +4,7 @@ import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolder;
 
 import java.util.List;
@@ -55,18 +56,18 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	}
 
 	@Override
-	public boolean onClick(RowViewHolder v, int section, int itemIndex)
+	public boolean onClick(RowInfo<RowViewHolder> row)
 	{
-		final Purchase purchase = this.shoppingCart.get(itemIndex);
+		final Purchase purchase = this.shoppingCart.get(row.getRowIndex());
 		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
 		// TODO add(Purchase, int)
 		return item == null || MainActivity.kitchenManager.cart().add(item) > 0;
 	}
 
 	@Override
-	public boolean onSwiped(RowViewHolder v, int section, int itemIndex)
+	public boolean onSwiped(RowInfo<RowViewHolder> row)
 	{
-		final Purchase purchase = this.shoppingCart.get(itemIndex);
+		final Purchase purchase = this.shoppingCart.get(row.getRowIndex());
 		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
 		// TODO remove(Purchase)
 		return item != null && MainActivity.kitchenManager.cart().remove(item);

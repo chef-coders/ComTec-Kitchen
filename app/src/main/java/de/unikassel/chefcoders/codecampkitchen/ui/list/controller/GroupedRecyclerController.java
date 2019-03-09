@@ -1,6 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.support.v7.widget.RecyclerView;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,11 @@ public abstract class GroupedRecyclerController<T, V extends RecyclerView.ViewHo
 	protected T get(int section, int item)
 	{
 		return this.items[section].get(item);
+	}
+
+	protected T get(RowInfo<V> row)
+	{
+		return this.get(row.getSectionIndex(), row.getRowIndex());
 	}
 
 	public final void fill(Map<String, List<T>> grouped)

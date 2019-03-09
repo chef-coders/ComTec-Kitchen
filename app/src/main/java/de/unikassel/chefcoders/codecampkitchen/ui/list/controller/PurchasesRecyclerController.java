@@ -3,6 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolder;
 
 public class PurchasesRecyclerController extends GroupedRecyclerController<Purchase, RowViewHolder>
@@ -32,13 +33,13 @@ public class PurchasesRecyclerController extends GroupedRecyclerController<Purch
 	}
 
 	@Override
-	public boolean onClick(RowViewHolder v, int section, int item)
+	public boolean onClick(RowInfo<RowViewHolder> row)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean onSwiped(RowViewHolder v, int section, int item)
+	public boolean onSwiped(RowInfo<RowViewHolder> row)
 	{
 		return false;
 	}

@@ -4,6 +4,7 @@ import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.edit.EditUserFragment;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolder;
 
 public class UserRecyclerController extends GroupedRecyclerController<User, RowViewHolder>
@@ -33,10 +34,10 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	}
 
 	@Override
-	public boolean onClick(RowViewHolder v, int section, int item)
+	public boolean onClick(RowInfo<RowViewHolder> row)
 	{
-		final User user = this.get(section, item);
-		final View itemView = v.itemView;
+		final User user = this.get(row);
+		final View itemView = row.getViewHolder().itemView;
 		itemView.post(() -> {
 			final MainActivity mainActivity = (MainActivity) MainActivity.getActivity(itemView);
 			if (mainActivity != null)
@@ -48,9 +49,9 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	}
 
 	@Override
-	public boolean onSwiped(RowViewHolder v, int section, int item)
+	public boolean onSwiped(RowInfo<RowViewHolder> row)
 	{
-		return MainActivity.kitchenManager.users().delete(this.get(section, item));
+		return MainActivity.kitchenManager.users().delete(this.get(row));
 	}
 
 	@Override

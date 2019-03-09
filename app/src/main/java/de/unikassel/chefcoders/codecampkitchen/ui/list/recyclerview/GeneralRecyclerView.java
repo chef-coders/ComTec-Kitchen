@@ -178,7 +178,7 @@ public class GeneralRecyclerView
 		}
 
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			return this.recyclerController.onClick(row.getViewHolder(), row.getSectionIndex(), row.getRowIndex());
+			return this.recyclerController.onClick(row);
 		}, refreshRow -> {
 			if (refreshRow)
 			{
@@ -209,7 +209,7 @@ public class GeneralRecyclerView
 		}
 
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			return this.recyclerController.onSwiped(row.getViewHolder(), row.getSectionIndex(), row.getRowIndex());
+			return this.recyclerController.onSwiped(row);
 		}, removed -> {
 			final CollapsibleSection section = (CollapsibleSection) row.getSection();
 			// not removed -> only refresh the row
