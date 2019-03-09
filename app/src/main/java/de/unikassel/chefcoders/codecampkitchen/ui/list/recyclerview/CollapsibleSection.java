@@ -7,11 +7,11 @@ import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.RecyclerContro
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
-public class GeneralSection extends StatelessSection
+public class CollapsibleSection extends StatelessSection
 {
 	// =============== Fields ===============
 
-	private final RecyclerController recyclerController;
+	private final RecyclerController controller;
 
 	private int index;
 
@@ -19,12 +19,12 @@ public class GeneralSection extends StatelessSection
 
 	// =============== Constructors ===============
 
-	public GeneralSection(RecyclerController recyclerController, int index)
+	public CollapsibleSection(RecyclerController controller, int index)
 	{
 		super(SectionParameters.builder().itemResourceId(R.layout.item_view).headerResourceId(R.layout.header_view)
 		                       .build());
 
-		this.recyclerController = recyclerController;
+		this.controller = controller;
 		this.index = index;
 	}
 
@@ -55,19 +55,19 @@ public class GeneralSection extends StatelessSection
 	@Override
 	public int getContentItemsTotal()
 	{
-		return this.isCollapsed() ? 0 : this.recyclerController.getItems(this.index);
+		return this.isCollapsed() ? 0 : this.controller.getItems(this.index);
 	}
 
 	@Override
 	public RecyclerView.ViewHolder getItemViewHolder(View view)
 	{
-		return this.recyclerController.create(view);
+		return this.controller.create(view);
 	}
 
 	@Override
 	public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position)
 	{
-		this.recyclerController.populate(holder, this.index, position);
+		this.controller.populate(holder, this.index, position);
 	}
 
 	@Override

@@ -100,14 +100,14 @@ public class GeneralRecyclerView
 		// add missing sections
 		for (int index = oldSections; index < newSections; index++)
 		{
-			adapter.addSection(new GeneralSection(this.recyclerController, index));
+			adapter.addSection(new CollapsibleSection(this.recyclerController, index));
 		}
 		// remove extra sections
 		if (oldSections > newSections)
 		{
 			for (Map.Entry<String, Section> entry : adapter.getCopyOfSectionsMap().entrySet())
 			{
-				final GeneralSection section = (GeneralSection) entry.getValue();
+				final CollapsibleSection section = (CollapsibleSection) entry.getValue();
 				final int sectionIndex = section.getIndex();
 				if (sectionIndex >= newSections)
 				{
@@ -175,7 +175,7 @@ public class GeneralRecyclerView
 		assert adapter != null;
 
 		final int itemIndex = adapter.getPositionInSection(pos);
-		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
+		final CollapsibleSection section = (CollapsibleSection) adapter.getSectionForPosition(pos);
 		final int sectionIndex = section.getIndex();
 
 		if (itemIndex < 0)
@@ -240,7 +240,7 @@ public class GeneralRecyclerView
 			return;
 		}
 
-		final GeneralSection section = (GeneralSection) adapter.getSectionForPosition(pos);
+		final CollapsibleSection section = (CollapsibleSection) adapter.getSectionForPosition(pos);
 		final int sectionIndex = section.getIndex();
 
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
@@ -266,23 +266,23 @@ public class GeneralRecyclerView
 		}, () -> this.eventHandler.onSwiped(sectionIndex, itemIndex));
 	}
 
-	private void removeSection(GeneralSection toRemove)
+	private void removeSection(CollapsibleSection toRemove)
 	{
 		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
 		assert adapter != null;
 
 		for (Map.Entry<String, Section> entry : adapter.getCopyOfSectionsMap().entrySet())
 		{
-			final GeneralSection generalSection = (GeneralSection) entry.getValue();
-			final int index = generalSection.getIndex();
+			final CollapsibleSection section = (CollapsibleSection) entry.getValue();
+			final int index = section.getIndex();
 
-			if (generalSection == toRemove)
+			if (section == toRemove)
 			{
 				adapter.removeSection(entry.getKey());
 			}
 			else if (index > toRemove.getIndex())
 			{
-				generalSection.setIndex(index - 1);
+				section.setIndex(index - 1);
 			}
 		}
 
