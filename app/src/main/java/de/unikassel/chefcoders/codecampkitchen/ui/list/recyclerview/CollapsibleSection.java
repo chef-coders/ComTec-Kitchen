@@ -73,12 +73,12 @@ public class CollapsibleSection extends StatelessSection
 	@Override
 	public RecyclerView.ViewHolder getHeaderViewHolder(View view)
 	{
-		return new SectionHolder(view);
+		return new HeaderViewHolder(view);
 	}
 
 	@Override
 	public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder)
 	{
-		((SectionHolder) holder).setTitle(this.recyclerController.getHeader(this.index));
+		((HeaderViewHolder) holder).setTitle(this.controller.getHeader(this.index));
 	}
 }
