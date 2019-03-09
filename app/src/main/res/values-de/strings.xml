@@ -76,4 +76,5 @@
     <string name="price_hint">Gib einen Preis ein</string>
     <string name="amount_hint">Gib eine Stückzahl ein</string>
     <string name="credit_hint">Gib das Guthaben ein</string>
+    <string name="id_exists">Ein Artikel mit diesem Barcode existiert bereits</string>
 </resources>

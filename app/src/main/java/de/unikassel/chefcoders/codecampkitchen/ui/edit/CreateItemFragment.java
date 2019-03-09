@@ -3,6 +3,7 @@ package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,26 @@ public class CreateItemFragment extends ItemDetailFragment
 	{
 		final long barcode = (long) (Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L);
 		this.barcodeTextView.setText("Generated:" + barcode);
+	}
+
+	@Override
+	protected boolean isInputValid()
+	{
+		if (!super.isInputValid())
+		{
+			return false;
+		}
+
+		final String barcode = this.barcodeTextView.getText().toString();
+		if (MainActivity.kitchenManager.items().get(barcode) != null)
+		{
+			final Toast toast = Toast.makeText(this.getContext(), R.string.id_exists, Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+			toast.show();
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

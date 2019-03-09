@@ -77,4 +77,5 @@
     <string name="price_hint">Type a Price</string>
     <string name="amount_hint">Type an Amount</string>
     <string name="credit_hint">Type the Credit</string>
+	<string name="id_exists">An Item with this Barcode already exists</string>
 </resources>
