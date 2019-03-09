@@ -13,35 +13,32 @@ import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 
 public class RowSwipeHelper extends ItemTouchHelper.Callback
 {
-	// =============== Classes ===============
-
-	public interface SwipeEvent
-	{
-		void handleOnSwiped(RecyclerView.ViewHolder viewHolder);
-	}
-
 	// =============== Fields ===============
 
-	private final Drawable   icon;
-	private final Drawable   background;
-	private final SwipeEvent swipeEvent;
+	private final RecyclerView    recyclerView;
+	private final Drawable        icon;
+	private final Drawable        background;
+	private final RowEventHandler eventHandler;
 
 	private boolean swipeBack;
 
 	// =============== Constructors ===============
 
-	private RowSwipeHelper(Drawable icon, Drawable background, SwipeEvent swipeEvent)
+	private RowSwipeHelper(RecyclerView recyclerView, Drawable icon, Drawable background, RowEventHandler eventHandler)
 	{
-		this.swipeEvent = swipeEvent;
+		this.recyclerView = recyclerView;
 		this.icon = icon;
 		this.background = background;
+		this.eventHandler = eventHandler;
 	}
 
 	// =============== Static Methods ===============
 
-	public static void install(RecyclerView recyclerView, Drawable icon, Drawable background, SwipeEvent eventHandler)
+	public static void install(RecyclerView recyclerView, Drawable icon, Drawable background,
+		RowEventHandler eventHandler)
 	{
-		new ItemTouchHelper(new RowSwipeHelper(icon, background, eventHandler)).attachToRecyclerView(recyclerView);
+		new ItemTouchHelper(new RowSwipeHelper(recyclerView, icon, background, eventHandler))
+			.attachToRecyclerView(recyclerView);
 	}
 
 	// =============== Methods ===============
@@ -144,6 +141,6 @@ public class RowSwipeHelper extends ItemTouchHelper.Callback
 	@Override
 	public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)
 	{
-		this.swipeEvent.handleOnSwiped(viewHolder);
+		this.eventHandler.handle(RowInfo.from(this.recyclerView, viewHolder));
 	}
 }

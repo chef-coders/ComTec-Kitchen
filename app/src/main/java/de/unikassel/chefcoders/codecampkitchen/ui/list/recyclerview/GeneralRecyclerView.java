@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.ResultAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
@@ -15,8 +14,6 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 import java.util.Map;
-
-import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
 public class GeneralRecyclerView
 {
@@ -169,17 +166,16 @@ public class GeneralRecyclerView
 		RowTouchHelper.install(this.recyclerView, this::handleOnTouch);
 	}
 
-	private void handleOnTouch(final View view, int pos)
+	private void handleOnTouch(RowInfo row)
 	{
-		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
-		assert adapter != null;
-
-		final int itemIndex = adapter.getPositionInSection(pos);
-		final CollapsibleSection section = (CollapsibleSection) adapter.getSectionForPosition(pos);
-		final int sectionIndex = section.getIndex();
-
-		if (itemIndex < 0)
+		if (row.getRowIndex() < 0)
 		{
+			// header tapped
+
+			final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
+			assert adapter != null;
+
+			final CollapsibleSection section = (CollapsibleSection) row.getSection();
 			final int numItems = this.recyclerController.getItems(section.getIndex());
 
 			if (section.isCollapsed())
@@ -196,17 +192,14 @@ public class GeneralRecyclerView
 			return;
 		}
 
-		final RecyclerView.ViewHolder viewHolder = section.getItemViewHolder(view);
-		assert viewHolder != null;
-
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			return this.recyclerController.onClick(viewHolder, sectionIndex, itemIndex);
+			return this.recyclerController.onClick(row.getViewHolder(), row.getSectionIndex(), row.getRowIndex());
 		}, refreshRow -> {
 			if (refreshRow)
 			{
-				adapter.notifyItemChanged(pos);
+				this.recyclerView.getAdapter().notifyItemChanged(row.getAdapterPosition());
 			}
-		}, () -> this.eventHandler.onClick(sectionIndex, itemIndex));
+		}, () -> this.eventHandler.onClick(row.getSectionIndex(), row.getRowIndex()));
 	}
 
 	// --------------- Swipe ---------------
@@ -222,34 +215,22 @@ public class GeneralRecyclerView
 		}
 	}
 
-	private void handleOnSwiped(RecyclerView.ViewHolder viewHolder)
+	private void handleOnSwiped(RowInfo row)
 	{
-		final int pos = viewHolder.getLayoutPosition();
-		if (pos == NO_POSITION)
-		{
-			return;
-		}
-
-		final SectionedRecyclerViewAdapter adapter = (SectionedRecyclerViewAdapter) this.recyclerView.getAdapter();
-		assert adapter != null;
-
-		final int itemIndex = adapter.getPositionInSection(pos);
-		if (itemIndex < 0)
+		if (row.getRowIndex() < 0)
 		{
 			// header swiped
 			return;
 		}
 
-		final CollapsibleSection section = (CollapsibleSection) adapter.getSectionForPosition(pos);
-		final int sectionIndex = section.getIndex();
-
 		ResultAsyncTask.execute(this.recyclerView.getContext(), () -> {
-			return this.recyclerController.onSwiped(viewHolder, sectionIndex, itemIndex);
+			return this.recyclerController.onSwiped(row.getViewHolder(), row.getSectionIndex(), row.getRowIndex());
 		}, removed -> {
+			final CollapsibleSection section = (CollapsibleSection) row.getSection();
+			// not removed -> only refresh the row
 			if (!removed)
 			{
-				// not removed -> only refresh the row
-				adapter.notifyItemChanged(pos);
+				this.recyclerView.getAdapter().notifyItemChanged(row.getAdapterPosition());
 			}
 			else if (section.getSectionItemsTotal() == 2)
 			{
@@ -261,9 +242,9 @@ public class GeneralRecyclerView
 			{
 				// one item removed
 				this.recyclerController.reload();
-				adapter.notifyItemRemoved(pos);
+				this.recyclerView.getAdapter().notifyItemRemoved(row.getAdapterPosition());
 			}
-		}, () -> this.eventHandler.onSwiped(sectionIndex, itemIndex));
+		}, () -> this.eventHandler.onSwiped(row.getSectionIndex(), row.getRowIndex()));
 	}
 
 	private void removeSection(CollapsibleSection toRemove)
