@@ -14,6 +14,8 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 
+import java.util.UUID;
+
 public class CreateItemFragment extends ItemDetailFragment
 {
 	public CreateItemFragment()
@@ -60,8 +62,7 @@ public class CreateItemFragment extends ItemDetailFragment
 
 	public void onGeneratedId(View view)
 	{
-		final long barcode = (long) (Math.floor(Math.random() * (99999999999L - 10000000000L + 1L)) + 10000000000L);
-		this.barcodeTextView.setText("Generated:" + barcode);
+		this.barcodeTextView.setText(UUID.randomUUID().toString());
 	}
 
 	@Override
