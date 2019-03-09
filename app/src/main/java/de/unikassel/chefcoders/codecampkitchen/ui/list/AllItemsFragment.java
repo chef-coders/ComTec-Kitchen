@@ -16,8 +16,10 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RecyclerEventHandler;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 
-public class AllItemsFragment extends KitchenFragment implements GeneralRecyclerView.RecViewEventHandler
+public class AllItemsFragment extends KitchenFragment implements RecyclerEventHandler
 {
 	private FloatingActionButton floatingActionButton;
 	private ProgressBar          progressBar;
@@ -79,19 +81,19 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 
 	// --- --- --- Handle user interactions --- --- ---
 	@Override
-	public void handleRecViewLoadFinished()
+	public void handleLoadFinished()
 	{
 		this.progressBar.setVisibility(View.GONE);
 	}
 
 	@Override
-	public void handleRecViewScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy)
+	public void handleScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
 		this.floatingActionButton.hide();
 	}
 
 	@Override
-	public void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
+	public void handleScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
 		if (!MainActivity.kitchenManager.cart().getPurchases().isEmpty())
 		{
@@ -100,7 +102,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	}
 
 	@Override
-	public void onClick(int section, int item)
+	public void handleClick(RowInfo row)
 	{
 		if (!MainActivity.editMode && !MainActivity.kitchenManager.cart().getPurchases().isEmpty())
 		{
@@ -109,7 +111,7 @@ public class AllItemsFragment extends KitchenFragment implements GeneralRecycler
 	}
 
 	@Override
-	public void onSwiped(int section, int item)
+	public void handleSwipe(RowInfo row)
 	{
 		if (MainActivity.kitchenManager.cart().getPurchases().isEmpty())
 		{

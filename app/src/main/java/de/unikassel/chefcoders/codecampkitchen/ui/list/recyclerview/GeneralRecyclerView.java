@@ -17,32 +17,17 @@ import java.util.Map;
 
 public class GeneralRecyclerView
 {
-	// =============== Classes ===============
-
-	public interface RecViewEventHandler
-	{
-		void handleRecViewLoadFinished();
-
-		void handleRecViewScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy);
-
-		void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy);
-
-		void onClick(int section, int item);
-
-		void onSwiped(int section, int item);
-	}
-
 	// =============== Fields ===============
 
-	private final RecyclerView        recyclerView;
-	private final SwipeRefreshLayout  swipeRefreshLayout;
-	private final RecViewEventHandler eventHandler;
-	private final RecyclerController  recyclerController;
+	private final RecyclerView         recyclerView;
+	private final SwipeRefreshLayout   swipeRefreshLayout;
+	private final RecyclerEventHandler eventHandler;
+	private final RecyclerController   recyclerController;
 
 	// =============== Constructors ===============
 
 	private GeneralRecyclerView(RecyclerView recyclerView, RecyclerController recyclerController,
-		SwipeRefreshLayout swipeRefreshLayout, RecViewEventHandler eventHandler)
+		SwipeRefreshLayout swipeRefreshLayout, RecyclerEventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
 		this.recyclerController = recyclerController;
@@ -53,7 +38,7 @@ public class GeneralRecyclerView
 	// =============== Static Methods ===============
 
 	public static void install(RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout,
-		RecyclerController recyclerController, RecViewEventHandler eventHandler)
+		RecyclerController recyclerController, RecyclerEventHandler eventHandler)
 	{
 		final GeneralRecyclerView view = new GeneralRecyclerView(recyclerView, recyclerController, swipeRefreshLayout,
 		                                                         eventHandler);
@@ -80,7 +65,7 @@ public class GeneralRecyclerView
 	{
 		this.reload();
 		SimpleAsyncTask.execute(this.recyclerView.getContext(), this.recyclerController::refresh, this::reload,
-		                        this.eventHandler::handleRecViewLoadFinished);
+		                        this.eventHandler::handleLoadFinished);
 	}
 
 	// --------------- Reload ---------------
@@ -150,12 +135,12 @@ public class GeneralRecyclerView
 		if (dy > 0)
 		{
 			// scrolls down
-			this.eventHandler.handleRecViewScrolledDown(recyclerView, dx, dy);
+			this.eventHandler.handleScrolledDown(recyclerView, dx, dy);
 		}
 		else
 		{
 			// scrolls up
-			this.eventHandler.handleRecViewScrolledUp(recyclerView, dx, dy);
+			this.eventHandler.handleScrolledUp(recyclerView, dx, dy);
 		}
 	}
 
@@ -199,7 +184,7 @@ public class GeneralRecyclerView
 			{
 				this.recyclerView.getAdapter().notifyItemChanged(row.getAdapterPosition());
 			}
-		}, () -> this.eventHandler.onClick(row.getSectionIndex(), row.getRowIndex()));
+		}, () -> this.eventHandler.handleClick(row));
 	}
 
 	// --------------- Swipe ---------------
@@ -244,7 +229,7 @@ public class GeneralRecyclerView
 				this.recyclerController.reload();
 				this.recyclerView.getAdapter().notifyItemRemoved(row.getAdapterPosition());
 			}
-		}, () -> this.eventHandler.onSwiped(row.getSectionIndex(), row.getRowIndex()));
+		}, () -> this.eventHandler.handleSwipe(row));
 	}
 
 	private void removeSection(CollapsibleSection toRemove)

@@ -12,11 +12,13 @@ import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.PurchasesRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RecyclerEventHandler;
+import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyclerView.RecViewEventHandler
+public class MyPurchasesFragment extends KitchenFragment implements RecyclerEventHandler
 {
 
 	private ProgressBar progressBar;
@@ -45,30 +47,30 @@ public class MyPurchasesFragment extends KitchenFragment implements GeneralRecyc
 
 	// --- --- --- Handle user interactions --- --- ---
 	@Override
-	public void handleRecViewLoadFinished()
+	public void handleLoadFinished()
 	{
 		this.progressBar.setVisibility(View.GONE);
 	}
 
 	@Override
-	public void handleRecViewScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy)
+	public void handleScrolledDown(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
 
 	}
 
 	@Override
-	public void handleRecViewScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
+	public void handleScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
 	}
 
 	@Override
-	public void onClick(int section, int item)
+	public void handleClick(RowInfo row)
 	{
 
 	}
 
 	@Override
-	public void onSwiped(int section, int item)
+	public void handleSwipe(RowInfo row)
 	{
 
 	}
