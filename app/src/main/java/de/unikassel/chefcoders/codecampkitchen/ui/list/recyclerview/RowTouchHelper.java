@@ -6,7 +6,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public final class RecyclerTouchListener extends GestureDetector.SimpleOnGestureListener
+public final class RowTouchHelper extends GestureDetector.SimpleOnGestureListener
 	implements RecyclerView.OnItemTouchListener
 {
 	// =============== Classes ===============
@@ -24,7 +24,7 @@ public final class RecyclerTouchListener extends GestureDetector.SimpleOnGesture
 
 	// =============== Constructors ===============
 
-	private RecyclerTouchListener(RecyclerView recyclerView, OnTouchListener onTouchListener)
+	private RowTouchHelper(RecyclerView recyclerView, OnTouchListener onTouchListener)
 	{
 		this.recyclerView = recyclerView;
 		this.gestureDetector = new GestureDetector(recyclerView.getContext(), this);
@@ -35,7 +35,7 @@ public final class RecyclerTouchListener extends GestureDetector.SimpleOnGesture
 
 	public static void install(RecyclerView recyclerView, OnTouchListener onTouchListener)
 	{
-		recyclerView.addOnItemTouchListener(new RecyclerTouchListener(recyclerView, onTouchListener));
+		recyclerView.addOnItemTouchListener(new RowTouchHelper(recyclerView, onTouchListener));
 	}
 
 	// =============== Methods ===============

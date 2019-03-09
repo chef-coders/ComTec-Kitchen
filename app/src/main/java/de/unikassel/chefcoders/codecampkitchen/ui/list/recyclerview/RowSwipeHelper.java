@@ -11,7 +11,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
 import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
 
-public class SwipeDelCallback extends ItemTouchHelper.Callback
+public class RowSwipeHelper extends ItemTouchHelper.Callback
 {
 	// =============== Classes ===============
 
@@ -30,7 +30,7 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 
 	// =============== Constructors ===============
 
-	private SwipeDelCallback(Drawable icon, Drawable background, SwipeEvent swipeEvent)
+	private RowSwipeHelper(Drawable icon, Drawable background, SwipeEvent swipeEvent)
 	{
 		this.swipeEvent = swipeEvent;
 		this.icon = icon;
@@ -41,7 +41,7 @@ public class SwipeDelCallback extends ItemTouchHelper.Callback
 
 	public static void install(RecyclerView recyclerView, Drawable icon, Drawable background, SwipeEvent eventHandler)
 	{
-		new ItemTouchHelper(new SwipeDelCallback(icon, background, eventHandler)).attachToRecyclerView(recyclerView);
+		new ItemTouchHelper(new RowSwipeHelper(icon, background, eventHandler)).attachToRecyclerView(recyclerView);
 	}
 
 	// =============== Methods ===============

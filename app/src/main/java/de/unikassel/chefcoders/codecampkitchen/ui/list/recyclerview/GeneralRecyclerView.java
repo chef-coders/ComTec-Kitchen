@@ -166,7 +166,7 @@ public class GeneralRecyclerView
 
 	private void initTouch()
 	{
-		RecyclerTouchListener.install(this.recyclerView, this::handleOnTouch);
+		RowTouchHelper.install(this.recyclerView, this::handleOnTouch);
 	}
 
 	private void handleOnTouch(final View view, int pos)
@@ -218,7 +218,7 @@ public class GeneralRecyclerView
 			final Drawable trashIcon = ContextCompat.getDrawable(this.recyclerView.getContext(),
 			                                                     R.drawable.ic_delete_white_36dp);
 			final Drawable accentColor = ContextCompat.getDrawable(this.recyclerView.getContext(), R.color.colorAccent);
-			SwipeDelCallback.install(this.recyclerView, trashIcon, accentColor, this::handleOnSwiped);
+			RowSwipeHelper.install(this.recyclerView, trashIcon, accentColor, this::handleOnSwiped);
 		}
 	}
 
