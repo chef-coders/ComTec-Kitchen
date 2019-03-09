@@ -5,43 +5,60 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.function.BooleanSupplier;
+
 public class DisableButtonTextWatcher implements TextWatcher
 {
-	private Button     button;
-	private TextView[] relatedTextViews;
+	// =============== Fields ===============
 
-	public DisableButtonTextWatcher(Button button, TextView... relatedTextViews)
+	private final Button          button;
+	private final BooleanSupplier isValid;
+
+	// =============== Constructors ===============
+
+	private DisableButtonTextWatcher(Button button, BooleanSupplier isValid)
 	{
 		this.button = button;
-		this.relatedTextViews = relatedTextViews;
+		this.isValid = isValid;
 	}
+
+	// =============== Static Methods ===============
 
 	public static void bind(Button button, TextView... textViews)
 	{
+		bind(button, () -> {
+			for (TextView t : textViews)
+			{
+				if (t.getText().length() == 0)
+				{
+					return false;
+				}
+			}
+			return true;
+		}, textViews);
+	}
+
+	public static void bind(Button button, BooleanSupplier isValid, TextView... textViews)
+	{
+		final DisableButtonTextWatcher textWatcher = new DisableButtonTextWatcher(button, isValid);
 		for (TextView textView : textViews)
 		{
-			textView.addTextChangedListener(new DisableButtonTextWatcher(button, textViews));
+			textView.addTextChangedListener(textWatcher);
 		}
 	}
+
+	// =============== Methods ===============
 
 	@Override
 	public void afterTextChanged(Editable editable)
 	{
-		if (editable.length() == 0)
+		if (!this.isValid.getAsBoolean())
 		{
 			this.button.setEnabled(false);
 			this.button.setAlpha(0.5f);
 		}
 		else
 		{
-			for (TextView textView : this.relatedTextViews)
-			{
-				if (textView.getText().length() == 0)
-				{
-					return;
-				}
-			}
-
 			this.button.setEnabled(true);
 			this.button.setAlpha(1f);
 		}
