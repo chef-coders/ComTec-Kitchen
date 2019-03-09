@@ -1,6 +1,5 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.*;
 import de.unikassel.chefcoders.codecampkitchen.R;
@@ -29,6 +28,10 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		this.amountText = itemDetailView.findViewById(R.id.amountText);
 		this.kindSpinner = itemDetailView.findViewById(R.id.kindSpinner);
 
+		DisableButtonTextWatcher
+			.bind(this.saveButton, this::isInputValid, this.barcodeTextView, this.nameText, this.priceText,
+			      this.amountText);
+
 		this.kindSpinner.setAdapter(
 			new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item,
 			                   ItemKind.createEntries(this.getContext())));
@@ -39,36 +42,10 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		final String itemId = this.barcodeTextView.getText().toString();
 		final String name = this.nameText.getText().toString();
 
-		double price = 0.0;
-		int amount = 0;
+		final double price = Double.parseDouble(this.priceText.getText().toString());
+		final int amount = Integer.parseInt(this.amountText.getText().toString());
 		final ItemKind.Entry selectedEntry = (ItemKind.Entry) this.kindSpinner.getSelectedItem();
 		final String kind = selectedEntry.getValue();
-
-		boolean formatException = false;
-		try
-		{
-			price = Double.parseDouble(this.priceText.getText().toString());
-		}
-		catch (NumberFormatException ex)
-		{
-			this.priceText.setText("0.0");
-			formatException = true;
-		}
-
-		try
-		{
-			amount = Integer.parseInt(this.amountText.getText().toString());
-		}
-		catch (NumberFormatException ex)
-		{
-			this.amountText.setText(this.getResources().getInteger(R.integer.min_amount));
-			formatException = true;
-		}
-
-		if (formatException)
-		{
-			return null;
-		}
 
 		int maxPrice = this.getResources().getInteger(R.integer.max_price);
 		if (price > (double) maxPrice)
@@ -88,5 +65,25 @@ public abstract class ItemDetailFragment extends KitchenFragment
 		}
 
 		return new Item().set_id(itemId).setName(name).setPrice(price).setAmount(amount).setKind(kind);
+	}
+
+	protected boolean isInputValid()
+	{
+		if (this.nameText.getText().length() == 0 || this.priceText.getText().length() == 0
+		    || this.amountText.getText().length() == 0)
+		{
+			return false;
+		}
+
+		try
+		{
+			Integer.parseInt(this.amountText.getText().toString());
+			Double.parseDouble(this.priceText.getText().toString());
+			return true;
+		}
+		catch (NumberFormatException ex)
+		{
+			return false;
+		}
 	}
 }

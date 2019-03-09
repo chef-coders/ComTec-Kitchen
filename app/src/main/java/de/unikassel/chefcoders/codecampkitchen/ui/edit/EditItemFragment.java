@@ -41,8 +41,6 @@ public class EditItemFragment extends ItemDetailFragment
 		final String itemId = this.getArguments().getString("itemId");
 		final Item item = MainActivity.kitchenManager.items().get(itemId);
 
-		DisableButtonTextWatcher.bind(this.saveButton, this.nameText, this.priceText, this.amountText);
-
 		this.barcodeTextView.setText(item.get_id());
 		this.nameText.setText(item.getName());
 		this.priceText.setText(String.valueOf(item.getPrice()));

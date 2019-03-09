@@ -39,9 +39,6 @@ public class CreateItemFragment extends ItemDetailFragment
 
 		this.initViews(createItemView);
 
-		DisableButtonTextWatcher
-			.bind(this.saveButton, this.priceText, this.amountText, this.nameText, this.barcodeTextView);
-
 		Button genIdButton = createItemView.findViewById(R.id.generateIdButton);
 		genIdButton.setOnClickListener(this::onGeneratedId);
 
