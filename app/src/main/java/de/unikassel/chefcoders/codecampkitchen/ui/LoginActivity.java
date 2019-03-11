@@ -34,6 +34,15 @@ public class LoginActivity extends AppCompatActivity
 		this.buttonLogin = this.findViewById(R.id.buttonLogin);
 
 		DisableButtonTextWatcher.bind(this.buttonLogin, this.editTextEmail, this.editTextName);
+
+		SimpleAsyncTask.execute(() -> {
+			MainActivity.kitchenManager.getConnection().getServerInfo();
+		}, () -> {
+			// has connection, do nothing
+		}, exception -> {
+			// no connection, display warning
+			this.textViewConnection.setText(getString(R.string.connection_request));
+		});
 	}
 
 	public void loginClick(View v)
