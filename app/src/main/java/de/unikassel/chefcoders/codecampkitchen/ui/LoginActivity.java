@@ -1,13 +1,9 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
@@ -38,57 +34,34 @@ public class LoginActivity extends AppCompatActivity
 		this.buttonLogin = this.findViewById(R.id.buttonLogin);
 
 		DisableButtonTextWatcher.bind(this.buttonLogin, this.editTextEmail, this.editTextName);
-
-		if (!this.isConnected())
-		{
-			this.textViewConnection.setText(getString(R.string.connection_request));
-		}
 	}
 
 	public void loginClick(View v)
 	{
-		if (!this.isConnected())
-		{
-			this.textViewConnection.setText(getString(R.string.connection_request));
-			final Animation shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
-			this.textViewConnection.startAnimation(shakeAnim);
-			return;
-		}
-
-		this.setButtonEnabled(false);
+		this.buttonLogin.setEnabled(false);
 		this.textViewConnection.setText("");
 		this.progressBar.setVisibility(View.VISIBLE);
 
-		SimpleAsyncTask.execute(this.getApplicationContext(), () -> {
+		SimpleAsyncTask.execute(() -> {
 			String name = this.editTextName.getText().toString();
 			String email = this.editTextEmail.getText().toString();
 
 			MainActivity.kitchenManager.session().register(this, name, email, this.switchAdmin.isChecked());
-		}, this::startMainActivity, () -> {
-			this.setButtonEnabled(true);
+		}, () -> {
+			// signup successful, show Main view
+
+			this.finish();
+			this.startActivity(new Intent(this, MainActivity.class));
+		}, exception -> {
+			// signup failed, display and shake warning
+
+			this.textViewConnection.setText(getString(R.string.connection_request));
+			this.textViewConnection.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+		}, () -> {
+			// in either case, re-enable the button to allow "try again"
+
+			this.buttonLogin.setEnabled(true);
 			this.progressBar.setVisibility(View.GONE);
 		});
-	}
-
-	private void setButtonEnabled(boolean enable)
-	{
-		this.buttonLogin.setClickable(enable);
-		this.buttonLogin.setActivated(enable);
-		this.buttonLogin.setEnabled(enable);
-	}
-
-	private void startMainActivity()
-	{
-		this.finish();
-		this.startActivity(new Intent(this, MainActivity.class));
-	}
-
-	private boolean isConnected()
-	{
-		ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-		return activeNetwork != null && activeNetwork.isConnected();
 	}
 }
