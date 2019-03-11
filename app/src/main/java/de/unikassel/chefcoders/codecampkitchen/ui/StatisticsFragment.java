@@ -6,7 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -30,6 +32,7 @@ public class StatisticsFragment extends KitchenFragment
 	private List<Purchase> purchases;
 
 	private LinearLayout statisticsLayout;
+	private Switch       showAllPurchasesSwitch;
 	private TextView     totalAmountView;
 	private TextView     moneySpentView;
 	private TextView     totalNumberView;
@@ -49,6 +52,7 @@ public class StatisticsFragment extends KitchenFragment
 		View allItemsView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
 		this.statisticsLayout = allItemsView.findViewById(R.id.statisticsLayout);
+		this.showAllPurchasesSwitch = allItemsView.findViewById(R.id.showAllPurchasesSwitch);
 		this.totalAmountView = allItemsView.findViewById(R.id.totalAmountView);
 		this.moneySpentView = allItemsView.findViewById(R.id.moneySpentView);
 		this.totalNumberView = allItemsView.findViewById(R.id.totalNumberView);
@@ -56,37 +60,70 @@ public class StatisticsFragment extends KitchenFragment
 
 		this.horizontalBarChart = allItemsView.findViewById(R.id.chart);
 
-		// display whatever is currently available, then refresh and update display
-		this.reload();
-		SimpleAsyncTask.execute(this.getActivity(), this::refresh, this::reload);
+		showAllPurchasesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> refreshFragment(isChecked));
+
+		refreshFragment(this.showAllPurchasesSwitch.isChecked());
 
 		return allItemsView;
 	}
 
-	private void refresh()
-	{
+	private void refreshFragment(boolean getAll) {
 		if (MainActivity.kitchenManager.session().isAdmin())
 		{
-			MainActivity.kitchenManager.purchases().refreshAll();
+			if (getAll)
+			{
+				SimpleAsyncTask.execute(this.getActivity(), this::refreshAll, this::reloadAllAsAdmin);
+			}
+			else
+			{
+				SimpleAsyncTask.execute(this.getActivity(), this::refreshMine, this::reloadMineAsAdmin);
+			}
 		}
 		else
 		{
-			MainActivity.kitchenManager.purchases().refreshMine();
+			SimpleAsyncTask.execute(this.getActivity(), this::refreshMine, this::reloadMineAsUser);
 		}
 	}
 
-	private void reload()
+	private void refreshAll()
 	{
-		if (MainActivity.kitchenManager.session().isAdmin())
-		{
-			this.purchases = MainActivity.kitchenManager.purchases().getAll();
-		}
-		else
-		{
-			this.purchases = MainActivity.kitchenManager.purchases().getMine();
-			this.statisticsLayout.removeView(this.totalAmountView);
-			this.statisticsLayout.removeView(this.totalNumberView);
-		}
+		MainActivity.kitchenManager.purchases().refreshAll();
+	}
+
+	private void refreshMine()
+	{
+		MainActivity.kitchenManager.purchases().refreshMine();
+	}
+
+	private void reloadAllAsAdmin()
+	{
+		this.purchases = MainActivity.kitchenManager.purchases().getAll();
+
+		this.statisticsLayout.addView(this.totalAmountView);
+		this.statisticsLayout.addView(this.totalNumberView);
+
+		this.initValues();
+		this.initChart();
+	}
+
+	private void reloadMineAsAdmin()
+	{
+		this.purchases = MainActivity.kitchenManager.purchases().getMine();
+
+		this.statisticsLayout.removeView(this.totalAmountView);
+		this.statisticsLayout.removeView(this.totalNumberView);
+
+		this.initValues();
+		this.initChart();
+	}
+
+	private void reloadMineAsUser()
+	{
+		this.purchases = MainActivity.kitchenManager.purchases().getMine();
+
+		this.statisticsLayout.removeView(this.showAllPurchasesSwitch);
+		this.statisticsLayout.removeView(this.totalAmountView);
+		this.statisticsLayout.removeView(this.totalNumberView);
 
 		this.initValues();
 		this.initChart();

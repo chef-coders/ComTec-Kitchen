@@ -78,4 +78,5 @@
     <string name="amount_hint">Type an Amount</string>
     <string name="credit_hint">Type the Credit</string>
 	<string name="id_exists">An Item with this Barcode already exists</string>
+    <string name="showAllPurchasesSwitch" >Show all purchases of all users.</string>
 </resources>

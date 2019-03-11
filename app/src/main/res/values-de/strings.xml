@@ -77,4 +77,5 @@
     <string name="amount_hint">Gib eine Stückzahl ein</string>
     <string name="credit_hint">Gib das Guthaben ein</string>
     <string name="id_exists">Ein Artikel mit diesem Barcode existiert bereits</string>
+    <string name="showAllPurchasesSwitch">Alle Einkäufe aller Benutzer anzeigen.</string>
 </resources>

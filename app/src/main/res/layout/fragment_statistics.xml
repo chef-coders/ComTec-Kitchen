@@ -21,6 +21,13 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <Switch
+            android:id="@+id/showAllPurchasesSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/showAllPurchasesSwitch"
+            android:textAlignment="textStart" />
+
         <TextView
             android:id="@+id/totalAmountView"
             android:layout_width="match_parent"
