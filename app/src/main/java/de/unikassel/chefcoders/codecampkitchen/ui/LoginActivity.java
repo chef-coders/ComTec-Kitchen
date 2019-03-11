@@ -17,7 +17,6 @@ import de.unikassel.chefcoders.codecampkitchen.ui.edit.DisableButtonTextWatcher;
 
 public class LoginActivity extends AppCompatActivity
 {
-
 	private EditText    editTextName;
 	private EditText    editTextEmail;
 	private Switch      switchAdmin;
@@ -29,18 +28,20 @@ public class LoginActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
+		this.setContentView(R.layout.activity_login);
 
-        this.editTextName = this.findViewById(R.id.editTextName);
-        this.editTextEmail = this.findViewById(R.id.editTextEmail);
-        this.switchAdmin = this.findViewById(R.id.switchAdmin);
-        this.buttonLogin = this.findViewById(R.id.buttonLogin);
+		this.editTextName = this.findViewById(R.id.editTextName);
+		this.editTextEmail = this.findViewById(R.id.editTextEmail);
+		this.switchAdmin = this.findViewById(R.id.switchAdmin);
+		this.textViewConnection = this.findViewById(R.id.textViewConnection);
+		this.progressBar = this.findViewById(R.id.progressBar);
+		this.buttonLogin = this.findViewById(R.id.buttonLogin);
+
 		DisableButtonTextWatcher.bind(this.buttonLogin, this.editTextEmail, this.editTextName);
-        this.textViewConnection = this.findViewById(R.id.textViewConnection);
-        this.progressBar = this.findViewById(R.id.progressBar);
+
 		if (!this.isConnected())
 		{
-            this.textViewConnection.setText(getString(R.string.connection_request));
+			this.textViewConnection.setText(getString(R.string.connection_request));
 		}
 	}
 
@@ -48,14 +49,14 @@ public class LoginActivity extends AppCompatActivity
 	{
 		if (!this.isConnected())
 		{
-            this.textViewConnection.setText(getString(R.string.connection_request));
+			this.textViewConnection.setText(getString(R.string.connection_request));
 			final Animation shakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
 			this.textViewConnection.startAnimation(shakeAnim);
 			return;
 		}
 
-        this.setButtonEnabled(false);
-        this.textViewConnection.setText("");
+		this.setButtonEnabled(false);
+		this.textViewConnection.setText("");
 		this.progressBar.setVisibility(View.VISIBLE);
 
 		SimpleAsyncTask.execute(this.getApplicationContext(), () -> {
@@ -71,15 +72,15 @@ public class LoginActivity extends AppCompatActivity
 
 	private void setButtonEnabled(boolean enable)
 	{
-        this.buttonLogin.setClickable(enable);
-        this.buttonLogin.setActivated(enable);
-        this.buttonLogin.setEnabled(enable);
+		this.buttonLogin.setClickable(enable);
+		this.buttonLogin.setActivated(enable);
+		this.buttonLogin.setEnabled(enable);
 	}
 
 	private void startMainActivity()
 	{
-        this.finish();
-        this.startActivity(new Intent(this, MainActivity.class));
+		this.finish();
+		this.startActivity(new Intent(this, MainActivity.class));
 	}
 
 	private boolean isConnected()
