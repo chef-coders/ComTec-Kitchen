@@ -70,18 +70,10 @@ public class MainActivity extends AppCompatActivity
 
 		super.onCreate(savedInstanceState);
 
-		ResultAsyncTask.execute(this.getApplicationContext(), () -> {
-			try
-			{
-
-				return kitchenManager.session().tryLogin(this);
-			}
-			catch (Exception ex)
-			{
-				return false;
-			}
-		}, (isLoggedIn) -> {
-			if (!isLoggedIn)
+		ResultAsyncTask.execute(() -> {
+			return kitchenManager.session().tryLogin(this);
+		}, loginSuccess -> {
+			if (!loginSuccess)
 			{
 				this.startLogin();
 			}
@@ -97,6 +89,8 @@ public class MainActivity extends AppCompatActivity
 					this.initFragment();
 				}
 			}
+		}, exception -> {
+			this.startLogin();
 		});
 	}
 
