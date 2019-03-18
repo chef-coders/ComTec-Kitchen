@@ -81,6 +81,11 @@ public class Session
 		return this.users.get(this.loginId);
 	}
 
+	public void setLoggedInUser(User user)
+	{
+		this.setUserInfo(user.getToken(), user.get_id());
+	}
+
 	public void refreshLoggedInUser()
 	{
 		this.users.refresh(this.getLoggedInUser());
