@@ -10,14 +10,22 @@ import java.util.Map;
 
 public class OkHttpConnection implements HttpConnection
 {
-	private OkHttpClient         client;
-	private HttpExceptionBuilder httpExceptionBuilder;
+	// =============== Fields ===============
+
+	private final OkHttpClient         client;
+	private final HttpExceptionBuilder httpExceptionBuilder;
+
+	// =============== Constructors ===============
 
 	public OkHttpConnection()
 	{
 		this.httpExceptionBuilder = new HttpExceptionBuilder();
 		this.client = new OkHttpClient();
 	}
+
+	// =============== Methods ===============
+
+	// --------------- Requests ---------------
 
 	@Override
 	public String get(String url, Map<String, String> headers)
@@ -50,6 +58,8 @@ public class OkHttpConnection implements HttpConnection
 
 		return this.executeRequestAndReturnResponseString(request);
 	}
+
+	// --------------- Helpers ---------------
 
 	private String executeRequestAndReturnResponseString(Request request)
 	{
