@@ -2,6 +2,8 @@ package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.edit.EditItemFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
@@ -12,13 +14,13 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 	@Override
 	public void reload()
 	{
-		this.fill(MainActivity.kitchenManager.items().getGrouped());
+		this.fill(Items.shared.getGrouped());
 	}
 
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.items().refreshAll();
+		Items.shared.refreshAll();
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		final Item item = this.get(row);
 		if (!MainActivity.editMode)
 		{
-			return MainActivity.kitchenManager.cart().add(item) > 0;
+			return Cart.shared.add(item) > 0;
 		}
 
 		final View itemView = row.getViewHolder().itemView;
@@ -60,12 +62,12 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 		final Item item = this.get(row);
 		if (MainActivity.editMode)
 		{
-			MainActivity.kitchenManager.items().delete(item);
+			Items.shared.delete(item);
 			return true;
 		}
 		else
 		{
-			MainActivity.kitchenManager.cart().remove(item);
+			Cart.shared.remove(item);
 			return false;
 		}
 	}

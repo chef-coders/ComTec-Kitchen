@@ -10,6 +10,10 @@ import java.util.Map;
 
 public class OkHttpConnection implements HttpConnection
 {
+	// =============== Static Fields ===============
+
+	public static final OkHttpConnection shared = new OkHttpConnection();
+
 	// =============== Fields ===============
 
 	private final OkHttpClient         client;

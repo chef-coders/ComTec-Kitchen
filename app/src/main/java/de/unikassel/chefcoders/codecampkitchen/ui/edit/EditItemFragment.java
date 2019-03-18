@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
@@ -39,7 +41,7 @@ public class EditItemFragment extends ItemDetailFragment
 		this.initViews(editItemView);
 
 		final String itemId = this.getArguments().getString("itemId");
-		final Item item = MainActivity.kitchenManager.items().get(itemId);
+		final Item item = Items.shared.get(itemId);
 
 		this.barcodeTextView.setText(item.get_id());
 		this.nameText.setText(item.getName());
@@ -59,8 +61,8 @@ public class EditItemFragment extends ItemDetailFragment
 			return;
 		}
 
-		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().update(item), () -> {
-			MainActivity.kitchenManager.cart().clear();
+		SimpleAsyncTask.execute(this.getContext(), () -> Items.shared.update(item), () -> {
+			Cart.shared.clear();
 			Toast.makeText(this.getActivity(), R.string.edit_item_successful, Toast.LENGTH_SHORT).show();
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			mainActivity.changeFragmentBack();

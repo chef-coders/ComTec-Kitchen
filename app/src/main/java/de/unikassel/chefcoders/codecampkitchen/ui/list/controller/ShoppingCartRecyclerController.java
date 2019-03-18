@@ -1,7 +1,8 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.view.View;
-import de.unikassel.chefcoders.codecampkitchen.MainActivity;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
@@ -34,13 +35,13 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	@Override
 	public void reload()
 	{
-		this.shoppingCart = MainActivity.kitchenManager.cart().getPurchases();
+		this.shoppingCart = Cart.shared.getPurchases();
 	}
 
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.cart().refreshAll();
+		Cart.shared.refreshAll();
 	}
 
 	@Override
@@ -59,18 +60,18 @@ public class ShoppingCartRecyclerController implements RecyclerController<RowVie
 	public boolean onClick(RowInfo<RowViewHolder> row)
 	{
 		final Purchase purchase = this.shoppingCart.get(row.getRowIndex());
-		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
+		final Item item = Items.shared.get(purchase.getItem_id());
 		// TODO add(Purchase, int)
-		return item == null || MainActivity.kitchenManager.cart().add(item) > 0;
+		return item == null || Cart.shared.add(item) > 0;
 	}
 
 	@Override
 	public boolean onSwiped(RowInfo<RowViewHolder> row)
 	{
 		final Purchase purchase = this.shoppingCart.get(row.getRowIndex());
-		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
+		final Item item = Items.shared.get(purchase.getItem_id());
 		// TODO remove(Purchase)
-		return item != null && MainActivity.kitchenManager.cart().remove(item);
+		return item != null && Cart.shared.remove(item);
 	}
 
 	@Override

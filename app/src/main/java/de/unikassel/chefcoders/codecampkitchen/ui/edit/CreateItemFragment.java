@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 
@@ -74,7 +75,7 @@ public class CreateItemFragment extends ItemDetailFragment
 		}
 
 		final String barcode = this.barcodeTextView.getText().toString();
-		if (MainActivity.kitchenManager.items().get(barcode) != null)
+		if (Items.shared.get(barcode) != null)
 		{
 			final Toast toast = Toast.makeText(this.getContext(), R.string.id_exists, Toast.LENGTH_SHORT);
 			toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -94,7 +95,7 @@ public class CreateItemFragment extends ItemDetailFragment
 			return;
 		}
 
-		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.items().create(item), () -> {
+		SimpleAsyncTask.execute(this.getContext(), () -> Items.shared.create(item), () -> {
 			Toast.makeText(this.getActivity(), R.string.create_item_successful, Toast.LENGTH_SHORT).show();
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			mainActivity.changeFragmentBack();

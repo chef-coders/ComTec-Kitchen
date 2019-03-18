@@ -26,9 +26,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.R;
-import de.unikassel.chefcoders.codecampkitchen.logic.KitchenManager;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Session;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.LoginActivity;
@@ -48,8 +48,6 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity
 {
 	// =============== Static Fields ===============
-
-	public static KitchenManager kitchenManager = KitchenManager.create();
 
 	public static boolean editMode = false;
 
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 
 		ResultAsyncTask.execute(() -> {
-			return kitchenManager.session().tryLogin(this);
+			return Session.shared.tryLogin(this);
 		}, loginSuccess -> {
 			if (!loginSuccess)
 			{
@@ -202,7 +200,7 @@ public class MainActivity extends AppCompatActivity
 			this.setEditMode(!editMode);
 			return true;
 		case R.id.action_clear_all:
-			kitchenManager.cart().clear();
+			Cart.shared.clear();
 			this.changeFragmentBack();
 			return true;
 		}
@@ -259,7 +257,7 @@ public class MainActivity extends AppCompatActivity
 		this.updatedDrawerHeader();
 
 		MenuItem item = this.navigationView.getMenu().findItem(R.id.nav_all_users);
-		item.setVisible(kitchenManager.session().isAdmin());
+		item.setVisible(Session.shared.isAdmin());
 
 		this.selectMenuItem(R.id.nav_all_items);
 
@@ -268,7 +266,7 @@ public class MainActivity extends AppCompatActivity
 
 	private void updatedDrawerHeader()
 	{
-		User user = kitchenManager.session().getLoggedInUser();
+		User user = Session.shared.getLoggedInUser();
 
 		View headerView = this.navigationView.getHeaderView(0);
 		TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
@@ -337,7 +335,7 @@ public class MainActivity extends AppCompatActivity
 			this.selectFragment(new SettingsFragment());
 			break;
 		case R.id.nav_clear_user_data:
-			kitchenManager.session().clearUserData(this);
+			Session.shared.clearUserData(this);
 			this.startLogin();
 			break;
 		}

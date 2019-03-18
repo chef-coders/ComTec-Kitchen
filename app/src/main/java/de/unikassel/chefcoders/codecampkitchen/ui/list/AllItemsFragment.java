@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Session;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.controller.ItemRecyclerController;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.GeneralRecyclerView;
@@ -74,7 +76,7 @@ public class AllItemsFragment extends KitchenFragment implements RecyclerEventHa
 		menu.findItem(R.id.action_create).setVisible(false);
 		menu.findItem(R.id.action_edit).setVisible(false);
 
-		final boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
+		final boolean isAdmin = Session.shared.isAdmin();
 		menu.findItem(R.id.action_create).setVisible(isAdmin && MainActivity.editMode);
 		menu.findItem(R.id.action_edit).setVisible(isAdmin);
 	}
@@ -95,7 +97,7 @@ public class AllItemsFragment extends KitchenFragment implements RecyclerEventHa
 	@Override
 	public void handleScrolledUp(@NonNull RecyclerView recyclerView, int dx, int dy)
 	{
-		if (!MainActivity.kitchenManager.cart().getPurchases().isEmpty())
+		if (!Cart.shared.getPurchases().isEmpty())
 		{
 			this.floatingActionButton.show();
 		}
@@ -104,7 +106,7 @@ public class AllItemsFragment extends KitchenFragment implements RecyclerEventHa
 	@Override
 	public void handleClick(RowInfo row)
 	{
-		if (!MainActivity.editMode && !MainActivity.kitchenManager.cart().getPurchases().isEmpty())
+		if (!MainActivity.editMode && !Cart.shared.getPurchases().isEmpty())
 		{
 			this.floatingActionButton.show();
 		}
@@ -113,7 +115,7 @@ public class AllItemsFragment extends KitchenFragment implements RecyclerEventHa
 	@Override
 	public void handleSwipe(RowInfo row)
 	{
-		if (MainActivity.kitchenManager.cart().getPurchases().isEmpty())
+		if (Cart.shared.getPurchases().isEmpty())
 		{
 			this.floatingActionButton.hide();
 		}

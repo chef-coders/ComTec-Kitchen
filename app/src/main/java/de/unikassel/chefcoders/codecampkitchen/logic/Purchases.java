@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.logic;
 
+import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 
@@ -10,17 +11,23 @@ import java.util.stream.Stream;
 
 public class Purchases
 {
+	// =============== Static Fields ===============
+
+	public static final Purchases shared = new Purchases(KitchenConnection.shared, Session.shared);
+
 	// =============== Fields ===============
 
-	private final KitchenManager kitchenManager;
+	private final KitchenConnection connection;
+	private final Session           session;
 
 	private final Map<String, Purchase> purchases = new HashMap<>();
 
 	// =============== Constructors ===============
 
-	public Purchases(KitchenManager kitchenManager)
+	public Purchases(KitchenConnection connection, Session session)
 	{
-		this.kitchenManager = kitchenManager;
+		this.connection = connection;
+		this.session = session;
 	}
 
 	// =============== Methods ===============
@@ -34,7 +41,7 @@ public class Purchases
 
 	public Stream<Purchase> myPurchases()
 	{
-		final String userId = this.kitchenManager.session().getLoggedInUser().get_id();
+		final String userId = this.session.getLoggedInUser().get_id();
 		return this.purchases.values().stream().filter(userFilter(userId));
 	}
 
@@ -46,8 +53,8 @@ public class Purchases
 	public Map<String, List<Purchase>> getMineGrouped()
 	{
 		// comparing strings, but works for ISO 8601 timestamps
-		return KitchenManager.group(this.myPurchases(), p -> p.getCreated().substring(0, 10),
-		                            Comparator.comparing(Purchase::getCreated));
+		return StreamHelper.group(this.myPurchases(), p -> p.getCreated().substring(0, 10),
+		                          Comparator.comparing(Purchase::getCreated));
 	}
 
 	// --------------- Modification ---------------
@@ -61,14 +68,14 @@ public class Purchases
 
 	public void refreshAll()
 	{
-		final String resultJson = this.kitchenManager.getConnection().getAllPurchases();
+		final String resultJson = this.connection.getAllPurchases();
 		final List<Purchase> resultPurchases = JsonTranslator.toPurchases(resultJson);
 		resultPurchases.forEach(this::updateLocal);
 	}
 
 	public void refreshMine()
 	{
-		final String resultJson = this.kitchenManager.getConnection().getMyPurchases();
+		final String resultJson = this.connection.getMyPurchases();
 		final List<Purchase> resultPurchases = JsonTranslator.toPurchases(resultJson);
 		resultPurchases.forEach(this::updateLocal);
 	}

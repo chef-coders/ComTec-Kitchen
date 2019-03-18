@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.logic;
 
+import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 
@@ -7,17 +8,21 @@ import java.util.*;
 
 public class Items
 {
+	// =============== Static Fields ===============
+
+	public static final Items shared = new Items(KitchenConnection.shared);
+
 	// =============== Fields ===============
 
-	private final KitchenManager kitchenManager;
+	private final KitchenConnection connection;
 
 	private final Map<String, Item> items = new HashMap<>();
 
 	// =============== Constructors ===============
 
-	public Items(KitchenManager kitchenManager)
+	public Items(KitchenConnection connection)
 	{
-		this.kitchenManager = kitchenManager;
+		this.connection = connection;
 	}
 
 	// =============== Methods ===============
@@ -36,8 +41,8 @@ public class Items
 
 	public Map<String, List<Item>> getGrouped()
 	{
-		return KitchenManager.group(this.items.values().stream(), Item::getKind,
-		                            Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
+		return StreamHelper.group(this.items.values().stream(), Item::getKind,
+		                          Comparator.comparing(Item::getName, String.CASE_INSENSITIVE_ORDER));
 	}
 
 	// --------------- Modification ---------------
@@ -57,7 +62,7 @@ public class Items
 	public void refreshAll()
 	{
 		this.items.clear();
-		final String resultJson = this.kitchenManager.getConnection().getAllItems();
+		final String resultJson = this.connection.getAllItems();
 		final List<Item> resultItems = JsonTranslator.toItems(resultJson);
 		resultItems.forEach(this::updateLocal);
 	}
@@ -65,7 +70,7 @@ public class Items
 	public void create(Item item)
 	{
 		final String itemJson = JsonTranslator.toJson(item);
-		final String resultJson = this.kitchenManager.getConnection().createItem(itemJson);
+		final String resultJson = this.connection.createItem(itemJson);
 		final Item createdItem = JsonTranslator.toItem(resultJson);
 		this.updateLocal(createdItem);
 	}
@@ -73,14 +78,14 @@ public class Items
 	public void update(Item item)
 	{
 		final String itemJson = JsonTranslator.toJson(item);
-		final String resultJson = this.kitchenManager.getConnection().updateItem(item.get_id(), itemJson);
+		final String resultJson = this.connection.updateItem(item.get_id(), itemJson);
 		final Item updatedItem = JsonTranslator.toItem(resultJson);
 		this.updateLocal(updatedItem);
 	}
 
 	public void delete(Item item)
 	{
-		this.kitchenManager.getConnection().deleteItem(item.get_id());
+		this.connection.deleteItem(item.get_id());
 		this.deleteLocal(item);
 	}
 }

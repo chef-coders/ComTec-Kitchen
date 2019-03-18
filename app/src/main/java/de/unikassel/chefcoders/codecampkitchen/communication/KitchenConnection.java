@@ -11,6 +11,10 @@ public class KitchenConnection
 	public static final String ADMIN_KEY = "UkQ4wtmOoWU9Ws";
 	public static final String BASE_URL  = "http://srv8.comtec.eecs.uni-kassel.de:10800/api";
 
+	// =============== Static Fields ===============
+
+	public static final KitchenConnection shared = new KitchenConnection(OkHttpConnection.shared);
+
 	// =============== Fields ===============
 
 	private HttpConnection connection;

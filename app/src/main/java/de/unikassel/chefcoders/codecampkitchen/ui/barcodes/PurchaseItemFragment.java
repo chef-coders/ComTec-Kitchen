@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
@@ -51,8 +53,8 @@ public class PurchaseItemFragment extends KitchenFragment
 
 		this.barcode = this.getArguments().getString("barcode");
 
-		Item item = MainActivity.kitchenManager.items().get(this.barcode);
-		int amountInCart = MainActivity.kitchenManager.cart().getAmount(item);
+		Item item = Items.shared.get(this.barcode);
+		int amountInCart = Cart.shared.getAmount(item);
 		this.availableAmountToAdd = item.getAmount() - amountInCart;
 
 		this.barcodeValue = view.findViewById(R.id.barcodeValueView);
@@ -120,8 +122,8 @@ public class PurchaseItemFragment extends KitchenFragment
 			return;
 		}
 
-		SimpleAsyncTask.execute(this.getActivity(), () -> MainActivity.kitchenManager.cart().add(
-			MainActivity.kitchenManager.items().get(this.barcode), amount), this::goBack);
+		SimpleAsyncTask.execute(this.getActivity(), () -> Cart.shared.add(
+			Items.shared.get(this.barcode), amount), this::goBack);
 	}
 
 	private void goBack()

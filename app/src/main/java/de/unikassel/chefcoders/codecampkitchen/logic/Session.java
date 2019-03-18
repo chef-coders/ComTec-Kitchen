@@ -3,23 +3,30 @@ package de.unikassel.chefcoders.codecampkitchen.logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 
 public class Session
 {
+	// =============== Static Fields ===============
+
+	public static final Session shared = new Session(KitchenConnection.shared, Users.shared);
+
 	// =============== Fields ===============
 
-	private final KitchenManager kitchenManager;
+	private final KitchenConnection connection;
+	private final Users             users;
 
 	private String loginToken;
 	private String loginId;
 
 	// =============== Constructors ===============
 
-	public Session(KitchenManager kitchenManager)
+	public Session(KitchenConnection connection, Users users)
 	{
-		this.kitchenManager = kitchenManager;
+		this.connection = connection;
+		this.users = users;
 	}
 
 	// =============== Methods ===============
@@ -33,8 +40,8 @@ public class Session
 			return false;
 		}
 
-		final User userData = JsonTranslator.toUser(this.kitchenManager.getConnection().getUser(this.loginId));
-		this.kitchenManager.users().updateLocal(userData);
+		final User userData = JsonTranslator.toUser(this.connection.getUser(this.loginId));
+		this.users.updateLocal(userData);
 		return true;
 	}
 
@@ -46,11 +53,11 @@ public class Session
 
 		if (admin)
 		{
-			resultJson = this.kitchenManager.getConnection().createAdminUser(userJson);
+			resultJson = this.connection.createAdminUser(userJson);
 		}
 		else
 		{
-			resultJson = this.kitchenManager.getConnection().createRegularUser(userJson);
+			resultJson = this.connection.createRegularUser(userJson);
 		}
 
 		final User createdUser = JsonTranslator.toUser(resultJson);
@@ -58,7 +65,7 @@ public class Session
 		this.setUserInfo(createdUser.getToken(), createdUser.get_id());
 		this.saveUserInfo(context);
 
-		this.kitchenManager.users().updateLocal(createdUser);
+		this.users.updateLocal(createdUser);
 	}
 
 	public void clearUserData(Context context)
@@ -71,12 +78,12 @@ public class Session
 
 	public User getLoggedInUser()
 	{
-		return this.kitchenManager.users().get(this.loginId);
+		return this.users.get(this.loginId);
 	}
 
 	public void refreshLoggedInUser()
 	{
-		this.kitchenManager.users().refresh(this.getLoggedInUser());
+		this.users.refresh(this.getLoggedInUser());
 	}
 
 	public boolean isAdmin()
@@ -90,7 +97,7 @@ public class Session
 	{
 		this.loginToken = userToken;
 		this.loginId = userId;
-		this.kitchenManager.getConnection().setUserToken(userToken);
+		this.connection.setUserToken(userToken);
 	}
 
 	private boolean loadUserInfo(Context context)

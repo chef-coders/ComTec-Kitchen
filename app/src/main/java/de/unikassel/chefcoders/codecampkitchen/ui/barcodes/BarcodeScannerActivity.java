@@ -8,6 +8,9 @@ import android.widget.Toast;
 import com.google.android.gms.vision.barcode.Barcode;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
+import de.unikassel.chefcoders.codecampkitchen.logic.Session;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import info.androidhive.barcode.BarcodeReader;
 
@@ -25,14 +28,14 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	@Override
 	public void onScanned(Barcode barcode)
 	{
-		boolean isAdmin = MainActivity.kitchenManager.session().isAdmin();
-		final Item item = MainActivity.kitchenManager.items().get(barcode.rawValue);
+		boolean isAdmin = Session.shared.isAdmin();
+		final Item item = Items.shared.get(barcode.rawValue);
 
 		if (item != null)
 		{
 			// item exists
 
-			final int amountAvailable = item.getAmount() - MainActivity.kitchenManager.cart().getAmount(item);
+			final int amountAvailable = item.getAmount() - Cart.shared.getAmount(item);
 			if (amountAvailable >= 1)
 			{
 				// still available, close scanner and display view that allows entering an amount

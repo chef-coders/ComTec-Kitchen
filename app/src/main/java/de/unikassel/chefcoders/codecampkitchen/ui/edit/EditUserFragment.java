@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Users;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
@@ -62,7 +63,7 @@ public class EditUserFragment extends KitchenFragment
 
 		DisableButtonTextWatcher.bind(this.saveButton, this.editTextEmail, this.editTextName, this.editTextCredit);
 
-		final User user = MainActivity.kitchenManager.users().get(this.userId);
+		final User user = Users.shared.get(this.userId);
 		if (user != null)
 		{
 			this.editTextName.setText(user.getName());
@@ -102,7 +103,7 @@ public class EditUserFragment extends KitchenFragment
 		final FragmentActivity activity = this.getActivity();
 
 		SimpleAsyncTask.execute(activity, () -> {
-			MainActivity.kitchenManager.users().update(user);
+			Users.shared.update(user);
 		}, () -> {
 			Toast.makeText(activity, R.string.edit_user_successful, Toast.LENGTH_SHORT).show();
 			final MainActivity mainActivity = (MainActivity) activity;

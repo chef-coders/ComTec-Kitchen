@@ -8,6 +8,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
+import de.unikassel.chefcoders.codecampkitchen.logic.Session;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
 import de.unikassel.chefcoders.codecampkitchen.ui.edit.DisableButtonTextWatcher;
 
@@ -36,7 +38,7 @@ public class LoginActivity extends AppCompatActivity
 		DisableButtonTextWatcher.bind(this.buttonLogin, this.editTextEmail, this.editTextName);
 
 		SimpleAsyncTask.execute(() -> {
-			MainActivity.kitchenManager.getConnection().getServerInfo();
+			KitchenConnection.shared.getServerInfo();
 		}, () -> {
 			// has connection, do nothing
 		}, exception -> {
@@ -55,7 +57,7 @@ public class LoginActivity extends AppCompatActivity
 			String name = this.editTextName.getText().toString();
 			String email = this.editTextEmail.getText().toString();
 
-			MainActivity.kitchenManager.session().register(this, name, email, this.switchAdmin.isChecked());
+			Session.shared.register(this, name, email, this.switchAdmin.isChecked());
 		}, () -> {
 			// signup successful, show Main view
 

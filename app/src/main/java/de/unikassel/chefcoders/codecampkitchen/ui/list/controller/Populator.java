@@ -2,8 +2,10 @@ package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
+import de.unikassel.chefcoders.codecampkitchen.logic.Session;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
@@ -15,7 +17,7 @@ class Populator
 
 	static void populateItemList(RowViewHolder v, Item item)
 	{
-		final int numInCart = MainActivity.kitchenManager.cart().getAmount(item);
+		final int numInCart = Cart.shared.getAmount(item);
 		final double price = item.getPrice();
 
 		populateItem(v, item.getName(), numInCart, price, numInCart * price);
@@ -64,7 +66,7 @@ class Populator
 	{
 		populatePurchase(v, purchase);
 
-		final Item item = MainActivity.kitchenManager.items().get(purchase.getItem_id());
+		final Item item = Items.shared.get(purchase.getItem_id());
 		populateAvailable(v, item != null ? item.getAmount() : 0);
 	}
 
@@ -86,7 +88,7 @@ class Populator
 	private static void populatePurchase(RowViewHolder v, Purchase purchase)
 	{
 		final String itemId = purchase.getItem_id();
-		final Item item = MainActivity.kitchenManager.items().get(itemId);
+		final Item item = Items.shared.get(itemId);
 		final int amount = purchase.getAmount();
 		final double total = purchase.getPrice();
 		final String name = item != null ? item.getName() : itemId;
@@ -110,7 +112,7 @@ class Populator
 	private static int getColor(User user)
 	{
 		final boolean isLoggedIn = user.get_id()
-		                               .equals(MainActivity.kitchenManager.session().getLoggedInUser().get_id());
+		                               .equals(Session.shared.getLoggedInUser().get_id());
 		final boolean isAdmin = "admin".equals(user.getRole());
 
 		return isLoggedIn ?

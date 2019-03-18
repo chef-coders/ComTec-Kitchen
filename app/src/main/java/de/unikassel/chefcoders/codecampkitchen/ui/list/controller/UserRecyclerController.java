@@ -2,6 +2,8 @@ package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.view.View;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
+import de.unikassel.chefcoders.codecampkitchen.logic.Session;
+import de.unikassel.chefcoders.codecampkitchen.logic.Users;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
 import de.unikassel.chefcoders.codecampkitchen.ui.edit.EditUserFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
@@ -12,13 +14,13 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	@Override
 	public void reload()
 	{
-		this.fill(MainActivity.kitchenManager.users().getGrouped());
+		this.fill(Users.shared.getGrouped());
 	}
 
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.users().refreshAll();
+		Users.shared.refreshAll();
 	}
 
 	@Override
@@ -51,12 +53,12 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	@Override
 	public boolean onSwiped(RowInfo<RowViewHolder> row)
 	{
-		return MainActivity.kitchenManager.users().delete(this.get(row));
+		return Users.shared.delete(this.get(row));
 	}
 
 	@Override
 	public boolean swipeIsSupported()
 	{
-		return MainActivity.kitchenManager.session().isAdmin();
+		return Session.shared.isAdmin();
 	}
 }

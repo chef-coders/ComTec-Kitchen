@@ -1,7 +1,7 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.view.View;
-import de.unikassel.chefcoders.codecampkitchen.MainActivity;
+import de.unikassel.chefcoders.codecampkitchen.logic.Purchases;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowInfo;
 import de.unikassel.chefcoders.codecampkitchen.ui.list.recyclerview.RowViewHolder;
@@ -11,13 +11,13 @@ public class PurchasesRecyclerController extends GroupedRecyclerController<Purch
 	@Override
 	public void reload()
 	{
-		this.fill(MainActivity.kitchenManager.purchases().getMineGrouped());
+		this.fill(Purchases.shared.getMineGrouped());
 	}
 
 	@Override
 	public void refresh()
 	{
-		MainActivity.kitchenManager.purchases().refreshMine();
+		Purchases.shared.refreshMine();
 	}
 
 	@Override

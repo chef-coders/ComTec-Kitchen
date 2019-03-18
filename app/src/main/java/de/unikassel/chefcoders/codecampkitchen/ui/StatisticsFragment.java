@@ -2,11 +2,9 @@ package de.unikassel.chefcoders.codecampkitchen.ui;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -18,8 +16,10 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Items;
+import de.unikassel.chefcoders.codecampkitchen.logic.Purchases;
+import de.unikassel.chefcoders.codecampkitchen.logic.Session;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
@@ -68,7 +68,7 @@ public class StatisticsFragment extends KitchenFragment
 	}
 
 	private void refreshFragment(boolean getAll) {
-		if (MainActivity.kitchenManager.session().isAdmin())
+		if (Session.shared.isAdmin())
 		{
 			if (getAll)
 			{
@@ -87,17 +87,17 @@ public class StatisticsFragment extends KitchenFragment
 
 	private void refreshAll()
 	{
-		MainActivity.kitchenManager.purchases().refreshAll();
+		Purchases.shared.refreshAll();
 	}
 
 	private void refreshMine()
 	{
-		MainActivity.kitchenManager.purchases().refreshMine();
+		Purchases.shared.refreshMine();
 	}
 
 	private void reloadAllAsAdmin()
 	{
-		this.purchases = MainActivity.kitchenManager.purchases().getAll();
+		this.purchases = Purchases.shared.getAll();
 
 		this.statisticsLayout.addView(this.totalAmountView);
 		this.statisticsLayout.addView(this.totalNumberView);
@@ -108,7 +108,7 @@ public class StatisticsFragment extends KitchenFragment
 
 	private void reloadMineAsAdmin()
 	{
-		this.purchases = MainActivity.kitchenManager.purchases().getMine();
+		this.purchases = Purchases.shared.getMine();
 
 		this.statisticsLayout.removeView(this.totalAmountView);
 		this.statisticsLayout.removeView(this.totalNumberView);
@@ -119,7 +119,7 @@ public class StatisticsFragment extends KitchenFragment
 
 	private void reloadMineAsUser()
 	{
-		this.purchases = MainActivity.kitchenManager.purchases().getMine();
+		this.purchases = Purchases.shared.getMine();
 
 		this.statisticsLayout.removeView(this.showAllPurchasesSwitch);
 		this.statisticsLayout.removeView(this.totalAmountView);
@@ -136,7 +136,7 @@ public class StatisticsFragment extends KitchenFragment
 		int totalNumber = 0;
 		int purchasedItems = 0;
 
-		String userId = MainActivity.kitchenManager.session().getLoggedInUser().get_id();
+		String userId = Session.shared.getLoggedInUser().get_id();
 
 		for (Purchase purchase : this.purchases)
 		{
@@ -215,7 +215,7 @@ public class StatisticsFragment extends KitchenFragment
 	private static String getItemName(Purchase purchase)
 	{
 		final String itemId = purchase.getItem_id();
-		final Item item = MainActivity.kitchenManager.items().get(itemId);
+		final Item item = Items.shared.get(itemId);
 		return item != null ? item.getName() : "...";
 	}
 }

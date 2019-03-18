@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
+import de.unikassel.chefcoders.codecampkitchen.logic.Cart;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 import de.unikassel.chefcoders.codecampkitchen.ui.SimpleDialog;
 import de.unikassel.chefcoders.codecampkitchen.ui.async.SimpleAsyncTask;
@@ -54,7 +55,7 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements Recycle
 
 	private void confirmPurchaseDialog()
 	{
-		final double total = MainActivity.kitchenManager.cart().getTotal();
+		final double total = Cart.shared.getTotal();
 		SimpleDialog.builder().title(this.getActivity().getString(R.string.total_price, total))
 		            .message(this.getActivity().getString(R.string.confirm_purchase))
 		            .yesButton(this.getActivity().getString(R.string.purchase), (dialog, which) -> this.purchaseItems())
@@ -65,7 +66,7 @@ public class ConfirmPurchasesFragment extends KitchenFragment implements Recycle
 	private void purchaseItems()
 	{
 		this.progressBar.setVisibility(View.VISIBLE);
-		SimpleAsyncTask.execute(this.getContext(), () -> MainActivity.kitchenManager.cart().submit(), () -> {
+		SimpleAsyncTask.execute(this.getContext(), () -> Cart.shared.submit(), () -> {
 			MainActivity mainActivity = (MainActivity) this.getActivity();
 			if (mainActivity != null)
 			{

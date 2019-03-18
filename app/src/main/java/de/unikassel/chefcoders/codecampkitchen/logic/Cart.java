@@ -1,5 +1,6 @@
 package de.unikassel.chefcoders.codecampkitchen.logic;
 
+import de.unikassel.chefcoders.codecampkitchen.communication.KitchenConnection;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
 import de.unikassel.chefcoders.codecampkitchen.model.JsonTranslator;
 import de.unikassel.chefcoders.codecampkitchen.model.Purchase;
@@ -12,17 +13,25 @@ import java.util.function.Predicate;
 
 public class Cart
 {
-	// =============== Fields ===============
+	// =============== Static Fields ===============
 
-	private final KitchenManager kitchenManager;
+	public static final Cart shared = new Cart(KitchenConnection.shared, Session.shared, Items.shared);
+
+	// =============== Fields ===============
 
 	private final List<Purchase> purchases = new ArrayList<>();
 
+	private final KitchenConnection connection;
+	private final Session           session;
+	private final Items             items;
+
 	// =============== Constructors ===============
 
-	public Cart(KitchenManager kitchenManager)
+	public Cart(KitchenConnection connection, Session session, Items items)
 	{
-		this.kitchenManager = kitchenManager;
+		this.connection = connection;
+		this.session = session;
+		this.items = items;
 	}
 
 	// =============== Methods ===============
@@ -129,7 +138,7 @@ public class Cart
 			return 0;
 		}
 
-		final String loginId = this.kitchenManager.session().getLoggedInUser().get_id();
+		final String loginId = this.session.getLoggedInUser().get_id();
 		final Purchase purchase = new Purchase().setItem_id(itemId).setUser_id(loginId).setAmount(actualAmount)
 		                                        .setPrice(actualAmount * item.getPrice());
 		this.purchases.add(purchase);
@@ -159,7 +168,7 @@ public class Cart
 		for (Iterator<Purchase> iterator = this.purchases.iterator(); iterator.hasNext(); )
 		{
 			final Purchase purchase = iterator.next();
-			final Item item = this.kitchenManager.items().get(purchase.getItem_id());
+			final Item item = this.items.get(purchase.getItem_id());
 			if (item != null)
 			{
 				purchase.setAmount(Math.min(purchase.getAmount(), item.getAmount()));
@@ -188,7 +197,7 @@ public class Cart
 	 */
 	public void refreshAll()
 	{
-		this.kitchenManager.items().refreshAll();
+		this.items.refreshAll();
 		this.updateAll();
 	}
 
@@ -199,10 +208,10 @@ public class Cart
 	{
 		for (Purchase purchase : this.purchases)
 		{
-			this.kitchenManager.getConnection().createPurchase(JsonTranslator.toJson(purchase));
+			this.connection.createPurchase(JsonTranslator.toJson(purchase));
 		}
 
-		this.kitchenManager.session().refreshLoggedInUser();
+		this.session.refreshLoggedInUser();
 
 		this.purchases.clear();
 	}
