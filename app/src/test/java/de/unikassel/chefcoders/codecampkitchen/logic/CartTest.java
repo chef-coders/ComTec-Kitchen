@@ -18,6 +18,8 @@ public class CartTest extends LogicTest
 	private Item item1;
 	private Item item2;
 
+	// --------------- Set Up ---------------
+
 	@Before
 	public void setUp()
 	{
@@ -31,6 +33,8 @@ public class CartTest extends LogicTest
 		this.users.updateLocal(this.user);
 		this.session.setLoggedInUser(this.user);
 	}
+
+	// --------------- Access ---------------
 
 	@Test
 	public void getPurchases()
@@ -81,6 +85,8 @@ public class CartTest extends LogicTest
 		assertThat(this.cart.getAmount(this.item1), is(2));
 		assertThat(this.cart.getAmount(this.item2), is(1));
 	}
+
+	// --------------- Modification ---------------
 
 	@Test
 	public void clear()
@@ -161,6 +167,8 @@ public class CartTest extends LogicTest
 		assertTrue(this.cart.isEmpty());
 	}
 
+	// --------------- Communication ---------------
+
 	@Test
 	public void refreshAll()
 	{
@@ -172,6 +180,8 @@ public class CartTest extends LogicTest
 	{
 		// TODO
 	}
+
+	// --------------- Tear Down ---------------
 
 	@After
 	public void tearDown()

@@ -18,6 +18,8 @@ public class ItemsTest extends LogicTest
 	private Item item3;
 	private Item item4;
 
+	// --------------- Set Up ---------------
+
 	@Before
 	public void setUp()
 	{
@@ -26,6 +28,8 @@ public class ItemsTest extends LogicTest
 		this.item3 = new Item().set_id("iop").setName("C").setKind("juice");
 		this.item4 = new Item().set_id("jkl").setName("D").setKind("juice");
 	}
+
+	// --------------- Access ---------------
 
 	@Test
 	public void get()
@@ -66,6 +70,8 @@ public class ItemsTest extends LogicTest
 		assertThat(grouped.get("juice"), contains(this.item3, this.item4));
 	}
 
+	// --------------- Modification ---------------
+
 	@Test
 	public void updateLocal()
 	{
@@ -97,6 +103,8 @@ public class ItemsTest extends LogicTest
 		assertNull(this.items.get("iop"));
 	}
 
+	// --------------- Communication ---------------
+
 	@Test
 	public void refreshAll()
 	{
@@ -120,6 +128,8 @@ public class ItemsTest extends LogicTest
 	{
 		// TODO
 	}
+
+	// --------------- Tear Down ---------------
 
 	@After
 	public void tearDown()
