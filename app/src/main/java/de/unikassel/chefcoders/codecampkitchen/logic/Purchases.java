@@ -39,7 +39,7 @@ public class Purchases
 		return new ArrayList<>(this.purchases.values());
 	}
 
-	public Stream<Purchase> myPurchases()
+	private Stream<Purchase> myPurchases()
 	{
 		final String userId = this.session.getLoggedInUser().get_id();
 		return this.purchases.values().stream().filter(userFilter(userId));

@@ -13,10 +13,11 @@ public class LogicTest
 	protected KitchenConnection connection;
 	protected HttpConnection    httpConnection;
 
-	protected Users   users;
-	protected Session session;
-	protected Items   items;
-	protected Cart    cart;
+	protected Users     users;
+	protected Session   session;
+	protected Items     items;
+	protected Cart      cart;
+	protected Purchases purchases;
 
 	@Before
 	public final void initLogic()
@@ -31,5 +32,6 @@ public class LogicTest
 		this.session = new Session(this.connection, this.users);
 		this.items = new Items(this.connection);
 		this.cart = new Cart(this.connection, this.session, this.items);
+		this.purchases = new Purchases(this.connection, this.session);
 	}
 }
