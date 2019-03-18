@@ -122,8 +122,8 @@ public class PurchaseItemFragment extends KitchenFragment
 			return;
 		}
 
-		SimpleAsyncTask.execute(this.getActivity(), () -> Cart.shared.add(
-			Items.shared.get(this.barcode), amount), this::goBack);
+		SimpleAsyncTask
+			.execute(this.getActivity(), () -> Cart.shared.add(Items.shared.get(this.barcode), amount), this::goBack);
 	}
 
 	private void goBack()

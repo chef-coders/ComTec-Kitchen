@@ -60,14 +60,16 @@ public class StatisticsFragment extends KitchenFragment
 
 		this.horizontalBarChart = allItemsView.findViewById(R.id.chart);
 
-		showAllPurchasesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> refreshFragment(isChecked));
+		this.showAllPurchasesSwitch
+			.setOnCheckedChangeListener((buttonView, isChecked) -> this.refreshFragment(isChecked));
 
-		refreshFragment(this.showAllPurchasesSwitch.isChecked());
+		this.refreshFragment(this.showAllPurchasesSwitch.isChecked());
 
 		return allItemsView;
 	}
 
-	private void refreshFragment(boolean getAll) {
+	private void refreshFragment(boolean getAll)
+	{
 		if (Session.shared.isAdmin())
 		{
 			if (getAll)
@@ -177,7 +179,7 @@ public class StatisticsFragment extends KitchenFragment
 			final BarDataSet record = new BarDataSet(Collections.singletonList(barEntry), name);
 
 			record.setValueTextSize(10F);
-			record.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+			record.setValueTextColor(ContextCompat.getColor(this.getActivity(), R.color.colorPrimaryText));
 			records.add(record);
 		}
 
@@ -188,14 +190,14 @@ public class StatisticsFragment extends KitchenFragment
 		xAxis.setDrawAxisLine(true);
 		xAxis.setDrawGridLines(false);
 		xAxis.setEnabled(true);
-		xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+		xAxis.setTextColor(ContextCompat.getColor(this.getActivity(), R.color.colorPrimaryText));
 
 		YAxis yAxis = this.horizontalBarChart.getAxisLeft();
 		yAxis.setDrawAxisLine(true);
 		yAxis.setDrawGridLines(true);
 		yAxis.setAxisMinimum(0f);
 		yAxis.setAxisMinimum(0f);
-		yAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+		yAxis.setTextColor(ContextCompat.getColor(this.getActivity(), R.color.colorPrimaryText));
 
 		YAxis yAxisRight = this.horizontalBarChart.getAxisRight();
 		yAxisRight.setDrawAxisLine(true);

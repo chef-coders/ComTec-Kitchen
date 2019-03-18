@@ -111,8 +111,7 @@ class Populator
 
 	private static int getColor(User user)
 	{
-		final boolean isLoggedIn = user.get_id()
-		                               .equals(Session.shared.getLoggedInUser().get_id());
+		final boolean isLoggedIn = user.get_id().equals(Session.shared.getLoggedInUser().get_id());
 		final boolean isAdmin = "admin".equals(user.getRole());
 
 		return isLoggedIn ?

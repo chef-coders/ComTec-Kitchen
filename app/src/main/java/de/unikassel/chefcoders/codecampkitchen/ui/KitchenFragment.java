@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
 import de.unikassel.chefcoders.codecampkitchen.R;
 
@@ -23,7 +22,8 @@ public abstract class KitchenFragment extends Fragment
 	protected Button saveButton;
 
 	protected String title;
-	private @StringRes int titleRes;
+	@StringRes
+	private int titleRes;
 	private boolean showSaveButton;
 
 	public KitchenFragment(@StringRes int titleRes, boolean showSaveButton)
@@ -33,11 +33,12 @@ public abstract class KitchenFragment extends Fragment
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+		@Nullable Bundle savedInstanceState)
 	{
-		this.title = getString(titleRes);
+		this.title = this.getString(this.titleRes);
 
-		if(container != null)
+		if (container != null)
 		{
 			this.hideKeyboard(container);
 		}
@@ -65,7 +66,7 @@ public abstract class KitchenFragment extends Fragment
 			return;
 		}
 
-		toolbar.setTitle(titleRes);
+		toolbar.setTitle(this.titleRes);
 
 		if (MainActivity.editMode)
 		{
@@ -77,17 +78,17 @@ public abstract class KitchenFragment extends Fragment
 		}
 
 		this.saveButton = toolbar.findViewById(R.id.saveButton);
-		if(saveButton != null)
+		if (this.saveButton != null)
 		{
-			if(showSaveButton)
+			if (this.showSaveButton)
 			{
-				saveButton.setVisibility(View.VISIBLE);
+				this.saveButton.setVisibility(View.VISIBLE);
 			}
 			else
 			{
-				saveButton.setVisibility(View.GONE);
+				this.saveButton.setVisibility(View.GONE);
 			}
-			saveButton.setOnClickListener(this::handleClickedOnSave);
+			this.saveButton.setOnClickListener(this::handleClickedOnSave);
 		}
 
 		Menu menu = toolbar.getMenu();
@@ -103,7 +104,11 @@ public abstract class KitchenFragment extends Fragment
 		this.updateToolbar(toolbar);
 	}
 
-	protected void updateToolbar(Toolbar toolbar) {}
+	protected void updateToolbar(Toolbar toolbar)
+	{
+	}
 
-	protected void handleClickedOnSave(View view) {}
+	protected void handleClickedOnSave(View view)
+	{
+	}
 }

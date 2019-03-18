@@ -16,8 +16,7 @@ public enum ItemKind
 	ESPRESSO(R.string.espresso, "Espresso");
 
 	@StringRes
-	private
-	        int    resourceId;
+	private int    resourceId;
 	private String value;
 
 	ItemKind(@StringRes int id, String value)
