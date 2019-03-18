@@ -40,7 +40,7 @@ public class CartTest extends LogicTest
 	public void getPurchases()
 	{
 		assertThat(this.cart.getPurchases(), empty());
-		this.cart.add(this.item1);
+		assertThat(this.cart.add(this.item1), is(1));
 		assertThat(this.cart.getPurchases(), not(empty()));
 	}
 
@@ -54,7 +54,7 @@ public class CartTest extends LogicTest
 	public void isEmpty()
 	{
 		assertTrue(this.cart.isEmpty());
-		this.cart.add(this.item1);
+		assertThat(this.cart.add(this.item1), is(1));
 		assertFalse(this.cart.isEmpty());
 	}
 
@@ -62,11 +62,11 @@ public class CartTest extends LogicTest
 	public void getTotal()
 	{
 		assertThat(this.cart.getTotal(), is(0.0));
-		this.cart.add(this.item1);
+		assertThat(this.cart.add(this.item1), is(1));
 		assertThat(this.cart.getTotal(), is(1.2));
-		this.cart.add(this.item1);
+		assertThat(this.cart.add(this.item1), is(1));
 		assertThat(this.cart.getTotal(), is(2.4));
-		this.cart.add(this.item2);
+		assertThat(this.cart.add(this.item2), is(1));
 		assertThat(this.cart.getTotal(), is(3.15));
 	}
 
@@ -75,13 +75,13 @@ public class CartTest extends LogicTest
 	{
 		assertThat(this.cart.getAmount(this.item1), is(0));
 		assertThat(this.cart.getAmount(this.item2), is(0));
-		this.cart.add(this.item1);
+		assertThat(this.cart.add(this.item1), is(1));
 		assertThat(this.cart.getAmount(this.item1), is(1));
 		assertThat(this.cart.getAmount(this.item2), is(0));
-		this.cart.add(this.item1);
+		assertThat(this.cart.add(this.item1), is(1));
 		assertThat(this.cart.getAmount(this.item1), is(2));
 		assertThat(this.cart.getAmount(this.item2), is(0));
-		this.cart.add(this.item2);
+		assertThat(this.cart.add(this.item2), is(1));
 		assertThat(this.cart.getAmount(this.item1), is(2));
 		assertThat(this.cart.getAmount(this.item2), is(1));
 	}
@@ -91,9 +91,9 @@ public class CartTest extends LogicTest
 	@Test
 	public void clear()
 	{
-		this.cart.add(this.item1);
-		this.cart.add(this.item1);
-		this.cart.add(this.item2);
+		assertThat(this.cart.add(this.item1), is(1));
+		assertThat(this.cart.add(this.item1), is(1));
+		assertThat(this.cart.add(this.item2), is(1));
 		assertFalse(this.cart.isEmpty());
 		this.cart.clear();
 		assertTrue(this.cart.isEmpty());
@@ -102,30 +102,40 @@ public class CartTest extends LogicTest
 	@Test
 	public void add()
 	{
-		this.cart.add(this.item1);
+		assertThat(this.cart.add(this.item1), is(1));
 		assertThat(this.cart.getAmount(this.item1), is(1));
 		assertThat(this.cart.getAmount(this.item2), is(0));
-		this.cart.add(this.item1);
+
+		assertThat(this.cart.add(this.item1), is(1));
 		assertThat(this.cart.getAmount(this.item1), is(2));
 		assertThat(this.cart.getAmount(this.item2), is(0));
-		this.cart.add(this.item2);
+
+		assertThat(this.cart.add(this.item2), is(1));
 		assertThat(this.cart.getAmount(this.item1), is(2));
 		assertThat(this.cart.getAmount(this.item2), is(1));
+
+		this.cart.clear();
+		this.item1.setAmount(0);
+		assertThat(this.cart.add(this.item1), is(0));
+		assertTrue(this.cart.isEmpty());
 	}
 
 	@Test
 	public void addWithAmount()
 	{
-		this.cart.add(this.item1, 3);
+		assertThat(this.cart.add(this.item1, 3), is(3));
 		assertThat(this.cart.getAmount(this.item1), is(3));
 		assertThat(this.cart.getAmount(this.item2), is(0));
-		this.cart.add(this.item1, 6);
+
+		assertThat(this.cart.add(this.item1, 6), is(6));
 		assertThat(this.cart.getAmount(this.item1), is(9));
 		assertThat(this.cart.getAmount(this.item2), is(0));
-		this.cart.add(this.item2, 8);
+
+		assertThat(this.cart.add(this.item2, 8), is(5));
 		assertThat(this.cart.getAmount(this.item1), is(9));
 		assertThat(this.cart.getAmount(this.item2), is(5));
-		this.cart.add(this.item1, 8);
+
+		assertThat(this.cart.add(this.item1, 8), is(1));
 		assertThat(this.cart.getAmount(this.item1), is(10));
 		assertThat(this.cart.getAmount(this.item2), is(5));
 	}
@@ -133,36 +143,54 @@ public class CartTest extends LogicTest
 	@Test
 	public void remove()
 	{
-		this.cart.add(this.item1);
-		this.cart.add(this.item2, 3);
+		assertFalse(this.cart.remove(this.item1));
+		assertFalse(this.cart.remove(this.item2));
+
+		assertThat(this.cart.add(this.item1), is(1));
+		assertThat(this.cart.add(this.item2, 3), is(3));
 		assertThat(this.cart.getAmount(this.item1), is(1));
 		assertThat(this.cart.getAmount(this.item2), is(3));
-		this.cart.remove(this.item1);
+
+		assertTrue(this.cart.remove(this.item1));
 		assertThat(this.cart.getAmount(this.item1), is(0));
 		assertThat(this.cart.getAmount(this.item2), is(3));
-		this.cart.remove(this.item2);
+
+		assertTrue(this.cart.remove(this.item2));
 		assertThat(this.cart.getAmount(this.item1), is(0));
 		assertThat(this.cart.getAmount(this.item2), is(0));
+
+		assertFalse(this.cart.remove(this.item1));
+		assertFalse(this.cart.remove(this.item2));
 	}
 
 	@Test
 	public void updateAll()
 	{
-		this.cart.add(this.item1, 10);
-		this.cart.add(this.item2, 5);
+		assertThat(this.cart.add(this.item1, 10), is(10));
+		assertThat(this.cart.add(this.item2, 5), is(5));
 		assertThat(this.cart.getAmount(this.item1), is(10));
 		assertThat(this.cart.getAmount(this.item2), is(5));
+
 		this.item1.setAmount(5);
 		this.item2.setAmount(2);
 		this.cart.updateAll();
 		assertThat(this.cart.getAmount(this.item1), is(5));
 		assertThat(this.cart.getAmount(this.item2), is(2));
+
 		this.item1.setAmount(0);
 		this.item2.setAmount(5);
 		this.cart.updateAll();
 		assertThat(this.cart.getAmount(this.item1), is(0));
 		assertThat(this.cart.getAmount(this.item2), is(2));
+
 		this.item2.setAmount(0);
+		this.cart.updateAll();
+		assertTrue(this.cart.isEmpty());
+
+		this.item1.setAmount(8);
+		assertThat(this.cart.add(this.item1), is(1));
+
+		this.items.deleteLocal(this.item1);
 		this.cart.updateAll();
 		assertTrue(this.cart.isEmpty());
 	}
