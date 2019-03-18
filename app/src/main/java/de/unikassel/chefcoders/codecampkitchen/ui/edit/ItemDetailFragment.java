@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.*;
 import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.model.Item;
-import de.unikassel.chefcoders.codecampkitchen.model.ItemKind;
 import de.unikassel.chefcoders.codecampkitchen.ui.KitchenFragment;
 
 public abstract class ItemDetailFragment extends KitchenFragment

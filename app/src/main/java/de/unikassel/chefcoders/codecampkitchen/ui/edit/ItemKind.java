@@ -1,4 +1,4 @@
-package de.unikassel.chefcoders.codecampkitchen.model;
+package de.unikassel.chefcoders.codecampkitchen.ui.edit;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
