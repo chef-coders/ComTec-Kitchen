@@ -47,15 +47,40 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
 {
-	// =============== Static Fields ===============
-
-	public static boolean editMode = false;
-
 	// =============== Fields ===============
 
 	private Toolbar        toolbar;
 	private DrawerLayout   drawerLayout;
 	private NavigationView navigationView;
+
+	private boolean editMode;
+
+	// =============== Properties ===============
+
+	public boolean isEditMode()
+	{
+		return this.editMode;
+	}
+
+	public void setEditMode(boolean editMode)
+	{
+		if (this.editMode == editMode)
+		{
+			return;
+		}
+
+		this.editMode = editMode;
+
+		final Toolbar toolbar = this.getToolbar();
+		toolbar.setBackgroundColor(ContextCompat.getColor(this, editMode ? R.color.colorAccent : R.color.colorPrimary));
+		this.getKitchenFragment().updateToolbar(toolbar);
+	}
+
+	public KitchenFragment getKitchenFragment()
+	{
+		return (KitchenFragment) this.getSupportFragmentManager().getFragments().stream()
+		                             .filter(f -> f instanceof KitchenFragment).findFirst().orElse(null);
+	}
 
 	// =============== Methods ===============
 
@@ -197,7 +222,7 @@ public class MainActivity extends AppCompatActivity
 			this.changeFragmentForward(new CreateItemFragment());
 			return true;
 		case R.id.action_edit:
-			this.setEditMode(!editMode);
+			this.setEditMode(!this.editMode);
 			return true;
 		case R.id.action_clear_all:
 			Cart.shared.clear();
@@ -206,35 +231,6 @@ public class MainActivity extends AppCompatActivity
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void setEditMode(boolean editMode)
-	{
-
-		MainActivity.editMode = editMode;
-
-		if (MainActivity.editMode)
-		{
-			this.getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
-			this.getToolbar().setTitle(R.string.edit_items);
-		}
-		else
-		{
-			this.getToolbar().setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-			this.getToolbar().setTitle(R.string.shop);
-		}
-
-		this.getToolbar().getMenu().findItem(R.id.action_scan_code)
-		    .setVisible(!MainActivity.editMode && this.isAllItemsFragmentVisible());
-		this.getToolbar().getMenu().findItem(R.id.action_create)
-		    .setVisible(MainActivity.editMode && this.isAllItemsFragmentVisible());
-
-		//updateLayout();
-	}
-
-	private boolean isAllItemsFragmentVisible()
-	{
-		return this.getSupportFragmentManager().findFragmentById(R.id.headlines_fragment) instanceof AllItemsFragment;
 	}
 
 	// --------------- Navigation Drawer ---------------
@@ -277,10 +273,7 @@ public class MainActivity extends AppCompatActivity
 		if (user != null && "admin".equals(user.getRole()))
 		{
 			buttonEditUser.setOnClickListener((v) -> {
-				if (MainActivity.editMode)
-				{
-					this.setEditMode(false);
-				}
+				this.setEditMode(false);
 				this.drawerLayout.closeDrawers();
 				this.changeFragmentForward(EditUserFragment.newInstance(user.get_id()));
 			});
@@ -312,11 +305,7 @@ public class MainActivity extends AppCompatActivity
 
 	private boolean selectMenuItem(MenuItem menuItem)
 	{
-		if (MainActivity.editMode)
-		{
-			this.setEditMode(false);
-		}
-
+		this.setEditMode(false);
 		switch (menuItem.getItemId())
 		{
 		case R.id.nav_all_items:

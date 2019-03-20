@@ -38,29 +38,27 @@ public class ItemRecyclerController extends GroupedRecyclerController<Item, RowV
 	@Override
 	public boolean onClick(RowInfo<RowViewHolder> row)
 	{
+		final View itemView = row.getViewHolder().itemView;
+		MainActivity mainActivity = (MainActivity) MainActivity.getActivity(itemView);
 		final Item item = this.get(row);
-		if (!MainActivity.editMode)
+
+		if (!mainActivity.isEditMode())
 		{
 			return Cart.shared.add(item) > 0;
 		}
 
-		final View itemView = row.getViewHolder().itemView;
-		itemView.post(() -> {
-			MainActivity mainActivity = (MainActivity) MainActivity.getActivity(itemView);
-			if (mainActivity != null)
-			{
-				EditItemFragment editItemFragment = EditItemFragment.newInstance(item.get_id());
-				mainActivity.changeFragmentForward(editItemFragment);
-			}
-		});
+		itemView.post(() -> mainActivity.changeFragmentForward(EditItemFragment.newInstance(item.get_id())));
 		return true;
 	}
 
 	@Override
 	public boolean onSwiped(RowInfo<RowViewHolder> row)
 	{
+		final View itemView = row.getViewHolder().itemView;
+		MainActivity mainActivity = (MainActivity) MainActivity.getActivity(itemView);
 		final Item item = this.get(row);
-		if (MainActivity.editMode)
+
+		if (mainActivity.isEditMode())
 		{
 			Items.shared.delete(item);
 			return true;

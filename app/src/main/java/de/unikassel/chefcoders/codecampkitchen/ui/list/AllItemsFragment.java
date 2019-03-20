@@ -67,17 +67,13 @@ public class AllItemsFragment extends KitchenFragment implements RecyclerEventHa
 	@Override
 	public void updateToolbar(Toolbar toolbar)
 	{
-		if (MainActivity.editMode)
-		{
-			toolbar.setTitle(R.string.edit_items);
-		}
-		Menu menu = toolbar.getMenu();
-		menu.findItem(R.id.action_scan_code).setVisible(!MainActivity.editMode);
-		menu.findItem(R.id.action_create).setVisible(false);
-		menu.findItem(R.id.action_edit).setVisible(false);
-
+		final Menu menu = toolbar.getMenu();
+		final boolean editMode = this.getMainActivity().isEditMode();
 		final boolean isAdmin = Session.shared.isAdmin();
-		menu.findItem(R.id.action_create).setVisible(isAdmin && MainActivity.editMode);
+
+		toolbar.setTitle(editMode ? R.string.edit_items : R.string.shop);
+		menu.findItem(R.id.action_scan_code).setVisible(!editMode);
+		menu.findItem(R.id.action_create).setVisible(isAdmin && editMode);
 		menu.findItem(R.id.action_edit).setVisible(isAdmin);
 	}
 
@@ -106,7 +102,7 @@ public class AllItemsFragment extends KitchenFragment implements RecyclerEventHa
 	@Override
 	public void handleClick(RowInfo row)
 	{
-		if (!MainActivity.editMode && !Cart.shared.getPurchases().isEmpty())
+		if (!Cart.shared.getPurchases().isEmpty() && !this.getMainActivity().isEditMode())
 		{
 			this.floatingActionButton.show();
 		}

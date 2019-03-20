@@ -32,6 +32,11 @@ public abstract class KitchenFragment extends Fragment
 		this.showSaveButton = showSaveButton;
 	}
 
+	protected final MainActivity getMainActivity()
+	{
+		return (MainActivity) this.getActivity();
+	}
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 		@Nullable Bundle savedInstanceState)
@@ -68,15 +73,6 @@ public abstract class KitchenFragment extends Fragment
 
 		toolbar.setTitle(this.titleRes);
 
-		if (MainActivity.editMode)
-		{
-			toolbar.setBackgroundColor(ContextCompat.getColor(toolbar.getContext(), R.color.colorAccent));
-		}
-		else
-		{
-			toolbar.setBackgroundColor(ContextCompat.getColor(toolbar.getContext(), R.color.colorPrimary));
-		}
-
 		this.saveButton = toolbar.findViewById(R.id.saveButton);
 		if (this.saveButton != null)
 		{
@@ -104,7 +100,7 @@ public abstract class KitchenFragment extends Fragment
 		this.updateToolbar(toolbar);
 	}
 
-	protected void updateToolbar(Toolbar toolbar)
+	public void updateToolbar(Toolbar toolbar)
 	{
 	}
 
