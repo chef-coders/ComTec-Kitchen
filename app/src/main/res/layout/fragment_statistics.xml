@@ -6,64 +6,32 @@
     android:visibility="visible"
     tools:context=".ui.StatisticsFragment">
 
-    <LinearLayout
-        android:id="@+id/statisticsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+	<LinearLayout android:id="@+id/statisticsLayout" android:layout_width="match_parent" android:orientation="vertical"
+	              android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/amountOfItemsText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/amount_of_bought_items"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+		<LinearLayout android:orientation="horizontal" android:layout_width="match_parent"
+		              android:layout_height="wrap_content">
+			<Button android:text="@string/my_purchases" android:layout_width="match_parent"
+			        android:layout_height="wrap_content" android:id="@+id/myPurchasesButton"
+			        android:layout_weight="1" />
+			<Button android:text="@string/all_purchases" android:layout_width="match_parent"
+			        android:layout_height="wrap_content" android:id="@+id/allPurchasesButton"
+			        android:layout_weight="1" />
+		</LinearLayout>
 
-        <Switch
-            android:id="@+id/showAllPurchasesSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/showAllPurchasesSwitch"
-            android:textAlignment="textStart" />
+		<TextView android:id="@+id/moneySpentView" android:layout_width="match_parent"
+		          android:layout_height="wrap_content" android:text="@string/money_spent_text"
+		          android:textAlignment="center" android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/totalAmountView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/total_amount_text"
-            android:textAlignment="center" />
+		<TextView android:id="@+id/purchasedItemsView" android:layout_width="match_parent"
+		          android:layout_height="wrap_content" android:text="@string/purchased_items_text"
+		          android:textAlignment="center" android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/moneySpentView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/money_spent_text"
-            android:textAlignment="center" />
+		<com.github.mikephil.charting.charts.HorizontalBarChart android:id="@+id/chart" android:layout_width="match_parent"
+		                                                        android:visibility="visible"
+		                                                        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/totalNumberView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/total_number_text"
-            android:textAlignment="center" />
+		</com.github.mikephil.charting.charts.HorizontalBarChart>
 
-        <TextView
-            android:id="@+id/purchasedItemsView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/purchased_items_text"
-            android:textAlignment="center" />
-
-        <com.github.mikephil.charting.charts.HorizontalBarChart
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-
-        </com.github.mikephil.charting.charts.HorizontalBarChart>
-
-    </LinearLayout>
-
+	</LinearLayout>
 </FrameLayout>

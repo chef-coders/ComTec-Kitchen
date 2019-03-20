@@ -1,12 +1,13 @@
 package de.unikassel.chefcoders.codecampkitchen.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -29,13 +30,9 @@ import java.util.stream.Collectors;
 
 public class StatisticsFragment extends KitchenFragment
 {
-	private List<Purchase> purchases;
-
-	private LinearLayout statisticsLayout;
-	private Switch       showAllPurchasesSwitch;
-	private TextView     totalAmountView;
+	private Button       myPurchasesButton;
+	private Button       allPurchasesButton;
 	private TextView     moneySpentView;
-	private TextView     totalNumberView;
 	private TextView     purchasedItemsView;
 
 	private HorizontalBarChart horizontalBarChart;
@@ -51,118 +48,69 @@ public class StatisticsFragment extends KitchenFragment
 		super.onCreateView(inflater, container, savedInstanceState);
 		View allItemsView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
-		this.statisticsLayout = allItemsView.findViewById(R.id.statisticsLayout);
-		this.showAllPurchasesSwitch = allItemsView.findViewById(R.id.showAllPurchasesSwitch);
-		this.totalAmountView = allItemsView.findViewById(R.id.totalAmountView);
+		this.myPurchasesButton = allItemsView.findViewById(R.id.myPurchasesButton);
+		this.allPurchasesButton = allItemsView.findViewById(R.id.allPurchasesButton);
 		this.moneySpentView = allItemsView.findViewById(R.id.moneySpentView);
-		this.totalNumberView = allItemsView.findViewById(R.id.totalNumberView);
 		this.purchasedItemsView = allItemsView.findViewById(R.id.purchasedItemsView);
 
 		this.horizontalBarChart = allItemsView.findViewById(R.id.chart);
 
-		this.showAllPurchasesSwitch
-			.setOnCheckedChangeListener((buttonView, isChecked) -> this.refreshFragment(isChecked));
+		if (Session.shared.isAdmin())
+		{
+			this.myPurchasesButton.setOnClickListener(v -> this.refreshFragment(false));
+			this.allPurchasesButton.setOnClickListener(v -> this.refreshFragment(true));
+		}
+		else
+		{
+			this.allPurchasesButton.setVisibility(View.GONE);
+		}
 
-		this.refreshFragment(this.showAllPurchasesSwitch.isChecked());
+		this.refreshFragment(false);
 
 		return allItemsView;
 	}
 
 	private void refreshFragment(boolean getAll)
 	{
-		if (Session.shared.isAdmin())
-		{
-			if (getAll)
-			{
-				SimpleAsyncTask.execute(this.getActivity(), this::refreshAll, this::reloadAllAsAdmin);
-			}
-			else
-			{
-				SimpleAsyncTask.execute(this.getActivity(), this::refreshMine, this::reloadMineAsAdmin);
-			}
-		}
-		else
-		{
-			SimpleAsyncTask.execute(this.getActivity(), this::refreshMine, this::reloadMineAsUser);
-		}
+		this.myPurchasesButton.setEnabled(false);
+		this.allPurchasesButton.setEnabled(false);
+
+		final int accentColor = this.getResources().getColor(R.color.colorAccent);
+		this.myPurchasesButton.setBackgroundColor(getAll ? Color.TRANSPARENT : accentColor);
+		this.allPurchasesButton.setBackgroundColor(!getAll ? Color.TRANSPARENT : accentColor);
+
+		SimpleAsyncTask
+			.execute(this.getActivity(), getAll ? Purchases.shared::refreshAll : Purchases.shared::refreshMine, () -> {
+				this.reload(getAll ? Purchases.shared.getAll() : Purchases.shared.getMine());
+			}, () -> {
+				(getAll ? this.myPurchasesButton : this.allPurchasesButton).setEnabled(true);
+			});
 	}
 
-	private void refreshAll()
+	private void reload(List<Purchase> purchases)
 	{
-		Purchases.shared.refreshAll();
+		this.initValues(purchases);
+		this.initChart(purchases);
 	}
 
-	private void refreshMine()
+	private void initValues(List<Purchase> purchases)
 	{
-		Purchases.shared.refreshMine();
-	}
-
-	private void reloadAllAsAdmin()
-	{
-		this.purchases = Purchases.shared.getAll();
-
-		this.statisticsLayout.addView(this.totalAmountView);
-		this.statisticsLayout.addView(this.totalNumberView);
-
-		this.initValues();
-		this.initChart();
-	}
-
-	private void reloadMineAsAdmin()
-	{
-		this.purchases = Purchases.shared.getMine();
-
-		this.statisticsLayout.removeView(this.totalAmountView);
-		this.statisticsLayout.removeView(this.totalNumberView);
-
-		this.initValues();
-		this.initChart();
-	}
-
-	private void reloadMineAsUser()
-	{
-		this.purchases = Purchases.shared.getMine();
-
-		this.statisticsLayout.removeView(this.showAllPurchasesSwitch);
-		this.statisticsLayout.removeView(this.totalAmountView);
-		this.statisticsLayout.removeView(this.totalNumberView);
-
-		this.initValues();
-		this.initChart();
-	}
-
-	private void initValues()
-	{
-		double totalAmount = 0;
 		double moneySpent = 0;
-		int totalNumber = 0;
 		int purchasedItems = 0;
 
-		String userId = Session.shared.getLoggedInUser().get_id();
-
-		for (Purchase purchase : this.purchases)
+		for (Purchase purchase : purchases)
 		{
-			totalAmount += purchase.getPrice();
-
-			totalNumber += purchase.getAmount();
-
-			if (purchase.getUser_id().equals(userId))
-			{
-				moneySpent += purchase.getPrice();
-
-				purchasedItems += purchase.getAmount();
-			}
+			moneySpent += purchase.getPrice();
+			purchasedItems += purchase.getAmount();
 		}
 
-		this.totalAmountView.setText(getString(R.string.total_amount_text, totalAmount));
 		this.moneySpentView.setText(getString(R.string.money_spent_text, moneySpent));
-		this.totalNumberView.setText(getString(R.string.total_number_text, totalNumber));
 		this.purchasedItemsView.setText(getString(R.string.purchased_items_text, purchasedItems));
 	}
 
-	private void initChart()
+	private void initChart(List<Purchase> purchases)
 	{
-		final Map<String, Integer> boughtItems = this.purchases.stream().collect(Collectors.groupingBy(
+		final Map<String, Integer> boughtItems = purchases.stream().collect(Collectors.groupingBy(
 			StatisticsFragment::getItemName, TreeMap::new, Collectors.summingInt(Purchase::getAmount)));
 
 		int index = 0;
