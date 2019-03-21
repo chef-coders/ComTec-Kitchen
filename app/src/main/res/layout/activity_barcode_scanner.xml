@@ -27,6 +27,10 @@
             android:layout_height="match_parent"
             app:auto_focus="true"
             app:use_flash="false" />
+	    <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/barcodeTextView"
+	              android:gravity="bottom|center_vertical" android:textAlignment="center" android:textSize="24sp"
+	              android:typeface="monospace" android:textColor="@android:color/white" android:text="@string/barcode_failure"
+	              android:focusableInTouchMode="false" android:editable="false" android:clickable="true" />
 
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>

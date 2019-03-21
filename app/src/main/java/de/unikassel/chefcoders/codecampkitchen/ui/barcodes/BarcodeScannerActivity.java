@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.vision.barcode.Barcode;
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
@@ -18,18 +19,38 @@ import java.util.List;
 
 public class BarcodeScannerActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener
 {
+	private TextView barcodeTextView;
+
+	private String lastBarcode;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_barcode_scanner);
+		this.setContentView(R.layout.activity_barcode_scanner);
+
+		this.barcodeTextView = this.findViewById(R.id.barcodeTextView);
+
+		this.barcodeTextView.setOnClickListener(view -> {
+			if (this.lastBarcode != null)
+			{
+				this.handleBarcode(this.lastBarcode);
+			}
+		});
 	}
 
 	@Override
 	public void onScanned(Barcode barcode)
 	{
-		boolean isAdmin = Session.shared.isAdmin();
-		final Item item = Items.shared.get(barcode.rawValue);
+		final String id = barcode.rawValue;
+		this.lastBarcode = id;
+		this.barcodeTextView.setText(id);
+	}
+
+	private void handleBarcode(String id)
+	{
+		final boolean isAdmin = Session.shared.isAdmin();
+		final Item item = Items.shared.get(id);
 
 		if (item != null)
 		{
@@ -40,8 +61,8 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 			{
 				// still available, close scanner and display view that allows entering an amount
 
-				Intent intent = new Intent(BarcodeScannerActivity.this, MainActivity.class);
-				intent.putExtra("barcode", barcode.rawValue);
+				Intent intent = new Intent(this, MainActivity.class);
+				intent.putExtra("barcode", id);
 				this.finish();
 				this.startActivity(intent);
 			}
@@ -59,7 +80,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 			// unknown barcode and user is admin, close scanner and show Create Item view
 
 			Intent intent = new Intent(this, MainActivity.class);
-			intent.putExtra("barcodeCreate", barcode.rawValue);
+			intent.putExtra("barcodeCreate", id);
 			this.startActivity(intent);
 		}
 		else
@@ -84,6 +105,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Barcode
 	@Override
 	public void onScanError(String s)
 	{
+		this.barcodeTextView.setText(s);
 	}
 
 	@Override
