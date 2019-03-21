@@ -247,10 +247,10 @@ public class MainActivity extends AppCompatActivity
 				public void onDrawerOpened(View drawerView)
 				{
 					super.onDrawerOpened(drawerView);
-					MainActivity.this.updatedDrawerHeader();
+					MainActivity.this.updateDrawerHeader();
 				}
 			});
-		this.updatedDrawerHeader();
+		this.updateDrawerHeader();
 
 		MenuItem item = this.navigationView.getMenu().findItem(R.id.nav_all_users);
 		item.setVisible(Session.shared.isAdmin());
@@ -260,9 +260,13 @@ public class MainActivity extends AppCompatActivity
 		this.navigationView.setNavigationItemSelectedListener(this::selectMenuItem);
 	}
 
-	private void updatedDrawerHeader()
+	private void updateDrawerHeader()
 	{
 		User user = Session.shared.getLoggedInUser();
+		if (user == null)
+		{
+			return;
+		}
 
 		View headerView = this.navigationView.getHeaderView(0);
 		TextView textViewUsername = headerView.findViewById(R.id.textViewUsername);
@@ -270,8 +274,12 @@ public class MainActivity extends AppCompatActivity
 		TextView textViewEmail = headerView.findViewById(R.id.textViewEmail);
 		ImageButton buttonEditUser = headerView.findViewById(R.id.buttonEditUser);
 
-		if (user != null && "admin".equals(user.getRole()))
+		textViewEmail.setText(user.getMail());
+		textViewCredit.setText(getString(R.string.credit_value, user.getCredit()));
+
+		if ("admin".equals(user.getRole()))
 		{
+			textViewUsername.setText(String.format("%s (Admin)", user.getName()));
 			buttonEditUser.setOnClickListener((v) -> {
 				this.setEditMode(false);
 				this.drawerLayout.closeDrawers();
@@ -280,21 +288,8 @@ public class MainActivity extends AppCompatActivity
 		}
 		else
 		{
+			textViewUsername.setText(user.getName());
 			buttonEditUser.setVisibility(View.GONE);
-		}
-
-		if (user != null)
-		{
-			if (user.getRole().equals("admin"))
-			{
-				textViewUsername.setText(String.format("%s (Admin)", user.getName()));
-			}
-			else
-			{
-				textViewUsername.setText(user.getName());
-			}
-			textViewEmail.setText(user.getMail());
-			textViewCredit.setText(getString(R.string.credit_value, user.getCredit()));
 		}
 	}
 
