@@ -1,4 +1,12 @@
-# Code Camp Kitchen App [![Build Status](https://travis-ci.org/chef-coders/ComTec-Kitchen.svg?branch=master)](https://travis-ci.org/chef-coders/ComTec-Kitchen)
+# Code Camp Kitchen App
+
+`master`:
+[![Build Status](https://travis-ci.org/chef-coders/ComTec-Kitchen.svg?branch=master)](https://travis-ci.org/chef-coders/ComTec-Kitchen)
+[![master codecov](https://codecov.io/gh/chef-coders/ComTec-Kitchen/branch/master/graph/badge.svg)](https://codecov.io/gh/chef-coders/ComTec-Kitchen)
+
+`develop`:
+[![Build Status](https://travis-ci.org/chef-coders/ComTec-Kitchen.svg?branch=develop)](https://travis-ci.org/chef-coders/ComTec-Kitchen)
+[![develop codecov](https://codecov.io/gh/chef-coders/ComTec-Kitchen/branch/develop/graph/badge.svg)](https://codecov.io/gh/chef-coders/ComTec-Kitchen)
 
 ```
 Java Code Camp Context Awareness
