@@ -68,6 +68,7 @@
     <string name="edit_item_successful">Artikel erfolgreich bearbeitet</string>
     <string name="create_item_successful">Artikel erfolgreich erstellt</string>
     <string name="save">Speichern</string>
+    <string name="do_not_del_own_user">Der eigene Account kann nicht gelöscht werden</string>
 
     <!-- Hints -->
     <string name="name_hint">Gib einen Namen ein</string>
