@@ -1,7 +1,10 @@
 package de.unikassel.chefcoders.codecampkitchen.ui.list.controller;
 
 import android.view.View;
+import android.widget.Toast;
+
 import de.unikassel.chefcoders.codecampkitchen.MainActivity;
+import de.unikassel.chefcoders.codecampkitchen.R;
 import de.unikassel.chefcoders.codecampkitchen.logic.Session;
 import de.unikassel.chefcoders.codecampkitchen.logic.Users;
 import de.unikassel.chefcoders.codecampkitchen.model.User;
@@ -53,7 +56,24 @@ public class UserRecyclerController extends GroupedRecyclerController<User, RowV
 	@Override
 	public boolean onSwiped(RowInfo<RowViewHolder> row)
 	{
-		return Users.shared.delete(this.get(row));
+		User user = this.get(row);
+
+		if(user.get_id().equals(Session.shared.getLoggedInUser().get_id()))
+		{
+			View itemView = row.getViewHolder().itemView;
+			MainActivity mainActivity = (MainActivity) MainActivity.getActivity(itemView);
+
+			if (mainActivity != null)
+			{
+				mainActivity.runOnUiThread(() -> {
+					Toast.makeText(mainActivity, R.string.do_not_del_own_user, Toast.LENGTH_SHORT)
+							.show();
+				});
+			}
+			return false;
+		}
+
+		return Users.shared.delete(user);
 	}
 
 	@Override
